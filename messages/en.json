@@ -9,7 +9,8 @@
     "resetPassword": "Reset Password | Motamakin",
     "resetSuccess": "Password Reset | Motamakin",
     "resetError": "Password Reset Failed | Motamakin",
-    "underConstruction": "Under Construction | Motamakin"
+    "underConstruction": "Under Construction | Motamakin",
+    "loginVerify": "Verify Login | Motamakin"
   },
   "Header": {
     "home": "Home",
@@ -50,7 +51,9 @@
       "USD": "USD",
       "SAR": "SAR",
       "EGP": "EGP"
-    }
+    },
+    "myAccount": "My account",
+    "logout": "Logout"
   },
   "Footer": {
     "cta": {
@@ -108,7 +111,10 @@
     "error": "Error",
     "needHelp": "Need help?",
     "goToLogin": "Go To Login",
-    "signupSuccess": "sign-up successfully"
+    "signupSuccess": "sign-up successfully",
+    "welcomeTitle": "Welcome to the Community!",
+    "welcomeMessage": "Congratulations on registering! You've earned {points} points to get started. Explore the platform and discover ways to earn more.",
+    "loadingPage": "Loading, please wait..."
   },
   "Signup": {
     "title": "Signup",
@@ -132,9 +138,10 @@
     "confirmPhone": "An OTP code will be sent to this phone number {phone} Is this number is correct?",
     "reenterPhone": "re-enter phone number",
     "yesCorrect": "yes, correct",
-    "created": "Your account has been created successfully. You can now log in.",
     "errorTitle": "There was an error processing your registration.",
-    "errorMessage": "Please fill in all fields and try again. We apologize for the inconvenience"
+    "errorMessage": "Please fill in all fields and try again. We apologize for the inconvenience",
+    "confirmEmail": "An OTP code will be sent to this email address {email}. Is this email correct?",
+    "reenterEmail": "re-enter email address"
   },
   "Login": {
     "title": "Login",
@@ -147,7 +154,8 @@
     "submit": "Login",
     "noAccount": "Don't have an account?",
     "createAccount": "Create a new account",
-    "failed": "Invalid credentials. Please try again."
+    "invalidEmail": "The email address or password is incorrect.",
+    "invalidPhone": "The phone number or password is incorrect."
   },
   "Otp": {
     "title": "Verification Code",
@@ -157,7 +165,8 @@
     "verify": "Verify",
     "resend": "Resend the code",
     "incomplete": "Please enter the full verification code.",
-    "failed": "Verification failed. Please try again."
+    "failed": "Verification failed. Please try again.",
+    "subtitleWhatsapp": "Please enter the code you received on WhatsApp or SMS"
   },
   "ForgotPassword": {
     "title": "Forgot Your Password",
@@ -168,7 +177,9 @@
     "sendLink": "Send Reset Link",
     "sendCode": "Send Verification Code",
     "changeMind": "Change your mind?",
-    "backToLogin": "Back to login page"
+    "backToLogin": "Back to login page",
+    "verifyTitle": "Forgot Password",
+    "verifySubtitle": "Enter the verification code we sent you."
   },
   "ResetPassword": {
     "title": "Create Your New Password",
@@ -177,9 +188,10 @@
     "confirmPassword": "Confirm New Password",
     "confirmPasswordPlaceholder": "Enter confirm new password",
     "submit": "Reset Password",
-    "successMessage": "You Can Now Log In With Your New Password",
+    "successMessage": "You can now log in with your new password",
     "errorTitle": "There was an error processing your password reset request.",
-    "errorMessage": "Please Try Again Later. We Apologize For The Inconvenience."
+    "errorMessage": "Please Try Again Later. We Apologize For The Inconvenience.",
+    "successTitle": "Password Reset Successful!"
   },
   "Validation": {
     "emailRequired": "Email address is required.",
@@ -200,5 +212,243 @@
     "title": "Under Construction",
     "message": "We're working hard on this page. Please check back soon.",
     "backHome": "Back to Home"
+  },
+  "Projects": {
+    "breadcrumb": {
+      "home": "Home",
+      "add": "Add",
+      "newProject": "New project"
+    },
+    "title": "Add your project for free",
+    "subtitle": "Follow the steps below and fill in the required fields",
+    "steps": {
+      "details": "Project details",
+      "budget": "Budget & duration",
+      "team": "Team & split",
+      "publish": "Publish"
+    },
+    "stepCurrent": "Current",
+    "category": "Choose category",
+    "categoryPlaceholder": "Choose the category related to your project",
+    "subcategory": "Choose subcategory",
+    "subcategoryPlaceholder": "Choose subcategory",
+    "categories": {
+      "design": "Design",
+      "programming": "Programming",
+      "writing": "Writing & translation",
+      "marketing": "Marketing"
+    },
+    "subcategories": {
+      "branding": "Brand identity",
+      "uiux": "UI / UX design",
+      "web": "Web development",
+      "mobile": "Mobile apps",
+      "content": "Content writing",
+      "translation": "Translation",
+      "social": "Social media",
+      "seo": "SEO"
+    },
+    "whoExecutes": "Who will execute this project?",
+    "whoExecutesHint": "This choice decides how escrow is split and the number of publishing steps",
+    "modes": {
+      "individual": {
+        "title": "Individual project",
+        "subtitle": "You deliver it alone",
+        "badge": "{count} steps",
+        "points": [
+          "Escrow is released to you in full on delivery",
+          "Direct chat with the project owner",
+          "No split shares or extra approvals"
+        ]
+      },
+      "team": {
+        "title": "Team project",
+        "subtitle": "Invite members and share the payout",
+        "badge": "{count} steps",
+        "points": [
+          "An extra step to choose partners and split shares",
+          "Escrow is split between members by the agreed shares",
+          "Group chat, sub-threads and file sharing",
+          "A member joining or leaving needs the project owner's approval"
+        ],
+        "warning": "You can't switch to individual after the project is published"
+      }
+    },
+    "extras": "Add to project",
+    "extrasOptions": {
+      "urgent": "Urgent",
+      "featured": "Featured",
+      "maintenance": "Support & maintenance package"
+    },
+    "actions": {
+      "next": "Next",
+      "back": "Back",
+      "saveDraft": "Save draft",
+      "cancel": "Cancel",
+      "nextPublish": "Next — publish",
+      "publish": "Publish project",
+      "change": "Change choice",
+      "continue": "Continue",
+      "continueTeam": "Continue — add members"
+    },
+    "summary": {
+      "individual": "Selected: individual project — {count} steps in total. Next step is budget & duration.",
+      "team": "Selected: team project — {count} steps in total. The team & split step comes after budget & duration."
+    },
+    "draftSaved": "Draft saved",
+    "confirm": {
+      "individualTitle": "Confirm: individual project",
+      "individualText": "You'll deliver the project alone, and escrow is released to you in full on delivery.",
+      "teamTitle": "Confirm: team project",
+      "teamText": "You'll add team members and set each member's share before choosing the budget. Escrow is split by these shares on delivery.",
+      "whatChanges": "What changes",
+      "rows": {
+        "steps": "Publishing steps",
+        "escrow": "Escrow",
+        "chat": "Chat",
+        "members": "Editing members"
+      },
+      "individual": {
+        "steps": "{count} as is",
+        "escrow": "Released to you in full",
+        "chat": "Direct with the project owner",
+        "members": "Not available after publishing"
+      },
+      "team": {
+        "steps": "{count} instead of {base} — team & split after budget",
+        "escrow": "Split between members by shares",
+        "chat": "Group · task threads · file sharing",
+        "members": "With the project owner's approval after publishing"
+      },
+      "warning": "This choice can't be changed after the project is published, because escrow is transferred based on it."
+    },
+    "budget": {
+      "heading": "Budget & duration",
+      "hint": "Tell providers what you need and how much you plan to spend",
+      "projectTitle": "Project title",
+      "projectTitlePlaceholder": "e.g. Brand identity for a restaurant",
+      "description": "Project description",
+      "descriptionPlaceholder": "Describe the scope, deliverables and any references",
+      "amount": "Budget (USD)",
+      "amountPlaceholder": "e.g. 3200",
+      "duration": "Duration (days)",
+      "durationPlaceholder": "e.g. 14",
+      "required": "This field is required.",
+      "amountInvalid": "Enter a budget of at least $10.",
+      "durationInvalid": "Enter a duration between 1 and 365 days."
+    },
+    "team": {
+      "heading": "Team & split shares",
+      "hint": "Invite members and set each member's share of the project value",
+      "invite": "+ Invite member",
+      "sumReady": "Total shares {total}% — ready to continue",
+      "sumInvalid": "Total shares {total}% — must equal 100%",
+      "sumHint": "To continue, the total must be exactly 100% and every member must accept their invitation and share. Escrow isn't reserved until all members accept.",
+      "pendingTitle": "Waiting for {count} member to accept — publishing on hold",
+      "pendingHint": "Publishing can't be completed and the budget can't be reserved until every member accepts. If a member declines, their share returns to be redistributed.",
+      "remind": "Send reminder",
+      "reminded": "Reminder sent",
+      "columns": {
+        "member": "Member",
+        "role": "Role",
+        "share": "Share",
+        "amount": "Share of {total}",
+        "status": "Status"
+      },
+      "you": "You",
+      "remove": "Remove",
+      "status": {
+        "owner": "Project owner",
+        "accepted": "Accepted",
+        "pending": "Waiting to accept"
+      },
+      "rulesTitle": "Split rules",
+      "rules": [
+        "The project amount is held in escrow after all members accept",
+        "The project owner alone releases payouts — and only the finished member's share is released",
+        "A new member joining pauses the project and re-opens split approval for everyone",
+        "A member leaving returns their unearned share to be redistributed with approval",
+        "There's no automatic split on dispute — shares are fixed and not changed by force",
+        "The member's approved share on the platform isn't changed except by agreement"
+      ],
+      "inviteTitle": "Invite a new member",
+      "inviteUser": "Username or email",
+      "inviteUserPlaceholder": "Search for a member on the platform",
+      "inviteRole": "Role",
+      "inviteRolePlaceholder": "Choose role",
+      "inviteShare": "Proposed share",
+      "send": "Send invitation",
+      "inviteNote": "The member isn't counted in the team until they accept the invitation and share together.",
+      "inviteUserRequired": "Enter a username or email.",
+      "inviteRoleRequired": "Choose a role.",
+      "roles": {
+        "lead": "Team lead",
+        "frontend": "Frontend developer",
+        "backend": "Backend developer",
+        "designer": "Designer",
+        "writer": "Content writer",
+        "marketer": "Marketer"
+      },
+      "footerNote": "The total must equal 100% and every member must accept before publishing — escrow is reserved once everyone accepts."
+    },
+    "publish": {
+      "heading": "Review & publish",
+      "hint": "Check your project details before publishing",
+      "mode": "Execution",
+      "title": "Title",
+      "category": "Category",
+      "budget": "Budget",
+      "duration": "Duration",
+      "days": "{count} days",
+      "extras": "Extras",
+      "none": "None",
+      "team": "Team shares",
+      "publishedTitle": "Your project has been published!",
+      "publishedText": "Providers can now see your project and send their offers.",
+      "viewProjects": "Go to my projects"
+    },
+    "invitation": {
+      "title": "Invitation to join a project team",
+      "from": "{name} invites you to join",
+      "project": "Restaurant brand identity — ref. PRJ-1204",
+      "offer": "Your offer",
+      "shareOffered": "Proposed share",
+      "details": "Your role: {role} · Total project value {total} · Your share is reserved in escrow after all members accept — your acceptance is one of the publishing conditions.",
+      "restOfTeam": "Rest of the team",
+      "warning": "By accepting you commit to delivering your role within the project duration. Changing your share later requires every member's approval.",
+      "accept": "Accept invitation",
+      "decline": "Decline",
+      "negotiate": "Negotiate share",
+      "accepted": "You've joined the team. The project owner has been notified.",
+      "declined": "You've declined the invitation.",
+      "proposalSent": "Your proposal has been sent to the project owner."
+    },
+    "negotiate": {
+      "title": "Negotiate your share",
+      "subtitle": "Propose a different share with a short reason. Only the project owner sees it — the rest of the team doesn't.",
+      "offered": "Offered to you",
+      "proposal": "Your proposal",
+      "impact": "Impact on the team",
+      "total": "Total if accepted",
+      "exceeds": "{total}% — exceeds 100%",
+      "fits": "{total}% — fits 100%",
+      "reduce": "Must be reduced from other shares",
+      "approvers": "Who approves the reduction",
+      "approversValue": "Everyone whose share is reduced",
+      "reason": "Reason for the proposal — required",
+      "reasonPlaceholder": "e.g. The scope includes 6 extra screens that aren't in the description",
+      "reasonRequired": "Please explain your proposal.",
+      "note": "If your proposal is declined, you can accept the original share or keep negotiating. Shares are only final once everyone approves — no dispute can be opened before publishing.",
+      "send": "Send proposal"
+    },
+    "people": {
+      "sara": "Sara Al-Otaibi",
+      "abdulrahman": "Abdulrahman Al-Qasimi",
+      "dana": "Dana Al-Ajmi"
+    },
+    "metadata": {
+      "new": "Add project | Motamakin",
+      "invitation": "Team invitation | Motamakin"
+    }
   }
 }

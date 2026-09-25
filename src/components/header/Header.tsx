@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CurrencySwitcher } from "./CurrencySwitcher";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { LogoutButton } from "./LogoutButton";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_ITEMS = [
@@ -51,7 +52,7 @@ function SelectField({ name, placeholder, options, className }: {
   );
 }
 
-export function Header() {
+export function Header({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header");
 
   return (
@@ -67,13 +68,25 @@ export function Header() {
 
           <div className="flex flex-wrap items-center gap-2.5">
             <div className="flex h-[35px] items-center gap-2">
-              <Link href="/signup" className="text-base font-bold text-brand uppercase hover:opacity-85">
-                {t("joinUs")}
-              </Link>
-              <span className="text-base font-medium">{t("or")}</span>
-              <Link href="/login" className="text-base font-bold text-brand uppercase hover:opacity-85">
-                {t("login")}
-              </Link>
+              {signedIn ? (
+                <>
+                  <Link href="/account" className="text-base font-bold text-brand hover:opacity-85">
+                    {t("myAccount")}
+                  </Link>
+                  <span className="text-base font-medium">·</span>
+                  <LogoutButton />
+                </>
+              ) : (
+                <>
+                  <Link href="/signup" className="text-base font-bold text-brand uppercase hover:opacity-85">
+                    {t("joinUs")}
+                  </Link>
+                  <span className="text-base font-medium">{t("or")}</span>
+                  <Link href="/login" className="text-base font-bold text-brand uppercase hover:opacity-85">
+                    {t("login")}
+                  </Link>
+                </>
+              )}
             </div>
             <Divider />
             <button type="button" className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">

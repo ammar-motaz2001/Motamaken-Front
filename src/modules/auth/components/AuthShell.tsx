@@ -6,7 +6,7 @@ import type { AuthMethod } from "../types";
 type AuthShellProps = {
   title: string;
   subtitle?: string;
-  tabs?: { basePath: string; active: AuthMethod };
+  tabs?: { basePath: string; active: AuthMethod; query?: Record<string, string> };
   children: ReactNode;
 };
 
@@ -32,7 +32,7 @@ export function AuthShell({ title, subtitle, tabs, children }: AuthShellProps) {
             return (
               <Link
                 key={tab.method}
-                href={{ pathname: tabs.basePath, query: { method: tab.method } }}
+                href={{ pathname: tabs.basePath, query: { ...tabs.query, method: tab.method } }}
                 role="tab"
                 aria-selected={active}
                 replace

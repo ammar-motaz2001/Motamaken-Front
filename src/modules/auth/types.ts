@@ -2,7 +2,7 @@ import type { ValidationKey } from "./lib/validation";
 
 export type AuthMethod = "email" | "phone";
 
-export type OtpPurpose = "signup" | "reset";
+export type OtpPurpose = "signup" | "login" | "reset";
 
 export type SignupPayload = {
   method: AuthMethod;

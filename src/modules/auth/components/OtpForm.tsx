@@ -14,10 +14,11 @@ type OtpFormProps = {
   purpose: OtpPurpose;
   method: AuthMethod;
   target: string;
-  onVerified: (token?: string) => void;
+  subtitle?: string;
+  onVerified: (result: { token?: string; accessToken?: string }) => void | Promise<void>;
 };
 
-export function OtpForm({ purpose, method, target, onVerified }: OtpFormProps) {
+export function OtpForm({ purpose, method, target, subtitle, onVerified }: OtpFormProps) {
   const t = useTranslations("Otp");
   const [digits, setDigits] = useState<string[]>(Array(LENGTH).fill(""));
   const [seconds, setSeconds] = useState(RESEND_SECONDS);
@@ -63,8 +64,7 @@ export function OtpForm({ purpose, method, target, onVerified }: OtpFormProps) {
     }
     setSubmitting(true);
     try {
-      const { token } = await authService.verifyOtp({ purpose, method, target, code });
-      onVerified(token);
+      await onVerified(await authService.verifyOtp({ purpose, method, target, code }));
     } catch (err) {
       setError(err instanceof AuthError && err.message ? err.message : t("failed"));
       setSubmitting(false);
@@ -82,7 +82,7 @@ export function OtpForm({ purpose, method, target, onVerified }: OtpFormProps) {
     <form className="flex flex-col px-2 pt-4 sm:px-[30px]" onSubmit={onSubmit} noValidate>
       <div className="pb-2 text-center">
         <p className="text-base font-medium capitalize">{t("title")}</p>
-        <p className="text-sm">{method === "email" ? t("subtitleEmail") : t("subtitlePhone")}</p>
+        <p className="text-sm">{subtitle ?? (method === "email" ? t("subtitleEmail") : t("subtitlePhone"))}</p>
       </div>
 
       <div dir="ltr" className="flex h-12 justify-center gap-4">

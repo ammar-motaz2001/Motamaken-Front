@@ -7,12 +7,14 @@ import { Field, PasswordField } from "@/components/ui/Field";
 import { PhoneField } from "@/components/ui/PhoneField";
 import { Link, useRouter } from "@/i18n/navigation";
 import { hasErrors, validateEmail, validatePhone, type ValidationKey } from "../lib/validation";
+import { AFTER_LOGIN_PATH } from "@/lib/session";
+import { createSession } from "../actions";
 import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { SocialAuth } from "./SocialAuth";
-import { actionsClasses, fieldsClasses, formClasses, formErrorClasses, switchClasses } from "./styles";
+import { actionsClasses, fieldsClasses, formClasses, switchClasses } from "./styles";
 
-export function LoginForm({ method }: { method: AuthMethod }) {
+export function LoginForm({ method, next }: { method: AuthMethod; next?: string }) {
   const t = useTranslations("Login");
   const ta = useTranslations("Auth");
   const tv = useTranslations("Validation");
@@ -27,6 +29,7 @@ export function LoginForm({ method }: { method: AuthMethod }) {
 
   const changeIdentifier = (value: string) => {
     setIdentifier(value);
+    setFormError(null);
     setErrors((current) => ({ ...current, identifier: undefined }));
   };
 
@@ -42,10 +45,17 @@ export function LoginForm({ method }: { method: AuthMethod }) {
 
     setSubmitting(true);
     try {
-      await authService.login({ method, identifier: identifier.trim(), password });
-      router.push("/");
+      const target = identifier.trim();
+      const { otpRequired, accessToken } = await authService.login({ method, identifier: target, password });
+      if (otpRequired) {
+        router.push({ pathname: "/login/verify", query: { method, to: target, ...(next && { next }) } });
+        return;
+      }
+      await createSession(accessToken ?? "");
+      router.replace(next ?? AFTER_LOGIN_PATH);
     } catch (error) {
-      setFormError(error instanceof AuthError && error.message ? error.message : t("failed"));
+      const fallback = method === "email" ? t("invalidEmail") : t("invalidPhone");
+      setFormError(error instanceof AuthError && error.message ? error.message : fallback);
       setSubmitting(false);
     }
   };
@@ -63,6 +73,7 @@ export function LoginForm({ method }: { method: AuthMethod }) {
               autoComplete="email"
               value={identifier}
               error={message(errors.identifier)}
+              invalid={Boolean(formError)}
               onChange={(event) => changeIdentifier(event.target.value)}
             />
           ) : (
@@ -71,6 +82,7 @@ export function LoginForm({ method }: { method: AuthMethod }) {
               placeholder="-- --- ----"
               value={identifier}
               error={message(errors.identifier)}
+              invalid={Boolean(formError)}
               onChange={changeIdentifier}
             />
           )}
@@ -79,9 +91,10 @@ export function LoginForm({ method }: { method: AuthMethod }) {
             placeholder={t("passwordPlaceholder")}
             autoComplete="current-password"
             value={password}
-            error={message(errors.password)}
+            error={message(errors.password) ?? formError ?? undefined}
             onChange={(event) => {
               setPassword(event.target.value);
+              setFormError(null);
               setErrors((current) => ({ ...current, password: undefined }));
             }}
           />
@@ -93,8 +106,6 @@ export function LoginForm({ method }: { method: AuthMethod }) {
         >
           {t("forgot")}
         </Link>
-
-        {formError && <p className={formErrorClasses}>{formError}</p>}
 
         <div className={actionsClasses}>
           <Button type="submit" width={231} loading={submitting}>

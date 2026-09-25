@@ -17,7 +17,7 @@ export default async function ForgotPasswordVerifyPage({ params, searchParams }:
   if (!target) redirect({ href: { pathname: "/forgot-password", query: { method } }, locale });
 
   return (
-    <AuthShell title={t("title")} subtitle={t("subtitle")}>
+    <AuthShell title={t("verifyTitle")} subtitle={t("verifySubtitle")}>
       <AuthCard>
         <ResetVerification method={method} target={target} />
       </AuthCard>

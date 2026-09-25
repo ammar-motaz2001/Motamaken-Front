@@ -33,9 +33,12 @@ The project is built module by module, starting from the pieces every page depen
 | 3. Auth | Signup, login, OTP verification, forgot / reset password, success and error states | Done (UI + mock API) |
 | 4. Placeholder pages | Every route without a page shows an "Under Construction" screen | Done |
 | 5. Backend connection | Replace mock responses with the real API, sessions, protected routes | Next |
-| 6. Marketplace | Services, categories, projects, bidding, influencer requests | Planned |
-| 7. Account area | Profile, my projects, payments, points & gifts, notifications | Planned |
-| 8. Trust & support | Evaluation, disputes, account verification, customer support | Planned |
+| 6. Post a project | Project wizard (individual / team), team & split shares, invitations, share negotiation | In progress (UI + mock data) |
+| 7. Project mode | Member exit, team dispute, dispute rules, release authority, team flow states, promotion | Planned |
+| 8. Marketplace | Services, categories, bidding, influencer requests | Planned |
+| 9. Account area | Profile, my projects, payments, points & gifts, notifications | Planned |
+| 10. Trust & support | Evaluation, disputes, account verification, customer support | Planned |
+| 11. Admin dashboard | Overview, finance, users, disputes, projects, settings | Planned |
 
 The source of truth for all screens is the Figma file **"web متمكن فريلانسر انفلونسر"**. Each module is implemented to match its Figma frames, using the shared components and tokens described below.
 
@@ -102,6 +105,7 @@ src/
         signup/
         signup/verify/
         login/
+        login/verify/
         forgot-password/
         forgot-password/verify/
         reset-password/
@@ -166,20 +170,33 @@ Pages and layout pieces are server components by default. Only interactive parts
 | --- | --- |
 | `/signup?method=phone\|email` | Signup with Email / Mobile tabs, username rule, password strength meter, terms, newsletter, reCAPTCHA, social signup |
 | `/signup/verify?method=&to=` | 4-digit OTP with paste support, 59s resend timer, success modal |
-| `/login?method=email\|phone` | Login with Email / Mobile tabs, forgot password link, social login |
+| `/login?method=email\|phone` | Login with Email / Mobile tabs, inline error state, forgot password link, social login |
+| `/login/verify?method=&to=` | Login verification code (two-step login by email) |
 | `/forgot-password?method=email\|phone` | Email sends a reset link, phone sends an OTP |
-| `/forgot-password/verify?method=&to=` | OTP for password reset |
+| `/forgot-password/verify?method=&to=` | OTP for password reset (WhatsApp or SMS for phone) |
 | `/reset-password?token=` | New password + confirmation with strength meter |
-| `/reset-password/success` | Success screen with "Go To Login" |
+| `/reset-password/success` | "Password Reset Successful!" screen with "Go To Login" |
 | `/reset-password/error` | Error screen with "Reset Password" |
 
 ### Flows
 
 **Signup by phone**
-Fill form → confirm number modal ("Is this number correct?") → OTP → success modal → login.
+Fill form → confirm number modal ("Is this number correct?") → OTP → "Welcome to the Community!" modal (50 welcome points) → login.
 
 **Signup by email**
-Fill form → OTP sent to email → success modal → login.
+Fill form → confirm email modal ("Is this email correct?") → OTP → "Welcome to the Community!" modal → login.
+
+**Signup error**
+Server failure → error modal ("There was an error processing your registration") with "Need help?" link.
+
+**Login by email**
+Email + password → verification code → home.
+
+**Login by phone**
+Phone + password → home.
+
+**Login error**
+Wrong credentials → fields turn red with an inline message under the password.
 
 **Forgot password by email**
 Enter email → reset link → create new password → success or error screen.
@@ -202,6 +219,28 @@ Defined in `modules/auth/lib/validation.ts`. Each rule returns a translation key
 | Terms | Must be accepted |
 
 ---
+
+## Projects module
+
+Lives in `src/modules/projects`.
+
+| Route | Screen |
+| --- | --- |
+| `/projects/new` | Post a project wizard |
+| `/projects/invitations/[id]` | Team invitation for an invited member (accept, decline, negotiate share) |
+
+**Wizard steps**
+
+| Mode | Steps |
+| --- | --- |
+| Individual | Project details → Budget & duration → Publish |
+| Team | Project details → Budget & duration → Team & split → Publish |
+
+- Choosing a mode opens a confirmation modal explaining what changes (steps, escrow, chat, editing members).
+- The team step shows the members table with share controls, the total (must equal 100%), members waiting to accept (publishing is blocked until everyone accepts), split rules, and an invite form.
+- The negotiation modal lets an invited member propose a different share with a reason and shows the impact on the team total.
+
+Data is mocked in `modules/projects/lib/data.ts` until the projects API is available. Amounts are always shown in USD (`$1,440`).
 
 ## Localization
 
@@ -252,8 +291,8 @@ All API calls go through `src/modules/auth/services/auth.service.ts`. When `NEXT
 | Method | Endpoint | Body | Response |
 | --- | --- | --- | --- |
 | `signup` | `POST /auth/signup` | `method, firstName, lastName, username, email?, phone?, password, subscribe` | `{ target }` |
-| `login` | `POST /auth/login` | `method, identifier, password` | `{ accessToken }` |
-| `verifyOtp` | `POST /auth/otp/verify` | `purpose (signup \| reset), method, target, code` | `{ token? }` |
+| `login` | `POST /auth/login` | `method, identifier, password` | `{ accessToken?, otpRequired? }` |
+| `verifyOtp` | `POST /auth/otp/verify` | `purpose (signup \| login \| reset), method, target, code` | `{ token?, accessToken? }` |
 | `resendOtp` | `POST /auth/otp/resend` | `purpose, method, target` | `{ sent }` |
 | `requestPasswordReset` | `POST /auth/password/forgot` | `method, target` | `{ token? }` |
 | `resetPassword` | `POST /auth/password/reset` | `token, password` | `{ success }` |
@@ -261,7 +300,17 @@ All API calls go through `src/modules/auth/services/auth.service.ts`. When `NEXT
 
 Phone numbers are sent in E.164 format (e.g. `+966555555555`).
 
-**Mock mode** (no `NEXT_PUBLIC_API_URL`): every call succeeds after a short delay. The OTP code `0000` simulates a wrong code.
+### Session and protected pages
+
+- After a successful login (or login verification code), the access token is stored in an `httpOnly` cookie named `motamakin_session` by the server actions in `modules/auth/actions.ts`.
+- `src/proxy.ts` protects private routes listed in `PROTECTED_PATHS` (`src/lib/session.ts`), currently `/projects/*`. Guests are redirected to `/login?next=<page>` and sent back to that page after logging in.
+- Signed-in users who open the login, signup, forgot or reset password pages are redirected to `/projects/new`.
+- The header shows **My account · Logout** when signed in, and **Join us or Login** otherwise.
+- To protect a new section, add its pattern to `PROTECTED_PATHS`.
+
+When `otpRequired` is `true`, the user is sent to `/login/verify`. For `purpose: reset`, `token` is the password reset token.
+
+**Mock mode** (no `NEXT_PUBLIC_API_URL`): every call succeeds after a short delay. Email login asks for a verification code, phone login signs in directly, and the OTP code `0000` simulates a wrong code.
 
 ---
 
@@ -281,9 +330,8 @@ Phone numbers are sent in E.164 format (e.g. `+966555555555`).
 
 **Short term**
 - Connect the auth module to the real backend and store the session.
-- Protect private routes and redirect signed-in users away from auth pages.
 - Replace the reCAPTCHA placeholder image with Google reCAPTCHA.
-- Replace temporary icons (footer socials, store badges, success / error icons, email signup illustration) with the original Figma exports.
+- Replace temporary icons (footer socials, store badges, success / error icons, welcome modal illustration, loading screen) with the original Figma exports.
 - Make the header menu, categories dropdown, notifications and search functional.
 
 **Next modules**

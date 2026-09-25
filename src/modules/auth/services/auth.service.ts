@@ -30,13 +30,16 @@ export const authService = {
   },
 
   login(payload: LoginPayload) {
-    return request<{ accessToken: string }>("/auth/login", payload, () => ({ accessToken: "mock-token" }));
+    return request<{ accessToken?: string; otpRequired?: boolean }>("/auth/login", payload, () => ({
+      otpRequired: payload.method === "email",
+      accessToken: payload.method === "email" ? undefined : "mock-token",
+    }));
   },
 
   verifyOtp(payload: { purpose: OtpPurpose; method: AuthMethod; target: string; code: string }) {
-    return request<{ token?: string }>("/auth/otp/verify", payload, () => {
+    return request<{ token?: string; accessToken?: string }>("/auth/otp/verify", payload, () => {
       if (payload.code === "0000") throw new AuthError();
-      return { token: "mock-reset-token" };
+      return payload.purpose === "reset" ? { token: "mock-reset-token" } : { accessToken: "mock-token" };
     });
   },
 

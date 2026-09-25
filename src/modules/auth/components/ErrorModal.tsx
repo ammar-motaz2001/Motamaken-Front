@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Link } from "@/i18n/navigation";
-import { StatusIcon } from "./StatusIcon";
+import { StatusIcon } from "@/components/ui/StatusIcon";
 
 type ErrorModalProps = {
   open: boolean;

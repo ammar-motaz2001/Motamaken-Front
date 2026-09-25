@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import { StatusIcon } from "./StatusIcon";
+import { StatusIcon } from "@/components/ui/StatusIcon";
 
 type StatusScreenProps = {
   type: "success" | "error";

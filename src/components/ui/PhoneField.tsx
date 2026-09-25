@@ -60,15 +60,16 @@ type PhoneFieldProps = {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  invalid?: boolean;
   defaultCountry?: Country;
 };
 
-export function PhoneField({ label, placeholder, value, onChange, error, defaultCountry = "SA" }: PhoneFieldProps) {
+export function PhoneField({ label, placeholder, value, onChange, error, invalid, defaultCountry = "SA" }: PhoneFieldProps) {
   const id = useId();
   const locale = useLocale();
 
   return (
-    <FieldShell id={id} label={label} error={error}>
+    <FieldShell id={id} label={label} error={error} invalid={invalid}>
       <PhoneInput
         id={id}
         dir="ltr"
@@ -79,7 +80,7 @@ export function PhoneField({ label, placeholder, value, onChange, error, default
         placeholder={placeholder}
         value={(value || undefined) as Value | undefined}
         onChange={(next) => onChange(next ?? "")}
-        aria-invalid={Boolean(error)}
+        aria-invalid={Boolean(error || invalid)}
         autoComplete="tel"
         className="flex h-full w-full items-center gap-[15px] [&_.PhoneInputInput]:h-full [&_.PhoneInputInput]:min-w-0 [&_.PhoneInputInput]:flex-1 [&_.PhoneInputInput]:bg-transparent [&_.PhoneInputInput]:text-base [&_.PhoneInputInput]:text-inherit [&_.PhoneInputInput]:outline-none rtl:[&_.PhoneInputInput]:text-right"
       />

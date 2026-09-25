@@ -2,15 +2,18 @@ import type { ButtonHTMLAttributes } from "react";
 import { Link } from "@/i18n/navigation";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "outlineOrange" | "orange";
+  variant?: "primary" | "solid" | "outline" | "outlineOrange" | "orange" | "ghost";
   font?: "primary" | "button";
   width?: number | string;
   loading?: boolean;
+  pill?: boolean;
   href?: string;
 };
 
 const VARIANTS = {
   primary: "bg-gradient-brand text-white",
+  solid: "bg-brand text-white",
+  ghost: "border border-border bg-surface text-foreground",
   orange: "bg-gradient-orange text-white",
   outline: "border border-brand-border bg-surface",
   outlineOrange: "border border-orange bg-surface text-orange",
@@ -26,6 +29,7 @@ export function Button({
   font = "primary",
   width,
   loading,
+  pill,
   href,
   className = "",
   children,
@@ -33,7 +37,7 @@ export function Button({
   type = "button",
   ...rest
 }: ButtonProps) {
-  const classes = `inline-flex min-h-[43px] max-w-full items-center justify-center gap-2.5 rounded-md px-8 py-3 capitalize whitespace-nowrap transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70 ${VARIANTS[variant]} ${FONTS[font]} ${className}`;
+  const classes = `inline-flex min-h-[43px] max-w-full items-center justify-center gap-2.5 px-8 py-3 ${pill ? "rounded-full" : "rounded-md"} capitalize whitespace-nowrap transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45 ${VARIANTS[variant]} ${FONTS[font]} ${className}`;
   const style = width ? { width } : undefined;
   const label = variant === "outline" ? <span className="text-gradient-brand">{children}</span> : children;
 

@@ -14,15 +14,16 @@ type FieldShellProps = {
   error?: string;
   invalid?: boolean;
   className?: string;
+  multiline?: boolean;
   children: ReactNode;
 };
 
-export const controlClasses = (invalid: boolean) =>
-  `flex h-[45px] items-center gap-[15px] rounded-[5px] border bg-surface px-2.5 transition-colors ${
+export const controlClasses = (invalid: boolean, multiline = false) =>
+  `flex gap-[15px] rounded-[5px] border bg-surface px-2.5 transition-colors ${multiline ? "items-start py-2.5" : "h-[45px] items-center"} ${
     invalid ? "border-danger text-danger" : "border-border focus-within:border-brand"
   }`;
 
-export function FieldShell({ id, label, required, info, hint, error, invalid, className = "", children }: FieldShellProps) {
+export function FieldShell({ id, label, required, info, hint, error, invalid, multiline, className = "", children }: FieldShellProps) {
   const message = error ?? hint;
 
   return (
@@ -40,7 +41,7 @@ export function FieldShell({ id, label, required, info, hint, error, invalid, cl
           )}
         </div>
       )}
-      <div className={controlClasses(Boolean(error || invalid))}>{children}</div>
+      <div className={controlClasses(Boolean(error || invalid), multiline)}>{children}</div>
       {message && (
         <p
           id={`${id}-message`}

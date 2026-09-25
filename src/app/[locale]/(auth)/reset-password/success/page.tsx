@@ -11,5 +11,12 @@ export default async function ResetPasswordSuccessPage({ params }: PageProps<"/[
   const t = await getTranslations("ResetPassword");
   const ta = await getTranslations("Auth");
 
-  return <StatusScreen type="success" message={t("successMessage")} action={{ label: ta("goToLogin"), href: "/login" }} />;
+  return (
+    <StatusScreen
+      type="success"
+      title={t("successTitle")}
+      message={t("successMessage")}
+      action={{ label: ta("goToLogin"), href: "/login" }}
+    />
+  );
 }

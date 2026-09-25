@@ -109,8 +109,7 @@ export function SignupForm({ method }: { method: AuthMethod }) {
     const nextErrors = validate(values, method);
     setErrors(nextErrors);
     if (hasErrors(nextErrors)) return;
-    if (method === "phone") setConfirmOpen(true);
-    else submit();
+    setConfirmOpen(true);
   };
 
   return (
@@ -151,6 +150,7 @@ export function SignupForm({ method }: { method: AuthMethod }) {
           {method === "email" ? (
             <Field
               label={ta("email")}
+              required
               type="email"
               icon="/images/sms.svg"
               placeholder={t("emailPlaceholder")}
@@ -171,6 +171,7 @@ export function SignupForm({ method }: { method: AuthMethod }) {
 
           <PasswordField
             label={t("password")}
+            required
             placeholder="********"
             autoComplete="new-password"
             value={values.password}
@@ -211,11 +212,13 @@ export function SignupForm({ method }: { method: AuthMethod }) {
 
       <Modal open={confirmOpen} onClose={() => setConfirmOpen(false)} title={<SuccessTitle />}>
         <p className={modalTextClasses}>
-          {t("confirmPhone", { phone: `\u2066${formatPhoneNumberIntl(values.phone)}\u2069` })}
+          {method === "email"
+            ? t("confirmEmail", { email: `\u2066${values.email.trim()}\u2069` })
+            : t("confirmPhone", { phone: `\u2066${formatPhoneNumberIntl(values.phone)}\u2069` })}
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Button font="button" onClick={() => setConfirmOpen(false)}>
-            {t("reenterPhone")}
+            {method === "email" ? t("reenterEmail") : t("reenterPhone")}
           </Button>
           <Button font="button" variant="outline" onClick={submit}>
             {t("yesCorrect")}

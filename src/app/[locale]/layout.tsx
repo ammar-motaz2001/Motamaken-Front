@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Mulish, Quicksand, Tajawal } from "next/font/google";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -7,6 +8,7 @@ import { Footer } from "@/components/footer/Footer";
 import { Header } from "@/components/header/Header";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { routing } from "@/i18n/routing";
+import { SESSION_COOKIE } from "@/lib/session";
 import "../globals.css";
 
 const tajawal = Tajawal({
@@ -41,6 +43,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const signedIn = (await cookies()).has(SESSION_COOKIE);
 
   return (
     <html
@@ -52,7 +55,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="flex flex-col">
         <NextIntlClientProvider>
           <ThemeProvider>
-            <Header />
+            <Header signedIn={signedIn} />
             <main className="flex-1">{children}</main>
             <Footer />
           </ThemeProvider>
