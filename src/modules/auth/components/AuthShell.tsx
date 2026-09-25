@@ -6,7 +6,7 @@ import type { AuthMethod } from "../types";
 type AuthShellProps = {
   title: string;
   subtitle?: string;
-  tabs?: { basePath: string; active: AuthMethod; query?: Record<string, string> };
+  tabs?: { basePath: string; active: AuthMethod; methods: readonly AuthMethod[]; query?: Record<string, string> };
   children: ReactNode;
 };
 
@@ -25,9 +25,9 @@ export function AuthShell({ title, subtitle, tabs, children }: AuthShellProps) {
         {subtitle && <p className="text-base font-medium">{subtitle}</p>}
       </div>
 
-      {tabs && (
+      {tabs && tabs.methods.length > 1 && (
         <div role="tablist" className="flex w-full justify-center pb-4 sm:w-auto">
-          {TABS.map((tab) => {
+          {TABS.filter((tab) => tabs.methods.includes(tab.method)).map((tab) => {
             const active = tab.method === tabs.active;
             return (
               <Link

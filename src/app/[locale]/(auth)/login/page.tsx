@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { safeNextPath } from "@/lib/session";
-import { AuthCard, AuthShell, LoginForm, parseMethod } from "@/modules/auth";
+import { AuthCard, AuthShell, getAuthMethods, LoginForm, parseMethod } from "@/modules/auth";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/login">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
@@ -12,11 +12,12 @@ export default async function LoginPage({ params, searchParams }: PageProps<"/[l
   setRequestLocale(locale);
   const t = await getTranslations("Login");
   const query = await searchParams;
-  const method = parseMethod(query.method, "email");
+  const methods = await getAuthMethods();
+  const method = parseMethod(query.method, "email", methods);
   const next = safeNextPath(query.next);
 
   return (
-    <AuthShell title={t("title")} subtitle={t("subtitle")} tabs={{ basePath: "/login", active: method, query: next ? { next } : undefined }}>
+    <AuthShell title={t("title")} subtitle={t("subtitle")} tabs={{ basePath: "/login", active: method, methods, query: next ? { next } : undefined }}>
       <AuthCard>
         <LoginForm key={method} method={method} next={next} />
       </AuthCard>

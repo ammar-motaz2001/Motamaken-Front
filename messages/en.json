@@ -20,6 +20,8 @@
     "notification": "Notification",
     "toggleTheme": "Toggle dark mode",
     "openMenu": "Open menu",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
     "allServices": "All Services",
     "search": "Search",
     "country": "country",

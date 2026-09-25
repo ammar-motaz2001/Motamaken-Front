@@ -81,6 +81,7 @@ Open http://localhost:3000. The home route redirects to `/signup`.
 | Variable | Required | Description |
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | No | Backend base URL, e.g. `https://api.motamakin.com`. When empty, the auth service returns mock responses so the UI can be developed without a backend. |
+| `PHONE_AUTH_ENABLED` | No | Set to `true` to offer signup, login and password reset by mobile number. Off by default to avoid SMS OTP costs; only email is shown. |
 
 Create a `.env.local` file to set it locally.
 
@@ -204,6 +205,13 @@ Enter email → reset link → create new password → success or error screen.
 **Forgot password by phone**
 Enter phone → OTP → create new password → success or error screen.
 
+### Phone authentication switch
+
+Phone signup / login is disabled by default because every phone OTP is a paid SMS. The available methods come from `getAuthMethods()` in `modules/auth/lib/settings.ts`:
+
+- When only email is enabled, the Email / Mobile tabs are hidden and `?method=phone` falls back to email on every auth page.
+- It currently reads `PHONE_AUTH_ENABLED`. When the admin dashboard is ready, replace its body with a call to the backend settings endpoint so admins can toggle phone authentication without a deploy. The backend must also reject phone requests while the setting is off.
+
 ### Validation rules
 
 Defined in `modules/auth/lib/validation.ts`. Each rule returns a translation key from the `Validation` namespace, so errors appear in the active language.
@@ -306,6 +314,7 @@ Phone numbers are sent in E.164 format (e.g. `+966555555555`).
 - `src/proxy.ts` protects private routes listed in `PROTECTED_PATHS` (`src/lib/session.ts`), currently `/projects/*`. Guests are redirected to `/login?next=<page>` and sent back to that page after logging in.
 - Signed-in users who open the login, signup, forgot or reset password pages are redirected to `/projects/new`.
 - The header shows **My account · Logout** when signed in, and **Join us or Login** otherwise.
+- Below the `lg` breakpoint the top bar shows only the logo, notifications and a burger (☰) button. The burger opens a side drawer (`components/header/MobileMenu.tsx`) with the main navigation, account links, language, currency and theme; the horizontal navigation bar is desktop only.
 - To protect a new section, add its pattern to `PROTECTED_PATHS`.
 
 When `otpRequired` is `true`, the user is sent to `/login/verify`. For `purpose: reset`, `token` is the password reset token.

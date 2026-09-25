@@ -5,5 +5,6 @@ export { ResetPasswordForm } from "./components/ResetPasswordForm";
 export { SignupForm } from "./components/SignupForm";
 export { StatusScreen } from "./components/StatusScreen";
 export { LoginVerification, ResetVerification, SignupVerification } from "./components/Verification";
+export { getAuthMethods } from "./lib/settings";
 export { parseMethod } from "./types";
 export type { AuthMethod } from "./types";

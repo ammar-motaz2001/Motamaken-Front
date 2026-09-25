@@ -23,6 +23,13 @@ export type LoginPayload = {
 
 export type FieldErrors<T extends string> = Partial<Record<T, ValidationKey>>;
 
-export function parseMethod(value: string | string[] | undefined, fallback: AuthMethod): AuthMethod {
-  return value === "email" || value === "phone" ? value : fallback;
+export const AUTH_METHODS: readonly AuthMethod[] = ["email", "phone"];
+
+export function parseMethod(
+  value: string | string[] | undefined,
+  fallback: AuthMethod,
+  allowed: readonly AuthMethod[] = AUTH_METHODS,
+): AuthMethod {
+  const method = value === "email" || value === "phone" ? value : fallback;
+  return allowed.includes(method) ? method : allowed[0];
 }

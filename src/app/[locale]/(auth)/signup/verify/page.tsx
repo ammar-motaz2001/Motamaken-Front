@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
-import { AuthCard, AuthShell, parseMethod, SignupVerification } from "@/modules/auth";
+import { AuthCard, AuthShell, getAuthMethods, parseMethod, SignupVerification } from "@/modules/auth";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/signup/verify">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
@@ -12,7 +12,7 @@ export default async function SignupVerifyPage({ params, searchParams }: PagePro
   setRequestLocale(locale);
   const t = await getTranslations("Signup");
   const query = await searchParams;
-  const method = parseMethod(query.method, "phone");
+  const method = parseMethod(query.method, "phone", await getAuthMethods());
   const target = typeof query.to === "string" ? query.to : "";
   if (!target) redirect({ href: { pathname: "/signup", query: { method } }, locale });
 

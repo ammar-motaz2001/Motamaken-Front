@@ -1,18 +1,12 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { AccountLinks } from "./AccountLinks";
 import { CurrencySwitcher } from "./CurrencySwitcher";
 import { LocaleSwitcher } from "./LocaleSwitcher";
-import { LogoutButton } from "./LogoutButton";
+import { MobileMenu } from "./MobileMenu";
+import { NAV_ITEMS } from "./nav";
 import { ThemeToggle } from "./ThemeToggle";
-
-const NAV_ITEMS = [
-  { key: "home", href: "/" },
-  { key: "services", href: "/services" },
-  { key: "categories", href: "/categories", hasMenu: true },
-  { key: "contact", href: "/contact" },
-  { key: "guide", href: "/guide" },
-] as const;
 
 function Divider() {
   return <span className="h-4 w-[0.5px] bg-foreground" aria-hidden />;
@@ -58,7 +52,7 @@ export function Header({ signedIn }: { signedIn: boolean }) {
   return (
     <header className="relative z-20 bg-surface drop-shadow-[0_4px_2px_rgba(213,213,213,0.25)] dark:drop-shadow-none">
       <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-4 dark:bg-none">
-        <div className="page-container flex flex-wrap items-center justify-between gap-4">
+        <div className="page-container flex items-center justify-between gap-4">
           <Link href="/" aria-label="Motamakin" className="flex h-[51px] flex-col justify-end gap-1.5">
             <Image src="/images/logo.svg" alt="Motamakin" width={169.691} height={48} priority />
             <span dir="rtl" className="text-end text-sm leading-none font-medium tracking-[-0.154px]">
@@ -66,40 +60,25 @@ export function Header({ signedIn }: { signedIn: boolean }) {
             </span>
           </Link>
 
-          <div className="flex flex-wrap items-center gap-2.5">
-            <div className="flex h-[35px] items-center gap-2">
-              {signedIn ? (
-                <>
-                  <Link href="/account" className="text-base font-bold text-brand hover:opacity-85">
-                    {t("myAccount")}
-                  </Link>
-                  <span className="text-base font-medium">·</span>
-                  <LogoutButton />
-                </>
-              ) : (
-                <>
-                  <Link href="/signup" className="text-base font-bold text-brand uppercase hover:opacity-85">
-                    {t("joinUs")}
-                  </Link>
-                  <span className="text-base font-medium">{t("or")}</span>
-                  <Link href="/login" className="text-base font-bold text-brand uppercase hover:opacity-85">
-                    {t("login")}
-                  </Link>
-                </>
-              )}
+          <div className="flex items-center gap-2.5">
+            <div className="hidden items-center gap-2.5 lg:flex">
+              <AccountLinks signedIn={signedIn} />
+              <Divider />
             </div>
-            <Divider />
-            <button type="button" className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
+            <button type="button" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
               <Image src="/images/notification.svg" alt="" width={20} height={20} className="dark:invert" />
-              <span className="hidden text-base md:inline">{t("notification")}</span>
+              <span className="hidden text-base lg:inline">{t("notification")}</span>
             </button>
-            <Divider />
-            <LocaleSwitcher />
-            <Divider />
-            <CurrencySwitcher />
-            <Divider />
-            <ThemeToggle />
-            <Divider />
+            <div className="hidden items-center gap-2.5 lg:flex">
+              <Divider />
+              <LocaleSwitcher />
+              <Divider />
+              <CurrencySwitcher />
+              <Divider />
+              <ThemeToggle />
+              <Divider />
+            </div>
+            <MobileMenu signedIn={signedIn} />
           </div>
         </div>
       </div>
@@ -110,7 +89,7 @@ export function Header({ signedIn }: { signedIn: boolean }) {
             <button
               type="button"
               aria-label={t("openMenu")}
-              className="flex shrink-0 items-center justify-center rounded-md bg-border p-3"
+              className="hidden shrink-0 items-center justify-center rounded-md bg-border p-3 lg:flex"
             >
               <Image src="/images/menu.svg" alt="" width={20} height={20} className="dark:invert" />
             </button>
@@ -164,7 +143,7 @@ export function Header({ signedIn }: { signedIn: boolean }) {
         </div>
       </div>
 
-      <nav aria-label="Main" className="flex h-[66px] items-center overflow-x-auto bg-nav md:justify-center">
+      <nav aria-label="Main" className="hidden h-[66px] items-center justify-center bg-nav lg:flex">
         <ul className="flex items-center gap-3 px-4">
           {NAV_ITEMS.map((item) => (
             <li key={item.key}>

@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { safeNextPath } from "@/lib/session";
-import { AuthCard, AuthShell, LoginVerification, parseMethod } from "@/modules/auth";
+import { AuthCard, AuthShell, getAuthMethods, LoginVerification, parseMethod } from "@/modules/auth";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/login/verify">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
@@ -13,7 +13,7 @@ export default async function LoginVerifyPage({ params, searchParams }: PageProp
   setRequestLocale(locale);
   const t = await getTranslations("Login");
   const query = await searchParams;
-  const method = parseMethod(query.method, "email");
+  const method = parseMethod(query.method, "email", await getAuthMethods());
   const target = typeof query.to === "string" ? query.to : "";
   if (!target) redirect({ href: { pathname: "/login", query: { method } }, locale });
 
