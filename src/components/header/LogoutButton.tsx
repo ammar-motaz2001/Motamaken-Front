@@ -18,6 +18,7 @@ export function LogoutButton() {
         startTransition(async () => {
           await deleteSession();
           router.replace("/login");
+          router.refresh();
         })
       }
       className="text-base font-bold text-danger hover:opacity-85 disabled:opacity-50"

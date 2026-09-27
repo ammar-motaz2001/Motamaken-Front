@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { AccountLinks } from "./AccountLinks";
 import { CurrencySwitcher } from "./CurrencySwitcher";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -14,11 +14,14 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function MobileMenu({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header");
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const setOpen = (value: boolean) => setOpenOn(value ? pathname : null);
 
   useEffect(() => {
     if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
+    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && setOpenOn(null);
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
