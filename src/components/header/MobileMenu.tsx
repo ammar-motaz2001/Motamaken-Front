@@ -6,13 +6,20 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import { Link, usePathname } from "@/i18n/navigation";
+import type { Currency } from "@/lib/api/types";
 import { AccountLinks } from "./AccountLinks";
 import { CurrencySwitcher } from "./CurrencySwitcher";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { NAV_ITEMS } from "./nav";
 import { ThemeToggle } from "./ThemeToggle";
 
-export function MobileMenu({ signedIn }: { signedIn: boolean }) {
+type MobileMenuProps = {
+  signedIn: boolean;
+  currencies: Currency[];
+  currency: string;
+};
+
+export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) {
   const t = useTranslations("Header");
   const pathname = usePathname();
   const [openOn, setOpenOn] = useState<string | null>(null);
@@ -88,9 +95,9 @@ export function MobileMenu({ signedIn }: { signedIn: boolean }) {
               </div>
 
               <div className="mt-auto flex items-center gap-4 border-t border-border pt-4">
-                <LocaleSwitcher />
-                <CurrencySwitcher />
-                <ThemeToggle />
+                <LocaleSwitcher signedIn={signedIn} />
+                <CurrencySwitcher currencies={currencies} initial={currency} signedIn={signedIn} />
+                <ThemeToggle signedIn={signedIn} />
               </div>
             </div>
           </div>,

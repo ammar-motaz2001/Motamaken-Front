@@ -72,10 +72,15 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified }: OtpFo
   };
 
   const resend = async () => {
-    await authService.resendOtp({ purpose, method, target });
-    setDigits(Array(LENGTH).fill(""));
-    setSeconds(RESEND_SECONDS);
-    focus(0);
+    setError(null);
+    try {
+      await authService.resendOtp({ purpose, method, target });
+      setDigits(Array(LENGTH).fill(""));
+      setSeconds(RESEND_SECONDS);
+      focus(0);
+    } catch (err) {
+      setError(err instanceof AuthError && err.message ? err.message : t("failed"));
+    }
   };
 
   return (

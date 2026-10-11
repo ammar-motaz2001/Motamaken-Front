@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Footer } from "@/components/footer/Footer";
+import { getHeaderData } from "@/components/header/data";
 import { Header } from "@/components/header/Header";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { routing } from "@/i18n/routing";
@@ -44,6 +45,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const signedIn = (await cookies()).has(SESSION_COOKIE);
+  const headerData = await getHeaderData(signedIn);
 
   return (
     <html
@@ -55,7 +57,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="flex flex-col">
         <NextIntlClientProvider>
           <ThemeProvider>
-            <Header signedIn={signedIn} />
+            <Header signedIn={signedIn} data={headerData} />
             <main className="flex-1">{children}</main>
             <Footer />
           </ThemeProvider>

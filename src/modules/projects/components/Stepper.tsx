@@ -1,8 +1,7 @@
 import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { StepKey } from "../types";
 
-export function Stepper({ steps, current }: { steps: StepKey[]; current: number }) {
+export function Stepper({ steps, current }: { steps: readonly string[]; current: number }) {
   const t = useTranslations("Projects");
 
   return (

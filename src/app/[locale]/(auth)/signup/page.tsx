@@ -11,12 +11,14 @@ export default async function SignupPage({ params, searchParams }: PageProps<"/[
   setRequestLocale(locale);
   const t = await getTranslations("Signup");
   const methods = await getAuthMethods();
-  const method = parseMethod((await searchParams).method, "phone", methods);
+  const query = await searchParams;
+  const method = parseMethod(query.method, "phone", methods);
+  const ref = typeof query.ref === "string" && /^[A-Za-z0-9]{4,12}$/.test(query.ref) ? query.ref.toUpperCase() : undefined;
 
   return (
-    <AuthShell title={t("title")} subtitle={t("subtitle")} tabs={{ basePath: "/signup", active: method, methods }}>
+    <AuthShell title={t("title")} subtitle={t("subtitle")} tabs={{ basePath: "/signup", active: method, methods, query: ref ? { ref } : undefined }}>
       <AuthCard>
-        <SignupForm key={method} method={method} />
+        <SignupForm key={method} method={method} referralCode={ref} />
       </AuthCard>
     </AuthShell>
   );

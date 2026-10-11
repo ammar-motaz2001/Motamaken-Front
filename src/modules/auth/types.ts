@@ -13,6 +13,7 @@ export type SignupPayload = {
   phone?: string;
   password: string;
   subscribe: boolean;
+  referralCode?: string;
 };
 
 export type LoginPayload = {

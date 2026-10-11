@@ -23,7 +23,8 @@ export function SignupVerification({ method, target }: VerificationProps) {
   );
 }
 
-export function LoginVerification({ method, target, next }: VerificationProps & { next?: string }) {
+export function LoginVerification({ method, target, next, twoFactor }: VerificationProps & { next?: string; twoFactor?: { method: string; hint: string } }) {
+  const t = useTranslations("Otp");
   const router = useRouter();
 
   return (
@@ -31,6 +32,7 @@ export function LoginVerification({ method, target, next }: VerificationProps & 
       purpose="login"
       method={method}
       target={target}
+      subtitle={twoFactor ? t(twoFactor.method === "phone" ? "twoFactorPhone" : "twoFactorEmail", { hint: twoFactor.hint }) : undefined}
       onVerified={async ({ accessToken }) => {
         await createSession(accessToken ?? "");
         router.replace(next ?? AFTER_LOGIN_PATH);

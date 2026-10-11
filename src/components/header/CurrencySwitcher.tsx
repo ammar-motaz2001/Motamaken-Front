@@ -1,25 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Dropdown } from "@/components/ui/Dropdown";
+import { useRouter } from "@/i18n/navigation";
+import type { Currency } from "@/lib/api/types";
+import { savePreference } from "./preferences";
 
-const CURRENCIES = ["USD", "SAR", "EGP"] as const;
+const FALLBACK: Currency[] = [{ code: "USD", symbol: "$", name: "US Dollar" }];
 
-export function CurrencySwitcher() {
-  const t = useTranslations("Header.currencies");
-  const [currency, setCurrency] = useState<(typeof CURRENCIES)[number]>("USD");
+type CurrencySwitcherProps = {
+  currencies: Currency[];
+  initial?: string;
+  signedIn: boolean;
+};
+
+export function CurrencySwitcher({ currencies, initial = "USD", signedIn }: CurrencySwitcherProps) {
+  const router = useRouter();
+  const [currency, setCurrency] = useState(initial);
+  const options = currencies.length ? currencies : FALLBACK;
+
+  const select = async (value: string) => {
+    setCurrency(value);
+    await savePreference(signedIn, { currency: value });
+    if (signedIn) router.refresh();
+  };
 
   return (
     <Dropdown
       label="Currency"
       selected={currency}
-      onSelect={(value) => setCurrency(value as (typeof CURRENCIES)[number])}
-      items={CURRENCIES.map((item) => ({ value: item, label: t(item) }))}
+      onSelect={select}
+      items={options.map((item) => ({ value: item.code, label: item.code }))}
       trigger={
         <>
-          <span className="text-base font-medium">{t(currency)}</span>
+          <span className="text-base font-medium">{currency}</span>
           <Image src="/images/arrow-down-sm.svg" alt="" width={12} height={12} className="dark:invert" />
         </>
       }

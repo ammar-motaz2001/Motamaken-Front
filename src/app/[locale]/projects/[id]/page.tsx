@@ -1,0 +1,43 @@
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { cache } from "react";
+import type { ApiError } from "@/lib/api/errors";
+import { getSummary } from "@/lib/api/reference";
+import { apiGet, apiGetOrNull } from "@/lib/api/server";
+import type { Escrow, Paginated, Project, Proposal, Review } from "@/lib/api/types";
+import { ProjectView } from "@/modules/projects";
+
+const loadProject = cache(async (id: string) => {
+  if (!/^\d+$/.test(id)) notFound();
+  return apiGet<{ data: Project }>(`/projects/${id}`)
+    .then((result) => result.data)
+    .catch((error: ApiError) => {
+      if (error.status === 404 || error.status === 403) notFound();
+      throw error;
+    });
+});
+
+export async function generateMetadata({ params }: PageProps<"/[locale]/projects/[id]">) {
+  const project = await loadProject((await params).id);
+  return { title: `${project.title} | Motamakin` };
+}
+
+export default async function ProjectPage({ params }: PageProps<"/[locale]/projects/[id]">) {
+  const { locale, id } = await params;
+  setRequestLocale(locale);
+  const [project, summary] = await Promise.all([loadProject(id), getSummary()]);
+  const viewerId = summary?.user.id ?? null;
+  const proposals =
+    viewerId === project.owner.id
+      ? ((await apiGetOrNull<Paginated<Proposal>>(`/projects/${id}/proposals?perPage=50`))?.data ?? [])
+      : null;
+  const hired = project.status === "in_progress" || project.status === "completed";
+  const reviews = project.status === "completed" ? await apiGetOrNull<{ data: Review[]; canReview: boolean }>(`/projects/${id}/reviews`) : null;
+  const escrow = viewerId && hired ? ((await apiGetOrNull<{ data: Escrow }>(`/projects/${id}/escrow`))?.data ?? null) : null;
+
+  return (
+    <div className="page-container py-10">
+      <ProjectView project={project} viewerId={viewerId} proposals={proposals} escrow={escrow} reviews={reviews} />
+    </div>
+  );
+}

@@ -10,7 +10,8 @@
     "resetSuccess": "Password Reset | Motamakin",
     "resetError": "Password Reset Failed | Motamakin",
     "underConstruction": "Under Construction | Motamakin",
-    "loginVerify": "Verify Login | Motamakin"
+    "loginVerify": "Verify Login | Motamakin",
+    "messages": "Messages | Motamakin"
   },
   "Header": {
     "home": "Home",
@@ -35,27 +36,47 @@
       "contact": "Contact Us",
       "guide": "Guide"
     },
-    "countries": {
-      "sa": "Saudi Arabia",
-      "eg": "Egypt",
-      "ae": "United Arab Emirates"
-    },
-    "cities": {
-      "riyadh": "Riyadh",
-      "jeddah": "Jeddah",
-      "cairo": "Cairo"
-    },
     "languages": {
       "en": "ENG",
       "ar": "ARA"
     },
-    "currencies": {
-      "USD": "USD",
-      "SAR": "SAR",
-      "EGP": "EGP"
-    },
     "myAccount": "My account",
-    "logout": "Logout"
+    "logout": "Logout",
+    "balance": "Wallet balance",
+    "points": "Points",
+    "favorites": "Favorites",
+    "notifications": "Notifications",
+    "markAllRead": "Mark all as read",
+    "noNotifications": "You have no notifications yet.",
+    "loading": "Loading...",
+    "loadFailed": "Could not load. Please try again.",
+    "letsStart": "Let's Start",
+    "categoryTabs": {
+      "project": "Projects",
+      "influencer": "Influencers"
+    },
+    "searchTypes": {
+      "all": "All Services",
+      "projects": "Projects",
+      "influencer_requests": "Influencer Requests",
+      "influencers": "Influencers",
+      "freelancers": "Freelancers"
+    },
+    "account": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "messages": "Messages",
+      "projectForFreelancers": "A project for freelancers",
+      "requestForInfluencers": "A request for influencers",
+      "myOffers": "My Offers",
+      "myProjects": "My Projects",
+      "myReviews": "My Reviews",
+      "premium": "Premium Services",
+      "inviteFriend": "Invite a Friend",
+      "disputes": "Disputes",
+      "myTeams": "My Teams"
+    },
+    "allNotifications": "See all notifications"
   },
   "Footer": {
     "cta": {
@@ -168,7 +189,9 @@
     "resend": "Resend the code",
     "incomplete": "Please enter the full verification code.",
     "failed": "Verification failed. Please try again.",
-    "subtitleWhatsapp": "Please enter the code you received on WhatsApp or SMS"
+    "subtitleWhatsapp": "Please enter the code you received on WhatsApp or SMS",
+    "twoFactorPhone": "Two-factor authentication is on. Enter the code we sent to your phone {hint}.",
+    "twoFactorEmail": "Two-factor authentication is on. Enter the code we sent to {hint}."
   },
   "ForgotPassword": {
     "title": "Forgot Your Password",
@@ -219,238 +242,1582 @@
     "breadcrumb": {
       "home": "Home",
       "add": "Add",
-      "newProject": "New project"
-    },
-    "title": "Add your project for free",
-    "subtitle": "Follow the steps below and fill in the required fields",
-    "steps": {
-      "details": "Project details",
-      "budget": "Budget & duration",
-      "team": "Team & split",
-      "publish": "Publish"
-    },
-    "stepCurrent": "Current",
-    "category": "Choose category",
-    "categoryPlaceholder": "Choose the category related to your project",
-    "subcategory": "Choose subcategory",
-    "subcategoryPlaceholder": "Choose subcategory",
-    "categories": {
-      "design": "Design",
-      "programming": "Programming",
-      "writing": "Writing & translation",
-      "marketing": "Marketing"
-    },
-    "subcategories": {
-      "branding": "Brand identity",
-      "uiux": "UI / UX design",
-      "web": "Web development",
-      "mobile": "Mobile apps",
-      "content": "Content writing",
-      "translation": "Translation",
-      "social": "Social media",
-      "seo": "SEO"
-    },
-    "whoExecutes": "Who will execute this project?",
-    "whoExecutesHint": "This choice decides how escrow is split and the number of publishing steps",
-    "modes": {
-      "individual": {
-        "title": "Individual project",
-        "subtitle": "You deliver it alone",
-        "badge": "{count} steps",
-        "points": [
-          "Escrow is released to you in full on delivery",
-          "Direct chat with the project owner",
-          "No split shares or extra approvals"
-        ]
-      },
-      "team": {
-        "title": "Team project",
-        "subtitle": "Invite members and share the payout",
-        "badge": "{count} steps",
-        "points": [
-          "An extra step to choose partners and split shares",
-          "Escrow is split between members by the agreed shares",
-          "Group chat, sub-threads and file sharing",
-          "A member joining or leaving needs the project owner's approval"
-        ],
-        "warning": "You can't switch to individual after the project is published"
+      "edit": "Edit",
+      "projects": "Projects",
+      "new": {
+        "project": "New project",
+        "request": "New influencer request"
       }
     },
-    "extras": "Add to project",
-    "extrasOptions": {
-      "urgent": "Urgent",
-      "featured": "Featured",
-      "maintenance": "Support & maintenance package"
+    "title": {
+      "project": "Add your project for free",
+      "request": "Add your influencer request for free"
+    },
+    "editTitle": "Edit your project",
+    "subtitle": "Follow the steps below and fill in the required fields",
+    "steps": {
+      "details": "Details",
+      "budget": "Budget & location",
+      "publish": "Review & publish"
+    },
+    "stepCurrent": "Current",
+    "validation": {
+      "required": "This field is required.",
+      "minLength": "Write at least {min} characters.",
+      "budgetInvalid": "Enter an amount of at least 1.",
+      "budgetRange": "The maximum must be greater than or equal to the minimum."
+    },
+    "details": {
+      "heading": "What do you need?",
+      "hint": {
+        "project": "Pick a category and describe the work so freelancers can send accurate offers",
+        "request": "Pick a platform and describe the campaign so influencers can send accurate offers"
+      }
+    },
+    "fields": {
+      "categoryLabel": {
+        "project": "Category",
+        "request": "Platform"
+      },
+      "categoryPlaceholder": "Choose one",
+      "title": "Title",
+      "titlePlaceholder": {
+        "project": "e.g. Brand identity for a restaurant",
+        "request": "e.g. Promote our new product launch"
+      },
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the scope, deliverables and any references",
+      "descriptionHint": "{count} characters (at least 20)",
+      "budgetMin": "Minimum budget",
+      "budgetMax": "Maximum budget",
+      "currency": "Currency",
+      "country": "Country",
+      "city": "City",
+      "anyCity": "Any city",
+      "category": "Category",
+      "budget": "Budget",
+      "location": "Location"
+    },
+    "budget": {
+      "heading": "Budget & location",
+      "hint": "Set the budget range you plan to spend and, if it matters, where the work should be done"
+    },
+    "publish": {
+      "heading": "Review & publish",
+      "hint": "Check everything before publishing. You can edit the project while it has no accepted offer.",
+      "anywhere": "Anywhere",
+      "publishedTitle": {
+        "project": "Your project is live!",
+        "request": "Your request is live!"
+      },
+      "publishedText": "Providers can now see it and send you offers. You'll get a notification for every new offer.",
+      "viewProject": "View it",
+      "myProjects": "My projects"
     },
     "actions": {
       "next": "Next",
       "back": "Back",
-      "saveDraft": "Save draft",
       "cancel": "Cancel",
-      "nextPublish": "Next — publish",
-      "publish": "Publish project",
-      "change": "Change choice",
-      "continue": "Continue",
-      "continueTeam": "Continue — add members"
+      "review": "Next — review",
+      "publish": "Publish",
+      "save": "Save changes"
     },
-    "summary": {
-      "individual": "Selected: individual project — {count} steps in total. Next step is budget & duration.",
-      "team": "Selected: team project — {count} steps in total. The team & split step comes after budget & duration."
+    "saveFailed": "We could not save it. Please check the fields and try again.",
+    "status": {
+      "open": "Open",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "closed": "Closed"
     },
-    "draftSaved": "Draft saved",
-    "confirm": {
-      "individualTitle": "Confirm: individual project",
-      "individualText": "You'll deliver the project alone, and escrow is released to you in full on delivery.",
-      "teamTitle": "Confirm: team project",
-      "teamText": "You'll add team members and set each member's share before choosing the budget. Escrow is split by these shares on delivery.",
-      "whatChanges": "What changes",
-      "rows": {
-        "steps": "Publishing steps",
-        "escrow": "Escrow",
-        "chat": "Chat",
-        "members": "Editing members"
-      },
-      "individual": {
-        "steps": "{count} as is",
-        "escrow": "Released to you in full",
-        "chat": "Direct with the project owner",
-        "members": "Not available after publishing"
-      },
-      "team": {
-        "steps": "{count} instead of {base} — team & split after budget",
-        "escrow": "Split between members by shares",
-        "chat": "Group · task threads · file sharing",
-        "members": "With the project owner's approval after publishing"
-      },
-      "warning": "This choice can't be changed after the project is published, because escrow is transferred based on it."
+    "types": {
+      "project": "Project",
+      "influencer_request": "Influencer request"
     },
-    "budget": {
-      "heading": "Budget & duration",
-      "hint": "Tell providers what you need and how much you plan to spend",
-      "projectTitle": "Project title",
-      "projectTitlePlaceholder": "e.g. Brand identity for a restaurant",
-      "description": "Project description",
-      "descriptionPlaceholder": "Describe the scope, deliverables and any references",
-      "amount": "Budget (USD)",
-      "amountPlaceholder": "e.g. 3200",
-      "duration": "Duration (days)",
-      "durationPlaceholder": "e.g. 14",
-      "required": "This field is required.",
-      "amountInvalid": "Enter a budget of at least $10.",
-      "durationInvalid": "Enter a duration between 1 and 365 days."
+    "detail": {
+      "budget": "Budget {min} - {max}",
+      "description": "Description",
+      "postedBy": "Posted by",
+      "message": "Message",
+      "loginToOffer": "Log in to send an offer on this project.",
+      "login": "Log in"
     },
-    "team": {
-      "heading": "Team & split shares",
-      "hint": "Invite members and set each member's share of the project value",
-      "invite": "+ Invite member",
-      "sumReady": "Total shares {total}% — ready to continue",
-      "sumInvalid": "Total shares {total}% — must equal 100%",
-      "sumHint": "To continue, the total must be exactly 100% and every member must accept their invitation and share. Escrow isn't reserved until all members accept.",
-      "pendingTitle": "Waiting for {count} member to accept — publishing on hold",
-      "pendingHint": "Publishing can't be completed and the budget can't be reserved until every member accepts. If a member declines, their share returns to be redistributed.",
-      "remind": "Send reminder",
-      "reminded": "Reminder sent",
-      "columns": {
-        "member": "Member",
-        "role": "Role",
-        "share": "Share",
-        "amount": "Share of {total}",
-        "status": "Status"
-      },
-      "you": "You",
-      "remove": "Remove",
+    "offer": {
+      "title": "Send your offer",
+      "editTitle": "Edit your offer",
+      "yours": "Your offer",
       "status": {
-        "owner": "Project owner",
+        "pending": "Pending",
         "accepted": "Accepted",
-        "pending": "Waiting to accept"
+        "declined": "Declined",
+        "withdrawn": "Withdrawn"
       },
-      "rulesTitle": "Split rules",
-      "rules": [
-        "The project amount is held in escrow after all members accept",
-        "The project owner alone releases payouts — and only the finished member's share is released",
-        "A new member joining pauses the project and re-opens split approval for everyone",
-        "A member leaving returns their unearned share to be redistributed with approval",
-        "There's no automatic split on dispute — shares are fixed and not changed by force",
-        "The member's approved share on the platform isn't changed except by agreement"
-      ],
-      "inviteTitle": "Invite a new member",
-      "inviteUser": "Username or email",
-      "inviteUserPlaceholder": "Search for a member on the platform",
-      "inviteRole": "Role",
-      "inviteRolePlaceholder": "Choose role",
-      "inviteShare": "Proposed share",
-      "send": "Send invitation",
-      "inviteNote": "The member isn't counted in the team until they accept the invitation and share together.",
-      "inviteUserRequired": "Enter a username or email.",
-      "inviteRoleRequired": "Choose a role.",
-      "roles": {
-        "lead": "Team lead",
-        "frontend": "Frontend developer",
-        "backend": "Backend developer",
-        "designer": "Designer",
-        "writer": "Content writer",
-        "marketer": "Marketer"
+      "deliveryIn": "{count, plural, one {Delivery in # day} other {Delivery in # days}}",
+      "asTeam": "As team {name}",
+      "edit": "Edit offer",
+      "withdraw": "Withdraw offer",
+      "closed": "This project is no longer accepting offers.",
+      "amount": "Your price ({currency})",
+      "budgetHint": "Client budget: {min} - {max}",
+      "days": "Delivery time (days)",
+      "team": "Send as",
+      "alone": "Myself",
+      "message": "Cover letter",
+      "messagePlaceholder": "Explain how you will do the work, and share relevant experience",
+      "goToProfile": "Add your profile",
+      "save": "Save offer",
+      "send": "Send offer",
+      "cancel": "Cancel",
+      "failed": "We could not send your offer. Please try again."
+    },
+    "owner": {
+      "manage": "Manage your project",
+      "edit": "Edit",
+      "close": "Close project",
+      "delete": "Delete",
+      "complete": "Mark as completed",
+      "confirm": {
+        "delete": "Delete this project? This cannot be undone.",
+        "close": "Close this project? Pending offers will be declined."
       },
-      "footerNote": "The total must equal 100% and every member must accept before publishing — escrow is reserved once everyone accepts."
-    },
-    "publish": {
-      "heading": "Review & publish",
-      "hint": "Check your project details before publishing",
-      "mode": "Execution",
-      "title": "Title",
-      "category": "Category",
-      "budget": "Budget",
-      "duration": "Duration",
-      "days": "{count} days",
-      "extras": "Extras",
-      "none": "None",
-      "team": "Team shares",
-      "publishedTitle": "Your project has been published!",
-      "publishedText": "Providers can now see your project and send their offers.",
-      "viewProjects": "Go to my projects"
-    },
-    "invitation": {
-      "title": "Invitation to join a project team",
-      "from": "{name} invites you to join",
-      "project": "Restaurant brand identity — ref. PRJ-1204",
-      "offer": "Your offer",
-      "shareOffered": "Proposed share",
-      "details": "Your role: {role} · Total project value {total} · Your share is reserved in escrow after all members accept — your acceptance is one of the publishing conditions.",
-      "restOfTeam": "Rest of the team",
-      "warning": "By accepting you commit to delivering your role within the project duration. Changing your share later requires every member's approval.",
-      "accept": "Accept invitation",
+      "failed": "The action failed. Please try again.",
+      "offers": "{count, plural, =0 {Offers} one {# offer} other {# offers}}",
+      "noOffers": "No offers yet. You'll be notified when providers send them.",
       "decline": "Decline",
-      "negotiate": "Negotiate share",
-      "accepted": "You've joined the team. The project owner has been notified.",
-      "declined": "You've declined the invitation.",
-      "proposalSent": "Your proposal has been sent to the project owner."
+      "accept": "Accept offer"
     },
-    "negotiate": {
-      "title": "Negotiate your share",
-      "subtitle": "Propose a different share with a short reason. Only the project owner sees it — the rest of the team doesn't.",
-      "offered": "Offered to you",
-      "proposal": "Your proposal",
-      "impact": "Impact on the team",
-      "total": "Total if accepted",
-      "exceeds": "{total}% — exceeds 100%",
-      "fits": "{total}% — fits 100%",
-      "reduce": "Must be reduced from other shares",
-      "approvers": "Who approves the reduction",
-      "approversValue": "Everyone whose share is reduced",
-      "reason": "Reason for the proposal — required",
-      "reasonPlaceholder": "e.g. The scope includes 6 extra screens that aren't in the description",
-      "reasonRequired": "Please explain your proposal.",
-      "note": "If your proposal is declined, you can accept the original share or keep negotiating. Shares are only final once everyone approves — no dispute can be opened before publishing.",
-      "send": "Send proposal"
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Title or description",
+      "type": "Type",
+      "allTypes": "All types",
+      "projects": "Projects",
+      "influencerRequests": "Influencer requests",
+      "category": "Category",
+      "allCategories": "All categories",
+      "country": "Country",
+      "anyCountry": "Any country",
+      "city": "City",
+      "anyCity": "Any city",
+      "budgetMin": "Budget from",
+      "budgetMax": "Budget to",
+      "sort": "Sort by",
+      "sortLatest": "Newest",
+      "sortHigh": "Highest budget",
+      "sortLow": "Lowest budget",
+      "reset": "Reset",
+      "apply": "Apply filters"
     },
-    "people": {
-      "sara": "Sara Al-Otaibi",
-      "abdulrahman": "Abdulrahman Al-Qasimi",
-      "dana": "Dana Al-Ajmi"
+    "list": {
+      "title": "Browse projects",
+      "subtitle": "Open projects and influencer requests looking for offers",
+      "failed": "We could not load this list. Please try again later.",
+      "empty": "Nothing matches these filters yet.",
+      "count": "{count, plural, one {# result} other {# results}}"
+    },
+    "mine": {
+      "title": "My projects",
+      "subtitle": "Projects and influencer requests you posted",
+      "newProject": "New project",
+      "newRequest": "New influencer request",
+      "all": "All",
+      "empty": "You haven't posted anything with this status yet.",
+      "offers": "{count, plural, =0 {No offers} one {# offer} other {# offers}}"
+    },
+    "offers": {
+      "title": "My offers",
+      "subtitle": "Offers you sent on projects and influencer requests",
+      "empty": "You haven't sent any offers with this status yet."
+    },
+    "categoriesPage": {
+      "title": "Categories",
+      "subtitle": "Browse open work by category or platform",
+      "project": "Project categories",
+      "influencer": "Influencer platforms"
     },
     "metadata": {
-      "new": "Add project | Motamakin",
-      "invitation": "Team invitation | Motamakin"
+      "new": "Post a project | Motamakin",
+      "newRequest": "Post an influencer request | Motamakin",
+      "browse": "Projects | Motamakin",
+      "mine": "My projects | Motamakin",
+      "offers": "My offers | Motamakin",
+      "categories": "Categories | Motamakin"
+    }
+  },
+  "Home": {
+    "lookingFor": "What Are You Looking For?",
+    "discover": "Discover our categories",
+    "projects": "Projects",
+    "projectsText": "Add a free project and find talented freelancers",
+    "influencer": "Influencer",
+    "influencerText": "Add a free request and find influencers",
+    "featuredProfiles": "Featured Profiles",
+    "distinctiveProjects": "Distinctive Projects",
+    "recentProjects": "Most Recent Projects",
+    "influencerRequests": "Latest Requests From Influencers",
+    "addProfile": "Add Your Profile",
+    "addProject": "Add Your Project",
+    "addOffer": "Add Your Offer",
+    "hireMe": "Hire Me",
+    "portfolio": "My Portfolio",
+    "readMore": "read more",
+    "seeMore": "See More",
+    "showAll": "Show All",
+    "budget": "Budget {min} - {max}",
+    "rating": "Rated {rating} out of 5",
+    "previous": "Previous",
+    "next": "Next",
+    "loading": "Loading...",
+    "loadFailed": "We could not load this section. Please try again later.",
+    "noProjects": "No projects in this category yet."
+  },
+  "Messages": {
+    "title": "Messages",
+    "allMessages": "All Messages",
+    "search": "Search messages",
+    "sortTitle": "Sort",
+    "sortApply": "Sort",
+    "sort": {
+      "oldest": "Old to New (Ascending)",
+      "newest": "New to Old (Descending)",
+      "unread": "Unread"
+    },
+    "you": "You",
+    "noMessagesYet": "No messages yet",
+    "preview": {
+      "text": "Message",
+      "voice": "🎤 Voice message",
+      "attachment": "📎 Attachment"
+    },
+    "emptyInbox": "Your inbox is empty. Start a conversation by searching for freelancers or browsing ads and projects.",
+    "browseProjects": "Browse Projects",
+    "noResults": "No conversations match your search.",
+    "pickConversation": "Select a conversation to start chatting.",
+    "startChat": "Say hello 👋",
+    "online": "Online",
+    "offline": "Offline",
+    "members": "{count} members",
+    "back": "Back to conversations",
+    "loading": "Loading...",
+    "loadOlder": "Load older messages",
+    "loadFailed": "Could not load messages. Please try again.",
+    "sendFailed": "Your message was not sent. Please try again.",
+    "reply": "Reply ...",
+    "attach": "Attach a file",
+    "emoji": "Emoji",
+    "record": "Record a voice message",
+    "send": "Send",
+    "recording": "Recording",
+    "cancelRecording": "Cancel recording",
+    "micDenied": "Allow microphone access to record a voice message.",
+    "fileTooLarge": "Files can be up to 20 MB.",
+    "play": "Play",
+    "pause": "Pause"
+  },
+  "Common": {
+    "pagination": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {total}"
+  },
+  "Profile": {
+    "home": "Home",
+    "title": "My profile",
+    "addTitle": "Add your profile",
+    "subtitle": "Your profile lets you send offers and appear in search and on the homepage",
+    "rating": "Rating {rating} · {count, plural, one {# review} other {# reviews}}",
+    "featured": "Featured on the homepage",
+    "type": "I want to work as",
+    "types": {
+      "freelancer": {
+        "title": "Freelancer",
+        "text": "Send offers on projects"
+      },
+      "influencer": {
+        "title": "Influencer",
+        "text": "Send offers on influencer requests"
+      }
+    },
+    "jobTitle": "Job title",
+    "jobTitlePlaceholder": "e.g. Web Developer",
+    "jobTitleRequired": "Write your job title (at least 2 characters).",
+    "bio": "About you",
+    "bioPlaceholder": "Your experience, skills and the kind of work you do best",
+    "country": "Country",
+    "city": "City",
+    "none": "Not set",
+    "failed": "We could not save your profile. Please try again.",
+    "saved": "Your profile was saved.",
+    "save": "Save profile",
+    "viewPublic": "View my public profile"
+  },
+  "Search": {
+    "title": "Search",
+    "home": "Home",
+    "resultsFor": "Results for “{q}”",
+    "failed": "Search is unavailable right now. Please try again later.",
+    "empty": "We did not find any results that match your search. Try adjusting the filters and browse all categories to discover new opportunities.",
+    "seeAll": "See all",
+    "searchBy": "Search By",
+    "count": "{count, plural, =0 {Search Results (0)} other {Search Results (#)}}",
+    "view": "Results view",
+    "views": {
+      "list": "List view",
+      "grid": "Grid view"
+    },
+    "browse": "Browse Services",
+    "editSearch": "Edit Search",
+    "filters": {
+      "placeholder": "Search",
+      "namePlaceholder": "Search by name or job title",
+      "any": "Any",
+      "section": "Choose Section",
+      "budgetMin": "Budget from",
+      "budgetMax": "Budget to",
+      "skill": "Skills",
+      "skillPlaceholder": "Choose skills",
+      "rating": "Rating",
+      "ratingAtLeast": "{rating} stars and up",
+      "platform": "Platform",
+      "country": "Country",
+      "city": "City",
+      "sort": "Sort by",
+      "search": "Search",
+      "clear": "Clear filters",
+      "sorts": {
+        "newest": "Newest",
+        "budget_high": "Highest budget",
+        "budget_low": "Lowest budget",
+        "rating": "Top rated",
+        "reviews": "Most reviewed"
+      }
+    },
+    "rows": {
+      "offers": "{count, plural, =0 {No offers yet} one {# offer} other {# offers}}",
+      "budget": "Budget {min} - {max}",
+      "addOffer": "Add Your Offer",
+      "rating": "Rated {rating} out of 5",
+      "viewProfile": "View Profile"
+    }
+  },
+  "Teams": {
+    "home": "Home",
+    "title": "My teams",
+    "subtitle": "Freelancer teams share a project and split every payment by fixed shares",
+    "invitations": "{count, plural, one {# invitation waiting for you} other {# invitations waiting for you}}",
+    "myTeams": "Teams",
+    "failed": "Something went wrong. Please try again.",
+    "empty": "You are not in any team yet. Create one or wait for an invitation.",
+    "membersCount": "{count, plural, one {# member} other {# members}}",
+    "youLead": "You lead it",
+    "ledBy": "Led by {name}",
+    "status": {
+      "draft": "Draft",
+      "active": "Published",
+      "disbanded": "Disbanded"
+    },
+    "memberStatus": {
+      "invited": "Waiting to accept",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "expired": "Expired"
+    },
+    "create": {
+      "title": "Create a team",
+      "hint": "You will lead it. Invite members, agree on shares, then publish it to send offers as a team.",
+      "name": "Team name",
+      "description": "Description",
+      "submit": "Create team",
+      "nameRequired": "Write a team name (at least 3 characters)."
+    },
+    "invitation": {
+      "title": "Team invitation",
+      "from": "{name} invited you to their team",
+      "role": "Your role",
+      "noRole": "Not set",
+      "share": "Your share of every payment",
+      "expires": "Expires {when}",
+      "viewTeam": "View team",
+      "decline": "Decline",
+      "accept": "Accept"
+    },
+    "lead": "Team lead",
+    "columns": {
+      "member": "Member",
+      "role": "Role",
+      "share": "Share",
+      "status": "Status"
+    },
+    "save": "Save",
+    "resend": "Resend",
+    "remove": "Remove",
+    "confirmRemove": "Remove this member from the team?",
+    "expires": "Expires {when}",
+    "invitedBanner": "{name} invited you to this team. Accepting means you agree to your share.",
+    "ready": "The team is ready to publish",
+    "notReady": "The team can't be published yet",
+    "blockers": {
+      "too_few_members": "Invite at least one more member",
+      "awaiting_acceptances": "Wait for every invited member to accept",
+      "invitations_not_accepted": "Remove or re-send declined and expired invitations",
+      "lead_share_too_low": "Leave the lead at least 1%"
+    },
+    "publish": "Publish team",
+    "members": "Members",
+    "shareSummary": "Members {others}% · Lead {lead}%",
+    "rulesTitle": "How teams work",
+    "rules": [
+      "The lead's share is whatever the other members leave, and at least 1%",
+      "Shares can only change while the team is a draft",
+      "Every invited member must accept before the team can be published",
+      "Only a published team can send offers, and only on projects",
+      "Every payment is split automatically by the agreed shares"
+    ],
+    "unpublish": "Back to draft",
+    "disband": "Disband team",
+    "confirmDisband": "Disband this team? This cannot be undone.",
+    "leave": "Leave team",
+    "confirmLeave": "Leave this team?",
+    "invite": {
+      "title": "Invite a member",
+      "change": "Change",
+      "freelancer": "Freelancer",
+      "searchPlaceholder": "Search freelancers by name or job",
+      "pickFreelancer": "Pick a freelancer from the search results.",
+      "role": "Role",
+      "rolePlaceholder": "e.g. Designer",
+      "share": "Share (%)",
+      "shareHint": "Up to {max}%",
+      "send": "Send invitation",
+      "note": "They have 7 days to accept. Only people with a freelancer profile can join.",
+      "failed": "We could not send the invitation."
+    }
+  },
+  "Settings": {
+    "title": "Settings",
+    "nav": {
+      "label": "Settings",
+      "profile": "Profile",
+      "notifications": "Email & Notification",
+      "password": "Password",
+      "payment": "Payment & financial",
+      "security": "Account Security",
+      "verification": "Trust & verification",
+      "offers": "My offers",
+      "projects": "My Projects",
+      "influencerRequests": "My Influencers Requests",
+      "wallet": "Wallet & transactions",
+      "invite": "Invite a friend",
+      "points": "Points & gifts",
+      "medals": "Medals system",
+      "reports": "My reports",
+      "disputes": "Disputes",
+      "seeMore": "See more",
+      "seeLess": "See less",
+      "escrow": "Payment protection"
+    },
+    "payment": {
+      "title": "Payment & financial",
+      "subtitle": "Manage your payment and financial settings",
+      "saved": "Saved Payment Method",
+      "empty": "No saved payment methods yet. Add a card or payment method for faster and easier checkouts.",
+      "addNew": "Add A New Payment Method",
+      "paymentMethod": "Payment Method",
+      "preferredLabel": "Set Your Preferred Payment Method",
+      "preferredPlaceholder": "Select preferred payment method",
+      "currency": "Display Currency In",
+      "preferred": "Preferred",
+      "methodLabel": {
+        "card": "{brand} card ending in {last4}",
+        "paypal": "PayPal account {email}"
+      },
+      "save": "Save Changes",
+      "savedChanges": "Your changes were saved.",
+      "failed": "Something went wrong. Please try again.",
+      "cancel": "Cancel",
+      "close": "Close",
+      "paypalEmail": "PayPal email",
+      "types": {
+        "card": "Credit / debit card",
+        "paypal": "PayPal"
+      },
+      "card": {
+        "holderName": "Cardholder Name",
+        "holderNamePlaceholder": "Enter name on card",
+        "number": "Card Number",
+        "expiry": "Expiry Date",
+        "cvc": "CVV/CVC",
+        "errors": {
+          "holderName": "Cardholder name entered is incorrect",
+          "number": "Card number entered is incorrect",
+          "expiry": "Expiry date entered is incorrect",
+          "cvc": "CVV/CVC entered is incorrect",
+          "email": "Enter a valid email address"
+        }
+      },
+      "add": {
+        "title": "Add a new payment method",
+        "subtitle": "Save your payment details for future processes",
+        "type": "Payment method type",
+        "makeDefault": "Make it my preferred payment method",
+        "agree": "I agree to the terms & conditions and the <link>privacy policy</link>",
+        "save": "Save Payment Method",
+        "failed": "There was an error processing your payment method. Please review your information and try again.",
+        "backToSettings": "Back To Settings",
+        "tryAgain": "Try Again"
+      },
+      "added": {
+        "title": "Payment method added successfully",
+        "message": "Your payment method has been added successfully! You can now use it for transactions.",
+        "back": "Return To Payment Methods"
+      },
+      "remove": {
+        "button": "Remove saved payment method",
+        "confirm": "Are you sure you want to remove this payment method? You will not be able to use this method until you add it again.",
+        "keep": "No, Close",
+        "done": "Your payment method has been removed successfully!"
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Your name, username and photo as others see them",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "username": "Username",
+      "email": "Email address",
+      "phone": "Mobile number",
+      "verified": "Verified",
+      "notVerified": "Verify",
+      "contactHint": "Email and mobile number are confirmed with a code, so they cannot be edited here.",
+      "newsletter": "Send me news and offers by email",
+      "workProfile": "Your freelancer or influencer details (job title, about you) are on <link>your work profile</link>.",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "saved": "Changes saved successfully!",
+      "back": "Back to profile",
+      "failed": "Could not save your changes.",
+      "changePhoto": "Change photo",
+      "removePhoto": "Remove photo",
+      "cropTitle": "Crop Photo",
+      "photoFailed": "Could not upload your photo."
+    },
+    "notifications": {
+      "title": "Email & Notification",
+      "subtitle": "Choose what we send you by email. Everything always appears in the bell.",
+      "sentTo": "Emails are sent to {email}",
+      "noEmail": "Add an email address to receive emails.",
+      "type": "Notification",
+      "bell": "Bell",
+      "email": "Email",
+      "always": "Always on",
+      "emailFor": "Email me about {group}",
+      "requiredNote": "Account and security emails are always sent.",
+      "save": "Save Changes",
+      "saved": "Your notification settings were saved.",
+      "failed": "Could not save your settings.",
+      "groups": {
+        "messages": {
+          "title": "Messages",
+          "text": "New conversations and messages"
+        },
+        "proposals": {
+          "title": "Offers & teams",
+          "text": "Offers received, accepted or declined, team invitations"
+        },
+        "projects": {
+          "title": "Project progress",
+          "text": "Payment protection, milestones funded, delivered and released"
+        },
+        "payments": {
+          "title": "Payments",
+          "text": "Deposits, withdrawals, promotions and subscriptions"
+        },
+        "disputes": {
+          "title": "Disputes",
+          "text": "New disputes, messages and decisions"
+        },
+        "account": {
+          "title": "Account & security",
+          "text": "Identity checks and security alerts"
+        },
+        "rewards": {
+          "title": "Points, medals & prizes",
+          "text": "Points earned, medals and prize-draw results"
+        }
+      }
+    },
+    "password": {
+      "title": "Password",
+      "subtitle": "Change your password. Other devices will be logged out.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "currentRequired": "Enter your current password.",
+      "save": "Update Password",
+      "done": "Your password was changed. Other devices were logged out.",
+      "close": "Close",
+      "failed": "Could not change your password."
+    },
+    "security": {
+      "title": "Account security",
+      "subtitle": "View & manage your account security",
+      "twoFactor": "Two Factor Authentication",
+      "notEnabled": "Your account does not have two-factor authentication turned on yet.",
+      "twoFactorText": "Two-factor authentication protects your account even if your password is stolen: every login also asks for a code sent to your phone or email.",
+      "enable": {
+        "title": "Enable two factor authentication",
+        "subtitle": "Protect your account with an extra layer of security",
+        "choose": "Choose your preferred method:",
+        "methods": {
+          "phone": {
+            "title": "Enable SMS Verification",
+            "text": "We will send a code to the mobile number you enter",
+            "short": "phone number"
+          },
+          "email": {
+            "title": "Enable Email Address",
+            "text": "We will send a code to the email address you enter",
+            "short": "email address"
+          }
+        },
+        "password": "Enter Your Account Password",
+        "passwordRequired": "Enter your password.",
+        "phone": "Phone Number",
+        "email": "Email Address",
+        "phoneInvalid": "Enter a valid phone number.",
+        "emailInvalid": "Enter a valid email address.",
+        "confirmText": "An OTP code will be sent to this {method}:",
+        "isCorrect": "Is this correct?",
+        "yesCorrect": "Yes, Correct",
+        "reenterPhone": "Re-Enter Phone Number",
+        "reenterEmail": "Re-Enter Email Address",
+        "codeSent": "Please enter the code we sent to {target}",
+        "code": "Verification Code",
+        "codeInvalid": "Code entered is not correct",
+        "resend": "Resend code",
+        "verify": "Verify",
+        "success": "Two factor authentication enabled successfully!",
+        "successHint": "Your account is now protected with 2FA. You will be asked to enter a verification code on your next login.",
+        "failed": "There was an error processing your request.",
+        "tryOther": "Try A Different Verification Method",
+        "back": "Back",
+        "cancel": "Cancel",
+        "next": "Next",
+        "continue": "Continue"
+      },
+      "enabledVia": "Two Factor Authentication is enabled via {method} {target}",
+      "via": {
+        "phone": "SMS",
+        "email": "email"
+      },
+      "turnOff": "Turn off",
+      "devices": "Login Devices",
+      "devicesText": "The devices signed in to your account. Log out any you don't recognize.",
+      "logoutOthers": "Log out all other devices",
+      "thisDevice": "This device",
+      "lastLogin": "Last activity {date}",
+      "logout": "Logout",
+      "turnOffTitle": "Turn off two factor authentication",
+      "turnOffConfirm": "Are you sure you want to turn off two-factor authentication? Enter your password to confirm.",
+      "password": "Password",
+      "keepOn": "No, keep it on",
+      "turnedOff": "Two factor authentication turned off successfully!",
+      "failed": "There was an error processing your request.",
+      "backToSecurity": "Back To Security Settings",
+      "enableButton": "Enable Two Factor Authentication"
+    }
+  },
+  "Wallet": {
+    "title": "Wallet & transactions",
+    "subtitle": "Your balance, payments and history",
+    "currency": "Currency",
+    "addBalance": "Add Balance",
+    "withdrawBalance": "Withdraw Balance",
+    "processing": "Your request is being processed, please wait and do not close the browser...",
+    "balances": {
+      "available": "Available balance",
+      "inEscrow": "In escrow",
+      "incoming": "Incoming payments",
+      "pendingWithdrawals": "Pending withdrawals"
+    },
+    "pending": {
+      "title": "Withdrawals waiting for approval",
+      "status": "Pending",
+      "cancel": "Cancel"
+    },
+    "chart": {
+      "title": "Income and spending, last 6 months",
+      "income": "Income",
+      "spending": "Spending",
+      "empty": "No activity in the last 6 months yet.",
+      "aria": "{month}: income {income}, spending {spending}"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "filter": "Type",
+      "all": "All",
+      "date": "Date",
+      "description": "Description",
+      "amount": "Amount",
+      "balance": "Balance",
+      "empty": "No transactions yet. Add balance to get started.",
+      "emptyFiltered": "No transactions of this type.",
+      "types": {
+        "deposit": "Deposits",
+        "withdrawal_request": "Withdrawals",
+        "escrow_fund": "Escrow payments",
+        "escrow_release": "Payments received",
+        "subscription": "Subscriptions",
+        "promotion": "Promotions"
+      }
+    },
+    "add": {
+      "title": "Add Balance",
+      "subtitle": "Top up your wallet to pay for projects and services",
+      "methodTitle": "Payment method",
+      "methodSubtitle": "Select payment method and add payment details to confirm",
+      "amount": "Amount",
+      "currency": "Currency",
+      "amountRequired": "Enter the amount to add.",
+      "method": "Payment method",
+      "savedCards": "Saved cards",
+      "newCard": "Use a new card",
+      "noSavedCards": "You do not have any saved cards",
+      "saveCard": "Save my payment details for future processes",
+      "redirectNote": "You will be taken to the payment provider to finish the payment.",
+      "total": "Total",
+      "methods": {
+        "card": "Electronic Payment",
+        "mada": "mada",
+        "apple_pay": "Apple Pay",
+        "bank_transfer": "Bank transfer"
+      },
+      "cancel": "Cancel",
+      "next": "Next",
+      "back": "Back",
+      "payNow": "Pay Now",
+      "success": "{amount} {currency} was added to your wallet successfully!",
+      "failed": "We could not complete your payment. Please try again later.",
+      "backToWallet": "Back To Wallet",
+      "tryAgain": "Try Again"
+    },
+    "withdraw": {
+      "title": "Withdraw Balance",
+      "subtitle": "Send money from your wallet to your bank or PayPal",
+      "available": "Available balance",
+      "amount": "Amount",
+      "currency": "Currency",
+      "feeNote": "A small withdrawal fee is added on top",
+      "method": "Withdrawal method",
+      "methods": {
+        "bank_transfer": "Bank transfer",
+        "paypal": "PayPal"
+      },
+      "accountName": "Account holder name",
+      "iban": "IBAN",
+      "paypalEmail": "PayPal email",
+      "errors": {
+        "amount": "Enter the amount to withdraw.",
+        "tooMuch": "This is more than your available balance.",
+        "accountName": "Enter the account holder name.",
+        "iban": "Enter a valid IBAN.",
+        "email": "Enter a valid email address."
+      },
+      "cancel": "Cancel",
+      "submit": "Withdraw",
+      "success": "Your withdrawal of {amount} {currency} (fee {fee} {currency}) was requested. It will be sent after review.",
+      "failed": "Unable to withdraw at this time. Please try again later.",
+      "verifyNow": "Verify My Identity",
+      "tryAgain": "Try Again",
+      "backToWallet": "Back To Wallet"
+    },
+    "feedback": {
+      "title": "Quick feedback",
+      "subtitle": "Tell us about your payment experience",
+      "question": "How Satisfied Were You With Your Payment Experience?",
+      "up": "Satisfied",
+      "down": "Not satisfied",
+      "opinion": "Tell Your Opinion",
+      "opinionPlaceholder": "Write details about your experience",
+      "skip": "Skip",
+      "submit": "Submit",
+      "thanks": "Thanks for your input",
+      "close": "Close"
+    }
+  },
+  "Payments": {
+    "summary": "Payment summary",
+    "total": "Total",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "payNow": "Pay Now",
+    "methodTitle": "Payment method",
+    "methodSubtitle": "Select payment method and add payment details to confirm your subscription",
+    "methods": {
+      "card": "Electronic Payment",
+      "balance": "My Balance"
+    },
+    "available": "Available Balance",
+    "notEnough": "You do not have enough balance to proceed",
+    "addBalance": "Add Balance",
+    "savedCards": "Saved cards",
+    "newCard": "Use a new card",
+    "noSavedCards": "You do not have any saved cards",
+    "saveCard": "Save my payment details for future processes",
+    "agree": "I agree to the terms & conditions and the <link>privacy policy</link>",
+    "failed": "Unable to add your request at this time. Please try again later"
+  },
+  "Promotions": {
+    "home": "Home",
+    "close": "Close",
+    "next": "Next",
+    "medals": "Medals System",
+    "viewProject": "View Project",
+    "homepage": "Homepage",
+    "myProfile": "My Profile",
+    "success": "You've subscribed to \"Distinguish Yourself\"! You've earned {points} points and unlocked exclusive benefits.",
+    "profileSuccess": "Congratulations, your request is added successfully!",
+    "summary": {
+      "package": "Package name",
+      "project": "Project",
+      "quantity": "Package quantity"
+    },
+    "packages": {
+      "names": {
+        "starter": "Package 2",
+        "boost": "Package 3",
+        "pro": "Package 4"
+      },
+      "days": "{count, plural, one {# Day} other {# Days}}",
+      "reach": "Estimated post reach: {min} to {max}",
+      "payNow": "Pay now",
+      "failed": "Could not load the packages. Please try again."
+    },
+    "project": {
+      "title": "Feature your project",
+      "packagesTitle": "Add your project",
+      "subtitle": "Place your project to excellence",
+      "intro": "To increase your views, enhance your chances of success, and engage a larger audience, choose one of the following packages:",
+      "select": "Select your project",
+      "search": "Search your projects",
+      "addNew": "Add New Project",
+      "empty": "You currently have no projects. Click 'Add New Project' to create one and start featuring your work!",
+      "noMatch": "No projects match your search.",
+      "selected": "The Project Has Been Selected Successfully",
+      "budget": "Budget {min} - {max}",
+      "loadFailed": "Could not load your projects. Please try again."
+    },
+    "profile": {
+      "title": "Feature your profile",
+      "subtitle": "Position your profile to excellence",
+      "intro": "Benefit now from a doubling of views and an increase in the number of connections, and get great opportunities to spread your profile by placing your profile picture in the animated bar on the main page of the site. It also shows your distinction and attracts the audience to you.",
+      "needsProfile": "Add your freelancer or influencer profile first, then feature it on the homepage.",
+      "addProfile": "Add Your Profile"
+    },
+    "photo": {
+      "current": "Your current profile Photo",
+      "selectCurrent": "Select Current",
+      "drop": "Drag & drop image here",
+      "formats": "JPEG, PNG, WebP. Maximum size 5 MB",
+      "upload": "Upload New Profile Photo",
+      "camera": "Open your camera and take a new photo",
+      "takePhoto": "Take Photo",
+      "capture": "Capture",
+      "cancel": "Cancel",
+      "cropTitle": "Crop Photo",
+      "crop": "Crop",
+      "zoom": "Zoom",
+      "errors": {
+        "type": "Choose a JPEG, PNG or WebP image.",
+        "size": "The image is larger than 5 MB.",
+        "camera": "We could not open your camera. Check the browser permission.",
+        "upload": "We could not upload your photo. Please try again."
+      }
+    },
+    "premium": {
+      "title": "Premium Services",
+      "subtitle": "Feature your profile or projects on the homepage and get seen by more people",
+      "profileCta": "Feature My Profile",
+      "projectCta": "Feature A Project",
+      "mine": "My promotions",
+      "none": "You have not featured anything yet.",
+      "yourProfile": "Your profile",
+      "until": "Until {date}",
+      "active": "Active",
+      "ended": "Ended"
+    }
+  },
+  "Escrow": {
+    "title": "Payment protection",
+    "subtitle": "The client pays into escrow milestone by milestone; money is released when the work is approved.",
+    "statuses": {
+      "awaiting_funding": "Awaiting funding",
+      "active": "Active",
+      "completed": "Completed"
+    },
+    "waitingForClient": "The client has not set up payment protection yet. You will be notified when the first milestone is funded.",
+    "cancelEscrow": "Cancel payment protection",
+    "failed": "Something went wrong. Please try again.",
+    "close": "Close",
+    "cancel": "Cancel",
+    "tryAgain": "Try Again",
+    "summary": {
+      "total": "Total",
+      "held": "In escrow",
+      "released": "Released",
+      "refunded": "Refunded",
+      "progress": "Paid out"
+    },
+    "setup": {
+      "intro": "Split the agreed price ({total}) into milestones. Nothing is charged until you fund a milestone.",
+      "milestone": "Milestone {number}",
+      "titlePlaceholder": "e.g. Design mockups",
+      "amount": "Amount",
+      "dueDate": "Due date",
+      "remove": "Remove milestone",
+      "add": "Add milestone",
+      "sum": "{sum} of {total}",
+      "submit": "Set up payment protection",
+      "titleRequired": "Name the milestone.",
+      "amountRequired": "Enter an amount.",
+      "failed": "Could not set up payment protection."
+    },
+    "milestones": {
+      "title": "Milestones",
+      "name": "Milestone",
+      "amount": "Amount",
+      "share": "Share",
+      "due": "Due",
+      "status": "Status",
+      "actions": "Actions",
+      "statuses": {
+        "pending": "Awaiting payment",
+        "funded": "In progress",
+        "submitted": "Delivered",
+        "disputed": "In dispute",
+        "released": "Released",
+        "refunded": "Refunded"
+      },
+      "fund": "Fund",
+      "fundAll": "Fund all ({amount})",
+      "approve": "Approve & release",
+      "requestChanges": "Request changes",
+      "deliver": "Deliver work",
+      "dispute": "Open dispute",
+      "viewDispute": "View dispute",
+      "delivered": "Delivery note: {note}",
+      "changes": "Changes requested: {note}",
+      "funded": "The milestone was paid into escrow. The freelancer can start working.",
+      "approveConfirm": "Release {amount} for \"{milestone}\"? The money goes to the freelancer and cannot be taken back.",
+      "deliverTitle": "Deliver \"{milestone}\"",
+      "deliverNote": "What did you deliver? (optional)",
+      "changesTitle": "Request changes on \"{milestone}\"",
+      "changesNote": "What needs to change?"
+    },
+    "split": {
+      "title": "Payout split",
+      "intro": "Every team member confirms their share before payments can be released.",
+      "approvedAll": "Every team member approved their share.",
+      "member": "Member",
+      "share": "Share",
+      "amount": "Amount",
+      "status": "Status",
+      "lead": "Team lead",
+      "statuses": {
+        "pending": "Waiting",
+        "approved": "Approved",
+        "objected": "Objected"
+      },
+      "objectedTitle": "Payments are on hold",
+      "objectedBy": "{name}: {note}",
+      "objectedHelp": "Talk it through in the group chat. Once everyone approves, payments can be released.",
+      "approve": "Approve my share",
+      "object": "Object",
+      "objectTitle": "Object to the payout split",
+      "objectNote": "Why do you object?",
+      "cancel": "Cancel",
+      "failed": "Something went wrong. Please try again.",
+      "blocked": "Payments can be released once every team member approves the payout split."
+    },
+    "tip": {
+      "title": "Send a tip",
+      "intro": "Happy with the work? Thank {name} with a tip on top of the price. No fee is taken.",
+      "team": "the team",
+      "custom": "Other amount",
+      "note": "Message (optional)",
+      "notePlaceholder": "Thanks for the great work!",
+      "amount": "Tip",
+      "fee": "Platform fee",
+      "receives": "They receive",
+      "send": "Send tip",
+      "for": "For",
+      "sent": "Tip of {amount}",
+      "success": "Your tip of {amount} was sent to {name}. Thank you!",
+      "close": "Close",
+      "tryAgain": "Try Again"
+    },
+    "dispute": {
+      "title": "Open a dispute on \"{milestone}\"",
+      "reason": "Reason",
+      "description": "What happened?",
+      "placeholder": "Describe the problem in detail (at least 20 characters)",
+      "submit": "Open dispute",
+      "cancel": "Cancel",
+      "failed": "Could not open the dispute.",
+      "warning": "The milestone is frozen until the dispute is settled by our team. Try to solve it in the chat first.",
+      "reasons": {
+        "not_delivered": "Work not delivered",
+        "quality": "Quality problems",
+        "not_as_described": "Not as described",
+        "no_response": "No response",
+        "payment": "Payment problem",
+        "other": "Other"
+      }
+    },
+    "overview": {
+      "title": "Payment protection",
+      "subtitle": "Every project you pay for or are paid on",
+      "youPay": "You pay",
+      "youArePaid": "Paid by {name}",
+      "milestones": "{count, plural, one {# milestone} other {# milestones}}",
+      "empty": "No payment protection yet. It is set up when an offer is accepted."
+    }
+  },
+  "Verification": {
+    "title": "Trust & verification",
+    "subtitle": "Verified accounts get more trust, more work and can withdraw money",
+    "level": "Verification level",
+    "score": "{score} of {total} completed",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "added": "Added",
+    "notAdded": "Not added",
+    "add": "Add",
+    "kycStatus": {
+      "none": "Not submitted",
+      "pending": "Under review",
+      "approved": "Verified",
+      "rejected": "Rejected"
+    },
+    "checks": {
+      "email": {
+        "title": "Email address",
+        "text": "Confirmed with a code sent to your email"
+      },
+      "phone": {
+        "title": "Mobile number",
+        "text": "Confirmed with a code sent to your phone"
+      },
+      "identity": {
+        "title": "Identity document",
+        "text": "Needed to withdraw money from your wallet"
+      },
+      "payment": {
+        "title": "Payment method",
+        "text": "A saved card or PayPal account"
+      }
+    },
+    "identity": {
+      "title": "Identity verification",
+      "subtitle": "Upload an official document and a selfie holding it. Our team reviews it within 2 working days.",
+      "approved": "Your identity is verified. You can withdraw money from your wallet.",
+      "pending": "Your documents are being reviewed",
+      "submitted": "{document} {number}, sent on {date}. We will notify you when it is reviewed.",
+      "rejected": "Your last submission was rejected"
+    },
+    "form": {
+      "documentType": "Document type",
+      "documents": {
+        "national_id": "National ID",
+        "passport": "Passport",
+        "driver_license": "Driver's license"
+      },
+      "documentNumber": "Document number",
+      "fullName": "Full name",
+      "fullNameHint": "Exactly as written on the document",
+      "dateOfBirth": "Date of birth",
+      "front": "Front of the document",
+      "back": "Back of the document",
+      "selfie": "Selfie holding the document",
+      "fileHint": "Photo or PDF, up to 10 MB",
+      "selfieHint": "Photo, up to 10 MB",
+      "privacy": "Your documents are stored securely and only seen by our verification team.",
+      "submit": "Submit for review",
+      "failed": "Could not submit your documents. Please try again.",
+      "errors": {
+        "size": "The file is larger than 10 MB.",
+        "documentNumber": "Enter the document number.",
+        "fullName": "Enter your full name.",
+        "dateOfBirth": "Enter your date of birth.",
+        "adult": "You must be at least 18 years old.",
+        "front": "Upload the front of the document.",
+        "selfie": "Upload a selfie holding the document."
+      }
+    }
+  },
+  "Disputes": {
+    "home": "Home",
+    "title": "Disputes",
+    "subtitle": "Cases on milestones of your projects",
+    "empty": "You have no disputes. Disputes can be opened on a funded milestone from the project page.",
+    "openedOn": "Opened {date} by {name}",
+    "statuses": {
+      "open": "Open",
+      "under_review": "Under review",
+      "resolved": "Resolved",
+      "withdrawn": "Withdrawn"
+    },
+    "steps": {
+      "open": "Opened",
+      "under_review": "Admin review",
+      "resolved": "Settled"
+    },
+    "reasons": {
+      "not_delivered": "Work not delivered",
+      "quality": "Quality problems",
+      "not_as_described": "Not as described",
+      "no_response": "No response",
+      "payment": "Payment problem",
+      "other": "Other"
+    },
+    "resolutions": {
+      "client_refund": "Settled: the client was refunded in full.",
+      "freelancer_payout": "Settled: the freelancer was paid in full.",
+      "split": "Settled: {percent}% back to the client, the rest to the freelancer."
+    },
+    "case": {
+      "title": "Dispute case",
+      "number": "Case number",
+      "amount": "Amount",
+      "openedBy": "Opened by",
+      "against": "Against",
+      "progress": "Case progress",
+      "milestone": "Milestone",
+      "viewProject": "View project",
+      "reason": "Reason",
+      "description": "What happened",
+      "timeline": "Case timeline",
+      "admin": "Motamakin team",
+      "placeholder": "Write a message to the case",
+      "attach": "Attach evidence",
+      "removeFile": "Remove file",
+      "send": "Send",
+      "evidenceHint": "Screenshots, documents or archives up to 10 MB. Both sides and our team can see them.",
+      "closed": "This case is closed.",
+      "failed": "Something went wrong. Please try again.",
+      "withdraw": "Withdraw dispute",
+      "concede": "Agree with the other side",
+      "keep": "Keep the case open",
+      "withdrawConfirm": "Withdraw this dispute? The milestone becomes active again.",
+      "concedeConfirm": "Agree with the other side? The case is settled right away in their favour and the money moves accordingly."
+    }
+  },
+  "PublicProfile": {
+    "home": "Home",
+    "personalInfo": "Personal information",
+    "rating": "Rated {rating} out of 5",
+    "online": "Online now",
+    "lastSeen": "Last seen {date}",
+    "memberSince": "Member since {date}",
+    "edit": "Edit my profile",
+    "verifications": "Verifications",
+    "verified": {
+      "identity": "Identity verified",
+      "email": "Email verified",
+      "phone": "Phone verified"
+    },
+    "skills": "Skills",
+    "languages": "Languages",
+    "levels": {
+      "native": "Native",
+      "fluent": "Fluent",
+      "good": "Good",
+      "basic": "Basic"
+    },
+    "report": "Report this profile",
+    "sections": "Profile sections",
+    "tabs": {
+      "overview": "Overview",
+      "portfolio": "Portfolio",
+      "reviews": "Reviews",
+      "channels": "Social accounts",
+      "projects": "Projects"
+    },
+    "statistics": "Statistics",
+    "stats": {
+      "completedJobs": "Completed jobs",
+      "ongoingJobs": "Ongoing jobs",
+      "reviewsCount": "Reviews",
+      "rating": "Rating",
+      "postedProjects": "Posted projects",
+      "completedProjects": "Completed projects"
+    },
+    "about": "About",
+    "noBio": "No description yet.",
+    "experience": "Experience",
+    "education": "Education",
+    "certificates": "Certificates",
+    "present": "Present",
+    "viewCertificate": "View certificate",
+    "latestReviews": "Latest reviews",
+    "seeAll": "See all",
+    "reviewsCount": "{count, plural, =0 {No reviews yet} one {# review} other {# reviews}}",
+    "noReviews": "No reviews yet.",
+    "channels": "Social media accounts",
+    "followers": "{count} followers",
+    "engagement": "{rate}% engagement",
+    "noChannels": "No social accounts added yet.",
+    "platforms": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "youtube": "YouTube",
+      "tiktok": "TikTok",
+      "snapchat": "Snapchat",
+      "x": "X",
+      "pinterest": "Pinterest",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "linkedin": "LinkedIn"
+    },
+    "openProjects": "Open projects",
+    "noProjects": "No open projects right now.",
+    "portfolio": {
+      "empty": "No portfolio items yet.",
+      "visit": "Visit project"
+    },
+    "notVerified": {
+      "identity": "Identity not verified",
+      "email": "Email not verified",
+      "phone": "Phone not verified"
+    },
+    "medals": "Medals"
+  },
+  "ProfileEditor": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "choose": "Choose",
+    "required": "This field is required.",
+    "failed": "Could not save. Please try again.",
+    "skills": {
+      "title": "Skills",
+      "placeholder": "Type a skill and press Enter",
+      "remove": "Remove {skill}"
+    },
+    "languages": {
+      "title": "Languages",
+      "empty": "Add the languages you work in.",
+      "name": "Language",
+      "level": "Level"
+    },
+    "experience": {
+      "title": "Experience",
+      "empty": "Add your work experience.",
+      "role": "Job title",
+      "company": "Company",
+      "from": "From",
+      "to": "To (empty if current)",
+      "description": "What you did"
+    },
+    "education": {
+      "title": "Education",
+      "empty": "Add your education.",
+      "school": "School or university",
+      "degree": "Degree",
+      "from": "From (year)",
+      "to": "To (year)"
+    },
+    "certificates": {
+      "title": "Certificates",
+      "empty": "Add certificates that prove your skills.",
+      "name": "Certificate",
+      "issuer": "Issued by",
+      "year": "Year",
+      "url": "Link to certificate"
+    },
+    "channels": {
+      "title": "Social media accounts",
+      "empty": "Add the accounts you publish on and their audience.",
+      "platform": "Platform",
+      "handle": "Username",
+      "followers": "Followers",
+      "engagement": "Engagement rate (%)",
+      "url": "Profile link"
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "empty": "Show your best work: add images of projects you delivered.",
+      "add": "Add work",
+      "addTitle": "Add to portfolio",
+      "editTitle": "Edit portfolio item",
+      "edit": "Edit",
+      "delete": "Delete",
+      "pickImage": "Choose an image (JPEG, PNG or WebP, up to 8 MB)",
+      "itemTitle": "Title",
+      "description": "Description",
+      "link": "Link",
+      "save": "Save",
+      "cancel": "Cancel",
+      "titleRequired": "Enter a title.",
+      "imageRequired": "Choose an image.",
+      "imageInvalid": "Choose a JPEG, PNG or WebP image up to 8 MB.",
+      "failed": "Could not save. Please try again."
+    },
+    "endBeforeStart": "The end must be after the start.",
+    "yearInvalid": "Enter a year between 1950 and 2099."
+  },
+  "Reports": {
+    "title": "My reports",
+    "subtitle": "Content you reported and what our team decided",
+    "date": "Date",
+    "content": "Content",
+    "reason": "Reason",
+    "status": "Status",
+    "empty": "You have not reported anything.",
+    "statuses": {
+      "open": "Under review",
+      "actioned": "Action taken",
+      "dismissed": "Dismissed"
+    },
+    "targets": {
+      "user": "Profile",
+      "project": "Project",
+      "portfolio": "Portfolio item",
+      "review": "Review"
+    },
+    "modal": {
+      "trigger": "Report",
+      "title": "Report This Content",
+      "subtitle": "Help us keep Motamakin safe. Tell us what is wrong.",
+      "reason": "Reason for reporting",
+      "reasonRequired": "Choose a reason.",
+      "details": "Details",
+      "detailsPlaceholder": "Tell us more (required for 'Other')",
+      "detailsRequired": "Describe the problem (at least 10 characters).",
+      "submit": "Submit Report",
+      "failed": "Could not send the report.",
+      "sent": "Your report has been submitted successfully. Our team will review it.",
+      "already": "You already reported this. Our team is looking into it.",
+      "myReports": "My Reports",
+      "close": "Close",
+      "reasons": {
+        "spam": "Spam or advertising",
+        "fake": "Fake or misleading",
+        "inappropriate": "Inappropriate content",
+        "copyright": "Copyright violation",
+        "scam": "Fraud or scam",
+        "other": "Other"
+      }
+    }
+  },
+  "Reviews": {
+    "title": "Reviews",
+    "prompt": "The project is complete. How was working with {name}?",
+    "yourRating": "Your rating",
+    "stars": "{count, plural, one {# star} other {# stars}}",
+    "comment": "Your review",
+    "commentPlaceholder": "Share your experience (optional)",
+    "submit": "Submit Review",
+    "ratingRequired": "Choose a rating.",
+    "failed": "Could not send your review."
+  },
+  "Notifications": {
+    "home": "Home",
+    "title": "Notifications",
+    "subtitle": "Everything that happened on your projects, payments and account",
+    "unreadOnly": "Unread only",
+    "markAllRead": "Mark all as read",
+    "groups": {
+      "label": "Notification types",
+      "all": "All",
+      "messages": "Messages",
+      "proposals": "Offers & teams",
+      "projects": "Projects & milestones",
+      "payments": "Payments",
+      "disputes": "Disputes",
+      "account": "Account",
+      "rewards": "Rewards"
+    },
+    "empty": "No notifications here yet.",
+    "emptyUnread": "You're all caught up!",
+    "failed": "Could not load notifications. Please try again.",
+    "unread": "Unread",
+    "loading": "Loading...",
+    "loadMore": "Load more",
+    "settingsHint": "Choose which notifications are also sent by email in <link>Email & Notification settings</link>."
+  },
+  "Errors": {
+    "home": "Back To Homepage",
+    "search": "Search Motamakin",
+    "support": "Contact Support",
+    "retry": "Try Again",
+    "reference": "Error reference: {digest}",
+    "notFound": {
+      "title": "Page not found",
+      "message": "The page you are looking for does not exist or was moved. Check the address or go back to the homepage."
+    },
+    "server": {
+      "title": "Something went wrong",
+      "message": "We could not load this page because of a problem on our side. Please try again in a moment."
+    },
+    "forbidden": {
+      "title": "Access denied",
+      "message": "You do not have permission to view this page. If you think this is a mistake, contact our support team."
+    }
+  },
+  "Rewards": {
+    "countdown": {
+      "label": "{days} days, {hours} hours, {minutes} minutes and {seconds} seconds left",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    },
+    "points": {
+      "title": "Points & gifts",
+      "subtitle": "Earn points as you use Motamakin and spend them on prize-draw tickets",
+      "balance": "Your points",
+      "howToEarn": "How to earn points",
+      "once": "(once)",
+      "each": "(each time)",
+      "done": "Done",
+      "drawStartsIn": "The prize draw begins within",
+      "joinDraw": "Join the draw ({cost} points per ticket)",
+      "history": "Points history",
+      "date": "Date",
+      "reason": "Reason",
+      "points": "Points",
+      "empty": "No points yet. Complete the steps above to start earning."
+    },
+    "medals": {
+      "title": "Medals system",
+      "subtitle": "Medals show your achievements on your public profile",
+      "myMedals": "My medals ({count} of {total})",
+      "none": "You have not earned a medal yet.",
+      "explain": "Medals are earned automatically as you reach each goal. They appear on your public profile and help clients trust you.",
+      "earnedOn": "Earned on {date}"
+    },
+    "invite": {
+      "title": "Invite a friend",
+      "subtitle": "Share your link. Friends who join earn you points, and you earn a share of our fee when they get paid.",
+      "yourLink": "Your invite link",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "yourCode": "Your invite code:",
+      "shareOn": "Share on",
+      "email": "Email",
+      "shareTitle": "Join me on Motamakin",
+      "shareMessage": "Join me on Motamakin, the marketplace for freelancers and influencers: {link}",
+      "steps": {
+        "step1": "Share your link with friends.",
+        "step2": "They sign up and verify their account: you get 25 points.",
+        "step3": "When they get paid on a project, you earn {percent}% of our fee."
+      },
+      "dashboard": "Referral dashboard",
+      "stats": {
+        "visits": "Link visits",
+        "signups": "Sign-ups",
+        "qualified": "Qualified",
+        "earnings": "Earnings",
+        "conversion": "Conversion"
+      },
+      "tier": "Your tier:",
+      "commission": "{percent}% commission",
+      "tierProgress": "Progress to the next tier",
+      "nextTier": "{count, plural, one {# more qualified referral} other {# more qualified referrals}} to reach {tier} ({percent}%)",
+      "tiers": {
+        "bronze": "Bronze",
+        "silver": "Silver",
+        "gold": "Gold"
+      },
+      "fromReferrals": "from {count} referrals",
+      "monthly": "Earnings, last 6 months",
+      "referrals": "People you invited",
+      "joined": "Joined {date}",
+      "statuses": {
+        "qualified": "Qualified",
+        "joined": "Joined",
+        "pending": "Not verified"
+      },
+      "noReferrals": "Nobody joined with your link yet. Share it to start earning.",
+      "earnings": "Commission history"
+    },
+    "draw": {
+      "home": "Home",
+      "title": "Gifts & prize draw",
+      "subtitle": "Spend your points on tickets: the more tickets, the better your chances",
+      "timeLeft": "The draw begins within",
+      "drawnOn": "The draw took place on",
+      "startsSoon": "Tickets go on sale within",
+      "drawDate": "Draw date: {date}",
+      "yourPoints": "Your points",
+      "pointsValue": "{points} points",
+      "yourTickets": "Your tickets",
+      "yourChance": "Your chance",
+      "fewer": "Fewer tickets",
+      "more": "More tickets",
+      "buy": "Buy tickets ({cost} points)",
+      "maxReached": "You hold the maximum number of tickets for this draw.",
+      "notEnough": "Not enough points. <link>See how to earn more</link>.",
+      "failed": "Something went wrong. Please try again.",
+      "loginToPlay": "Log in to join the draw with your points.",
+      "login": "Login",
+      "ticketCost": "Ticket price",
+      "totalTickets": "Tickets sold",
+      "players": "Players",
+      "limit": "Tickets per member",
+      "noLimit": "No limit",
+      "youWon": "Congratulations! You won prize #{rank}",
+      "claim": "Claim my prize",
+      "claimedWallet": "Your prize was added to your wallet.",
+      "claimedDelivery": "We received your address. Your prize is on its way.",
+      "prizes": "Prizes of this draw",
+      "rank": "Prize #{rank}",
+      "worth": "Worth {value}",
+      "bought": "{count, plural, one {You bought # ticket} other {You bought # tickets}}. Good luck!",
+      "close": "Close",
+      "claimTitle": "Claim your prize",
+      "claimCash": "The cash prize will be added to your wallet right away.",
+      "toWallet": "Add to my wallet",
+      "claimItem": "Where should we send your prize?",
+      "ship": "Send my prize",
+      "address": {
+        "name": "Full name",
+        "phone": "Phone number",
+        "address": "Address",
+        "city": "City",
+        "country": "Country"
+      },
+      "noDraw": "There is no prize draw at the moment. Keep collecting points for the next one!",
+      "howItWorks": "How the draw works",
+      "steps": {
+        "earn": {
+          "title": "Earn points",
+          "text": "Complete your profile, finish projects and invite friends."
+        },
+        "buy": {
+          "title": "Buy tickets",
+          "text": "Each ticket costs points; buy as many as allowed."
+        },
+        "wait": {
+          "title": "Wait for the draw",
+          "text": "Winners are drawn automatically at the announced time."
+        },
+        "draw": {
+          "title": "Fair draw",
+          "text": "More tickets mean better chances; each member can win one prize."
+        },
+        "claim": {
+          "title": "Claim the prize",
+          "text": "Cash goes to your wallet; items are shipped to you."
+        }
+      },
+      "history": "Previous winners",
+      "historyStats": "{players} players, {tickets} tickets",
+      "noWinners": "No winners: nobody joined this draw.",
+      "noHistory": "No draws yet."
     }
   }
 }

@@ -5,10 +5,11 @@ import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import { FiSun } from "react-icons/fi";
 import { useSyncExternalStore } from "react";
+import { savePreference } from "./preferences";
 
 const subscribe = () => () => {};
 
-export function ThemeToggle() {
+export function ThemeToggle({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header");
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
@@ -19,7 +20,11 @@ export function ThemeToggle() {
       type="button"
       aria-label={t("toggleTheme")}
       aria-pressed={isDark}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={() => {
+        const theme = isDark ? "light" : "dark";
+        setTheme(theme);
+        savePreference(signedIn, { theme });
+      }}
       className="flex size-5 items-center justify-center"
     >
       {isDark ? (

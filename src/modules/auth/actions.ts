@@ -18,6 +18,18 @@ export async function createSession(token: string) {
 }
 
 export async function deleteSession() {
-  (await cookies()).delete(SESSION_COOKIE);
+  const store = await cookies();
+  const token = store.get(SESSION_COOKIE)?.value;
+  const apiUrl = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
+
+  if (token && apiUrl) {
+    await fetch(`${apiUrl}/auth/logout`, {
+      method: "POST",
+      headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    }).catch(() => undefined);
+  }
+
+  store.delete(SESSION_COOKIE);
   revalidatePath("/", "layout");
 }

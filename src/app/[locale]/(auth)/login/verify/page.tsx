@@ -20,7 +20,12 @@ export default async function LoginVerifyPage({ params, searchParams }: PageProp
   return (
     <AuthShell title={t("title")} subtitle={t("subtitle")}>
       <AuthCard>
-        <LoginVerification method={method} target={target} next={safeNextPath(query.next)} />
+        <LoginVerification
+          method={method}
+          target={target}
+          next={safeNextPath(query.next)}
+          twoFactor={typeof query.tf === "string" && typeof query.hint === "string" ? { method: query.tf, hint: query.hint } : undefined}
+        />
       </AuthCard>
     </AuthShell>
   );

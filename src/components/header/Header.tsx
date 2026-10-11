@@ -1,84 +1,108 @@
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/Badge";
 import { Link } from "@/i18n/navigation";
+import { formatAmount } from "@/lib/format";
 import { AccountLinks } from "./AccountLinks";
+import { AccountMenu } from "./AccountMenu";
+import { CategoriesMenu } from "./CategoriesMenu";
 import { CurrencySwitcher } from "./CurrencySwitcher";
+import type { HeaderData } from "./data";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileMenu } from "./MobileMenu";
 import { NAV_ITEMS } from "./nav";
+import { NotificationsMenu } from "./NotificationsMenu";
+import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
 
 function Divider() {
   return <span className="h-4 w-[0.5px] bg-foreground" aria-hidden />;
 }
 
-function SelectField({ name, placeholder, options, className }: {
-  name: string;
-  placeholder: string;
-  options: { value: string; label: string }[];
-  className: string;
-}) {
+function Pill({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
-    <label className={`relative hidden h-[45px] items-center rounded-[5px] border border-border bg-surface xl:flex ${className}`}>
-      <select
-        name={name}
-        defaultValue=""
-        aria-label={placeholder}
-        className="peer h-full w-full cursor-pointer appearance-none bg-transparent ps-2.5 pe-9 text-base outline-none has-[option[value='']:checked]:text-placeholder"
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value} className="text-foreground">
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <Image
-        src="/images/arrow-down-outline.svg"
-        alt=""
-        width={20}
-        height={20}
-        className="pointer-events-none absolute end-2.5 dark:invert"
-      />
-    </label>
+    <span
+      title={label}
+      className="flex items-center gap-1 rounded-[7px] border border-brand bg-surface px-1 py-[9px] text-base leading-none font-medium text-muted"
+    >
+      <Image src={icon} alt={label} width={16} height={16} />
+      {value}
+    </span>
   );
 }
 
-export function Header({ signedIn }: { signedIn: boolean }) {
+export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData }) {
   const t = useTranslations("Header");
+  const locale = useLocale();
+  const { summary } = data;
+  const currency = summary?.user.currency ?? "USD";
 
   return (
     <header className="relative z-20 bg-surface drop-shadow-[0_4px_2px_rgba(213,213,213,0.25)] dark:drop-shadow-none">
       <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-4 dark:bg-none">
         <div className="page-container flex items-center justify-between gap-4">
-          <Link href="/" aria-label="Motamakin" className="flex h-[51px] flex-col justify-end gap-1.5">
-            <Image src="/images/logo.svg" alt="Motamakin" width={169.691} height={48} priority />
-            <span dir="rtl" className="text-end text-sm leading-none font-medium tracking-[-0.154px]">
-              مـــتـــــمــــكــن.
-            </span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/" aria-label="Motamakin" className="flex h-[51px] flex-col justify-end gap-1.5">
+              <Image src="/images/logo.svg" alt="Motamakin" width={169.691} height={48} priority />
+              <span dir="rtl" className="text-end text-sm leading-none font-medium tracking-[-0.154px]">
+                مـــتـــــمــــكــن.
+              </span>
+            </Link>
+            {summary && (
+              <div className="hidden items-center gap-2 md:flex">
+                <Pill
+                  icon="/images/coin.svg"
+                  label={t("balance")}
+                  value={formatAmount(summary.wallet.balance, summary.wallet.currency, locale)}
+                />
+                <Pill icon="/images/wallet.svg" label={t("points")} value={String(summary.points)} />
+              </div>
+            )}
+          </div>
 
           <div className="flex items-center gap-2.5">
+            {!signedIn && (
+              <div className="hidden items-center gap-2.5 lg:flex">
+                <AccountLinks signedIn={false} />
+                <Divider />
+              </div>
+            )}
             <div className="hidden items-center gap-2.5 lg:flex">
-              <AccountLinks signedIn={signedIn} />
+              <LocaleSwitcher signedIn={signedIn} />
+              <Divider />
+              <CurrencySwitcher currencies={data.currencies} initial={currency} signedIn={signedIn} />
+              <Divider />
+              <ThemeToggle signedIn={signedIn} />
               <Divider />
             </div>
-            <button type="button" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
-              <Image src="/images/notification.svg" alt="" width={20} height={20} className="dark:invert" />
-              <span className="hidden text-base lg:inline">{t("notification")}</span>
-            </button>
-            <div className="hidden items-center gap-2.5 lg:flex">
-              <Divider />
-              <LocaleSwitcher />
-              <Divider />
-              <CurrencySwitcher />
-              <Divider />
-              <ThemeToggle />
-              <Divider />
-            </div>
-            <MobileMenu signedIn={signedIn} />
+            {signedIn ? (
+              <>
+                <Link href="/messages" aria-label={t("account.messages")} className="relative flex items-center px-1 py-[7.5px]">
+                  <Image src="/images/messages.svg" alt="" width={20} height={20} className="dark:invert" />
+                  <Badge count={summary?.unreadMessages ?? 0} className="-top-1 start-3" />
+                </Link>
+                <Divider />
+                <NotificationsMenu unread={summary?.unreadNotifications ?? 0} />
+                <span className="hidden items-center gap-2.5 lg:flex">
+                  <Divider />
+                  <Link href="/favorites" aria-label={t("favorites")} className="flex items-center px-1 py-[7.5px]">
+                    <Image src="/images/heart.svg" alt="" width={20} height={20} className="dark:invert" />
+                  </Link>
+                  {summary && (
+                    <>
+                      <Divider />
+                      <AccountMenu user={summary.user} unreadMessages={summary.unreadMessages} />
+                    </>
+                  )}
+                </span>
+              </>
+            ) : (
+              <Link href="/login" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
+                <Image src="/images/notification.svg" alt="" width={20} height={20} className="dark:invert" />
+                <span className="hidden text-base lg:inline">{t("notification")}</span>
+              </Link>
+            )}
+            <MobileMenu signedIn={signedIn} currencies={data.currencies} currency={currency} />
           </div>
         </div>
       </div>
@@ -86,45 +110,15 @@ export function Header({ signedIn }: { signedIn: boolean }) {
       <div className="pt-2 pb-6">
         <div className="page-container flex flex-wrap items-stretch justify-between gap-3 lg:flex-nowrap">
           <div className="flex min-w-0 flex-1 items-stretch gap-3 lg:flex-none">
-            <button
-              type="button"
+            <Link
+              href="/services"
               aria-label={t("openMenu")}
               className="hidden shrink-0 items-center justify-center rounded-md bg-border p-3 lg:flex"
             >
               <Image src="/images/menu.svg" alt="" width={20} height={20} className="dark:invert" />
-            </button>
+            </Link>
 
-            <form role="search" action="/search" className="flex min-w-0 flex-1 gap-1 lg:flex-none">
-              <div className="flex h-[45px] min-w-0 flex-1 items-center gap-[15px] rounded-[5px] border border-border bg-surface px-2.5 lg:w-[320px] lg:flex-none xl:w-[480px]">
-                <button type="button" className="flex shrink-0 items-center gap-1 text-base font-medium whitespace-nowrap">
-                  {t("allServices")}
-                  <Image src="/images/arrow-down-dark.svg" alt="" width={20} height={20} className="dark:invert" />
-                </button>
-                <span className="h-[19px] w-px bg-border" aria-hidden />
-                <input
-                  name="q"
-                  type="search"
-                  placeholder={t("search")}
-                  className="min-w-0 flex-1 bg-transparent text-base outline-none"
-                />
-                <button type="submit" aria-label={t("search")} className="shrink-0">
-                  <Image src="/images/search.svg" alt="" width={20} height={20} />
-                </button>
-              </div>
-
-              <SelectField
-                name="country"
-                placeholder={t("country")}
-                className="w-[131px]"
-                options={(["sa", "eg", "ae"] as const).map((value) => ({ value, label: t(`countries.${value}`) }))}
-              />
-              <SelectField
-                name="city"
-                placeholder={t("city")}
-                className="w-[106px]"
-                options={(["riyadh", "jeddah", "cairo"] as const).map((value) => ({ value, label: t(`cities.${value}`) }))}
-              />
-            </form>
+            <SearchBar countries={data.countries} />
 
             <Link
               href="/search/advanced"
@@ -143,19 +137,22 @@ export function Header({ signedIn }: { signedIn: boolean }) {
         </div>
       </div>
 
-      <nav aria-label="Main" className="hidden h-[66px] items-center justify-center bg-nav lg:flex">
+      <nav aria-label="Main" className="relative hidden h-[66px] items-center justify-center bg-nav lg:flex">
         <ul className="flex items-center gap-3 px-4">
-          {NAV_ITEMS.map((item) => (
-            <li key={item.key}>
-              <Link
-                href={item.href}
-                className="flex h-[35px] items-center gap-2 px-4 py-2.5 text-base font-bold whitespace-nowrap text-white hover:opacity-85"
-              >
-                {t(`nav.${item.key}`)}
-                {"hasMenu" in item && <Image src="/images/arrow-down-white.svg" alt="" width={16} height={16} />}
-              </Link>
-            </li>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            "hasMenu" in item ? (
+              <CategoriesMenu key={item.key} categories={data.categories} />
+            ) : (
+              <li key={item.key}>
+                <Link
+                  href={item.href}
+                  className="flex h-[35px] items-center gap-2 px-4 py-2.5 text-base font-bold whitespace-nowrap text-white hover:opacity-85"
+                >
+                  {t(`nav.${item.key}`)}
+                </Link>
+              </li>
+            ),
+          )}
         </ul>
       </nav>
     </header>

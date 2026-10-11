@@ -30,14 +30,14 @@ The project is built module by module, starting from the pieces every page depen
 | --- | --- | --- |
 | 1. Foundation | Next.js setup, Tailwind, design tokens from Figma, light / dark mode, English / Arabic with RTL | Done |
 | 2. Layout | Header (top bar, search row, navigation) and footer (CTA banner, links, apps, legal) | Done |
-| 3. Auth | Signup, login, OTP verification, forgot / reset password, success and error states | Done (UI + mock API) |
+| 3. Auth | Signup, login, OTP verification, forgot / reset password, success and error states | Done (real API) |
 | 4. Placeholder pages | Every route without a page shows an "Under Construction" screen | Done |
-| 5. Backend connection | Replace mock responses with the real API, sessions, protected routes | Next |
-| 6. Post a project | Project wizard (individual / team), team & split shares, invitations, share negotiation | In progress (UI + mock data) |
+| 5. Backend connection | Real API everywhere, sessions, protected routes, homepage, header, messages | Done |
+| 6. Projects & teams | Post / edit projects and influencer requests, offers, my projects / offers, profile, teams & invitations, search, categories | Done (real API) |
 | 7. Project mode | Member exit, team dispute, dispute rules, release authority, team flow states, promotion | Planned |
 | 8. Marketplace | Services, categories, bidding, influencer requests | Planned |
-| 9. Account area | Profile, my projects, payments, points & gifts, notifications | Planned |
-| 10. Trust & support | Evaluation, disputes, account verification, customer support | Planned |
+| 9. Account area | Settings shell, payment methods, wallet (add balance, withdraw) — done; profile settings, password, 2FA, notifications, points & gifts — planned | In progress |
+| 10. Trust & support | Disputes and account verification — done; evaluation, customer support — planned | In progress |
 | 11. Admin dashboard | Overview, finance, users, disputes, projects, settings | Planned |
 
 The source of truth for all screens is the Figma file **"web متمكن فريلانسر انفلونسر"**. Each module is implemented to match its Figma frames, using the shared components and tokens described below.
@@ -80,10 +80,18 @@ Open http://localhost:3000. The home route redirects to `/signup`.
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `NEXT_PUBLIC_API_URL` | No | Backend base URL, e.g. `https://api.motamakin.com`. When empty, the auth service returns mock responses so the UI can be developed without a backend. |
+| `NEXT_PUBLIC_API_URL` | Yes | Backend base URL used by the browser, e.g. `http://localhost:8000/api`. |
+| `API_URL` | No | Backend base URL used by the Next.js server (logout). Defaults to `NEXT_PUBLIC_API_URL`. |
+| `NEXT_PUBLIC_PAYMENTS_SIMULATE` | No | `true` in development with the backend's fake gateway: deposits are completed with `POST /wallet/deposits/{id}/simulate` instead of redirecting to the provider's `checkoutUrl`. Never set it in production. |
 | `PHONE_AUTH_ENABLED` | No | Set to `true` to offer signup, login and password reset by mobile number. Off by default to avoid SMS OTP costs; only email is shown. |
 
-Create a `.env.local` file to set it locally.
+Copy `.env.example` to `.env.local` to use the local backend:
+
+```bash
+cp .env.example .env.local
+```
+
+The local backend (`motamken-back`, Laravel in Docker) runs on http://localhost:8000 and only accepts browser requests from http://localhost:3000, so run the frontend on port 3000. Emails with verification codes are caught by Mailpit at http://localhost:8025.
 
 ---
 
@@ -127,7 +135,7 @@ src/
     auth/
       components/             Auth screens and building blocks
       lib/validation.ts       Validation rules returning translation keys
-      services/auth.service.ts API client (real or mock)
+      services/auth.service.ts API client
       types.ts                Shared auth types
       index.ts                Public exports of the module
   proxy.ts                    Locale detection and routing (Next.js 16 proxy)
@@ -228,27 +236,48 @@ Defined in `modules/auth/lib/validation.ts`. Each rule returns a translation key
 
 ---
 
-## Projects module
+## Projects, offers, teams and profile
 
-Lives in `src/modules/projects`.
+Everything below reads from and writes to the backend; there is no mock data left in the frontend.
 
-| Route | Screen |
-| --- | --- |
-| `/projects/new` | Post a project wizard |
-| `/projects/invitations/[id]` | Team invitation for an invited member (accept, decline, negotiate share) |
+| Route | Screen | Endpoints |
+| --- | --- | --- |
+| `/projects` | Browse open projects with search, type, category, location, budget and sort filters (kept in the URL) | `GET /projects` |
+| `/categories`, `/categories/[slug]` | All categories, and the open work of one category | `GET /categories`, `GET /projects?category=` |
+| `/search` | Advanced search: "Search By" sidebar (all, projects, influencer requests, influencers, freelancers), filters per type (text, section, budget range, skills with suggestions, minimum rating, platform, country, city, sort), result count, list / grid view, empty state with "Browse Services" / "Edit Search". `/search/advanced` redirects here | `GET /search`, `GET /search/skills` |
+| `/notifications` | All notifications with group tabs and unread counts, unread-only switch, mark one / all as read, load more; the header dropdown links here. Links are built by `lib/notifications.ts` | `GET /notifications?group=&unread=`, `POST /notifications/{id}/read`, `POST /notifications/read-all` |
+| `/settings/points` | Points balance, how to earn (done / each time), current draw countdown, points history | `GET /me/points`, `GET /draws/current` |
+| `/settings/medals` | Earned medals and progress towards the others (also shown on public profiles) | `GET /me/medals` |
+| `/settings/invite` | Invite link and code (copy, WhatsApp / X / Facebook / Telegram / email), steps, referral dashboard (visits, sign-ups, qualified, earnings, conversion), tier progress, monthly earnings, invitees and commissions | `GET /me/affiliate`, `/referrals`, `/earnings` |
+| `/gifts` | Prize draw: countdown, my points / tickets / chance, buy tickets, prizes, win banner and claim (wallet or delivery address), how it works, previous winners | `GET /draws/current`, `POST /draws/{id}/entries`, `POST /draw-winners/{id}/claim`, `GET /draws/history` |
+| `/signup?ref=CODE` | Invite links: the code is remembered for 30 days, the visit is counted once per session and the code is sent with the sign-up | `POST /affiliate/visits`, `POST /auth/signup` (`referralCode`) |
+| Error pages | `not-found.tsx` (404), `error.tsx` (500 with retry), `forbidden.tsx` (403, via `forbidden()`; needs `experimental.authInterrupts` in `next.config.ts`) | — |
+| `/projects/new`, `/influencers/new` | 3-step wizard: details → budget & location → review & publish | `POST /projects` |
+| `/projects/[id]` | Project page. Owner: offers with accept / decline / message, edit, close, complete, delete. Others: send, edit or withdraw an offer (optionally as a team) | `GET /projects/{id}`, `GET /projects/{id}/proposals`, `POST /projects/{id}/proposals`, `PATCH /proposals/{id}`, `POST /proposals/{id}/(accept\|decline\|withdraw)`, `POST /projects/{id}/(close\|complete)`, `DELETE /projects/{id}` |
+| `/projects/[id]/edit` | Same wizard, prefilled | `PATCH /projects/{id}` |
+| `/my-projects`, `/offers` | My projects and my offers, filtered by status | `GET /me/projects`, `GET /me/proposals` |
+| `/profile` | Add / edit the freelancer or influencer profile needed to send offers | `GET /me/profile`, `PUT /me/profile` |
+| `/teams`, `/teams/[id]` | Create a team, invite freelancers (live search), set roles and shares, publish, unpublish, disband, leave; accept or decline invitations | `/teams/*`, `/me/team-invitations`, `/team-invitations/{id}/(accept\|decline)` |
+| `/projects/invitations/[id]` | A single team invitation | `GET /me/team-invitations` |
+| `/oauth/callback` | Finishes Google / Apple / X / Facebook login and stores the session | `POST /auth/oauth/exchange` |
+| `/settings` | Settings shell (`modules/settings`): sidebar with every account section; redirects to `/settings/payment` | — |
+| `/users/[id]` | Public profile: personal card (rating, location, online / last seen, hire, verification badges, skills, languages, report), tabs Overview (statistics, about, experience, education, certificates, latest reviews), Portfolio (gallery with lightbox and report), Reviews (paginated), Social accounts (influencers), Projects (open projects) | `GET /users/{id}`, `GET /users/{id}/reviews`, `POST /reports` |
+| `/profile` | Work profile form plus section editors: skills, languages, experience, education, certificates, social accounts (influencers) and portfolio with image upload | `PUT /me/profile`, `POST/PATCH/DELETE /me/portfolio` |
+| `/projects/[id]` → Reviews | After completion, the client and the hired freelancer rate each other (stars + comment) | `GET/POST /projects/{id}/reviews` |
+| `/settings/reports` | Content I reported, with status counts and decisions | `GET /me/reports` |
+| `/settings/profile` | Photo (upload / camera / crop, remove), first and last name, username, newsletter; email and phone shown with their verified state; "Changes saved successfully" screen | `PATCH /me`, `POST/DELETE /me/avatar` |
+| `/settings/notifications` | Which notification groups are also emailed (account & security always on) | `GET/PATCH /me/notification-settings` |
+| `/settings/password` | Change password with strength meter; other devices are logged out | `POST /me/password` |
+| `/settings/security` | Two-factor authentication by SMS or email (method → password → number / email → confirm → code → result), turn off with password, login devices with logout one / all others | `GET /me/security`, `POST /me/two-factor`, `/resend`, `/confirm`, `/disable`, `DELETE /me/sessions/{id}`, `POST /me/sessions/logout-others` |
+| `/settings/payment` | Saved cards / PayPal, add (validated card form) and remove with confirmation, preferred method, display currency | `GET/POST /me/payment-methods`, `POST /me/payment-methods/{id}/default`, `DELETE /me/payment-methods/{id}`, `PATCH /me/preferences` |
+| `/premium` and homepage "Add Your Profile" / "Add Your Project" | Feature a project (pick an open project → package) or the profile (current photo / upload / camera → crop → package), then the shared payment popup (`modules/payments/PayModal`: summary → My Balance or card → processing → result → quick feedback). My promotions list on `/premium` (`modules/promotions`) | `GET /me/projects?status=open`, `GET /promotions/packages`, `POST /me/avatar`, `POST /promotions`, `GET /me/promotions` |
+| `/projects/[id]` → Payment protection panel | Client and hired freelancer / team (`modules/escrow`): set up milestones (must add up to the accepted offer), summary cards + progress, fund one / all (shared PayModal), deliver with note, approve & release (confirmation), request changes, open dispute, team payout split approval / objection, tip after a release (5 / 10 / 15 % or custom, no fee), cancel while nothing is funded | `GET/POST /projects/{id}/escrow`, `/escrow/fund`, `/escrow/cancel`, `/escrow/split/(approve\|object)`, `/escrow/tip`, `POST /milestones/{id}/(fund\|submit\|approve\|request-changes\|dispute)` |
+| `/settings/escrow` | Every escrow the user pays for or is paid on, with totals and progress | `GET /me/escrows` |
+| `/settings/verification` | Trust checklist (email, phone, identity, payment method) and identity verification: document type / number / name / birth date, front, back and selfie uploads; pending, approved and rejected (with reason) states (`modules/verification`) | `GET/POST /me/kyc`, `GET /me/payment-methods` |
+| `/disputes`, `/disputes/[id]` | My disputes; case page with summary, status steps, decision, timeline (messages, system events, image / file evidence), composer with attachment, withdraw and concede with confirmation (`modules/disputes`). Opened from a milestone on the project page | `GET /disputes`, `GET /disputes/{id}`, `POST /disputes/{id}/messages`, `POST /disputes/{id}/(withdraw\|concede)`, `POST /milestones/{id}/dispute` |
+| `/settings/wallet` | Balances per currency, monthly income / spending chart, transactions (type filter, paginated), pending withdrawals (cancel), Add Balance and Withdraw flows with processing screen, result and quick feedback (`modules/wallet`) | `GET /wallet`, `/wallet/stats`, `/wallet/transactions`, `/wallet/withdrawals`, `POST /wallet/deposits`, `POST /wallet/withdrawals`, `POST /wallet/withdrawals/{id}/cancel`, `POST /feedback` |
 
-**Wizard steps**
-
-| Mode | Steps |
-| --- | --- |
-| Individual | Project details → Budget & duration → Publish |
-| Team | Project details → Budget & duration → Team & split → Publish |
-
-- Choosing a mode opens a confirmation modal explaining what changes (steps, escrow, chat, editing members).
-- The team step shows the members table with share controls, the total (must equal 100%), members waiting to accept (publishing is blocked until everyone accepts), split rules, and an invite form.
-- The negotiation modal lets an invited member propose a different share with a reason and shows the impact on the team total.
-
-Data is mocked in `modules/projects/lib/data.ts` until the projects API is available. Amounts are always shown in USD (`$1,440`).
+Validation errors from the backend (`errors`) are shown under the matching field; refusals with a `code` are handled where they matter (for example `profile_required` links to `/profile`).
 
 ## Localization
 
@@ -294,19 +323,39 @@ Custom utilities: `bg-gradient-brand`, `bg-gradient-orange`, `bg-gradient-streng
 
 ## Backend integration
 
-All API calls go through `src/modules/auth/services/auth.service.ts`. When `NEXT_PUBLIC_API_URL` is set, requests are sent as `POST` JSON with `credentials: "include"` and an `Accept-Language` header matching the active locale. Error responses should return `{ "message": "..." }`, which is shown to the user.
+All API calls go through `src/modules/auth/services/auth.service.ts`. When `NEXT_PUBLIC_API_URL` is set, requests are sent as `POST` JSON with `Accept: application/json`, `credentials: "include"` and an `Accept-Language` header matching the active locale, so backend messages come back in the user's language. Error responses return `{ "message": "..." }` (and `errors` for validation), and the message is shown to the user.
 
 | Method | Endpoint | Body | Response |
 | --- | --- | --- | --- |
 | `signup` | `POST /auth/signup` | `method, firstName, lastName, username, email?, phone?, password, subscribe` | `{ target }` |
 | `login` | `POST /auth/login` | `method, identifier, password` | `{ accessToken?, otpRequired? }` |
-| `verifyOtp` | `POST /auth/otp/verify` | `purpose (signup \| login \| reset), method, target, code` | `{ token?, accessToken? }` |
+| `verifyOtp` | `POST /auth/otp/verify` | `purpose (signup \| login \| reset), method, target, code` | login: `{ accessToken, user }` · reset: `{ token }` |
 | `resendOtp` | `POST /auth/otp/resend` | `purpose, method, target` | `{ sent }` |
-| `requestPasswordReset` | `POST /auth/password/forgot` | `method, target` | `{ token? }` |
+| `requestPasswordReset` | `POST /auth/password/forgot` | `method, target` | `{ sent }` — a reset code is sent, then `/forgot-password/verify` |
 | `resetPassword` | `POST /auth/password/reset` | `token, password` | `{ success }` |
+| `logout` | `POST /auth/logout` | — (`Authorization: Bearer <accessToken>`) | `{ success }` — called by the `deleteSession` server action |
 | Social login | `GET /auth/oauth/{google\|apple\|x\|facebook}` | — | Redirect |
 
 Phone numbers are sent in E.164 format (e.g. `+966555555555`).
+
+### Calling the API from pages
+
+| Where | Helper | How the token is sent |
+| --- | --- | --- |
+| Server components | `apiGet` / `apiGetOrNull` in `src/lib/api/server.ts` | Read from the `motamakin_session` cookie |
+| Client components | `api` in `src/lib/api/client.ts` | Requests go to `/api/backend/*` (`src/app/api/backend/[...path]/route.ts`), which adds the token and forwards to `API_URL`. JSON and `multipart/form-data` both pass through. A `401` clears the session cookie. |
+
+Response types live in `src/lib/api/types.ts`.
+
+### Homepage, header and messages
+
+| Area | Endpoints used |
+| --- | --- |
+| Homepage `/` (`modules/home`) | `GET /home`; tabs and "Show All" use `GET /projects?type=&category=&page=&perPage=5` |
+| Header (`components/header`) | `GET /me/summary` (wallet, points, unread badges), `GET /currencies`, `GET /countries`, `GET /countries/{id}/cities`, `GET /categories`, `GET /notifications`, `POST /notifications/{id}/read`, `POST /notifications/read-all`, `PATCH /me/preferences` (language, currency, theme) |
+| Messages `/messages` (`modules/messages`) | `GET /conversations?sort=&q=`, `GET /conversations/{id}/messages` (`before` for older, `after` for polling every 4 s), `POST /conversations/{id}/read`, `POST /conversations/{id}/messages` (text, file, voice recorded with the mic), `POST /conversations` ("Hire Me") |
+
+`/messages?c=<id>` opens a conversation directly. `/messages` is a protected route.
 
 ### Session and protected pages
 
@@ -316,10 +365,12 @@ Phone numbers are sent in E.164 format (e.g. `+966555555555`).
 - The header shows **My account · Logout** when signed in, and **Join us or Login** otherwise.
 - Below the `lg` breakpoint the top bar shows only the logo, notifications and a burger (☰) button. The burger opens a side drawer (`components/header/MobileMenu.tsx`) with the main navigation, account links, language, currency and theme; the horizontal navigation bar is desktop only.
 - To protect a new section, add its pattern to `PROTECTED_PATHS`.
+- When the backend answers `401` to a server-side request made with a session (password changed, device logged out, token expired), `apiGet` redirects to `/api/session/expired`, which deletes the cookie and opens `/login`.
+- With two-factor authentication on, `POST /auth/login` returns `twoFactor: {method, target}`; the login page passes it to `/login/verify` (`tf`, `hint`) so the screen says where the code was sent.
 
 When `otpRequired` is `true`, the user is sent to `/login/verify`. For `purpose: reset`, `token` is the password reset token.
 
-**Mock mode** (no `NEXT_PUBLIC_API_URL`): every call succeeds after a short delay. Email login asks for a verification code, phone login signs in directly, and the OTP code `0000` simulates a wrong code.
+`NEXT_PUBLIC_API_URL` is required: there is no mock mode, every screen uses the backend.
 
 ---
 

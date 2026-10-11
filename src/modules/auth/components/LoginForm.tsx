@@ -46,9 +46,12 @@ export function LoginForm({ method, next }: { method: AuthMethod; next?: string 
     setSubmitting(true);
     try {
       const target = identifier.trim();
-      const { otpRequired, accessToken } = await authService.login({ method, identifier: target, password });
+      const { otpRequired, accessToken, twoFactor } = await authService.login({ method, identifier: target, password });
       if (otpRequired) {
-        router.push({ pathname: "/login/verify", query: { method, to: target, ...(next && { next }) } });
+        router.push({
+          pathname: "/login/verify",
+          query: { method, to: target, ...(next && { next }), ...(twoFactor && { tf: twoFactor.method, hint: twoFactor.target }) },
+        });
         return;
       }
       await createSession(accessToken ?? "");

@@ -1,5 +1,18 @@
-import { UnderConstruction } from "@/components/under-construction/UnderConstruction";
+import { useTranslations } from "next-intl";
+import { ErrorState } from "@/components/error/ErrorState";
+import { Button } from "@/components/ui/Button";
 
 export default function NotFound() {
-  return <UnderConstruction />;
+  const t = useTranslations("Errors");
+
+  return (
+    <ErrorState code="404" title={t("notFound.title")} message={t("notFound.message")}>
+      <Button href="/" variant="solid" font="button">
+        {t("home")}
+      </Button>
+      <Button href="/search" variant="outline" font="button">
+        {t("search")}
+      </Button>
+    </ErrorState>
+  );
 }

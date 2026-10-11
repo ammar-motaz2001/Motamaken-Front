@@ -29,7 +29,7 @@ const COLUMNS = [
       { key: "evaluation", href: "/evaluation-system" },
       { key: "disputes", href: "/disputes-system" },
       { key: "bidding", href: "/bidding-system" },
-      { key: "affiliate", href: "/affiliate-system" },
+      { key: "affiliate", href: "/settings/invite" },
     ],
   },
   {
@@ -39,7 +39,7 @@ const COLUMNS = [
       { key: "verification", href: "/account-verification" },
       { key: "siteFees", href: "/site-fees" },
       { key: "paymentMethod", href: "/payment-methods" },
-      { key: "points", href: "/points-and-gifts" },
+      { key: "points", href: "/gifts" },
     ],
   },
   {
@@ -146,7 +146,7 @@ export function Footer() {
                 {t("postProject")}
               </Link>
               <Link
-                href="/invite"
+                href="/settings/invite"
                 className="flex h-[42px] w-full max-w-[235px] items-center justify-center rounded-md border border-brand-border bg-surface font-button text-sm font-semibold hover:opacity-90"
               >
                 <span className="text-gradient-brand">{t("inviteFriend")}</span>

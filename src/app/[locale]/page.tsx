@@ -1,9 +1,15 @@
 import { cookies } from "next/headers";
-import { redirect } from "@/i18n/navigation";
-import { AFTER_LOGIN_PATH, SESSION_COOKIE } from "@/lib/session";
+import { setRequestLocale } from "next-intl/server";
+import { getSummary } from "@/lib/api/reference";
+import { apiGetOrNull } from "@/lib/api/server";
+import type { Home as HomeData } from "@/lib/api/types";
+import { SESSION_COOKIE } from "@/lib/session";
+import { HomePage } from "@/modules/home";
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
-  const { locale } = await params;
+  setRequestLocale((await params).locale);
   const signedIn = (await cookies()).has(SESSION_COOKIE);
-  redirect({ href: signedIn ? AFTER_LOGIN_PATH : "/signup", locale });
+  const [home, summary] = await Promise.all([apiGetOrNull<HomeData>("/home"), signedIn ? getSummary() : null]);
+
+  return <HomePage home={home} signedIn={signedIn} user={summary?.user ?? null} currency={summary?.wallet.currency ?? "USD"} />;
 }

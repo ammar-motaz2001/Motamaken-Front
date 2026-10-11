@@ -1,178 +1,298 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Link } from "@/i18n/navigation";
+import { Field } from "@/components/ui/Field";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Select } from "@/components/ui/Select";
 import { StatusIcon } from "@/components/ui/StatusIcon";
-import { INITIAL_MEMBERS, STEP_COUNT } from "../lib/data";
+import { dividerClasses, hintClasses, outlinedPanelClasses, panelClasses, sectionTitleClasses } from "@/components/ui/styles";
+import { TextArea } from "@/components/ui/TextArea";
+import { useCities } from "@/components/ui/useCities";
+import { useRouter } from "@/i18n/navigation";
+import { api } from "@/lib/api/client";
+import type { ApiError } from "@/lib/api/errors";
+import type { Category, Country, Currency, Project, ProjectType } from "@/lib/api/types";
+import { formatAmount } from "@/lib/format";
 import {
+  EMPTY_FORM,
   hasErrors,
-  isTeamReady,
-  validateBudget,
-  validateDetails,
-  type BudgetErrors,
-  type DetailsErrors,
-} from "../lib/validation";
-import type { ProjectBudget, ProjectDetails, ProjectMode, StepKey, TeamMember } from "../types";
-import { ConfirmModeModal } from "./ConfirmModeModal";
-import { StepBudget } from "./StepBudget";
-import { StepDetails } from "./StepDetails";
-import { StepPublish } from "./StepPublish";
-import { StepTeam } from "./StepTeam";
+  STEPS,
+  stepOfField,
+  toPayload,
+  validateStep,
+  type FormErrors,
+  type ProjectForm,
+} from "../lib/form";
 import { Stepper } from "./Stepper";
-import { dividerClasses, panelClasses } from "./styles";
 
-const STEPS: Record<ProjectMode, StepKey[]> = {
-  individual: ["details", "budget", "publish"],
-  team: ["details", "budget", "team", "publish"],
+type ProjectWizardProps = {
+  type: ProjectType;
+  categories: Category[];
+  currencies: Currency[];
+  countries: Country[];
+  project?: Project;
+  initial?: ProjectForm;
+  initialCityName?: string | null;
 };
 
-const INITIAL_DETAILS: ProjectDetails = { category: "", subcategory: "", extras: ["urgent"] };
-const INITIAL_BUDGET: ProjectBudget = { title: "", description: "", amount: "3200", duration: "" };
-
-export function ProjectWizard() {
+export function ProjectWizard({ type, categories, currencies, countries, project, initial, initialCityName }: ProjectWizardProps) {
   const t = useTranslations("Projects");
-  const tb = useTranslations("Projects.budget");
-  const [mode, setMode] = useState<ProjectMode>("individual");
-  const [pendingMode, setPendingMode] = useState<ProjectMode | null>(null);
+  const tv = useTranslations("Projects.validation");
+  const locale = useLocale();
+  const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
-  const [details, setDetails] = useState(INITIAL_DETAILS);
-  const [detailsErrors, setDetailsErrors] = useState<DetailsErrors>({});
-  const [budget, setBudget] = useState(INITIAL_BUDGET);
-  const [budgetErrors, setBudgetErrors] = useState<BudgetErrors>({});
-  const [members, setMembers] = useState<TeamMember[]>(INITIAL_MEMBERS);
-  const [draftSaved, setDraftSaved] = useState(false);
-  const [published, setPublished] = useState(false);
+  const [form, setForm] = useState<ProjectForm>(initial ?? EMPTY_FORM);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [published, setPublished] = useState<Project | null>(null);
+  const cities = useCities(form.countryId);
+  const editing = Boolean(project);
+  const kind = type === "project" ? "project" : "request";
 
-  const steps = STEPS[mode];
-  const step = steps[stepIndex];
-  const total = Number(budget.amount) || 0;
-  const nextBlocked = step === "team" && !isTeamReady(members);
+  const cityId = form.cityId || (initialCityName ? String(cities.find((city) => city.name === initialCityName)?.id ?? "") : "");
+  const step = STEPS[stepIndex];
+  const options = categories.filter((category) => category.type === (type === "project" ? "project" : "influencer"));
+  const category = options.find((item) => String(item.id) === form.categoryId);
+  const country = countries.find((item) => String(item.id) === form.countryId);
+  const city = cities.find((item) => String(item.id) === cityId);
+
+  const update = (key: keyof ProjectForm, value: string) => {
+    setForm((current) => ({ ...current, [key]: value, ...(key === "countryId" ? { cityId: "" } : {}) }));
+    setErrors((current) => ({ ...current, [key]: undefined }));
+  };
 
   const goTo = (index: number) => {
     setStepIndex(index);
-    setDraftSaved(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const submit = async () => {
+    setSaving(true);
+    setFormError(null);
+    const payload = toPayload({ ...form, cityId });
+    try {
+      const { data } = project
+        ? await api<{ data: Project }>(`/projects/${project.id}`, { method: "PATCH", body: payload })
+        : await api<{ data: Project }>("/projects", { method: "POST", body: { ...payload, type } });
+      if (project) {
+        router.push(`/projects/${data.id}`);
+        router.refresh();
+      } else {
+        setPublished(data);
+      }
+    } catch (caught) {
+      const error = caught as ApiError;
+      const fields = Object.keys(error.fields);
+      if (fields.length) {
+        setErrors(error.fields as FormErrors);
+        goTo(STEPS.indexOf(stepOfField(fields[0])));
+      }
+      setFormError(error.message || t("saveFailed"));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const next = () => {
-    if (step === "details") {
-      const errors = validateDetails(details, tb("required"));
-      setDetailsErrors(errors);
-      if (hasErrors(errors)) return;
-    }
-    if (step === "budget") {
-      const errors = validateBudget(budget, tb);
-      setBudgetErrors(errors);
-      if (hasErrors(errors)) return;
-    }
-    if (step === "publish") {
-      setPublished(true);
-      return;
-    }
-    goTo(stepIndex + 1);
+    const stepErrors = validateStep(step, form, tv);
+    setErrors(stepErrors);
+    if (hasErrors(stepErrors)) return;
+    if (step === "publish") submit();
+    else goTo(stepIndex + 1);
   };
 
   if (published) {
     return (
       <section className={`${panelClasses} flex flex-col items-center gap-4 py-16 text-center`}>
         <StatusIcon type="success" size={96} />
-        <h1 className="text-2xl font-bold text-brand">{t("publish.publishedTitle")}</h1>
+        <h1 className="text-2xl font-bold text-brand">{t(`publish.publishedTitle.${kind}`)}</h1>
         <p className="text-muted">{t("publish.publishedText")}</p>
-        <Button href="/projects" variant="solid" pill>
-          {t("publish.viewProjects")}
-        </Button>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Button href={`/projects/${published.id}`} variant="solid" pill>
+            {t("publish.viewProject")}
+          </Button>
+          <Button href="/my-projects" variant="ghost" pill>
+            {t("publish.myProjects")}
+          </Button>
+        </div>
       </section>
     );
   }
 
   const nextLabel =
-    step === "publish" ? t("actions.publish") : steps[stepIndex + 1] === "publish" ? t("actions.nextPublish") : t("actions.next");
+    step === "publish"
+      ? t(editing ? "actions.save" : "actions.publish")
+      : STEPS[stepIndex + 1] === "publish"
+        ? t("actions.review")
+        : t("actions.next");
+
+  const reviewRows = [
+    { label: t("fields.category"), value: category?.name ?? "" },
+    { label: t("fields.title"), value: form.title },
+    {
+      label: t("fields.budget"),
+      value: form.budgetMin
+        ? `${formatAmount(Number(form.budgetMin), form.currency, locale)} - ${formatAmount(Number(form.budgetMax), form.currency, locale)}`
+        : "",
+    },
+    {
+      label: t("fields.location"),
+      value: country
+        ? new Intl.ListFormat(locale, { type: "unit" }).format([city?.name, country.name].filter((name): name is string => Boolean(name)))
+        : t("publish.anywhere"),
+    },
+  ];
 
   return (
     <section className={`${panelClasses} flex flex-col gap-6`}>
-      <nav aria-label="Breadcrumb" className="text-xs text-muted">
-        <ol className="flex flex-wrap items-center gap-1.5">
-          <li>
-            <Link href="/" className="hover:text-brand">
-              {t("breadcrumb.home")}
-            </Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li>{t("breadcrumb.add")}</li>
-          <li aria-hidden>/</li>
-          <li className="font-bold text-foreground">{t("breadcrumb.newProject")}</li>
-        </ol>
-      </nav>
-
-      <div>
-        <h1 className="text-2xl font-bold">{t("title")}</h1>
-        <p className="text-sm text-muted">{t("subtitle")}</p>
-      </div>
-
-      <Stepper steps={steps} current={stepIndex} />
-
-      <div className={`${dividerClasses} pt-6`}>
-        {step === "details" && (
-          <StepDetails
-            details={details}
-            errors={detailsErrors}
-            mode={mode}
-            onChange={(value) => {
-              setDetails(value);
-              setDetailsErrors({});
-            }}
-            onSelectMode={(value) => value !== mode && setPendingMode(value)}
-          />
-        )}
-        {step === "budget" && (
-          <StepBudget
-            budget={budget}
-            errors={budgetErrors}
-            onChange={(value) => {
-              setBudget(value);
-              setBudgetErrors({});
-            }}
-          />
-        )}
-        {step === "team" && <StepTeam members={members} total={total} onChange={setMembers} />}
-        {step === "publish" && <StepPublish mode={mode} details={details} budget={budget} members={members} />}
-      </div>
-
-      <div className={`${dividerClasses} flex flex-col gap-3 pt-5`}>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          {stepIndex === 0 ? (
-            <Button variant="ghost" pill href="/">
-              {t("actions.cancel")}
-            </Button>
-          ) : (
-            <Button variant="ghost" pill onClick={() => goTo(stepIndex - 1)}>
-              {t("actions.back")}
-            </Button>
-          )}
-          <div className="flex flex-wrap gap-3">
-            <Button variant="outline" pill onClick={() => setDraftSaved(true)}>
-              {draftSaved ? t("draftSaved") : t("actions.saveDraft")}
-            </Button>
-            <Button variant="solid" pill onClick={next} disabled={nextBlocked}>
-              {nextLabel}
-            </Button>
-          </div>
-        </div>
-        <p className="text-xs text-muted">
-          {step === "team" ? t("team.footerNote") : t(`summary.${mode}`, { count: STEP_COUNT[mode] })}
-        </p>
-      </div>
-
-      <ConfirmModeModal
-        mode={pendingMode}
-        onCancel={() => setPendingMode(null)}
-        onConfirm={() => {
-          if (pendingMode) setMode(pendingMode);
-          setPendingMode(null);
-        }}
+      <PageHeader
+        crumbs={[
+          { label: t("breadcrumb.home"), href: "/" },
+          editing && project ? { label: project.title, href: `/projects/${project.id}` } : { label: t("breadcrumb.add") },
+          { label: t(editing ? "breadcrumb.edit" : `breadcrumb.new.${kind}`) },
+        ]}
+        title={t(editing ? "editTitle" : `title.${kind}`)}
+        subtitle={t("subtitle")}
       />
+
+      <Stepper steps={STEPS} current={stepIndex} />
+
+      <div className={`${dividerClasses} flex flex-col gap-5 pt-6`}>
+        {step === "details" && (
+          <>
+            <div>
+              <h2 className={sectionTitleClasses}>{t("details.heading")}</h2>
+              <p className={hintClasses}>{t(`details.hint.${kind}`)}</p>
+            </div>
+            <Select
+              label={t(`fields.categoryLabel.${kind}`)}
+              required
+              placeholder={t("fields.categoryPlaceholder")}
+              value={form.categoryId}
+              error={errors.categoryId}
+              options={options.map((item) => ({ value: String(item.id), label: item.name }))}
+              onChange={(event) => update("categoryId", event.target.value)}
+            />
+            <Field
+              label={t("fields.title")}
+              required
+              maxLength={150}
+              placeholder={t(`fields.titlePlaceholder.${kind}`)}
+              value={form.title}
+              error={errors.title}
+              onChange={(event) => update("title", event.target.value)}
+            />
+            <TextArea
+              label={t("fields.description")}
+              required
+              rows={6}
+              maxLength={5000}
+              placeholder={t("fields.descriptionPlaceholder")}
+              value={form.description}
+              error={errors.description}
+              hint={t("fields.descriptionHint", { count: form.description.trim().length })}
+              onChange={(event) => update("description", event.target.value)}
+            />
+          </>
+        )}
+
+        {step === "budget" && (
+          <>
+            <div>
+              <h2 className={sectionTitleClasses}>{t("budget.heading")}</h2>
+              <p className={hintClasses}>{t("budget.hint")}</p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              <Field
+                label={t("fields.budgetMin")}
+                required
+                type="number"
+                min={1}
+                inputMode="numeric"
+                value={form.budgetMin}
+                error={errors.budgetMin}
+                onChange={(event) => update("budgetMin", event.target.value)}
+              />
+              <Field
+                label={t("fields.budgetMax")}
+                required
+                type="number"
+                min={1}
+                inputMode="numeric"
+                value={form.budgetMax}
+                error={errors.budgetMax}
+                onChange={(event) => update("budgetMax", event.target.value)}
+              />
+              <Select
+                label={t("fields.currency")}
+                value={form.currency}
+                error={errors.currency}
+                options={currencies.map((item) => ({ value: item.code, label: `${item.code} · ${item.name}` }))}
+                onChange={(event) => update("currency", event.target.value)}
+              />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Select
+                label={t("fields.country")}
+                value={form.countryId}
+                error={errors.countryId}
+                options={[{ value: "", label: t("publish.anywhere") }, ...countries.map((item) => ({ value: String(item.id), label: item.name }))]}
+                onChange={(event) => update("countryId", event.target.value)}
+              />
+              <Select
+                label={t("fields.city")}
+                value={cityId}
+                error={errors.cityId}
+                disabled={!cities.length}
+                options={[{ value: "", label: t("fields.anyCity") }, ...cities.map((item) => ({ value: String(item.id), label: item.name }))]}
+                onChange={(event) => update("cityId", event.target.value)}
+              />
+            </div>
+          </>
+        )}
+
+        {step === "publish" && (
+          <>
+            <div>
+              <h2 className={sectionTitleClasses}>{t("publish.heading")}</h2>
+              <p className={hintClasses}>{t("publish.hint")}</p>
+            </div>
+            <dl className={`${outlinedPanelClasses} grid gap-x-8 gap-y-3 sm:grid-cols-[180px_1fr]`}>
+              {reviewRows.map((row) => (
+                <div key={row.label} className="contents">
+                  <dt className="text-sm text-muted">{row.label}</dt>
+                  <dd className="font-medium">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="rounded-lg bg-surface-muted p-4 text-sm leading-relaxed whitespace-pre-line">{form.description}</p>
+          </>
+        )}
+
+        {formError && (
+          <p role="alert" className="rounded-lg bg-danger-soft p-3 text-sm text-danger">
+            {formError}
+          </p>
+        )}
+      </div>
+
+      <div className={`${dividerClasses} flex flex-wrap items-center justify-between gap-3 pt-5`}>
+        {stepIndex === 0 ? (
+          <Button variant="ghost" pill href={project ? `/projects/${project.id}` : "/"}>
+            {t("actions.cancel")}
+          </Button>
+        ) : (
+          <Button variant="ghost" pill onClick={() => goTo(stepIndex - 1)}>
+            {t("actions.back")}
+          </Button>
+        )}
+        <Button variant="solid" pill onClick={next} loading={saving}>
+          {nextLabel}
+        </Button>
+      </div>
     </section>
   );
 }

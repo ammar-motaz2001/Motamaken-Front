@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
@@ -18,6 +18,7 @@ import {
   validateUsername,
   type ValidationKey,
 } from "../lib/validation";
+import { rememberReferral, shouldRecordVisit } from "../lib/referral";
 import { authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { ErrorModal } from "./ErrorModal";
@@ -63,7 +64,7 @@ function validate(values: Values, method: AuthMethod): FieldErrors<FieldName> {
   };
 }
 
-export function SignupForm({ method }: { method: AuthMethod }) {
+export function SignupForm({ method, referralCode }: { method: AuthMethod; referralCode?: string }) {
   const t = useTranslations("Signup");
   const tv = useTranslations("Validation");
   const ta = useTranslations("Auth");
@@ -73,6 +74,16 @@ export function SignupForm({ method }: { method: AuthMethod }) {
   const [submitting, setSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const [referral, setReferral] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const code = rememberReferral(referralCode);
+    if (referralCode && shouldRecordVisit(referralCode)) void authService.recordReferralVisit(referralCode).catch(() => undefined);
+    // Read once on mount: localStorage is not available while rendering on the server.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setReferral(code);
+  }, [referralCode]);
 
   const message = (key?: ValidationKey) => (key ? tv(key) : undefined);
 
@@ -96,6 +107,7 @@ export function SignupForm({ method }: { method: AuthMethod }) {
         phone: method === "phone" ? target : undefined,
         password: values.password,
         subscribe: values.subscribe,
+        ...(referral && { referralCode: referral }),
       });
       router.push({ pathname: "/signup/verify", query: { method, to: target } });
     } catch {

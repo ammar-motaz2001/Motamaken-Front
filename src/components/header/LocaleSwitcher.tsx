@@ -7,6 +7,7 @@ import { useTransition } from "react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { savePreference } from "./preferences";
 
 function Flag({ locale }: { locale: Locale }) {
   return locale === "ar" ? (
@@ -16,7 +17,7 @@ function Flag({ locale }: { locale: Locale }) {
   );
 }
 
-export function LocaleSwitcher() {
+export function LocaleSwitcher({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header.languages");
   const locale = useLocale() as Locale;
   const pathname = usePathname();
@@ -27,9 +28,10 @@ export function LocaleSwitcher() {
     <Dropdown
       label="Language"
       selected={locale}
-      onSelect={(next) =>
-        startTransition(() => router.replace(`${pathname}${window.location.search}`, { locale: next as Locale }))
-      }
+      onSelect={(next) => {
+        savePreference(signedIn, { locale: next });
+        startTransition(() => router.replace(`${pathname}${window.location.search}`, { locale: next as Locale }));
+      }}
       items={routing.locales.map((item) => ({
         value: item,
         label: (

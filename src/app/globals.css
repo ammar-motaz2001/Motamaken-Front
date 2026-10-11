@@ -17,6 +17,13 @@
   --otp-filled: #e9e9e9;
   --danger-soft: #fff1f1;
   --overlay: rgba(217, 217, 217, 0.6);
+  --brand-soft: #eafff3;
+  --chart-income: #188d4a;
+  --chart-spending: #d24005;
+  --brand-ink: #165d31;
+  --bubble-meta: rgba(13, 8, 44, 0.4);
+  --composer: #f8f8f8;
+  --selected: #f2f2f2;
   color-scheme: light;
 }
 
@@ -35,6 +42,13 @@
   --otp-filled: #303030;
   --danger-soft: #3b1515;
   --overlay: rgba(0, 0, 0, 0.6);
+  --brand-soft: #13301f;
+  --chart-income: #2fa860;
+  --chart-spending: #e8692a;
+  --brand-ink: #7fdca5;
+  --bubble-meta: rgba(237, 237, 237, 0.5);
+  --composer: #242424;
+  --selected: #262626;
   color-scheme: dark;
 }
 
@@ -53,6 +67,13 @@
   --color-otp-filled: var(--otp-filled);
   --color-danger-soft: var(--danger-soft);
   --color-overlay: var(--overlay);
+  --color-brand-soft: var(--brand-soft);
+  --color-chart-income: var(--chart-income);
+  --color-chart-spending: var(--chart-spending);
+  --color-brand-ink: var(--brand-ink);
+  --color-bubble-meta: var(--bubble-meta);
+  --color-composer: var(--composer);
+  --color-selected: var(--selected);
 
   --font-sans: var(--font-tajawal), system-ui, sans-serif;
   --font-button: var(--font-quicksand), var(--font-tajawal), system-ui, sans-serif;
@@ -67,6 +88,9 @@
   --color-orange-light: #dc7a04;
   --color-danger: #ec0000;
   --color-success: #1f8a70;
+  --color-link: #009cde;
+  --color-online: #14b255;
+  --color-badge: #e03e28;
 
   --shadow-card: 0 0 4px rgba(108, 108, 108, 0.25);
   --shadow-tab: 0 0 2px rgba(185, 185, 185, 0.58);
@@ -113,4 +137,8 @@
   input::placeholder {
     @apply text-placeholder;
   }
+}
+
+.hatch {
+  background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.35) 0 2px, transparent 2px 5px);
 }
