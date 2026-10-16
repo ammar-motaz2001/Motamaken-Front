@@ -6,7 +6,7 @@ import { DisputeList } from "@/modules/disputes";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/disputes">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Disputes" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function DisputesPage({ params, searchParams }: PageProps<"/[locale]/disputes">) {

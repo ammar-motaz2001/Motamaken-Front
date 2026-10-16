@@ -17,7 +17,7 @@ async function findCategory(slug: string) {
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/categories/[slug]">) {
   const category = await findCategory((await params).slug);
-  return { title: `${category.name} | Motamakin` };
+  return { title: `${category.name} | Mutamakin` };
 }
 
 export default async function CategoryPage({ params, searchParams }: PageProps<"/[locale]/categories/[slug]">) {

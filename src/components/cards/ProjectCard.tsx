@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Project } from "@/lib/api/types";
 import { formatAmount, timeAgo } from "@/lib/format";
+import { FavoriteButton } from "./FavoriteButton";
 
 const EXCERPT_LENGTH = 36;
 
@@ -46,12 +47,15 @@ export function ProjectCard({ project }: { project: Project }) {
           {t("readMore")}
         </Link>
       </p>
-      <Link
-        href={href}
-        className="flex h-[42px] w-full items-center justify-center rounded-full bg-gradient-brand text-base font-medium text-white capitalize hover:opacity-90"
-      >
-        {t("addOffer")}
-      </Link>
+      <div className="flex gap-2">
+        <Link
+          href={href}
+          className="flex h-[42px] flex-1 items-center justify-center rounded-full bg-gradient-brand text-base font-medium text-white capitalize hover:opacity-90"
+        >
+          {t("addOffer")}
+        </Link>
+        <FavoriteButton kind="project" id={project.id} className="size-[42px]! shrink-0 border border-border shadow-none!" />
+      </div>
     </article>
   );
 }

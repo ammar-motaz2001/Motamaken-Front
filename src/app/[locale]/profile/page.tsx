@@ -8,7 +8,7 @@ import { ProfileForm, ProfileSections } from "@/modules/profile";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/profile">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Profile" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function ProfilePage({ params }: PageProps<"/[locale]/profile">) {

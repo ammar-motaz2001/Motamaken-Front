@@ -30,7 +30,7 @@ function Grid({ children }: { children: ReactNode }) {
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/search">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Search" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function SearchPage({ params, searchParams }: PageProps<"/[locale]/search">) {

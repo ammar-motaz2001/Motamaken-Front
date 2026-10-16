@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { ProfileCard as Profile } from "@/lib/api/types";
+import { FavoriteButton } from "./FavoriteButton";
 import { HireButton } from "./HireButton";
 
 export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn: boolean }) {
@@ -33,8 +34,9 @@ export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn:
             ))}
           </div>
         </div>
+        <FavoriteButton kind="profile" id={profile.id} className="absolute start-3 top-3" />
         {profile.jobTitle && (
-          <span className="absolute end-0 top-3 max-w-[90%] truncate rounded-s-xl bg-nav/65 px-4 py-1.5 text-base leading-none font-medium tracking-[-0.176px] text-white backdrop-blur-[4.5px]">
+          <span className="absolute end-0 top-3 max-w-[calc(100%-3.5rem)] truncate rounded-s-xl bg-nav/65 px-4 py-1.5 text-base leading-none font-medium tracking-[-0.176px] text-white backdrop-blur-[4.5px]">
             {profile.jobTitle}
           </span>
         )}

@@ -6,7 +6,7 @@ import { InvitePage } from "@/modules/rewards";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/invite">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Rewards.invite" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function Invite({ params }: PageProps<"/[locale]/settings/invite">) {

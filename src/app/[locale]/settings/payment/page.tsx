@@ -6,7 +6,7 @@ import { PaymentSettings } from "@/modules/settings";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/payment">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.payment" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function PaymentSettingsPage({ params }: PageProps<"/[locale]/settings/payment">) {

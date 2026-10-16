@@ -1,8 +1,9 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect, unstable_rethrow } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { SESSION_COOKIE } from "@/lib/session";
 import { ApiError, toApiError } from "./errors";
+import { visitorHeaders } from "./visitor";
 
 export const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,6 +16,7 @@ export async function apiGet<T>(path: string): Promise<T> {
       Accept: "application/json",
       "Accept-Language": await getLocale(),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...visitorHeaders(await headers()),
     },
     cache: "no-store",
   }).catch(() => {

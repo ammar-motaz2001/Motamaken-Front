@@ -8,10 +8,10 @@ import { PhoneField } from "@/components/ui/PhoneField";
 import { Link, useRouter } from "@/i18n/navigation";
 import { hasErrors, validateEmail, validatePhone, type ValidationKey } from "../lib/validation";
 import { AFTER_LOGIN_PATH } from "@/lib/session";
+import { rememberWelcome } from "@/lib/welcome";
 import { createSession } from "../actions";
 import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
-import { SocialAuth } from "./SocialAuth";
 import { actionsClasses, fieldsClasses, formClasses, switchClasses } from "./styles";
 
 export function LoginForm({ method, next }: { method: AuthMethod; next?: string }) {
@@ -46,7 +46,7 @@ export function LoginForm({ method, next }: { method: AuthMethod; next?: string 
     setSubmitting(true);
     try {
       const target = identifier.trim();
-      const { otpRequired, accessToken, twoFactor } = await authService.login({ method, identifier: target, password });
+      const { otpRequired, accessToken, twoFactor, user } = await authService.login({ method, identifier: target, password });
       if (otpRequired) {
         router.push({
           pathname: "/login/verify",
@@ -55,6 +55,7 @@ export function LoginForm({ method, next }: { method: AuthMethod; next?: string 
         return;
       }
       await createSession(accessToken ?? "");
+      rememberWelcome(user?.fullName ?? user?.username ?? "");
       router.replace(next ?? AFTER_LOGIN_PATH);
     } catch (error) {
       const fallback = method === "email" ? t("invalidEmail") : t("invalidPhone");
@@ -121,7 +122,6 @@ export function LoginForm({ method, next }: { method: AuthMethod; next?: string 
         </p>
       </form>
 
-      <SocialAuth />
     </>
   );
 }

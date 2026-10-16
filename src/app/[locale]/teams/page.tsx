@@ -5,7 +5,7 @@ import { TeamsPage } from "@/modules/teams";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/teams">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Teams" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function Teams({ params }: PageProps<"/[locale]/teams">) {

@@ -5,7 +5,7 @@ import { MedalsPage } from "@/modules/rewards";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/medals">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Rewards.medals" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function Medals({ params }: PageProps<"/[locale]/settings/medals">) {

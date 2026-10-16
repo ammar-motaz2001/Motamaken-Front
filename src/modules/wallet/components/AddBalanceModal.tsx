@@ -8,13 +8,15 @@ import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { Select } from "@/components/ui/Select";
 import { api } from "@/lib/api/client";
+import { CardError, cardDeposit, moyasarEnabled, open3dsWindow } from "@/lib/moyasar";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit, PaymentMethod } from "@/lib/api/types";
 import { CardFields } from "@/modules/settings";
 import { EMPTY_CARD, toCardPayload, validateCard, type CardForm } from "@/modules/settings/lib/card";
 import { ProcessingScreen } from "./ProcessingScreen";
 
-const METHODS = ["card", "mada", "apple_pay", "bank_transfer"] as const;
+// With Moyasar every card (Visa, Mastercard, mada) goes through the card form; the other methods need their own contracts.
+const METHODS = moyasarEnabled ? (["card"] as const) : (["card", "mada", "apple_pay", "bank_transfer"] as const);
 const SIMULATE = process.env.NEXT_PUBLIC_PAYMENTS_SIMULATE === "true";
 
 type Step = "amount" | "method" | "processing" | "success" | "error";
@@ -77,6 +79,39 @@ export function AddBalanceModal({ open, onClose, onDone, currencies, currency: i
       const found = validateCard(card);
       setErrors(found);
       if (Object.keys(found).length) return;
+    }
+
+    if (moyasarEnabled) {
+      const popup = open3dsWindow();
+      setStep("processing");
+      try {
+        const paid = await cardDeposit({
+          amount: Number(amount),
+          currency,
+          popup,
+          ...(newCard ? { card, saveCard } : { savedCardId: Number(cardId) }),
+        });
+        setDeposit(paid);
+        setFailure(paid.failureReason ?? "");
+        setStep(paid.status === "succeeded" ? "success" : "error");
+        if (paid.status === "succeeded") onDone(paid);
+      } catch (caught) {
+        if (caught instanceof CardError) {
+          setErrors(caught.fields);
+          setFailure(caught.message);
+          setStep(Object.keys(caught.fields).length ? "method" : "error");
+          return;
+        }
+        const apiError = caught as ApiError;
+        if (apiError.fields?.amount || apiError.code?.startsWith("amount_")) {
+          setErrors({ amount: apiError.fields.amount ?? apiError.message ?? "" });
+          setStep("amount");
+          return;
+        }
+        setFailure(apiError.message ?? "");
+        setStep("error");
+      }
+      return;
     }
 
     setStep("processing");
@@ -220,6 +255,7 @@ export function AddBalanceModal({ open, onClose, onDone, currencies, currency: i
           </>
         )}
         {method !== "card" && <p className="rounded-lg bg-surface-muted p-3 text-sm text-muted">{t("redirectNote")}</p>}
+        {moyasarEnabled && <p className="text-xs text-muted">{t("secureNote")}</p>}
 
         <div className="rounded-lg bg-surface-muted p-3 text-sm">
           <div className="flex justify-between font-bold">

@@ -1,38 +1,24 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useTransition } from "react";
-import { usePathname, useRouter } from "@/i18n/navigation";
-import { api } from "@/lib/api/client";
-import type { Conversation } from "@/lib/api/types";
+import { StartChat } from "@/components/chat/StartChat";
 
-export function HireButton({ userId, signedIn }: { userId: number; signedIn: boolean }) {
+/** `signedIn` is no longer needed: guests write their first message and sign up when sending it. */
+export function HireButton({ userId }: { userId: number; signedIn?: boolean }) {
   const t = useTranslations("Home");
-  const router = useRouter();
-  const pathname = usePathname();
-  const [pending, startTransition] = useTransition();
-
-  const hire = () => {
-    if (!signedIn) {
-      router.push(`/login?next=${encodeURIComponent(pathname)}`);
-      return;
-    }
-    startTransition(async () => {
-      const { data } = await api<{ data: Conversation }>("/conversations", { method: "POST", body: { userId } }).catch(
-        () => ({ data: null }),
-      );
-      router.push(data ? `/messages?c=${data.id}` : "/messages");
-    });
-  };
 
   return (
-    <button
-      type="button"
-      onClick={hire}
-      disabled={pending}
-      className="flex h-[37px] flex-1 items-center justify-center rounded-md bg-gradient-brand text-sm font-medium whitespace-nowrap text-white capitalize hover:opacity-90 disabled:opacity-60"
-    >
-      {t("hireMe")}
-    </button>
+    <StartChat userId={userId}>
+      {(start, pending) => (
+        <button
+          type="button"
+          onClick={start}
+          disabled={pending}
+          className="flex h-[37px] flex-1 items-center justify-center rounded-md bg-gradient-brand text-sm font-medium whitespace-nowrap text-white capitalize hover:opacity-90 disabled:opacity-60"
+        >
+          {t("hireMe")}
+        </button>
+      )}
+    </StartChat>
   );
 }

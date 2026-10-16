@@ -1,6 +1,5 @@
 import { MapPin, Tag } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Button } from "@/components/ui/Button";
 import { CategoryIcon } from "@/components/ui/CategoryIcon";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusPill } from "@/components/ui/StatusPill";
@@ -83,7 +82,7 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews }: P
               {project.owner.fullName}
             </Link>
           </div>
-          {viewerId && !isOwner && <MessageUserButton userId={project.owner.id} projectId={project.id} />}
+          {!isOwner && <MessageUserButton userId={project.owner.id} projectId={project.id} />}
         </div>
       </section>
 
@@ -107,15 +106,9 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews }: P
 
       {isOwner ? (
         <OwnerPanel project={project} proposals={proposals ?? []} />
-      ) : viewerId ? (
-        <OfferPanel project={project} />
       ) : (
-        <div className={`${panelClasses} flex flex-wrap items-center justify-between gap-3`}>
-          <p className="text-sm">{t("detail.loginToOffer")}</p>
-          <Button href={`/login?next=/projects/${project.id}`} variant="solid" pill>
-            {t("detail.login")}
-          </Button>
-        </div>
+        // Guests write their offer too; they confirm an email or phone only when sending it.
+        <OfferPanel project={project} />
       )}
     </div>
   );

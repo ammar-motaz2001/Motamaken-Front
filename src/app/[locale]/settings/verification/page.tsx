@@ -6,7 +6,7 @@ import { VerificationPage } from "@/modules/verification";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/verification">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Verification" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function Verification({ params }: PageProps<"/[locale]/settings/verification">) {

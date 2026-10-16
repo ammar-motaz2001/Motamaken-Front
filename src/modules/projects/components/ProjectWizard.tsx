@@ -2,6 +2,8 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
+import { useAuthGate } from "@/components/providers/AuthGateProvider";
+import { useDraft } from "@/lib/draft";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -42,8 +44,11 @@ export function ProjectWizard({ type, categories, currencies, countries, project
   const tv = useTranslations("Projects.validation");
   const locale = useLocale();
   const router = useRouter();
-  const [stepIndex, setStepIndex] = useState(0);
-  const [form, setForm] = useState<ProjectForm>(initial ?? EMPTY_FORM);
+  const { requireAuth } = useAuthGate();
+  // A new project is kept as a draft while it is being written (also by guests, who sign up only when publishing).
+  const draftKey = project ? null : `project-${type}`;
+  const [stepIndex, setStepIndex, clearStep] = useDraft(draftKey && `${draftKey}-step`, 0);
+  const [form, setForm, clearDraft] = useDraft<ProjectForm>(draftKey, initial ?? EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -70,6 +75,8 @@ export function ProjectWizard({ type, categories, currencies, countries, project
   };
 
   const submit = async () => {
+    // The deciding moment: a guest confirms an email or phone here and publishing simply carries on.
+    if (!(await requireAuth(t(`publish.signUpReason.${kind}`)))) return;
     setSaving(true);
     setFormError(null);
     const payload = toPayload({ ...form, cityId });
@@ -81,6 +88,8 @@ export function ProjectWizard({ type, categories, currencies, countries, project
         router.push(`/projects/${data.id}`);
         router.refresh();
       } else {
+        clearDraft();
+        clearStep();
         setPublished(data);
       }
     } catch (caught) {

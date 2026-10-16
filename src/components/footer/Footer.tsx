@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { FaApple, FaGooglePlay, FaInstagram, FaSquareFacebook, FaTiktok, FaXTwitter } from "react-icons/fa6";
+import { AuthLink } from "@/components/AuthLink";
 import { Link } from "@/i18n/navigation";
 
 const CTAS = [
@@ -36,18 +37,18 @@ const COLUMNS = [
     title: "knowMore",
     links: [
       { key: "paymentProtection", href: "/payment-protection" },
-      { key: "verification", href: "/account-verification" },
+      { key: "verification", href: "/settings/verification" },
       { key: "siteFees", href: "/site-fees" },
-      { key: "paymentMethod", href: "/payment-methods" },
+      { key: "paymentMethod", href: "/settings/payment" },
       { key: "points", href: "/gifts" },
     ],
   },
   {
     title: "helpSupport",
     links: [
-      { key: "account", href: "/account" },
+      { key: "account", href: "/settings/profile" },
       { key: "projects", href: "/projects" },
-      { key: "payments", href: "/payments" },
+      { key: "payments", href: "/settings/wallet" },
       { key: "support", href: "/support" },
     ],
   },
@@ -113,9 +114,15 @@ export function Footer() {
                 <ul className="flex flex-col gap-4">
                   {column.links.map((link) => (
                     <li key={link.key}>
-                      <Link href={link.href} className="text-sm transition-colors hover:text-brand">
-                        {t(`links.${link.key}`)}
-                      </Link>
+                      {link.href.startsWith("/settings") ? (
+                        <AuthLink href={link.href} className="text-sm transition-colors hover:text-brand">
+                          {t(`links.${link.key}`)}
+                        </AuthLink>
+                      ) : (
+                        <Link href={link.href} className="text-sm transition-colors hover:text-brand">
+                          {t(`links.${link.key}`)}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -123,7 +130,7 @@ export function Footer() {
             ))}
 
             <div className="col-span-2 flex flex-col items-center gap-5 md:col-span-4 lg:col-span-1">
-              <Image src="/images/logo.svg" alt="Motamakin" width={169.691} height={48} className="self-center" />
+              <Image src="/images/logo.png" alt="Mutamakin" width={181} height={48} className="self-center" />
               <ul className="flex gap-3">
                 {SOCIALS.map(({ label, href, Icon }) => (
                   <li key={label}>
@@ -145,12 +152,12 @@ export function Footer() {
               >
                 {t("postProject")}
               </Link>
-              <Link
+              <AuthLink
                 href="/settings/invite"
                 className="flex h-[42px] w-full max-w-[235px] items-center justify-center rounded-md border border-brand-border bg-surface font-button text-sm font-semibold hover:opacity-90"
               >
                 <span className="text-gradient-brand">{t("inviteFriend")}</span>
-              </Link>
+              </AuthLink>
             </div>
           </div>
 

@@ -6,7 +6,7 @@ import { InvitationCard } from "@/modules/teams";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/invitations/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Teams" });
-  return { title: `${t("invitation.title")} | Motamakin` };
+  return { title: `${t("invitation.title")} | Mutamakin` };
 }
 
 export default async function InvitationPage({ params }: PageProps<"/[locale]/projects/invitations/[id]">) {

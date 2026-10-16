@@ -138,7 +138,7 @@ export function NotificationsPage() {
                   item.readAt ? "border-border bg-surface hover:bg-surface-muted" : "border-brand/40 bg-brand-soft hover:bg-brand-soft/70"
                 } ${href ? "cursor-pointer" : "cursor-default"}`}
               >
-                <UserAvatar name={item.user?.fullName ?? "Motamakin"} src={item.user?.avatarUrl ?? null} size={40} />
+                <UserAvatar name={item.user?.fullName ?? "Mutamakin"} src={item.user?.avatarUrl ?? null} size={40} />
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-sm">{item.message}</span>
                   <span className="text-xs text-muted">{format.dateTime(new Date(item.createdAt), { dateStyle: "medium", timeStyle: "short" })}</span>

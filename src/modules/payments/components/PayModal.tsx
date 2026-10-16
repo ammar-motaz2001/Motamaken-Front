@@ -4,12 +4,12 @@ import { CircleCheck, CreditCard, Wallet } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { PolicyCheckbox } from "@/components/policy/PolicyCheckbox";
 import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { Select } from "@/components/ui/Select";
-import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
+import { CardError, cardDeposit, moyasarEnabled, open3dsWindow } from "@/lib/moyasar";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit, PaymentMethod, WalletBalance } from "@/lib/api/types";
 import { CardFields } from "@/modules/settings";
@@ -91,11 +91,20 @@ export function PayModal({ open, onClose, amount, currency, rows, pay, success, 
     setErrors(found);
     if (Object.keys(found).length) return;
 
+    // Card: top the wallet up with exactly the amount first (3-D Secure in a small window), then pay from the wallet.
+    const popup = method === "card" && moyasarEnabled ? open3dsWindow() : null;
     setStep("processing");
     try {
-      if (method === "card") {
+      if (method === "card" && moyasarEnabled) {
+        const deposit = await cardDeposit({ amount, currency, popup, forPurchase: true, ...(cardId === "new" ? { card, saveCard } : { savedCardId: Number(cardId) }) });
+        if (deposit.status !== "succeeded") {
+          setFailure(deposit.failureReason || t("failed"));
+          setStep("error");
+          return;
+        }
+      } else if (method === "card") {
         if (cardId === "new" && saveCard) await api("/me/payment-methods", { method: "POST", body: toCardPayload(card) });
-        const { data } = await api<{ data: Deposit }>("/wallet/deposits", { method: "POST", body: { amount, currency, method: "card" } });
+        const { data } = await api<{ data: Deposit }>("/wallet/deposits", { method: "POST", body: { amount, currency, method: "card", purpose: "purchase" } });
         if (!SIMULATE && data.checkoutUrl) {
           window.location.assign(data.checkoutUrl);
           return;
@@ -105,6 +114,11 @@ export function PayModal({ open, onClose, amount, currency, rows, pay, success, 
       setReferenceId(await pay());
       setStep("success");
     } catch (caught) {
+      if (caught instanceof CardError && Object.keys(caught.fields).length) {
+        setErrors(caught.fields);
+        setStep("method");
+        return;
+      }
       setFailure((caught as ApiError).message ?? "");
       setStep("error");
     }
@@ -248,9 +262,9 @@ export function PayModal({ open, onClose, amount, currency, rows, pay, success, 
                 </label>
               </>
             )}
-            <Checkbox checked={agreed} invalid={Boolean(errors.agreed)} onChange={(event) => setAgreed(event.target.checked)}>
-              {t.rich("agree", { link: (chunks) => <Link href="/privacy">{chunks}</Link> })}
-            </Checkbox>
+            <PolicyCheckbox checked={agreed} invalid={Boolean(errors.agreed)} onChange={setAgreed}>
+              {(link) => t.rich("agree", { link })}
+            </PolicyCheckbox>
           </>
         )}
 

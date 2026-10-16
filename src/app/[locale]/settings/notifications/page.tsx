@@ -5,7 +5,7 @@ import { NotificationSettings } from "@/modules/settings";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/notifications">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.notifications" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function NotificationSettingsPage({ params }: PageProps<"/[locale]/settings/notifications">) {

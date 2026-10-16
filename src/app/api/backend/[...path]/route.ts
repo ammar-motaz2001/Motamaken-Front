@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
+import { visitorHeaders } from "@/lib/api/visitor";
 import { SESSION_COOKIE } from "@/lib/session";
 
 const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
@@ -18,6 +19,7 @@ async function forward(request: NextRequest, { params }: { params: Promise<{ pat
     if (value) headers.set(name, value);
   });
   if (token) headers.set("authorization", `Bearer ${token}`);
+  Object.entries(visitorHeaders(request.headers)).forEach(([name, value]) => headers.set(name, value));
 
   const hasBody = !["GET", "HEAD"].includes(request.method);
   const response = await fetch(`${API_URL}/${path.map(encodeURIComponent).join("/")}${request.nextUrl.search}`, {

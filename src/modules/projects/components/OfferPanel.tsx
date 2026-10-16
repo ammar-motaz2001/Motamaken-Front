@@ -11,13 +11,25 @@ import { TextArea } from "@/components/ui/TextArea";
 import { Link, useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError, FieldErrors } from "@/lib/api/errors";
-import type { Paginated, Project, Proposal, Team } from "@/lib/api/types";
+import type { Paginated, Profile, Project, Proposal, Team } from "@/lib/api/types";
+import { useAuthGate } from "@/components/providers/AuthGateProvider";
+import { useDraft } from "@/lib/draft";
 import { formatAmount } from "@/lib/format";
 import { PROPOSAL_STATUS_TONE } from "../lib/status";
 
-type OfferForm = { amount: string; deliveryDays: string; message: string; teamId: string };
+type OfferForm = { amount: string; deliveryDays: string; message: string; teamId: string; jobTitle: string };
 
 const PROFILE_CODES = ["profile_required", "profile_type_mismatch"];
+
+/** My profile, or null when I have none yet (the API answers 404). */
+async function loadMyProfile() {
+  try {
+    return (await api<{ data: Profile | null }>("/me/profile")).data;
+  } catch (caught) {
+    if ((caught as ApiError).status === 404) return null;
+    throw caught;
+  }
+}
 
 function formFrom(proposal?: Proposal | null): OfferForm {
   return {
@@ -25,6 +37,7 @@ function formFrom(proposal?: Proposal | null): OfferForm {
     deliveryDays: proposal ? String(proposal.deliveryDays) : "",
     message: proposal?.message ?? "",
     teamId: proposal?.team ? String(proposal.team.id) : "",
+    jobTitle: "",
   };
 }
 
@@ -32,9 +45,15 @@ export function OfferPanel({ project }: { project: Project }) {
   const t = useTranslations("Projects.offer");
   const locale = useLocale();
   const router = useRouter();
+  const { signedIn, requireAuth } = useAuthGate();
   const mine = project.myProposal ?? null;
   const [editing, setEditing] = useState(!mine);
-  const [form, setForm] = useState<OfferForm>(formFrom(mine));
+  // A new offer is kept as a draft, so a guest can write it all and sign up only when sending it.
+  const [form, setForm, clearDraft] = useDraft<OfferForm>(mine ? null : `offer-${project.id}`, formFrom(mine));
+  // Offers need a profile of the right kind; people without one give a job title here and it is created with the offer.
+  const profileType = project.type === "project" ? "freelancer" : "influencer";
+  const [hasProfile, setHasProfile] = useState<boolean | null>(null);
+  const askJobTitle = !mine && hasProfile !== true;
   const [errors, setErrors] = useState<FieldErrors>({});
   const [error, setError] = useState<{ message: string; code?: string } | null>(null);
   const [saving, setSaving] = useState(false);
@@ -42,11 +61,18 @@ export function OfferPanel({ project }: { project: Project }) {
   const currency = project.budget.currency;
 
   useEffect(() => {
-    if (project.type !== "project") return;
+    if (!signedIn) return;
+    loadMyProfile()
+      .then((profile) => setHasProfile(Boolean(profile)))
+      .catch(() => setHasProfile(null));
+  }, [signedIn]);
+
+  useEffect(() => {
+    if (project.type !== "project" || !signedIn) return;
     api<Paginated<Team>>("/teams")
       .then((result) => setTeams(result.data.filter((team) => team.status === "active" && team.myMembership?.isLead)))
       .catch(() => setTeams([]));
-  }, [project.type]);
+  }, [project.type, signedIn]);
 
   const update = (key: keyof OfferForm, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -69,19 +95,31 @@ export function OfferPanel({ project }: { project: Project }) {
     }
   };
 
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
+    const found: FieldErrors = {};
+    if (!(Number(form.amount) > 0)) found.amount = t("required");
+    if (!(Number(form.deliveryDays) >= 1)) found.deliveryDays = t("required");
+    if (form.message.trim().length < 10) found.message = t("messageTooShort");
+    if (askJobTitle && form.jobTitle.trim().length < 2) found.jobTitle = t("jobTitleRequired");
+    setErrors(found);
+    if (Object.keys(found).length) return;
+    // The deciding moment: a guest confirms an email or phone here, then the offer is sent as written.
+    if (!(await requireAuth(t("signUpReason")))) return;
+
     const body = {
       amount: Number(form.amount),
       deliveryDays: Number(form.deliveryDays),
       message: form.message.trim(),
       ...(form.teamId ? { teamId: Number(form.teamId) } : {}),
     };
-    run(() =>
-      mine
-        ? api(`/proposals/${mine.id}`, { method: "PATCH", body })
-        : api(`/projects/${project.id}/proposals`, { method: "POST", body }),
-    );
+    run(async () => {
+      if (mine) return api(`/proposals/${mine.id}`, { method: "PATCH", body });
+      const profile = await loadMyProfile();
+      if (!profile) await api("/me/profile", { method: "PUT", body: { type: profileType, jobTitle: form.jobTitle.trim() } });
+      await api(`/projects/${project.id}/proposals`, { method: "POST", body });
+      clearDraft();
+    });
   };
 
   if (mine && !editing) {
@@ -149,6 +187,17 @@ export function OfferPanel({ project }: { project: Project }) {
           onChange={(event) => update("deliveryDays", event.target.value)}
         />
       </div>
+      {askJobTitle && (
+        <Field
+          label={t("jobTitle")}
+          required
+          placeholder={t("jobTitlePlaceholder")}
+          hint={t(signedIn ? "jobTitleHint" : "jobTitleGuestHint")}
+          value={form.jobTitle}
+          error={errors.jobTitle}
+          onChange={(event) => update("jobTitle", event.target.value)}
+        />
+      )}
       {teams.length > 0 && (
         <Select
           label={t("team")}

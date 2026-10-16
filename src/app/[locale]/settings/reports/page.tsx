@@ -5,7 +5,7 @@ import { MyReports } from "@/modules/reports";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/reports">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Reports" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function ReportsPage({ params, searchParams }: PageProps<"/[locale]/settings/reports">) {

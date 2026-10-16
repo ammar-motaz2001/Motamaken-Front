@@ -13,6 +13,7 @@ import { MobileMenu } from "./MobileMenu";
 import { NAV_ITEMS } from "./nav";
 import { NotificationsMenu } from "./NotificationsMenu";
 import { SearchBar } from "./SearchBar";
+import { AuthLink } from "@/components/AuthLink";
 import { ThemeToggle } from "./ThemeToggle";
 
 function Divider() {
@@ -42,8 +43,8 @@ export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData
       <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-4 dark:bg-none">
         <div className="page-container flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Link href="/" aria-label="Motamakin" className="flex h-[51px] flex-col justify-end gap-1.5">
-              <Image src="/images/logo.svg" alt="Motamakin" width={169.691} height={48} priority />
+            <Link href="/" aria-label="Mutamakin" className="flex h-[51px] flex-col justify-end gap-1.5">
+              <Image src="/images/logo.png" alt="Mutamakin" width={181} height={48} priority />
               <span dir="rtl" className="text-end text-sm leading-none font-medium tracking-[-0.154px]">
                 مـــتـــــمــــكــن.
               </span>
@@ -97,10 +98,10 @@ export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData
                 </span>
               </>
             ) : (
-              <Link href="/login" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
+              <AuthLink href="/notifications" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
                 <Image src="/images/notification.svg" alt="" width={20} height={20} className="dark:invert" />
                 <span className="hidden text-base lg:inline">{t("notification")}</span>
-              </Link>
+              </AuthLink>
             )}
             <MobileMenu signedIn={signedIn} currencies={data.currencies} currency={currency} />
           </div>

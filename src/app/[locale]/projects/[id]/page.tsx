@@ -19,7 +19,7 @@ const loadProject = cache(async (id: string) => {
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/[id]">) {
   const project = await loadProject((await params).id);
-  return { title: `${project.title} | Motamakin` };
+  return { title: `${project.title} | Mutamakin` };
 }
 
 export default async function ProjectPage({ params }: PageProps<"/[locale]/projects/[id]">) {

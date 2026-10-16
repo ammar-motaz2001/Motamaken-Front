@@ -11,15 +11,17 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Draw, DrawPrize } from "@/lib/api/types";
+import { useAuthGate } from "@/components/providers/AuthGateProvider";
 import { Countdown } from "./Countdown";
 
 const RANK_TONES = ["border-[#f5b301] bg-[#f5b301]/10", "border-[#9ca3af] bg-[#9ca3af]/10", "border-[#b45309] bg-[#b45309]/10"];
 const ADDRESS = ["name", "phone", "address", "city", "country"] as const;
 
-export function DrawPanel({ initial, signedIn }: { initial: Draw; signedIn: boolean }) {
+export function DrawPanel({ initial }: { initial: Draw; signedIn?: boolean }) {
   const t = useTranslations("Rewards.draw");
   const format = useFormatter();
   const router = useRouter();
+  const { requireAuth } = useAuthGate();
   const [draw, setDraw] = useState(initial);
   const [tickets, setTickets] = useState(1);
   const [busy, setBusy] = useState(false);
@@ -35,6 +37,16 @@ export function DrawPanel({ initial, signedIn }: { initial: Draw; signedIn: bool
   const cost = tickets * draw.ticketCost;
   const left = draw.maxTicketsPerUser ? draw.maxTicketsPerUser - (draw.me?.tickets ?? 0) : null;
   const won = draw.me?.won;
+
+  const join = async () => {
+    if (!(await requireAuth(t("signUpReason")))) return;
+    setBusy(true);
+    // Reload the draw as the new account sees it (their points and tickets).
+    api<{ data: Draw }>("/draws/current")
+      .then(({ data }) => setDraw(data))
+      .catch(() => router.refresh())
+      .finally(() => setBusy(false));
+  };
 
   const buy = async () => {
     setBusy(true);
@@ -84,7 +96,7 @@ export function DrawPanel({ initial, signedIn }: { initial: Draw; signedIn: bool
         </section>
 
         <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
-          {signedIn && draw.me ? (
+          {draw.me ? (
             <>
               <div className="flex items-end justify-between gap-2">
                 <div>
@@ -140,8 +152,8 @@ export function DrawPanel({ initial, signedIn }: { initial: Draw; signedIn: bool
           ) : (
             <div className="flex flex-col items-center gap-3 py-4 text-center">
               <p className="text-sm">{t("loginToPlay")}</p>
-              <Button href="/login?next=/gifts" variant="solid" font="button" pill>
-                {t("login")}
+              <Button variant="solid" font="button" pill loading={busy} onClick={join}>
+                {t("join")}
               </Button>
             </div>
           )}

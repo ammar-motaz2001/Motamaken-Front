@@ -16,9 +16,13 @@ type OtpFormProps = {
   target: string;
   subtitle?: string;
   onVerified: (result: { token?: string; accessToken?: string }) => void | Promise<void>;
+  /** Confirms the code somewhere else than `POST /auth/otp/verify` (quick access). */
+  verify?: (code: string) => Promise<{ token?: string; accessToken?: string }>;
+  /** Classes for the outer form (the auth pages pad it; modals don't need to). */
+  className?: string;
 };
 
-export function OtpForm({ purpose, method, target, subtitle, onVerified }: OtpFormProps) {
+export function OtpForm({ purpose, method, target, subtitle, onVerified, verify, className }: OtpFormProps) {
   const t = useTranslations("Otp");
   const [digits, setDigits] = useState<string[]>(Array(LENGTH).fill(""));
   const [seconds, setSeconds] = useState(RESEND_SECONDS);
@@ -64,7 +68,7 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified }: OtpFo
     }
     setSubmitting(true);
     try {
-      await onVerified(await authService.verifyOtp({ purpose, method, target, code }));
+      await onVerified(await (verify ? verify(code) : authService.verifyOtp({ purpose, method, target, code })));
     } catch (err) {
       setError(err instanceof AuthError && err.message ? err.message : t("failed"));
       setSubmitting(false);
@@ -84,7 +88,7 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified }: OtpFo
   };
 
   return (
-    <form className="flex flex-col px-2 pt-4 sm:px-[30px]" onSubmit={onSubmit} noValidate>
+    <form className={className ?? "flex flex-col px-2 pt-4 sm:px-[30px]"} onSubmit={onSubmit} noValidate>
       <div className="pb-2 text-center">
         <p className="text-base font-medium capitalize">{t("title")}</p>
         <p className="text-sm">{subtitle ?? (method === "email" ? t("subtitleEmail") : t("subtitlePhone"))}</p>

@@ -1,6 +1,6 @@
-# Motamakin Web (متمكن)
+# Mutamakin Web (متمكن)
 
-Frontend for **Motamakin**, a marketplace that connects clients with skilled freelancers and social media influencers. Clients post projects or influencer requests, providers bid on them, and payments are protected by the platform.
+Frontend for **Mutamakin**, a marketplace that connects clients with skilled freelancers and social media influencers. Clients post projects or influencer requests, providers bid on them, and payments are protected by the platform.
 
 This repository contains the web client built with Next.js. The first delivered module is **authentication** (sign up, login, OTP verification, password recovery) together with the shared **header**, **footer**, **localization** and **theming** that every future page will reuse.
 
@@ -199,7 +199,8 @@ Fill form → confirm email modal ("Is this email correct?") → OTP → "Welcom
 Server failure → error modal ("There was an error processing your registration") with "Need help?" link.
 
 **Login by email**
-Email + password → verification code → home.
+Email + password → home. A verification code is asked only when the email is not verified yet, when two-factor
+authentication is on, or when the backend lists `email` in `LOGIN_OTP_METHODS`.
 
 **Login by phone**
 Phone + password → home.
@@ -259,7 +260,6 @@ Everything below reads from and writes to the backend; there is no mock data lef
 | `/profile` | Add / edit the freelancer or influencer profile needed to send offers | `GET /me/profile`, `PUT /me/profile` |
 | `/teams`, `/teams/[id]` | Create a team, invite freelancers (live search), set roles and shares, publish, unpublish, disband, leave; accept or decline invitations | `/teams/*`, `/me/team-invitations`, `/team-invitations/{id}/(accept\|decline)` |
 | `/projects/invitations/[id]` | A single team invitation | `GET /me/team-invitations` |
-| `/oauth/callback` | Finishes Google / Apple / X / Facebook login and stores the session | `POST /auth/oauth/exchange` |
 | `/settings` | Settings shell (`modules/settings`): sidebar with every account section; redirects to `/settings/payment` | — |
 | `/users/[id]` | Public profile: personal card (rating, location, online / last seen, hire, verification badges, skills, languages, report), tabs Overview (statistics, about, experience, education, certificates, latest reviews), Portfolio (gallery with lightbox and report), Reviews (paginated), Social accounts (influencers), Projects (open projects) | `GET /users/{id}`, `GET /users/{id}/reviews`, `POST /reports` |
 | `/profile` | Work profile form plus section editors: skills, languages, experience, education, certificates, social accounts (influencers) and portfolio with image upload | `PUT /me/profile`, `POST/PATCH/DELETE /me/portfolio` |
@@ -334,7 +334,6 @@ All API calls go through `src/modules/auth/services/auth.service.ts`. When `NEXT
 | `requestPasswordReset` | `POST /auth/password/forgot` | `method, target` | `{ sent }` — a reset code is sent, then `/forgot-password/verify` |
 | `resetPassword` | `POST /auth/password/reset` | `token, password` | `{ success }` |
 | `logout` | `POST /auth/logout` | — (`Authorization: Bearer <accessToken>`) | `{ success }` — called by the `deleteSession` server action |
-| Social login | `GET /auth/oauth/{google\|apple\|x\|facebook}` | — | Redirect |
 
 Phone numbers are sent in E.164 format (e.g. `+966555555555`).
 
@@ -390,7 +389,6 @@ When `otpRequired` is `true`, the user is sent to `/login/verify`. For `purpose:
 
 **Short term**
 - Connect the auth module to the real backend and store the session.
-- Replace the reCAPTCHA placeholder image with Google reCAPTCHA.
 - Replace temporary icons (footer socials, store badges, success / error icons, welcome modal illustration, loading screen) with the original Figma exports.
 - Make the header menu, categories dropdown, notifications and search functional.
 
@@ -401,3 +399,36 @@ When `otpRequired` is `true`, the user is sent to `/login/verify`. For `purpose:
 - User account: profile, my projects, payments, points & gifts, invite a friend.
 - Evaluation, disputes, account verification and customer support.
 - Static pages: guide, sitemap, black list, guarantee of rights, user agreement, privacy policy, terms & conditions.
+
+## Environment: visitor details for the API
+
+Set `API_PROXY_SECRET` (server-only) to the same value as `FRONTEND_PROXY_SECRET` in the backend. The API proxy
+(`src/app/api/backend`) and server-side fetches use it to pass on the visitor's IP, browser and country, which the API
+needs for rate limits and to count campaign and affiliate visits correctly. See `src/lib/api/visitor.ts`.
+
+## Pages added with the backend
+
+- `/settings/campaigns`, `/settings/campaigns/new`, `/settings/campaigns/[id]`: promotion campaigns (advertiser)
+- `/settings/promoter`: promote campaigns and earn (promoter)
+- `/r/[code]`: a promoter's link; reports the visit, then opens the promoted project or profile
+- `/favorites` and the heart button on project and profile cards
+- Footer information pages (`/terms`, `/guide`, `/site-fees`, ...): served by the API and edited by admins; any other
+  unknown address still shows "under construction"
+- `/contact` (form) and `/sitemap`
+
+## Admin panel
+
+`/admin` (also linked from the account menu) is only visible to accounts with `isAdmin: true`; everyone else gets a 404 and
+guests are sent to log in. Sections: overview, users (suspend, wallet adjustment), identity checks, reports, contact messages,
+projects (feature / close), categories, disputes (take, private note, settle), campaigns, withdrawals, ledger, plans,
+affiliate, draws, payment feedback, info pages (bilingual Markdown editor with preview) and fees & limits.
+Code: `src/app/[locale]/admin` (pages) and `src/modules/admin` (shared table, filters, action dialogs, editors).
+
+The logo is `public/images/logo.png`; the browser icons are `src/app/favicon.ico`, `icon.png` and `apple-icon.png`.
+
+## Card payments (Moyasar)
+
+Set `NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY` (pk_…) and `NEXT_PUBLIC_PAYMENTS_SIMULATE=false`; the API needs
+`PAYMENTS_DRIVER=moyasar` and the secret key (see the backend README). Card details go from the browser straight to
+Moyasar (`src/lib/moyasar.ts`); 3-D Secure opens in a small window (or this tab, if popups are blocked) and comes back
+to `/payments/return`. Without the key the site keeps the development flow with simulated payments.

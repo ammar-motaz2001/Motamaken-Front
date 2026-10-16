@@ -8,7 +8,7 @@ import { DisputeCase } from "@/modules/disputes";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/disputes/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Disputes.case" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function DisputePage({ params }: PageProps<"/[locale]/disputes/[id]">) {

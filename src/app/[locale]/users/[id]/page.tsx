@@ -16,7 +16,7 @@ const loadProfile = cache(async (id: string) => {
 export async function generateMetadata({ params }: PageProps<"/[locale]/users/[id]">) {
   const data = await loadProfile((await params).id);
   const role = data.profile?.jobTitle ? ` — ${data.profile.jobTitle}` : "";
-  return { title: `${data.user.fullName}${role} | Motamakin`, description: data.profile?.bio?.slice(0, 160) };
+  return { title: `${data.user.fullName}${role} | Mutamakin`, description: data.profile?.bio?.slice(0, 160) };
 }
 
 export default async function UserProfilePage({ params, searchParams }: PageProps<"/[locale]/users/[id]">) {

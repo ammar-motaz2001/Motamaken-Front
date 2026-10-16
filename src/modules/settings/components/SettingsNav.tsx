@@ -16,6 +16,9 @@ import {
   MonitorCheck,
   Scale,
   ShieldCheck,
+  Heart,
+  MousePointerClick,
+  TrendingUp,
   UserPlus,
   Wallet,
 } from "lucide-react";
@@ -38,6 +41,9 @@ const MAIN = [
 const MORE = [
   { key: "wallet", href: "/settings/wallet", Icon: Wallet },
   { key: "escrow", href: "/settings/escrow", Icon: Landmark },
+  { key: "campaigns", href: "/settings/campaigns", Icon: TrendingUp },
+  { key: "promoter", href: "/settings/promoter", Icon: MousePointerClick },
+  { key: "favorites", href: "/favorites", Icon: Heart },
   { key: "invite", href: "/settings/invite", Icon: UserPlus },
   { key: "points", href: "/settings/points", Icon: Gift },
   { key: "medals", href: "/settings/medals", Icon: Medal },
@@ -52,7 +58,8 @@ export function SettingsNav() {
   const [showMore, setShowMore] = useState(inMore);
 
   const renderItem = ({ key, href, Icon }: { key: string; href: string; Icon: typeof Bell }) => {
-    const active = pathname === href.split("?")[0] && !href.includes("?");
+    const path = href.split("?")[0];
+    const active = (pathname === path || (path === "/settings/campaigns" && pathname.startsWith(path))) && !href.includes("?");
     return (
       <li key={key}>
         <Link

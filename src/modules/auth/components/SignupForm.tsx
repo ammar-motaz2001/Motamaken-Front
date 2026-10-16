@@ -5,6 +5,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { PolicyCheckbox } from "@/components/policy/PolicyCheckbox";
 import { Field, PasswordField } from "@/components/ui/Field";
 import { Modal } from "@/components/ui/Modal";
 import { PhoneField } from "@/components/ui/PhoneField";
@@ -19,12 +20,11 @@ import {
   type ValidationKey,
 } from "../lib/validation";
 import { rememberReferral, shouldRecordVisit } from "../lib/referral";
-import { authService } from "../services/auth.service";
+import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { ErrorModal } from "./ErrorModal";
 import { PasswordStrength } from "./PasswordStrength";
-import { Recaptcha } from "./Recaptcha";
-import { SocialAuth } from "./SocialAuth";
+import { Recaptcha, recaptchaEnabled } from "./Recaptcha";
 import { SuccessTitle } from "./SuccessTitle";
 import { actionsClasses, fieldsClasses, formClasses, modalTextClasses, switchClasses } from "./styles";
 
@@ -74,6 +74,9 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
   const [submitting, setSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
+  const [captchaError, setCaptchaError] = useState<string | undefined>(undefined);
 
   const [referral, setReferral] = useState<string | undefined>(undefined);
 
@@ -108,10 +111,15 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
         password: values.password,
         subscribe: values.subscribe,
         ...(referral && { referralCode: referral }),
+        ...(captcha && { recaptchaToken: captcha }),
       });
       router.push({ pathname: "/signup/verify", query: { method, to: target } });
-    } catch {
-      setFailed(true);
+    } catch (caught) {
+      // A token works once: show a fresh box whatever went wrong.
+      setCaptchaReset((count) => count + 1);
+      const captchaMessage = caught instanceof AuthError ? caught.fields.recaptchaToken : undefined;
+      if (captchaMessage) setCaptchaError(captchaMessage);
+      else setFailed(true);
       setSubmitting(false);
     }
   };
@@ -120,7 +128,9 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
     event.preventDefault();
     const nextErrors = validate(values, method);
     setErrors(nextErrors);
-    if (hasErrors(nextErrors)) return;
+    const needsCaptcha = recaptchaEnabled && !captcha;
+    setCaptchaError(needsCaptcha ? ta("recaptchaRequired") : undefined);
+    if (hasErrors(nextErrors) || needsCaptcha) return;
     setConfirmOpen(true);
   };
 
@@ -195,18 +205,25 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
         </div>
 
         <div className="flex flex-col items-start gap-2 pt-2">
-          <Checkbox
-            checked={values.terms}
-            invalid={Boolean(errors.terms)}
-            onChange={(event) => update("terms", event.target.checked)}
-          >
-            {t("agree")} <Link href="/privacy-policy">{t("privacyPolicy")}</Link>
-          </Checkbox>
+          <PolicyCheckbox checked={values.terms} invalid={Boolean(errors.terms)} onChange={(checked) => update("terms", checked)}>
+            {(link) => (
+              <>
+                {t("agree")} {link(t("privacyPolicy"))}
+              </>
+            )}
+          </PolicyCheckbox>
           {errors.terms && <p className="font-hint text-xs font-light tracking-[0.6px] text-danger">{tv(errors.terms)}</p>}
           <Checkbox checked={values.subscribe} onChange={(event) => update("subscribe", event.target.checked)}>
             {t("subscribe")}
           </Checkbox>
-          <Recaptcha />
+          <Recaptcha
+            resetKey={captchaReset}
+            error={captchaError}
+            onChange={(token) => {
+              setCaptcha(token);
+              if (token) setCaptchaError(undefined);
+            }}
+          />
         </div>
 
         <div className={actionsClasses}>
@@ -220,7 +237,6 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
         </p>
       </form>
 
-      <SocialAuth />
 
       <Modal open={confirmOpen} onClose={() => setConfirmOpen(false)} title={<SuccessTitle />}>
         <p className={modalTextClasses}>

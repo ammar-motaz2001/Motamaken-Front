@@ -7,9 +7,13 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Footer } from "@/components/footer/Footer";
 import { getHeaderData } from "@/components/header/data";
 import { Header } from "@/components/header/Header";
+import { FavoritesProvider } from "@/components/providers/FavoritesProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { routing } from "@/i18n/routing";
 import { SESSION_COOKIE } from "@/lib/session";
+import { AuthGateProvider } from "@/components/providers/AuthGateProvider";
+import { WelcomeToast } from "@/components/providers/WelcomeToast";
+import { getAuthMethods } from "@/modules/auth/lib/settings";
 import "../globals.css";
 
 const tajawal = Tajawal({
@@ -45,7 +49,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const signedIn = (await cookies()).has(SESSION_COOKIE);
-  const headerData = await getHeaderData(signedIn);
+  const [headerData, authMethods] = await Promise.all([getHeaderData(signedIn), getAuthMethods()]);
 
   return (
     <html
@@ -57,9 +61,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="flex flex-col">
         <NextIntlClientProvider>
           <ThemeProvider>
-            <Header signedIn={signedIn} data={headerData} />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <AuthGateProvider signedIn={signedIn} methods={authMethods}>
+              <FavoritesProvider signedIn={signedIn}>
+                <Header signedIn={signedIn} data={headerData} />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </FavoritesProvider>
+              <WelcomeToast />
+            </AuthGateProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

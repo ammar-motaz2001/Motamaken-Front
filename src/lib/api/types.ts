@@ -26,6 +26,7 @@ export type User = {
   locale: string | null;
   currency: string;
   theme: "light" | "dark" | null;
+  isAdmin?: boolean;
 };
 
 export type CategoryType = "project" | "influencer";
@@ -301,6 +302,7 @@ export type Deposit = {
   method: string;
   status: "pending" | "succeeded" | "failed";
   checkoutUrl: string | null;
+  failureReason?: string | null;
   paidAt: string | null;
   createdAt: string;
 };
@@ -394,6 +396,7 @@ export type Dispute = {
   resolution: "client_refund" | "freelancer_payout" | "split" | null;
   clientPercent: number | null;
   resolutionNote: string | null;
+  assignedTo?: UserBrief | null;
   permissions: { canPost: boolean; canWithdraw: boolean; canConcede: boolean; canResolve: boolean };
   timeline?: DisputeEntry[];
   createdAt: string;
@@ -450,3 +453,82 @@ export type AffiliateSummary = {
   tiers: { code: string; min: number; percent: number }[];
   monthly: { month: string; amount: number }[];
 };
+
+export type CampaignStatus = "draft" | "active" | "paused" | "completed" | "cancelled";
+
+export type CampaignFilters = {
+  block_bots: boolean;
+  unique_window_hours: number;
+  max_visits_per_promoter_per_hour: number;
+  allowed_countries: string[];
+};
+
+export type CampaignPromoter = {
+  id: number;
+  campaign?: { id: number; title: string; status: CampaignStatus; isRunning: boolean; rewardPerVisit: number; currency: string };
+  user?: UserBrief;
+  code: string;
+  link: string;
+  validVisits: number;
+  rejectedVisits: number;
+  earned: number;
+  joinedAt: string;
+};
+
+export type CampaignStats = {
+  visits: number;
+  validVisits: number;
+  rejectedVisits: number;
+  validRate?: number;
+  promoters?: number;
+  rejections?: { reason: string; label: string; count: number }[];
+  topPromoters?: CampaignPromoter[];
+};
+
+export type Campaign = {
+  id: number;
+  title: string;
+  description: string | null;
+  status: CampaignStatus;
+  isRunning: boolean;
+  owner?: UserBrief;
+  target: { type: "project" | "profile"; id: number; path: string };
+  currency: string;
+  budget: number;
+  spent: number;
+  remaining: number;
+  costPerVisit: number;
+  rewardPerVisit: number;
+  feePercent: number;
+  filters: CampaignFilters;
+  stats?: CampaignStats;
+  startsAt: string | null;
+  endsAt: string | null;
+  closedAt: string | null;
+  createdAt: string;
+};
+
+export type CampaignVisit = {
+  id: number;
+  status: "valid" | "rejected";
+  rejectReason: string | null;
+  rejectLabel: string | null;
+  promoter?: { id: number; fullName: string };
+  visitor: string;
+  country: string | null;
+  referrer: string | null;
+  reward: number;
+  createdAt: string;
+};
+
+export type PromoterDashboard = {
+  totals: { validVisits: number; rejectedVisits: number; earned: { currency: string; amount: number }[] };
+  links: CampaignPromoter[];
+  daily: { date: string; visits: number }[];
+};
+
+export type FavoriteIds = { projects: number[]; profiles: number[] };
+
+export type SitePageSummary = { slug: string; section: "about" | "help" | "legal"; title: string; updatedAt: string | null };
+
+export type SitePage = SitePageSummary & { body: string };

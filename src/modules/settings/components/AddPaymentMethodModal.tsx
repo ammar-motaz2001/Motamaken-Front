@@ -3,14 +3,14 @@
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { PolicyCheckbox } from "@/components/policy/PolicyCheckbox";
 import { Field } from "@/components/ui/Field";
 import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
-import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { PaymentMethod } from "@/lib/api/types";
+import { CardError, moyasarEnabled, open3dsWindow, saveTokenizedCard } from "@/lib/moyasar";
 import { EMPTY_CARD, toCardPayload, validateCard, type CardForm } from "../lib/card";
 import { CardFields } from "./CardFields";
 
@@ -45,13 +45,28 @@ export function AddPaymentMethodModal({ open, onClose, onSaved }: { open: boolea
     setErrors(found);
     if (Object.keys(found).length) return;
 
+    // The bank's one-time card check opens in a small window, which must open right here in the click.
+    const popup = type === "card" && moyasarEnabled ? open3dsWindow() : null;
     setSaving(true);
     try {
       const body = type === "card" ? { ...toCardPayload(card), makeDefault } : { type, email, makeDefault };
-      const { data } = await api<{ data: PaymentMethod }>("/me/payment-methods", { method: "POST", body });
+      // With Moyasar the card goes to Moyasar from the browser; the API only receives a token.
+      const { data } =
+        type === "card" && moyasarEnabled
+          ? await saveTokenizedCard(card, popup, makeDefault)
+          : await api<{ data: PaymentMethod }>("/me/payment-methods", { method: "POST", body });
       onSaved(data);
       setStep("success");
     } catch (caught) {
+      if (caught instanceof CardError) {
+        if (Object.keys(caught.fields).length) {
+          setErrors(caught.fields);
+        } else {
+          setFailure(caught.message);
+          setStep("error");
+        }
+        return;
+      }
       const apiError = caught as ApiError;
       const fields = apiError.fields;
       if (Object.keys(fields).length) {
@@ -140,9 +155,9 @@ export function AddPaymentMethodModal({ open, onClose, onSaved }: { open: boolea
           <input type="checkbox" checked={makeDefault} onChange={(event) => setMakeDefault(event.target.checked)} className="size-4 accent-brand" />
           {t("add.makeDefault")}
         </label>
-        <Checkbox checked={agreed} invalid={Boolean(errors.agreed)} onChange={(event) => setAgreed(event.target.checked)}>
-          {t.rich("add.agree", { link: (chunks) => <Link href="/privacy">{chunks}</Link> })}
-        </Checkbox>
+        <PolicyCheckbox checked={agreed} invalid={Boolean(errors.agreed)} onChange={setAgreed}>
+          {(link) => t.rich("add.agree", { link })}
+        </PolicyCheckbox>
 
         <div className="flex flex-wrap justify-center gap-3">
           <Button variant="outline" font="button" onClick={close}>

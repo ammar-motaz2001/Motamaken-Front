@@ -9,7 +9,7 @@ type Monthly = { currency: string; data: { month: string; income: number; spendi
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/wallet">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Wallet" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function WalletPage({ params, searchParams }: PageProps<"/[locale]/settings/wallet">) {

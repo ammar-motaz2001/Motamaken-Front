@@ -1,11 +1,9 @@
 export const SESSION_COOKIE = "motamakin_session";
 
 export const PROTECTED_PATHS = [
-  /^\/projects\/new(\/|$)/,
   /^\/projects\/\d+\/edit(\/|$)/,
   /^\/projects\/invitations(\/|$)/,
-  /^\/influencers\/new(\/|$)/,
-  /^\/(messages|my-projects|offers|profile|teams|settings|disputes|notifications)(\/|$)/,
+  /^\/(messages|my-projects|offers|profile|teams|settings|disputes|notifications|favorites|admin|payments)(\/|$)/,
 ];
 
 export const GUEST_ONLY_PATHS = [/^\/(login|signup|forgot-password|reset-password)(\/|$)/];

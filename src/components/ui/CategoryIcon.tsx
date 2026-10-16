@@ -31,6 +31,8 @@ const ICONS: Record<string, LucideIcon | IconType> = {
   whatsapp: FaWhatsapp,
 };
 
+export const CATEGORY_ICONS = Object.keys(ICONS);
+
 export function CategoryIcon({ icon, className }: { icon: string; className?: string }) {
   const Icon = ICONS[icon] ?? LayoutGrid;
   return <Icon className={className} aria-hidden />;

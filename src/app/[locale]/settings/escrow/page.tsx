@@ -7,7 +7,7 @@ import { EscrowList } from "@/modules/escrow";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/escrow">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Escrow.overview" });
-  return { title: `${t("title")} | Motamakin` };
+  return { title: `${t("title")} | Mutamakin` };
 }
 
 export default async function EscrowPage({ params, searchParams }: PageProps<"/[locale]/settings/escrow">) {

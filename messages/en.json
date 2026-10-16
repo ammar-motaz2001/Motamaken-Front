@@ -1,17 +1,17 @@
 {
   "Metadata": {
-    "title": "Motamakin",
-    "description": "Hire skilled freelancers and influencers on Motamakin",
-    "signup": "Signup | Motamakin",
-    "verify": "Verify | Motamakin",
-    "login": "Login | Motamakin",
-    "forgotPassword": "Forgot Password | Motamakin",
-    "resetPassword": "Reset Password | Motamakin",
-    "resetSuccess": "Password Reset | Motamakin",
-    "resetError": "Password Reset Failed | Motamakin",
-    "underConstruction": "Under Construction | Motamakin",
-    "loginVerify": "Verify Login | Motamakin",
-    "messages": "Messages | Motamakin"
+    "title": "Mutamakin",
+    "description": "Hire skilled freelancers and influencers on Mutamakin",
+    "signup": "Signup | Mutamakin",
+    "verify": "Verify | Mutamakin",
+    "login": "Login | Mutamakin",
+    "forgotPassword": "Forgot Password | Mutamakin",
+    "resetPassword": "Reset Password | Mutamakin",
+    "resetSuccess": "Password Reset | Mutamakin",
+    "resetError": "Password Reset Failed | Mutamakin",
+    "underConstruction": "Under Construction | Mutamakin",
+    "loginVerify": "Verify Login | Mutamakin",
+    "messages": "Messages | Mutamakin"
   },
   "Header": {
     "home": "Home",
@@ -74,7 +74,9 @@
       "premium": "Premium Services",
       "inviteFriend": "Invite a Friend",
       "disputes": "Disputes",
-      "myTeams": "My Teams"
+      "myTeams": "My Teams",
+      "campaigns": "Promotion campaigns",
+      "admin": "Admin panel"
     },
     "allNotifications": "See all notifications"
   },
@@ -117,7 +119,7 @@
     "inviteFriend": "Invite A Friend",
     "getItOn": "GET IT ON",
     "downloadOn": "Download on the",
-    "rights": "All rights reserved to Motamakin {year}",
+    "rights": "All rights reserved to Mutamakin {year}",
     "userAgreement": "User Agreement",
     "privacyPolicy": "Privacy Policy",
     "terms": "Terms & Conditions"
@@ -125,8 +127,6 @@
   "Auth": {
     "email": "Email Address",
     "mobile": "Mobile Number",
-    "orSignupUsing": "Or signup using",
-    "continueWith": "Continue with {provider}",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "loading": "Loading",
@@ -137,7 +137,8 @@
     "signupSuccess": "sign-up successfully",
     "welcomeTitle": "Welcome to the Community!",
     "welcomeMessage": "Congratulations on registering! You've earned {points} points to get started. Explore the platform and discover ways to earn more.",
-    "loadingPage": "Loading, please wait..."
+    "loadingPage": "Loading, please wait...",
+    "recaptchaRequired": "Please tick \"I'm not a robot\"."
   },
   "Signup": {
     "title": "Signup",
@@ -312,7 +313,11 @@
       },
       "publishedText": "Providers can now see it and send you offers. You'll get a notification for every new offer.",
       "viewProject": "View it",
-      "myProjects": "My projects"
+      "myProjects": "My projects",
+      "signUpReason": {
+        "project": "Confirm your email to publish your project.",
+        "request": "Confirm your email to publish your request."
+      }
     },
     "actions": {
       "next": "Next",
@@ -367,7 +372,15 @@
       "save": "Save offer",
       "send": "Send offer",
       "cancel": "Cancel",
-      "failed": "We could not send your offer. Please try again."
+      "failed": "We could not send your offer. Please try again.",
+      "required": "Required.",
+      "messageTooShort": "Write a few words about your offer (at least 10 characters).",
+      "jobTitle": "Your job title",
+      "jobTitlePlaceholder": "e.g. Graphic designer",
+      "jobTitleRequired": "Write your job title (at least 2 characters).",
+      "jobTitleHint": "Creates your profile with this offer; you can complete it later.",
+      "jobTitleGuestHint": "Used for your new profile. If you already have one, it is kept as it is.",
+      "signUpReason": "Confirm your email to send your offer."
     },
     "owner": {
       "manage": "Manage your project",
@@ -435,12 +448,12 @@
       "influencer": "Influencer platforms"
     },
     "metadata": {
-      "new": "Post a project | Motamakin",
-      "newRequest": "Post an influencer request | Motamakin",
-      "browse": "Projects | Motamakin",
-      "mine": "My projects | Motamakin",
-      "offers": "My offers | Motamakin",
-      "categories": "Categories | Motamakin"
+      "new": "Post a project | Mutamakin",
+      "newRequest": "Post an influencer request | Mutamakin",
+      "browse": "Projects | Mutamakin",
+      "mine": "My projects | Mutamakin",
+      "offers": "My offers | Mutamakin",
+      "categories": "Categories | Mutamakin"
     }
   },
   "Home": {
@@ -713,7 +726,10 @@
       "disputes": "Disputes",
       "seeMore": "See more",
       "seeLess": "See less",
-      "escrow": "Payment protection"
+      "escrow": "Payment protection",
+      "campaigns": "Promotion campaigns",
+      "promoter": "Promote & earn",
+      "favorites": "Favorites"
     },
     "payment": {
       "title": "Payment & financial",
@@ -998,7 +1014,8 @@
       "success": "{amount} {currency} was added to your wallet successfully!",
       "failed": "We could not complete your payment. Please try again later.",
       "backToWallet": "Back To Wallet",
-      "tryAgain": "Try Again"
+      "tryAgain": "Try Again",
+      "secureNote": "Card details go straight to Moyasar over an encrypted connection; we never see or store your card number. Your bank may ask you to confirm in a small window."
     },
     "withdraw": {
       "title": "Withdraw Balance",
@@ -1042,6 +1059,20 @@
       "submit": "Submit",
       "thanks": "Thanks for your input",
       "close": "Close"
+    },
+    "return": {
+      "title": "Payment",
+      "checking": "Checking your payment…",
+      "successTitle": "Payment successful",
+      "success": "{amount} was added to your wallet.",
+      "pendingTitle": "Payment not finished",
+      "pending": "Your bank has not confirmed the payment yet. If you were charged, it will appear in your wallet within a few minutes.",
+      "failedTitle": "Payment failed",
+      "failed": "The payment did not go through and nothing was charged.",
+      "toWallet": "Go to my wallet",
+      "cardSavedTitle": "Card saved",
+      "cardSaved": "Your bank confirmed the card. You can now pay with it in one click.",
+      "toCards": "My payment methods"
     }
   },
   "Payments": {
@@ -1145,7 +1176,9 @@
       "until": "Until {date}",
       "active": "Active",
       "ended": "Ended"
-    }
+    },
+    "signUpReasonProfile": "Confirm your email to feature your profile.",
+    "signUpReasonProject": "Confirm your email to feature your project."
   },
   "Escrow": {
     "title": "Payment protection",
@@ -1397,7 +1430,7 @@
       "reason": "Reason",
       "description": "What happened",
       "timeline": "Case timeline",
-      "admin": "Motamakin team",
+      "admin": "Mutamakin team",
       "placeholder": "Write a message to the case",
       "attach": "Attach evidence",
       "removeFile": "Remove file",
@@ -1590,7 +1623,7 @@
     "modal": {
       "trigger": "Report",
       "title": "Report This Content",
-      "subtitle": "Help us keep Motamakin safe. Tell us what is wrong.",
+      "subtitle": "Help us keep Mutamakin safe. Tell us what is wrong.",
       "reason": "Reason for reporting",
       "reasonRequired": "Choose a reason.",
       "details": "Details",
@@ -1609,7 +1642,8 @@
         "copyright": "Copyright violation",
         "scam": "Fraud or scam",
         "other": "Other"
-      }
+      },
+      "signUpReason": "Confirm your email to send the report."
     }
   },
   "Reviews": {
@@ -1650,7 +1684,7 @@
   },
   "Errors": {
     "home": "Back To Homepage",
-    "search": "Search Motamakin",
+    "search": "Search Mutamakin",
     "support": "Contact Support",
     "retry": "Try Again",
     "reference": "Error reference: {digest}",
@@ -1677,7 +1711,7 @@
     },
     "points": {
       "title": "Points & gifts",
-      "subtitle": "Earn points as you use Motamakin and spend them on prize-draw tickets",
+      "subtitle": "Earn points as you use Mutamakin and spend them on prize-draw tickets",
       "balance": "Your points",
       "howToEarn": "How to earn points",
       "once": "(once)",
@@ -1708,8 +1742,8 @@
       "yourCode": "Your invite code:",
       "shareOn": "Share on",
       "email": "Email",
-      "shareTitle": "Join me on Motamakin",
-      "shareMessage": "Join me on Motamakin, the marketplace for freelancers and influencers: {link}",
+      "shareTitle": "Join me on Mutamakin",
+      "shareMessage": "Join me on Mutamakin, the marketplace for freelancers and influencers: {link}",
       "steps": {
         "step1": "Share your link with friends.",
         "step2": "They sign up and verify their account: you get 25 points.",
@@ -1817,7 +1851,777 @@
       "history": "Previous winners",
       "historyStats": "{players} players, {tickets} tickets",
       "noWinners": "No winners: nobody joined this draw.",
-      "noHistory": "No draws yet."
+      "noHistory": "No draws yet.",
+      "join": "Join the draw",
+      "signUpReason": "Confirm your email to join the draw."
     }
+  },
+  "Campaigns": {
+    "title": "Promotion campaigns",
+    "subtitle": "Pay promoters for every real visit to your project or profile.",
+    "new": "New campaign",
+    "empty": "You have no campaigns yet. Create one to bring visitors to your project or profile.",
+    "statuses": {
+      "draft": "Draft",
+      "active": "Running",
+      "paused": "Paused",
+      "completed": "Completed",
+      "cancelled": "Stopped"
+    },
+    "statusFilter": {
+      "all": "All"
+    },
+    "budgetUsed": "{spent} of {budget} spent",
+    "visits": "{valid} paid visits · {rejected} filtered",
+    "perVisit": "{amount} per visit",
+    "target": {
+      "project": "Project",
+      "profile": "Your profile"
+    },
+    "form": {
+      "createTitle": "Create a campaign",
+      "editTitle": "Edit the draft",
+      "intro": "Nothing is charged until you launch it. The whole budget leaves your wallet at launch and anything left comes back when it ends.",
+      "title": "Campaign name",
+      "titlePlaceholder": "e.g. Spring launch",
+      "description": "Description for promoters",
+      "descriptionPlaceholder": "What are you promoting, and who is it for?",
+      "targetType": "Links lead to",
+      "project": "Project",
+      "chooseProject": "Choose one of your open projects",
+      "noProjects": "You have no open projects. Post a project or choose your profile.",
+      "currency": "Currency",
+      "budget": "Budget",
+      "costPerVisit": "Cost per visit",
+      "estimate": "≈ {visits} paid visits. Promoters receive {reward} per visit (after the {fee}% platform fee).",
+      "endsAt": "End date (optional)",
+      "filtersTitle": "Visit filtering",
+      "filtersHint": "Every visit is recorded, but only visits that pass these rules are paid.",
+      "create": "Save as draft",
+      "save": "Save changes",
+      "failed": "Could not save the campaign."
+    },
+    "filters": {
+      "blockBots": "Turn away robots and scripts",
+      "window": "Pay for the same visitor once every (hours)",
+      "perHour": "Most paid visits per promoter per hour",
+      "countries": "Only these countries (2-letter codes, comma separated; empty for anywhere)",
+      "countriesHint": "Needs a CDN that reports the visitor's country.",
+      "save": "Save filters",
+      "saved": "Filters saved."
+    },
+    "actions": {
+      "launch": "Launch",
+      "pause": "Pause",
+      "resume": "Resume",
+      "cancel": "Stop campaign",
+      "edit": "Edit draft",
+      "confirmLaunch": "Launch \"{title}\"? {budget} will be taken from your wallet now.",
+      "confirmCancel": "Stop \"{title}\" for good? What is left of the budget returns to your wallet.",
+      "addFunds": "Add money to your wallet",
+      "failed": "That did not work."
+    },
+    "detail": {
+      "overview": "Overview",
+      "budget": "Budget",
+      "spent": "Spent",
+      "remaining": "Remaining",
+      "costPerVisit": "Cost per visit",
+      "reward": "Promoter reward",
+      "visits": "Visits",
+      "valid": "Paid visits",
+      "rejected": "Filtered",
+      "validRate": "Paid rate",
+      "promoters": "Promoters",
+      "why": "Why visits were filtered",
+      "noRejections": "No visits were filtered.",
+      "daily": "Last 14 days",
+      "topPromoters": "Top promoters",
+      "noPromoters": "Nobody promotes this campaign yet. Running campaigns appear on the promoters page.",
+      "visitsLog": "Visits",
+      "noVisits": "No visits yet.",
+      "all": "All",
+      "paid": "Paid",
+      "filtered": "Filtered",
+      "columns": {
+        "time": "Time",
+        "promoter": "Promoter",
+        "visitor": "Visitor",
+        "country": "Country",
+        "from": "From",
+        "result": "Result"
+      },
+      "link": "Link leads to",
+      "ends": "Ends {date}",
+      "runningSince": "Since {date}"
+    },
+    "promoter": {
+      "title": "Promote & earn",
+      "subtitle": "Share links to other people's projects and get paid for every real visit.",
+      "totals": "Your results",
+      "paid": "Paid visits",
+      "filtered": "Filtered visits",
+      "earned": "Earned",
+      "daily": "Paid visits, last 14 days",
+      "myLinks": "My links",
+      "noLinks": "You don't promote any campaign yet. Pick one below.",
+      "available": "Campaigns to promote",
+      "noAvailable": "No campaigns are running right now. Check back soon.",
+      "reward": "{amount} per visit",
+      "remaining": "{amount} left",
+      "join": "Get my link",
+      "by": "By {name}",
+      "copy": "Copy",
+      "copied": "Copied",
+      "yourLink": "Your link",
+      "stats": "{valid} paid · {rejected} filtered · {earned} earned",
+      "rules": "Only real visitors are paid: robots, repeat visits within a day and bought traffic are filtered out."
+    },
+    "landing": {
+      "loading": "Taking you there…",
+      "invalid": "This link is not valid anymore.",
+      "home": "Go to the homepage"
+    }
+  },
+  "Favorites": {
+    "title": "Favorites",
+    "subtitle": "Projects and people you saved with the heart.",
+    "home": "Home",
+    "save": "Save to favorites",
+    "remove": "Remove from favorites",
+    "tabs": {
+      "project": "Projects",
+      "profile": "Freelancers & influencers"
+    },
+    "empty": {
+      "project": "No saved projects yet",
+      "profile": "No saved profiles yet"
+    },
+    "emptyHint": "Tap the heart on any card to keep it here.",
+    "browse": {
+      "project": "Browse projects",
+      "profile": "Find freelancers"
+    }
+  },
+  "SitePages": {
+    "home": "Home",
+    "updated": "Last updated {date}",
+    "contact": {
+      "pageTitle": "Contact us",
+      "title": "Send us a message",
+      "name": "Your name",
+      "email": "Your email",
+      "topic": "Topic",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send message",
+      "sent": "Thank you! Your message was sent. We usually reply by email within one business day.",
+      "failed": "Your message could not be sent. Please try again.",
+      "topics": {
+        "general": "General question",
+        "account": "My account",
+        "payments": "Payments & wallet",
+        "disputes": "A dispute",
+        "technical": "Technical problem",
+        "partnership": "Partnership",
+        "other": "Other"
+      }
+    },
+    "sitemap": {
+      "title": "Sitemap",
+      "home": "Home",
+      "main": "Main pages",
+      "categories": "Categories",
+      "sections": {
+        "about": "About",
+        "help": "Help & policies",
+        "legal": "Legal"
+      },
+      "links": {
+        "home": "Homepage",
+        "projects": "Projects",
+        "search": "Search",
+        "categories": "All categories",
+        "postProject": "Post a project",
+        "postRequest": "Post an influencer request",
+        "premium": "Premium plans",
+        "gifts": "Points & gifts",
+        "promote": "Promote & earn"
+      }
+    }
+  },
+  "Admin": {
+    "title": "Admin panel",
+    "search": "Search",
+    "choose": "Choose…",
+    "cancel": "Cancel",
+    "failed": "That did not work. Please try again.",
+    "saved": "Saved.",
+    "save": "Save changes",
+    "nav": {
+      "label": "Admin sections",
+      "backToSite": "Back to the website",
+      "groups": {
+        "people": "People",
+        "marketplace": "Marketplace",
+        "money": "Money",
+        "site": "Website"
+      },
+      "overview": "Overview",
+      "users": "Users",
+      "kyc": "Identity checks",
+      "reports": "Reports",
+      "contact": "Contact messages",
+      "projects": "Projects",
+      "categories": "Categories",
+      "disputes": "Disputes",
+      "campaigns": "Campaigns",
+      "withdrawals": "Withdrawals",
+      "ledger": "Ledger",
+      "plans": "Plans",
+      "affiliate": "Affiliate",
+      "draws": "Draws",
+      "feedback": "Payment feedback",
+      "pages": "Info pages",
+      "settings": "Fees & limits"
+    },
+    "overview": {
+      "title": "Overview",
+      "subtitle": "Today's numbers and what is waiting for you",
+      "users": "Users",
+      "newThisWeek": "{count} new this week",
+      "verified": "Verified",
+      "suspended": "Suspended",
+      "projects": "Projects",
+      "openProjects": "{count} open",
+      "queues": "Waiting for you",
+      "queue": {
+        "pendingWithdrawals": "Withdrawals",
+        "pendingKyc": "Identity checks",
+        "openDisputes": "Disputes",
+        "openReports": "Reports",
+        "newContactMessages": "Messages"
+      },
+      "activity": "Last 14 days",
+      "newUsers": "New users",
+      "newProjects": "New projects",
+      "projectsByStatus": "Projects by status",
+      "status": {
+        "open": "Open",
+        "in_progress": "In progress",
+        "completed": "Completed",
+        "closed": "Closed"
+      },
+      "money": "Money",
+      "currency": "Currency",
+      "inWallets": "In wallets",
+      "inEscrow": "In escrow",
+      "revenue": "Revenue",
+      "pendingWithdrawals": "Pending withdrawals",
+      "noMoney": "No money has moved yet."
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "{count, plural, one {# account} other {# accounts}}",
+      "search": "Name, username, email or phone",
+      "allStatuses": "All states",
+      "active": "Active",
+      "suspended": "Suspended",
+      "allKyc": "Any identity status",
+      "kyc": {
+        "none": "Not sent",
+        "pending": "Pending",
+        "approved": "Verified",
+        "rejected": "Rejected"
+      },
+      "user": "User",
+      "contact": "Contact",
+      "identity": "Identity",
+      "points": "Points",
+      "joined": "Joined",
+      "state": "State",
+      "empty": "No users match.",
+      "admin": "Admin",
+      "publicProfile": "Public profile",
+      "adjust": "Adjust wallet",
+      "adjustHint": "Adds (positive) or takes (negative) money with a reason. It is recorded in the ledger under your name.",
+      "amount": "Amount",
+      "amountHint": "Use a minus sign to take money, e.g. -10",
+      "currency": "Currency",
+      "reason": "Reason",
+      "unsuspend": "Lift suspension",
+      "confirmUnsuspend": "Let this user sign in again?",
+      "suspend": "Suspend",
+      "suspendHint": "They are signed out everywhere and cannot use the site. Their money and projects stay as they are.",
+      "email": "Email",
+      "phone": "Phone",
+      "lastSeen": "Last seen",
+      "suspendedSince": "Suspended since {date}",
+      "projects": "Projects",
+      "offers": "Offers",
+      "openDisputes": "Open disputes",
+      "wallet": "Wallet",
+      "available": "Available",
+      "inEscrow": "In escrow",
+      "incoming": "Incoming",
+      "pendingWithdrawals": "Pending withdrawals",
+      "noWallet": "No wallet yet.",
+      "ledger": "See their money movements →"
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "{count, plural, one {# project} other {# projects}}",
+      "all": "All",
+      "status": {
+        "open": "Open",
+        "in_progress": "In progress",
+        "completed": "Completed",
+        "closed": "Closed"
+      },
+      "search": "Title or description",
+      "allTypes": "All types",
+      "type": {
+        "project": "Project",
+        "influencer_request": "Influencer request"
+      },
+      "project": "Project",
+      "owner": "Owner",
+      "budget": "Budget",
+      "offers": "Offers",
+      "created": "Created",
+      "state": "State",
+      "empty": "No projects match.",
+      "featured": "Featured",
+      "unfeature": "Unfeature",
+      "confirmUnfeature": "Take it off the homepage slider?",
+      "feature": "Feature",
+      "days": "Days on the homepage",
+      "close": "Close",
+      "confirmClose": "Close \"{title}\"? Pending offers are declined."
+    },
+    "withdrawals": {
+      "title": "Withdrawals",
+      "subtitle": "Pay out by bank or PayPal, then approve with the transfer reference",
+      "status": {
+        "pending": "Pending",
+        "paid": "Paid",
+        "rejected": "Rejected",
+        "cancelled": "Cancelled"
+      },
+      "user": "User",
+      "amount": "Amount",
+      "method": "Method",
+      "requested": "Requested",
+      "state": "State",
+      "empty": "Nothing here.",
+      "fee": "+ {fee} fee",
+      "methods": {
+        "bank_transfer": "Bank transfer",
+        "paypal": "PayPal"
+      },
+      "reference": "Ref: {ref}",
+      "approve": "Mark as paid",
+      "approveHint": "Send {amount} to {name} first, then enter the reference of the transfer.",
+      "payoutReference": "Transfer reference",
+      "reject": "Reject",
+      "rejectHint": "The money goes back to their wallet. Tell them why.",
+      "reason": "Reason"
+    },
+    "kyc": {
+      "title": "Identity checks",
+      "subtitle": "Compare the document with the selfie and the name on the account",
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "name": "Name",
+      "document": "Document",
+      "submitted": "Submitted",
+      "state": "State",
+      "empty": "Nothing to review.",
+      "documents": {
+        "national_id": "National ID",
+        "passport": "Passport",
+        "driver_license": "Driving licence"
+      },
+      "review": "Review",
+      "submission": "Identity check #{id}",
+      "approve": "Approve",
+      "confirmApprove": "Approve the identity of {name}?",
+      "reject": "Reject",
+      "reason": "Reason",
+      "reasonHint": "Shown to the user so they can send it again correctly.",
+      "birthDate": "Date of birth",
+      "reviewed": "Reviewed",
+      "files": "Documents",
+      "sides": {
+        "front": "Front",
+        "back": "Back",
+        "selfie": "Selfie"
+      },
+      "filesHint": "These links expire after a while; reload the page if an image does not open."
+    },
+    "disputes": {
+      "title": "Disputes",
+      "subtitle": "Oldest active cases first",
+      "active": "Active",
+      "status": {
+        "open": "Open",
+        "under_review": "Under review",
+        "resolved": "Resolved",
+        "withdrawn": "Withdrawn"
+      },
+      "case": "Case",
+      "openedBy": "Opened by",
+      "against": "Against",
+      "amount": "Amount",
+      "opened": "Opened",
+      "state": "State",
+      "empty": "No disputes here.",
+      "open": "Open case",
+      "decide": "Admin decision",
+      "decideHint": "Take the case, read both sides, then decide where the frozen {amount} goes.",
+      "take": "Take the case",
+      "confirmTake": "Assign this case to you and tell both sides it is under review?",
+      "note": "Private note",
+      "noteHint": "Only admins see private notes.",
+      "noteBody": "Note",
+      "resolve": "Settle the case",
+      "resolveHint": "This moves the money at once and cannot be undone.",
+      "resolution": "Decision",
+      "resolutions": {
+        "client_refund": "Refund the client in full",
+        "freelancer_payout": "Pay the freelancer in full",
+        "split": "Split"
+      },
+      "clientPercent": "Client's share (%)",
+      "clientPercentHint": "1 to 99. The rest goes to the freelancer, minus the site fee.",
+      "resolutionNote": "Explanation",
+      "resolutionNoteHint": "Both sides read this."
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "Content flagged by users",
+      "status": {
+        "open": "Open",
+        "actioned": "Actioned",
+        "dismissed": "Dismissed"
+      },
+      "allTargets": "Everything",
+      "targets": {
+        "user": "Profile",
+        "project": "Project",
+        "portfolio": "Portfolio item",
+        "review": "Review"
+      },
+      "item": "Reported item",
+      "reason": "Reason",
+      "reporter": "Reported by",
+      "date": "Date",
+      "empty": "No reports here.",
+      "deleted": "Deleted since",
+      "reasons": {
+        "spam": "Spam",
+        "fake": "Fake",
+        "inappropriate": "Inappropriate",
+        "copyright": "Copyright",
+        "scam": "Scam",
+        "other": "Other"
+      },
+      "action": "Rule broken",
+      "actionHint": "Deal with the content from its own screen (suspend the user, close the project…), then record it here.",
+      "note": "Note",
+      "noteHint": "The reporter sees this note.",
+      "dismiss": "Dismiss"
+    },
+    "contact": {
+      "title": "Contact messages",
+      "subtitle": "Sent from the \"Contact us\" page",
+      "status": {
+        "new": "New",
+        "handled": "Handled"
+      },
+      "empty": "No messages here.",
+      "topics": {
+        "general": "General",
+        "account": "Account",
+        "payments": "Payments",
+        "disputes": "Disputes",
+        "technical": "Technical",
+        "partnership": "Partnership",
+        "other": "Other"
+      },
+      "handle": "Mark as handled",
+      "note": "Note",
+      "noteHint": "For the other admins, e.g. what you replied.",
+      "handledAt": "Handled {date}"
+    },
+    "feedback": {
+      "title": "Payment feedback",
+      "subtitle": "How people rated their payments",
+      "contexts": {
+        "deposit": "Deposits",
+        "withdrawal": "Withdrawals",
+        "promotion": "Promotions",
+        "subscription": "Subscriptions",
+        "payment_method": "Saved cards",
+        "escrow": "Escrow"
+      },
+      "votes": "{up} 👍 · {down} 👎",
+      "allContexts": "All payments",
+      "allRatings": "All ratings",
+      "up": "Satisfied",
+      "down": "Not satisfied",
+      "rating": "Rating",
+      "context": "Payment",
+      "comment": "Comment",
+      "user": "User",
+      "date": "Date",
+      "empty": "No feedback yet."
+    },
+    "campaigns": {
+      "title": "Promotion campaigns",
+      "subtitle": "Paid-per-visit campaigns and their spending",
+      "all": "All",
+      "status": {
+        "active": "Running",
+        "paused": "Paused",
+        "draft": "Draft",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "campaign": "Campaign",
+      "owner": "Owner",
+      "budget": "Spent / budget",
+      "visits": "Valid visits",
+      "created": "Created",
+      "state": "State",
+      "empty": "No campaigns here.",
+      "targets": {
+        "project": "Project",
+        "profile": "Profile"
+      },
+      "perVisit": "{cost} per visit",
+      "rejected": "{count} rejected",
+      "cancel": "Stop",
+      "confirmCancel": "Stop \"{title}\"? The rest of the budget goes back to the owner."
+    },
+    "affiliate": {
+      "title": "Affiliate programme",
+      "subtitle": "Invitations and the commissions they earned",
+      "referrers": "Inviters",
+      "referredUsers": "Invited users",
+      "qualified": "Qualified",
+      "visits": "Link visits",
+      "commissions": "Commissions paid",
+      "top": "Top inviters",
+      "referrer": "Inviter",
+      "tier": "Tier",
+      "earned": "Earned",
+      "empty": "Nothing yet.",
+      "recent": "Latest commissions",
+      "referred": "Invited",
+      "rate": "Rate",
+      "amount": "Amount",
+      "date": "Date"
+    },
+    "ledger": {
+      "title": "Ledger",
+      "subtitle": "Every money movement, double-entry",
+      "trialBalance": "Trial balance",
+      "balanced": "Balanced",
+      "unbalanced": "Not balanced — check now",
+      "empty": "Nothing yet.",
+      "transactions": "Transactions",
+      "allTypes": "All types",
+      "clearUser": "Showing user #{id} — show everyone",
+      "id": "#",
+      "type": "Type",
+      "entries": "Entries",
+      "date": "Date"
+    },
+    "plans": {
+      "title": "Plans",
+      "subtitle": "Subscription prices and what each plan includes",
+      "audience": {
+        "client": "Project owners",
+        "freelancer": "Freelancers"
+      },
+      "subscribers": "{count, plural, one {# subscriber} other {# subscribers}}",
+      "popular": "Most popular",
+      "off": "Off",
+      "on": "On",
+      "free": "Free",
+      "price": "Monthly price ({currency})",
+      "monthlyOffers": "Offers per month",
+      "unlimitedHint": "Empty = unlimited",
+      "feePercent": "Site fee (%)",
+      "promotionDiscount": "Promotion discount (%)",
+      "isActive": "Available to buy",
+      "isPopular": "\"Most popular\" ribbon",
+      "prioritySupport": "Priority support"
+    },
+    "categories": {
+      "title": "Categories",
+      "subtitle": "Project categories and influencer platforms",
+      "confirmDelete": "Delete \"{name}\"?",
+      "deleteFailed": "Could not delete \"{name}\".",
+      "add": "Add category",
+      "edit": "Edit category",
+      "type": "Type",
+      "types": {
+        "project": "Project categories",
+        "influencer": "Influencer platforms"
+      },
+      "slug": "Slug",
+      "slugHint": "Lowercase letters, numbers and dashes",
+      "icon": "Icon",
+      "noIcon": "Default icon",
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "sortOrder": "Order",
+      "cancel": "Cancel",
+      "projects": "{count, plural, one {# project} other {# projects}}",
+      "inUse": "Projects use it",
+      "delete": "Delete",
+      "empty": "None yet."
+    },
+    "pages": {
+      "title": "Info pages",
+      "subtitle": "The footer pages, in English and Arabic",
+      "new": "New page",
+      "sections": {
+        "about": "About",
+        "help": "Help",
+        "legal": "Legal"
+      },
+      "slug": "Address",
+      "updated": "Updated",
+      "state": "State",
+      "empty": "No pages in this section.",
+      "published": "Published",
+      "hidden": "Hidden",
+      "edit": "Edit",
+      "newHint": "It appears in the footer and the sitemap once published.",
+      "view": "View on site",
+      "back": "All pages",
+      "confirmDelete": "Delete \"{title}\"? Its link will stop working.",
+      "slugLocked": "The address cannot change after creation",
+      "slugHint": "e.g. refund-policy — the page lives at /refund-policy",
+      "section": "Section",
+      "sortOrder": "Order",
+      "lang": {
+        "En": "English",
+        "Ar": "العربية"
+      },
+      "preview": "Show preview",
+      "body": "Text (Markdown)",
+      "help": "Use # for headings, - for lists, **bold**, [links](/contact). Live values:",
+      "delete": "Delete page",
+      "pageTitle": "Page title"
+    },
+    "draws": {
+      "title": "Draws",
+      "subtitle": "Points draws: people buy tickets with points and win prizes",
+      "new": "New draw",
+      "titleEn": "Title (English)",
+      "titleAr": "Title (Arabic)",
+      "ticketCost": "Ticket price (points)",
+      "ticketCostHint": "Points per ticket",
+      "maxTickets": "Max tickets per person",
+      "maxTicketsHint": "Empty = no limit",
+      "startsAt": "Opens",
+      "drawAt": "Draw time",
+      "prizes": "Prizes",
+      "prizeNameEn": "Prize (English)",
+      "prizeNameAr": "Prize (Arabic)",
+      "kind": "Kind",
+      "kinds": {
+        "cash": "Cash",
+        "item": "Item"
+      },
+      "value": "Value",
+      "currency": "Currency",
+      "removePrize": "Remove prize",
+      "addPrize": "Add a prize",
+      "create": "Create draw",
+      "cancel": "Cancel",
+      "draw": "Draw",
+      "tickets": "Tickets",
+      "state": "State",
+      "empty": "No draws yet.",
+      "cost": "{points} points per ticket",
+      "players": "{count, plural, one {# player} other {# players}}",
+      "status": {
+        "open": "Open",
+        "drawn": "Drawn",
+        "cancelled": "Cancelled"
+      },
+      "run": "Draw now",
+      "confirmRun": "Pick the winners now? This cannot be undone."
+    },
+    "settings": {
+      "title": "Fees & limits",
+      "subtitle": "Apply at once to new movements; past ones never change",
+      "fields": {
+        "siteFeePercent": "Site fee (%)",
+        "depositMin": "Minimum deposit",
+        "depositMax": "Maximum deposit",
+        "withdrawalMin": "Minimum withdrawal",
+        "withdrawalFee": "Withdrawal fee",
+        "withdrawalRequiresKyc": "Withdrawals need a verified identity"
+      },
+      "hints": {
+        "siteFeePercent": "Taken from every released milestone (0–50)",
+        "depositMin": "In the user's currency",
+        "depositMax": "Must be above the minimum",
+        "withdrawalMin": "In the user's currency",
+        "withdrawalFee": "Flat amount added to every withdrawal",
+        "withdrawalRequiresKyc": "Recommended: stops stolen accounts from cashing out."
+      }
+    }
+  },
+  "QuickAuth": {
+    "title": "Almost done",
+    "subtitle": "Confirm your email to continue. It takes a few seconds.",
+    "codeTitle": "Enter the code",
+    "codeSent": "We sent a 4-digit code to {target}.",
+    "changeAddress": "Use a different address",
+    "methods": {
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "email": "Email address",
+    "phone": "Phone number",
+    "name": "Your name",
+    "nameHint": "Optional. Shown on your profile; you can change it later.",
+    "captcha": "Please tick \"I'm not a robot\".",
+    "failed": "We couldn't send the code. Please try again.",
+    "sendCode": "Send code",
+    "terms": "Continuing creates your account if you don't have one yet, and you accept the terms and the privacy policy.",
+    "havePassword": "Prefer your password?",
+    "login": "Log in",
+    "welcome": "Welcome, {name}!",
+    "close": "Close"
+  },
+  "StartChat": {
+    "title": "Send a message",
+    "message": "Your message",
+    "placeholder": "Introduce yourself and say what you need…",
+    "hint": "You'll confirm your email when you send it; your message stays as you wrote it.",
+    "cancel": "Cancel",
+    "send": "Send",
+    "empty": "Write a message first.",
+    "failed": "The message could not be sent. Please try again.",
+    "signUpReason": "Confirm your email to send your message."
+  },
+  "Policy": {
+    "title": "Privacy policy",
+    "scrollHint": "Read to the end to agree.",
+    "ready": "Thanks for reading. You can agree now.",
+    "agree": "I agree",
+    "cancel": "Close",
+    "failed": "The policy could not be loaded. Please try again later."
   }
 }

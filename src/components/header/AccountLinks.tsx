@@ -9,7 +9,7 @@ export function AccountLinks({ signedIn }: { signedIn: boolean }) {
     <div className="flex h-[35px] items-center gap-2">
       {signedIn ? (
         <>
-          <Link href="/account" className="text-base font-bold text-brand hover:opacity-85">
+          <Link href="/settings/profile" className="text-base font-bold text-brand hover:opacity-85">
             {t("myAccount")}
           </Link>
           <span className="text-base font-medium">·</span>

@@ -11,17 +11,24 @@ type ModalProps = {
   children: ReactNode;
 };
 
+const openModals: symbol[] = [];
+
 export function Modal({ open, onClose, title, showClose, children }: ModalProps) {
   const t = useTranslations("Auth");
 
   useEffect(() => {
     if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
+    // Windows can open on top of each other (e.g. the privacy policy over a payment): Escape closes the top one only,
+    // and the page stays locked until the last one closes.
+    const id = Symbol("modal");
+    openModals.push(id);
+    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && openModals.at(-1) === id && onClose();
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      openModals.splice(openModals.indexOf(id), 1);
+      if (!openModals.length) document.body.style.overflow = "";
     };
   }, [open, onClose]);
 

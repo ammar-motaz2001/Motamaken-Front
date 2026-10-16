@@ -11,7 +11,9 @@ import {
   MessageSquare,
   Scale,
   Settings,
+  ShieldCheck,
   Star,
+  TrendingUp,
   User,
   UserPlus,
   Users,
@@ -39,6 +41,7 @@ const MORE_LINKS = [
 ] as const;
 
 const EXTRA_LINKS = [
+  { key: "campaigns", href: "/settings/campaigns", Icon: TrendingUp },
   { key: "inviteFriend", href: "/settings/invite", Icon: UserPlus },
   { key: "disputes", href: "/disputes", Icon: Scale },
 ] as const;
@@ -64,7 +67,7 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
 
   const renderLink = ({ key, href, Icon }: { key: string; href: string; Icon: typeof User }) => (
     <li key={key}>
-      <Link href={href} onClick={close} className={itemClasses}>
+      <Link href={key === "myReviews" ? `/users/${user.id}?tab=reviews` : href} onClick={close} className={itemClasses}>
         <Icon className="size-4 text-muted" />
         {t(`account.${key}`)}
         {key === "messages" && unreadMessages > 0 && (
@@ -92,6 +95,14 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
       {open && (
         <div role="menu" className="absolute end-0 top-full z-40 mt-2 w-[213px] rounded-lg border border-border bg-surface py-1.5 shadow-card">
           <ul>
+            {user.isAdmin && (
+              <li>
+                <Link href="/admin" onClick={close} className={`${itemClasses} font-medium text-brand`}>
+                  <ShieldCheck className="size-4" />
+                  {t("account.admin")}
+                </Link>
+              </li>
+            )}
             {LINKS.map(renderLink)}
             <li>
               <button type="button" onClick={() => setPostOpen((value) => !value)} aria-expanded={postOpen} className={itemClasses}>

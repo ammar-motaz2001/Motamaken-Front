@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { AFTER_LOGIN_PATH } from "@/lib/session";
+import { rememberWelcome } from "@/lib/welcome";
 import { createSession } from "../actions";
 import type { AuthMethod } from "../types";
 import { OtpForm } from "./OtpForm";
@@ -33,8 +34,10 @@ export function LoginVerification({ method, target, next, twoFactor }: Verificat
       method={method}
       target={target}
       subtitle={twoFactor ? t(twoFactor.method === "phone" ? "twoFactorPhone" : "twoFactorEmail", { hint: twoFactor.hint }) : undefined}
-      onVerified={async ({ accessToken }) => {
-        await createSession(accessToken ?? "");
+      onVerified={async (result) => {
+        await createSession(result.accessToken ?? "");
+        const user = (result as { user?: { fullName?: string; username?: string } }).user;
+        rememberWelcome(user?.fullName ?? user?.username ?? "");
         router.replace(next ?? AFTER_LOGIN_PATH);
       }}
     />

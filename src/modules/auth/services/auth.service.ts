@@ -2,7 +2,15 @@ import type { AuthMethod, LoginPayload, OtpPurpose, SignupPayload } from "../typ
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export class AuthError extends Error {}
+export class AuthError extends Error {
+  constructor(
+    message?: string,
+    /** First validation message per field, e.g. `{ recaptchaToken: "Please tick…" }`. */
+    readonly fields: Record<string, string> = {},
+  ) {
+    super(message);
+  }
+}
 
 export type AuthUser = {
   id: number;
@@ -12,6 +20,7 @@ export type AuthUser = {
   email: string | null;
   phone: string | null;
   points: number;
+  fullName?: string;
 };
 
 async function request<T>(path: string, body: unknown): Promise<T> {
@@ -31,7 +40,12 @@ async function request<T>(path: string, body: unknown): Promise<T> {
   });
 
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new AuthError(typeof data?.message === "string" ? data.message : undefined);
+  if (!response.ok) {
+    const fields = Object.fromEntries(
+      Object.entries((data?.errors ?? {}) as Record<string, unknown>).map(([key, value]) => [key, String(Array.isArray(value) ? value[0] : value)]),
+    );
+    throw new AuthError(typeof data?.message === "string" ? data.message : undefined, fields);
+  }
   return data as T;
 }
 
@@ -45,7 +59,17 @@ export const authService = {
   },
 
   login(payload: LoginPayload) {
-    return request<{ accessToken?: string; otpRequired?: boolean; twoFactor?: { method: AuthMethod; target: string } }>("/auth/login", payload);
+    return request<{ accessToken?: string; user?: AuthUser; otpRequired?: boolean; twoFactor?: { method: AuthMethod; target: string } }>("/auth/login", payload);
+  },
+
+  /** Quick access (guest at a final button): send a code to the email or phone. */
+  quickStart(payload: { method: AuthMethod; email?: string; phone?: string; recaptchaToken?: string }) {
+    return request<{ sent: boolean; target: string }>("/auth/quick/start", payload);
+  },
+
+  /** Quick access: confirm the code; signs in or creates the account. */
+  quickVerify(payload: { method: AuthMethod; email?: string; phone?: string; code: string; name?: string; referralCode?: string }) {
+    return request<{ accessToken: string; user: AuthUser & { fullName: string }; isNew: boolean }>("/auth/quick/verify", payload);
   },
 
   verifyOtp(payload: { purpose: OtpPurpose; method: AuthMethod; target: string; code: string }) {

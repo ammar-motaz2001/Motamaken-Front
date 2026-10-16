@@ -3,21 +3,22 @@
 import { Flag } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useAuthGate } from "@/components/providers/AuthGateProvider";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { TextArea } from "@/components/ui/TextArea";
-import { Link } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { ReportTarget } from "@/lib/api/types";
 
 const REASONS = ["spam", "fake", "inappropriate", "copyright", "scam", "other"] as const;
 
-type ReportButtonProps = { targetType: ReportTarget; targetId: number; signedIn: boolean; className?: string; label?: string };
+type ReportButtonProps = { targetType: ReportTarget; targetId: number; signedIn?: boolean; className?: string; label?: string };
 
-export function ReportButton({ targetType, targetId, signedIn, className = "", label }: ReportButtonProps) {
+export function ReportButton({ targetType, targetId, className = "", label }: ReportButtonProps) {
   const t = useTranslations("Reports.modal");
+  const { requireAuth } = useAuthGate();
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState<string>("");
   const [details, setDetails] = useState("");
@@ -30,6 +31,8 @@ export function ReportButton({ targetType, targetId, signedIn, className = "", l
   const submit = async () => {
     if (!reason) return setError(t("reasonRequired"));
     if (reason === "other" && details.trim().length < 10) return setError(t("detailsRequired"));
+    // Guests fill the report in; they confirm an email or phone only to send it.
+    if (!(await requireAuth(t("signUpReason")))) return;
     setBusy(true);
     setError(null);
     try {
@@ -55,8 +58,6 @@ export function ReportButton({ targetType, targetId, signedIn, className = "", l
       {label ?? t("trigger")}
     </span>
   );
-
-  if (!signedIn) return <Link href="/login">{trigger}</Link>;
 
   return (
     <>
