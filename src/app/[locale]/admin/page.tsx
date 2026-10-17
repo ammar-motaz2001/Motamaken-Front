@@ -1,86 +1,220 @@
+import { CircleDollarSign, FileWarning, FolderKanban, Handshake, IdCard, Inbox, Scale, UserPlus, Users, WalletCards } from "lucide-react";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
+import { StatusPill } from "@/components/ui/StatusPill";
+import { UserAvatar } from "@/components/ui/UserAvatar";
+import { Link } from "@/i18n/navigation";
 import { apiGet } from "@/lib/api/server";
-import { AdminHeader, AdminSection, AdminTable, Cell, StatCard, money, type Overview } from "@/modules/admin";
+import { pickParams } from "@/lib/params";
+import {
+  AdminSection,
+  AdminTable,
+  Cell,
+  GrowthChart,
+  KpiCard,
+  RevenueChart,
+  Sparkline,
+  StatusDonut,
+  money,
+  percentChange,
+  toneFor,
+  type Overview,
+} from "@/modules/admin";
+import { CHART_COLORS } from "@/modules/admin/components/charts/colors";
 
-export default async function AdminOverview({ params }: PageProps<"/[locale]/admin">) {
+const RANGES = ["7", "30", "90"] as const;
+
+export default async function AdminOverview({ params, searchParams }: PageProps<"/[locale]/admin">) {
   setRequestLocale((await params).locale);
-  const [t, locale, data] = await Promise.all([getTranslations("Admin.overview"), getLocale(), apiGet<Overview>("/admin/overview")]);
-  const peak = Math.max(1, ...data.series.flatMap((day) => [day.users, day.projects]));
+  const picked = pickParams(await searchParams, ["days"]).days;
+  const days = RANGES.includes(picked as (typeof RANGES)[number]) ? picked! : "30";
+  const [t, td, locale, data] = await Promise.all([
+    getTranslations("Admin.overview"),
+    getTranslations("Admin.dashboard"),
+    getLocale(),
+    apiGet<Overview>(`/admin/overview?days=${days}`),
+  ]);
   const number = (value: number) => new Intl.NumberFormat(locale).format(value);
+  const dateTime = (value: string) => new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+  // "vs previous N days" only when there is a previous number to compare with.
+  const vsPrevious = (current: number, previous: number) => (previous ? td("vsPrevious", { days: data.days }) : td("inPeriod", { days: data.days }));
+
+  // Revenue is shown in the currency that earned the most in the period.
+  const currencies = Object.entries(data.trends.revenue)
+    .sort((a, b) => b[1].current - a[1].current)
+    .map(([code]) => code);
+  const allCurrencies = [...new Set([...currencies, ...Object.keys(data.trends.deposits), ...data.money.map((row) => row.currency)])];
+  const mainCurrency = currencies[0] ?? data.money[0]?.currency ?? "USD";
+  const revenue = data.trends.revenue[mainCurrency] ?? { current: 0, previous: 0 };
+  const series = (key: "users" | "projects" | "proposals") => data.series.map((row) => row[key]);
 
   const queues = [
-    { key: "pendingWithdrawals", href: "/admin/withdrawals" },
-    { key: "pendingKyc", href: "/admin/kyc" },
-    { key: "openDisputes", href: "/admin/disputes" },
-    { key: "openReports", href: "/admin/reports" },
-    { key: "newContactMessages", href: "/admin/contact" },
+    { key: "pendingWithdrawals", href: "/admin/withdrawals", Icon: WalletCards },
+    { key: "pendingKyc", href: "/admin/kyc", Icon: IdCard },
+    { key: "openDisputes", href: "/admin/disputes", Icon: Scale },
+    { key: "openReports", href: "/admin/reports", Icon: FileWarning },
+    { key: "newContactMessages", href: "/admin/contact", Icon: Inbox },
   ] as const;
+  const waiting = queues.reduce((sum, queue) => sum + data.queues[queue.key], 0);
 
   return (
     <>
-      <AdminHeader title={t("title")} subtitle={t("subtitle")} />
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-bold">{t("title")}</h2>
+          <p className="text-sm text-muted">{waiting ? td("waiting", { count: waiting }) : td("allClear")}</p>
+        </div>
+        <nav aria-label={td("range")} className="flex rounded-xl border border-border bg-surface p-1">
+          {RANGES.map((range) => (
+            <Link
+              key={range}
+              href={range === "30" ? "/admin" : `/admin?days=${range}`}
+              aria-current={range === days ? "page" : undefined}
+              className={`rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors ${range === days ? "bg-brand text-white" : "text-muted hover:text-foreground"}`}
+            >
+              {td(`ranges.${range}`)}
+            </Link>
+          ))}
+        </nav>
+      </header>
 
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        <StatCard label={t("users")} value={number(data.users.total)} hint={t("newThisWeek", { count: data.users.newThisWeek })} href="/admin/users" />
-        <StatCard label={t("verified")} value={number(data.users.verified)} tone="brand" />
-        <StatCard label={t("suspended")} value={number(data.users.suspended)} tone={data.users.suspended ? "danger" : "default"} href="/admin/users?status=suspended" />
-        <StatCard
-          label={t("projects")}
-          value={number(Object.values(data.projects).reduce((sum, count) => sum + count, 0))}
-          hint={t("openProjects", { count: data.projects.open ?? 0 })}
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <KpiCard
+          label={td("newUsers")}
+          value={number(data.trends.users.current)}
+          Icon={UserPlus}
+          delta={percentChange(data.trends.users.current, data.trends.users.previous)}
+          deltaLabel={vsPrevious(data.trends.users.current, data.trends.users.previous)}
+          chart={<Sparkline id="users" values={series("users")} color={CHART_COLORS.brand} />}
+          href="/admin/users"
+        />
+        <KpiCard
+          label={td("newProjects")}
+          value={number(data.trends.projects.current)}
+          Icon={FolderKanban}
+          tone="orange"
+          delta={percentChange(data.trends.projects.current, data.trends.projects.previous)}
+          deltaLabel={vsPrevious(data.trends.projects.current, data.trends.projects.previous)}
+          chart={<Sparkline id="projects" values={series("projects")} color={CHART_COLORS.orange} />}
           href="/admin/projects"
+        />
+        <KpiCard
+          label={td("newOffers")}
+          value={number(data.trends.proposals.current)}
+          Icon={Handshake}
+          tone="link"
+          delta={percentChange(data.trends.proposals.current, data.trends.proposals.previous)}
+          deltaLabel={vsPrevious(data.trends.proposals.current, data.trends.proposals.previous)}
+          chart={<Sparkline id="offers" values={series("proposals")} color={CHART_COLORS.link} />}
+        />
+        <KpiCard
+          label={td("revenue")}
+          value={money(revenue.current, mainCurrency, locale)}
+          Icon={CircleDollarSign}
+          delta={percentChange(revenue.current, revenue.previous)}
+          deltaLabel={vsPrevious(revenue.current, revenue.previous)}
+          chart={<Sparkline id="revenue" values={data.series.map((row) => row.revenue[mainCurrency] ?? 0)} color={CHART_COLORS.brandLight} />}
+          href="/admin/ledger"
         />
       </div>
 
-      <AdminSection title={t("queues")}>
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        <AdminSection title={td("growth")}>
+          <GrowthChart series={data.series} />
+        </AdminSection>
+        <AdminSection title={t("projectsByStatus")}>
+          <StatusDonut projects={data.projects} />
+        </AdminSection>
+      </div>
+
+      <AdminSection title={td("waitingTitle")}>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
-          {queues.map((queue) => (
-            <StatCard key={queue.key} label={t(`queue.${queue.key}`)} value={number(data.queues[queue.key])} tone={data.queues[queue.key] ? "orange" : "default"} href={queue.href} />
-          ))}
+          {queues.map(({ key, href, Icon }) => {
+            const count = data.queues[key];
+            return (
+              <Link
+                key={key}
+                href={href}
+                className={`group flex items-center gap-3 rounded-xl border p-3 transition-colors ${count ? "border-orange/40 bg-orange/5 hover:bg-orange/10" : "border-border hover:border-brand"}`}
+              >
+                <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${count ? "bg-orange text-white" : "bg-surface-muted text-muted"}`}>
+                  <Icon className="size-4.5" aria-hidden />
+                </span>
+                <span className="flex min-w-0 flex-col">
+                  <span className={`text-xl leading-tight font-bold ${count ? "text-orange" : ""}`}>{number(count)}</span>
+                  <span className="truncate text-xs text-muted">{t(`queue.${key}`)}</span>
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </AdminSection>
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-        <AdminSection title={t("activity")}>
-          <div className="flex items-center gap-4 text-xs text-muted">
-            <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-sm bg-brand" />
-              {t("newUsers")}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="size-2.5 rounded-sm bg-orange" />
-              {t("newProjects")}
-            </span>
-          </div>
-          <div className="flex h-44 items-end gap-1.5" role="img" aria-label={t("activity")}>
-            {data.series.map((day) => (
-              <div key={day.date} className="flex h-full min-w-0 flex-1 flex-col justify-end gap-1" title={`${day.date}: ${day.users} / ${day.projects}`}>
-                <div className="flex h-full items-end justify-center gap-0.5">
-                  <span className="w-1/2 max-w-3 rounded-t bg-brand" style={{ height: `${(day.users / peak) * 100}%`, minHeight: day.users ? 4 : 0 }} />
-                  <span className="w-1/2 max-w-3 rounded-t bg-orange" style={{ height: `${(day.projects / peak) * 100}%`, minHeight: day.projects ? 4 : 0 }} />
-                </div>
-                <span className="text-center text-[10px] text-muted">{new Date(day.date).getDate()}</span>
-              </div>
-            ))}
-          </div>
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        <AdminSection title={td("money")}>
+          <RevenueChart series={data.series} currencies={allCurrencies.length ? allCurrencies : [mainCurrency]} />
         </AdminSection>
+        <AdminSection title={td("topCategories")}>
+          {data.topCategories.length ? (
+            <ul className="flex flex-col gap-3.5">
+              {data.topCategories.map((category, index) => {
+                const max = data.topCategories[0].projects || 1;
+                return (
+                  <li key={category.id} className="flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between gap-3 text-sm">
+                      <span className="flex min-w-0 items-center gap-2">
+                        <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-surface-muted text-[11px] font-bold text-muted">{index + 1}</span>
+                        <span className="truncate">{category.name}</span>
+                      </span>
+                      <span className="font-semibold">{number(category.projects)}</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-surface-muted">
+                      <div className="h-full rounded-full bg-gradient-brand" style={{ width: `${(category.projects / max) * 100}%` }} />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="py-8 text-center text-sm text-muted">{td("noProjects")}</p>
+          )}
+        </AdminSection>
+      </div>
 
-        <AdminSection title={t("projectsByStatus")}>
-          <ul className="flex flex-col gap-3">
-            {Object.entries(data.projects).map(([status, count]) => {
-              const total = Math.max(1, Object.values(data.projects).reduce((sum, value) => sum + value, 0));
-              return (
-                <li key={status} className="flex flex-col gap-1">
-                  <div className="flex justify-between text-sm">
-                    <span>{t(`status.${status}`)}</span>
-                    <span className="font-semibold">{number(count)}</span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-surface-muted">
-                    <div className="h-full rounded-full bg-gradient-brand" style={{ width: `${(count / total) * 100}%` }} />
-                  </div>
-                </li>
-              );
-            })}
+      <div className="grid gap-5 xl:grid-cols-2">
+        <AdminSection title={td("latestUsers")} actions={<Link href="/admin/users" className="text-sm text-link hover:underline">{td("seeAll")}</Link>}>
+          <ul className="flex flex-col divide-y divide-border">
+            {data.recent.users.map((user) => (
+              <li key={user.id}>
+                <Link href={`/admin/users/${user.id}`} className="flex items-center gap-3 py-2.5 hover:text-brand">
+                  <UserAvatar name={user.fullName} src={user.avatarUrl} size={36} />
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate text-sm font-medium">{user.fullName}</span>
+                    <span className="text-xs text-muted">{dateTime(user.createdAt)}</span>
+                  </span>
+                  <StatusPill tone={user.isVerified ? "success" : "muted"}>{td(user.isVerified ? "verified" : "unverified")}</StatusPill>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </AdminSection>
+        <AdminSection title={td("latestProjects")} actions={<Link href="/admin/projects" className="text-sm text-link hover:underline">{td("seeAll")}</Link>}>
+          <ul className="flex flex-col divide-y divide-border">
+            {data.recent.projects.map((project) => (
+              <li key={project.id}>
+                <Link href={`/projects/${project.id}`} className="flex items-center gap-3 py-2.5 hover:text-brand">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-orange/10 text-orange">
+                    <FolderKanban className="size-4" aria-hidden />
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate text-sm font-medium">{project.title}</span>
+                    <span className="truncate text-xs text-muted">
+                      {project.owner} · {money(project.budget.min, project.budget.currency, locale)}–{money(project.budget.max, project.budget.currency, locale)}
+                    </span>
+                  </span>
+                  <StatusPill tone={toneFor(project.status)}>{t(`status.${project.status}`)}</StatusPill>
+                </Link>
+              </li>
+            ))}
           </ul>
         </AdminSection>
       </div>
@@ -97,6 +231,10 @@ export default async function AdminOverview({ params }: PageProps<"/[locale]/adm
             </tr>
           ))}
         </AdminTable>
+        <p className="flex items-center gap-1.5 text-xs text-muted">
+          <Users className="size-3.5" aria-hidden />
+          {td("usersLine", { total: number(data.users.total), verified: number(data.users.verified), suspended: number(data.users.suspended) })}
+        </p>
       </AdminSection>
     </>
   );

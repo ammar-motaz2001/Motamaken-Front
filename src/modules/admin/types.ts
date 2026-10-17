@@ -15,8 +15,23 @@ export type Overview = {
     openReports: number;
     newContactMessages: number;
   };
-  series: { date: string; users: number; projects: number }[];
+  days: number;
+  series: { date: string; users: number; projects: number; proposals: number; revenue: Record<string, number>; deposits: Record<string, number> }[];
+  trends: {
+    users: Trend;
+    projects: Trend;
+    proposals: Trend;
+    revenue: Record<string, Trend>;
+    deposits: Record<string, Trend>;
+  };
+  topCategories: { id: number; name: string; projects: number }[];
+  recent: {
+    users: { id: number; fullName: string; avatarUrl: string | null; isVerified: boolean; createdAt: string }[];
+    projects: { id: number; title: string; type: string; status: string; budget: { min: number; max: number; currency: string }; owner: string | null; createdAt: string }[];
+  };
 };
+
+export type Trend = { current: number; previous: number };
 
 export type AdminUser = {
   id: number;
