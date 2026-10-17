@@ -91,7 +91,7 @@ export function ProjectTabs({ title, type, categories, initial, showSeeMore }: P
 
         <div role="tabpanel" aria-busy={loading} className="flex flex-col gap-2.5">
           {current?.projects.length ? (
-            <div className="grid grid-cols-[repeat(auto-fill,212px)] justify-center gap-5 py-1">
+            <div className="card-grid grid grid-cols-[repeat(auto-fill,minmax(212px,1fr))] justify-center gap-5 py-1">
               {current.projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}

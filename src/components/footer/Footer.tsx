@@ -89,8 +89,8 @@ export function Footer() {
 
   return (
     <footer className="mt-10">
-      <div className="relative z-10 px-4">
-        <div className="mx-auto grid max-w-[1352px] grid-cols-1 gap-6 rounded-2xl bg-nav px-6 py-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
+      <div className="page-container relative z-10">
+        <div className="grid grid-cols-1 gap-6 rounded-2xl bg-nav px-6 py-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
           {CTAS.map((cta) => (
             <div key={cta.key} className="flex flex-col items-center justify-between gap-3 text-center">
               <p className="max-w-[260px] text-base leading-tight font-bold text-white">{t(`cta.${cta.key}`)}</p>

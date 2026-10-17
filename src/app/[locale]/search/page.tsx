@@ -25,7 +25,7 @@ const GROUPS = [
 ] as const;
 
 function Grid({ children }: { children: ReactNode }) {
-  return <div className="grid grid-cols-[repeat(auto-fill,212px)] justify-center gap-5 sm:justify-start">{children}</div>;
+  return <div className="card-grid grid grid-cols-[repeat(auto-fill,minmax(212px,1fr))] justify-center gap-5 sm:justify-start">{children}</div>;
 }
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/search">) {

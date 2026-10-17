@@ -118,11 +118,22 @@
   color: transparent;
 }
 
+/* Pages use the whole screen, with side spacing that grows with it (capped for very wide monitors). */
 @utility page-container {
   width: 100%;
-  max-width: 1184px;
+  max-width: 1920px;
   margin-inline: auto;
   padding-inline: 16px;
+
+  @media (width >= 640px) {
+    padding-inline: 24px;
+  }
+  @media (width >= 1024px) {
+    padding-inline: 40px;
+  }
+  @media (width >= 1536px) {
+    padding-inline: 64px;
+  }
 }
 
 @layer base {

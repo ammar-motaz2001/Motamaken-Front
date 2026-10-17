@@ -10,8 +10,8 @@ export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn:
   const stars = Math.round(profile.rating);
 
   return (
-    <article className="relative flex w-[212px] shrink-0 snap-start flex-col overflow-hidden rounded-xl bg-surface shadow-card dark:border dark:border-border">
-      <div className="relative flex size-[212px] flex-col justify-end bg-gradient-brand">
+    <article className="relative flex w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col overflow-hidden rounded-xl bg-surface shadow-card dark:border dark:border-border">
+      <div className="relative flex aspect-square w-full flex-col justify-end bg-gradient-brand">
         {profile.avatarUrl ? (
           <Image src={profile.avatarUrl} alt="" fill unoptimized className="object-cover" />
         ) : (

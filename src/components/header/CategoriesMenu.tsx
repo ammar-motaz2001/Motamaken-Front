@@ -37,8 +37,8 @@ export function CategoriesMenu({ categories }: { categories: Category[] }) {
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-full z-40 px-4">
-          <div className="mx-auto max-w-[1312px] rounded-b-xl bg-surface p-6 text-foreground shadow-card">
+        <div className="page-container absolute inset-x-0 top-full z-40">
+          <div className="rounded-b-xl bg-surface p-6 text-foreground shadow-card">
             <h2 className="mb-4 text-xl font-bold uppercase">{t("nav.categories")}</h2>
             <div role="tablist" className="mb-5 flex gap-6 border-b border-border">
               {TABS.map((item) => (

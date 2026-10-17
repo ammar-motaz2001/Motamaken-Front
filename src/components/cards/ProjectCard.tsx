@@ -18,7 +18,7 @@ export function ProjectCard({ project }: { project: Project }) {
   const href = `/projects/${project.id}`;
 
   return (
-    <article className="flex h-[293px] w-[212px] shrink-0 snap-start flex-col justify-end gap-2.5 rounded-xl bg-surface px-2.5 pt-4 pb-[21px] shadow-card dark:border dark:border-border">
+    <article className="flex h-[293px] w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col justify-end gap-2.5 rounded-xl bg-surface px-2.5 pt-4 pb-[21px] shadow-card dark:border dark:border-border">
       <div className="flex flex-col gap-4">
         <span className="self-start rounded-lg border border-brand-ink bg-brand-soft px-4 py-1.5 text-base leading-none font-medium tracking-[-0.176px] text-brand-ink">
           {t("budget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) })}

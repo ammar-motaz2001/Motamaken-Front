@@ -18,7 +18,7 @@ export function ProjectGrid({ result, pathname, query }: ProjectGridProps) {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-muted">{t("count", { count: result.meta.total })}</p>
-      <div className="grid grid-cols-[repeat(auto-fill,212px)] justify-center gap-5 sm:justify-start">
+      <div className="card-grid grid grid-cols-[repeat(auto-fill,minmax(212px,1fr))] justify-center gap-5 sm:justify-start">
         {result.data.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
