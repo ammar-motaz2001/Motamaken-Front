@@ -4,11 +4,13 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { SitePage } from "@/lib/api/types";
 import { SESSION_COOKIE } from "@/lib/session";
+import { pageMetadata } from "@/lib/seo";
 import { ContactForm, SitePageView } from "@/modules/pages";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/contact">) {
-  const t = await getTranslations({ locale: (await params).locale, namespace: "SitePages.contact" });
-  return { title: `${t("pageTitle")} | Mutamakin` };
+  const { locale } = await params;
+  const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "SitePages.contact" }), getTranslations({ locale, namespace: "Seo" })]);
+  return pageMetadata({ title: `${t("pageTitle")} | Mutamakin`, description: seo("contact"), path: "/contact", locale });
 }
 
 export default async function Contact({ params }: PageProps<"/[locale]/contact">) {

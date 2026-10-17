@@ -7,6 +7,7 @@ import { getCategories, getCountries } from "@/lib/api/reference";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { Paginated, Project } from "@/lib/api/types";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
+import { pageMetadata } from "@/lib/seo";
 import { FILTER_KEYS, ProjectFilters, ProjectGrid } from "@/modules/projects";
 
 async function findCategory(slug: string) {
@@ -16,8 +17,9 @@ async function findCategory(slug: string) {
 }
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/categories/[slug]">) {
-  const category = await findCategory((await params).slug);
-  return { title: `${category.name} | Mutamakin` };
+  const { locale, slug } = await params;
+  const [category, t] = await Promise.all([findCategory(slug), getTranslations({ locale, namespace: "Seo" })]);
+  return pageMetadata({ title: `${category.name} | Mutamakin`, description: t("category", { name: category.name }), path: `/categories/${category.slug}`, locale });
 }
 
 export default async function CategoryPage({ params, searchParams }: PageProps<"/[locale]/categories/[slug]">) {

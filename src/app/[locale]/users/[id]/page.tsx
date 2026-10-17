@@ -6,6 +6,7 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { Paginated, PublicProfile, Review } from "@/lib/api/types";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { SESSION_COOKIE } from "@/lib/session";
+import { describe, pageMetadata } from "@/lib/seo";
 import { PublicProfileView, type ProfileTab } from "@/modules/profile";
 
 const loadProfile = cache(async (id: string) => {
@@ -14,9 +15,19 @@ const loadProfile = cache(async (id: string) => {
 });
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/users/[id]">) {
-  const data = await loadProfile((await params).id);
+  const { locale, id } = await params;
+  const data = await loadProfile(id);
   const role = data.profile?.jobTitle ? ` — ${data.profile.jobTitle}` : "";
-  return { title: `${data.user.fullName}${role} | Mutamakin`, description: data.profile?.bio?.slice(0, 160) };
+  return pageMetadata({
+    title: `${data.user.fullName}${role} | Mutamakin`,
+    description: describe(data.profile?.bio) ?? describe(`${data.user.fullName}${role}`),
+    path: `/users/${data.user.id}`,
+    locale,
+    image: data.user.avatarUrl,
+    type: "profile",
+    // An account without a profile has nothing worth listing in search results.
+    noindex: !data.profile,
+  });
 }
 
 export default async function UserProfilePage({ params, searchParams }: PageProps<"/[locale]/users/[id]">) {

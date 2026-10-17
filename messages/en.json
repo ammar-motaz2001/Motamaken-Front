@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Mutamakin",
-    "description": "Hire skilled freelancers and influencers on Mutamakin",
+    "description": "Post your project for free and get offers from skilled freelancers and influencers in Saudi Arabia and the Arab world. Pay safely with escrow.",
     "signup": "Signup | Mutamakin",
     "verify": "Verify | Mutamakin",
     "login": "Login | Mutamakin",
@@ -2705,5 +2705,17 @@
     "agree": "I agree",
     "cancel": "Close",
     "failed": "The policy could not be loaded. Please try again later."
+  },
+  "Seo": {
+    "homeTitle": "Mutamakin — Hire freelancers and social media influencers",
+    "home": "Post your project for free and get offers from skilled freelancers and influencers in Saudi Arabia and the Arab world. Pay safely with escrow.",
+    "projects": "Browse open projects and influencer requests, and send your offer.",
+    "categories": "Find freelancers and influencers by category: design, development, writing, Instagram, TikTok and more.",
+    "category": "Open {name} projects and requests on Mutamakin. Post yours for free or send an offer.",
+    "search": "Search projects, freelancers and influencers on Mutamakin.",
+    "premium": "Premium plans and promotions to get more offers, lower fees and featured placement.",
+    "gifts": "Collect points on Mutamakin and join prize draws.",
+    "contact": "Contact the Mutamakin team about your account, payments, disputes or partnerships.",
+    "sitemap": "Every section, category and help page of Mutamakin."
   }
 }

@@ -11,5 +11,6 @@ export const GUEST_ONLY_PATHS = [/^\/(login|signup|forgot-password|reset-passwor
 export const AFTER_LOGIN_PATH = "/";
 
 export function safeNextPath(value: string | string[] | undefined | null) {
-  return typeof value === "string" && value.startsWith("/") && !value.startsWith("//") ? value : undefined;
+  // Only paths on this site: "//evil.com" and "/\\evil.com" would send the browser to another site.
+  return typeof value === "string" && value.startsWith("/") && !value.startsWith("//") && !/[\\\s]/.test(value) ? value : undefined;
 }

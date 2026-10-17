@@ -10,6 +10,17 @@ async function forward(request: NextRequest, { params }: { params: Promise<{ pat
   if (!API_URL) return Response.json({ message: "API is not configured" }, { status: 503 });
 
   const { path } = await params;
+  // Only API paths: "." and ".." would let a crafted URL reach other routes of the API server.
+  if (path.some((segment) => segment === "." || segment === ".." || segment.includes("\\"))) {
+    return Response.json({ message: "Not found" }, { status: 404 });
+  }
+  // Changes are only accepted from this site's own pages (the session cookie is SameSite=Lax; this is a second lock).
+  // Hosts are compared, not full origins: behind the proxy this server sees http while browsers send https.
+  const origin = request.headers.get("origin");
+  const originHost = origin ? URL.parse(origin)?.host : undefined;
+  if (!["GET", "HEAD"].includes(request.method) && origin && originHost !== request.headers.get("host")) {
+    return Response.json({ message: "Forbidden" }, { status: 403 });
+  }
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
 

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { UnderConstruction } from "@/components/under-construction/UnderConstruction";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { SitePage } from "@/lib/api/types";
+import { describe, pageMetadata } from "@/lib/seo";
 import { SitePageView } from "@/modules/pages";
 
 /** Old addresses that now live under another page slug. */
@@ -15,9 +16,10 @@ async function loadPage(slug: string[]) {
 export async function generateMetadata({ params }: PageProps<"/[locale]/[...slug]">) {
   const { locale, slug } = await params;
   const page = await loadPage(slug);
-  if (page) return { title: `${page.title} | Mutamakin` };
+  if (page) return pageMetadata({ title: `${page.title} | Mutamakin`, description: describe(page.body), path: `/${page.slug}`, locale });
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { title: t("underConstruction") };
+  // Unknown addresses show the "under construction" screen; keep them out of search results.
+  return { title: t("underConstruction"), robots: { index: false, follow: true } };
 }
 
 /**

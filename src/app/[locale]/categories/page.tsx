@@ -4,14 +4,16 @@ import { PageHero } from "@/components/illustrations/PageHero";
 import { CategoryIcon } from "@/components/ui/CategoryIcon";
 import { Link } from "@/i18n/navigation";
 import { getCategories } from "@/lib/api/reference";
+import { pageMetadata } from "@/lib/seo";
 import type { CategoryType } from "@/lib/api/types";
 
 const GROUPS: CategoryType[] = ["project", "influencer"];
 const TONES = ["bg-brand/10 text-brand", "bg-orange/10 text-orange", "bg-link/10 text-link", "bg-brand-light/15 text-brand-light"];
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/categories">) {
-  const t = await getTranslations({ locale: (await params).locale, namespace: "Projects.metadata" });
-  return { title: t("categories") };
+  const { locale } = await params;
+  const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Projects.metadata" }), getTranslations({ locale, namespace: "Seo" })]);
+  return pageMetadata({ title: t("categories"), description: seo("categories"), path: "/categories", locale });
 }
 
 export default async function CategoriesPage({ params }: PageProps<"/[locale]/categories">) {

@@ -3,11 +3,13 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Link } from "@/i18n/navigation";
 import { getCategories } from "@/lib/api/reference";
 import { apiGetOrNull } from "@/lib/api/server";
+import { pageMetadata } from "@/lib/seo";
 import type { SitePageSummary } from "@/lib/api/types";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/sitemap">) {
-  const t = await getTranslations({ locale: (await params).locale, namespace: "SitePages.sitemap" });
-  return { title: `${t("title")} | Mutamakin` };
+  const { locale } = await params;
+  const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "SitePages.sitemap" }), getTranslations({ locale, namespace: "Seo" })]);
+  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("sitemap"), path: "/sitemap", locale });
 }
 
 /**

@@ -5,11 +5,13 @@ import { getCategories, getCountries } from "@/lib/api/reference";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { Paginated, Project } from "@/lib/api/types";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
+import { pageMetadata } from "@/lib/seo";
 import { FILTER_KEYS, ProjectFilters, ProjectGrid } from "@/modules/projects";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects">) {
-  const t = await getTranslations({ locale: (await params).locale, namespace: "Projects.metadata" });
-  return { title: t("browse") };
+  const { locale } = await params;
+  const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Projects.metadata" }), getTranslations({ locale, namespace: "Seo" })]);
+  return pageMetadata({ title: t("browse"), description: seo("projects"), path: "/projects", locale });
 }
 
 export default async function ProjectsPage({ params, searchParams }: PageProps<"/[locale]/projects">) {

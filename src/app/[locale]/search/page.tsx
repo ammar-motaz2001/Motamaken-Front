@@ -13,6 +13,7 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { Paginated, ProfileCard as Profile, Project, SearchAll, SearchType } from "@/lib/api/types";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { SESSION_COOKIE } from "@/lib/session";
+import { pageMetadata } from "@/lib/seo";
 import { NoResults, ProfileRow, ProjectRow, SearchFilters } from "@/modules/search";
 
 const TYPES: SearchType[] = ["all", "projects", "influencer_requests", "influencers", "freelancers"];
@@ -29,8 +30,9 @@ function Grid({ children }: { children: ReactNode }) {
 }
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/search">) {
-  const t = await getTranslations({ locale: (await params).locale, namespace: "Search" });
-  return { title: `${t("title")} | Mutamakin` };
+  const { locale } = await params;
+  const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Search" }), getTranslations({ locale, namespace: "Seo" })]);
+  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("search"), path: "/search", locale });
 }
 
 export default async function SearchPage({ params, searchParams }: PageProps<"/[locale]/search">) {
