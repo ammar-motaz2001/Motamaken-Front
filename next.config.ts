@@ -14,15 +14,15 @@ const apiOrigin = (() => {
 
 /**
  * What the browser may load. Scripts and frames: this site, Google reCAPTCHA. Connections: this site, the API, Moyasar
- * (card tokens are made in the browser). Next.js needs inline scripts for its own bootstrap, hence 'unsafe-inline'.
+ * (card tokens are made in the browser), Cloudflare's visitor analytics. Next.js needs inline scripts for its own bootstrap, hence 'unsafe-inline'.
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com${dev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://static.cloudflareinsights.com${dev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https:${apiOrigin && dev ? ` ${apiOrigin}` : ""}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${apiOrigin} https://api.moyasar.com https://www.google.com${dev ? " ws: http://localhost:*" : ""}`,
+  `connect-src 'self' ${apiOrigin} https://api.moyasar.com https://www.google.com https://cloudflareinsights.com${dev ? " ws: http://localhost:*" : ""}`,
   `media-src 'self' blob: ${apiOrigin}`,
   "frame-src https://www.google.com https://recaptcha.google.com",
   "worker-src 'self' blob:",
