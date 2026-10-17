@@ -38,6 +38,35 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified, verify,
 
   const focus = (index: number) => inputs.current[Math.max(0, Math.min(LENGTH - 1, index))]?.focus();
 
+  const verifyCode = async (code: string) => {
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      await onVerified(await (verify ? verify(code) : authService.verifyOtp({ purpose, method, target, code })));
+    } catch (err) {
+      setError(err instanceof AuthError && err.message ? err.message : t("failed"));
+      setSubmitting(false);
+    }
+  };
+
+  // The code is checked as soon as the last box is filled (typed, pasted or auto-filled from SMS); no need to press
+  // Verify. It runs after React stored the digits, so fast typing cannot leave one out, and a wrong code is not
+  // re-sent until it is changed.
+  const tried = useRef("");
+  useEffect(() => {
+    const code = digits.join("");
+    if (code.length === LENGTH && code !== tried.current && !submitting) {
+      tried.current = code;
+      void verifyCode(code);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [digits]);
+
+  const update = (next: string[]) => {
+    setDigits(next);
+    setError(null);
+  };
+
   const setDigit = (index: number, value: string) => {
     const digit = value.replace(/\D/g, "").slice(-1);
     setDigits((current) => current.map((item, i) => (i === index ? digit : item)));
@@ -55,7 +84,7 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified, verify,
     const pasted = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, LENGTH);
     if (!pasted) return;
     event.preventDefault();
-    setDigits(Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? ""));
+    update(Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? ""));
     focus(pasted.length);
   };
 
@@ -66,19 +95,15 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified, verify,
       setError(t("incomplete"));
       return;
     }
-    setSubmitting(true);
-    try {
-      await onVerified(await (verify ? verify(code) : authService.verifyOtp({ purpose, method, target, code })));
-    } catch (err) {
-      setError(err instanceof AuthError && err.message ? err.message : t("failed"));
-      setSubmitting(false);
-    }
+    tried.current = code;
+    await verifyCode(code);
   };
 
   const resend = async () => {
     setError(null);
     try {
       await authService.resendOtp({ purpose, method, target });
+      tried.current = "";
       setDigits(Array(LENGTH).fill(""));
       setSeconds(RESEND_SECONDS);
       focus(0);
@@ -110,6 +135,7 @@ export function OtpForm({ purpose, method, target, subtitle, onVerified, verify,
             onChange={(event) => setDigit(index, event.target.value)}
             onKeyDown={(event) => onKeyDown(index, event)}
             onPaste={onPaste}
+            readOnly={submitting}
             className={`h-12 rounded-lg border text-center text-base font-medium outline-none transition-colors focus:border-brand ${
               method === "email" ? "w-[63px]" : "w-12"
             } ${digit ? "border-otp-filled bg-otp-filled" : "border-border bg-otp"} ${error ? "border-danger" : ""}`}

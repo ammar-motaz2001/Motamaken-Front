@@ -11,6 +11,9 @@ import { ResultModal } from "@/components/ui/ResultModal";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 
+/** Codes are 4 digits (config/auth_flow.php otp.length on the API). */
+const CODE_LENGTH = 4;
+
 type Step = "method" | "password" | "target" | "confirm" | "code" | "success" | "error";
 type Method = "phone" | "email";
 
@@ -89,8 +92,13 @@ export function TwoFactorModal({ open, onClose, onEnabled, email, phone }: TwoFa
     }
   };
 
-  const verify = async (event: FormEvent) => {
+  const verify = (event: FormEvent) => {
     event.preventDefault();
+    void confirmCode(code);
+  };
+
+  const confirmCode = async (code: string) => {
+    if (busy) return;
     if (!/^\d{4,8}$/.test(code)) return setError(t("codeInvalid"));
     setBusy(true);
     setError(null);
@@ -233,7 +241,14 @@ export function TwoFactorModal({ open, onClose, onEnabled, email, phone }: TwoFa
               {t("code")}
               <input
                 value={code}
-                onChange={(event) => (setCode(event.target.value.replace(/\D/g, "").slice(0, 8)), setError(null))}
+                onChange={(event) => {
+                  const next = event.target.value.replace(/\D/g, "").slice(0, CODE_LENGTH);
+                  setCode(next);
+                  setError(null);
+                  // Checked as soon as the code is complete.
+                  if (next.length === CODE_LENGTH) void confirmCode(next);
+                }}
+                readOnly={busy}
                 inputMode="numeric"
                 autoComplete="one-time-code"
                 autoFocus
