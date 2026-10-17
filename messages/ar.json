@@ -530,7 +530,24 @@
     "pagination": "التنقل بين الصفحات",
     "previous": "السابق",
     "next": "التالي",
-    "pageOf": "صفحة {page} من {total}"
+    "pageOf": "صفحة {page} من {total}",
+    "choose": "اختر…",
+    "searchList": "ابحث…",
+    "noMatches": "لا توجد نتائج",
+    "calendar": {
+      "title": "اختر تاريخًا",
+      "pick": "اختر التاريخ",
+      "previous": "الشهر السابق",
+      "next": "الشهر التالي",
+      "month": "الشهر",
+      "year": "السنة",
+      "time": "الوقت",
+      "hour": "الساعة",
+      "minute": "الدقيقة",
+      "today": "اليوم",
+      "clear": "مسح",
+      "done": "تم"
+    }
   },
   "Profile": {
     "home": "الرئيسية",

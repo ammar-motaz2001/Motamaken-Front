@@ -530,7 +530,24 @@
     "pagination": "Pagination",
     "previous": "Previous",
     "next": "Next",
-    "pageOf": "Page {page} of {total}"
+    "pageOf": "Page {page} of {total}",
+    "choose": "Choose…",
+    "searchList": "Search…",
+    "noMatches": "No matches",
+    "calendar": {
+      "title": "Choose a date",
+      "pick": "Pick a date",
+      "previous": "Previous month",
+      "next": "Next month",
+      "month": "Month",
+      "year": "Year",
+      "time": "Time",
+      "hour": "Hour",
+      "minute": "Minute",
+      "today": "Today",
+      "clear": "Clear",
+      "done": "Done"
+    }
   },
   "Profile": {
     "home": "Home",

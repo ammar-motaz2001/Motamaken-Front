@@ -5,15 +5,16 @@ type LogoLoaderProps = {
   label?: string;
   /** `page`: fills the content area. `overlay`: covers the whole screen (payments, long actions). `inline`: just the bee. */
   variant?: "page" | "overlay" | "inline";
+  /** Width in px; the animation (bee + MUTAMAKIN) is about 4.5 times wider than tall. */
   size?: number;
 };
 
 /** The flying Mutamakin bee: the one loading animation used across the site. */
-export function LogoLoader({ label, variant = "page", size = 168 }: LogoLoaderProps) {
+export function LogoLoader({ label, variant = "page", size = 260 }: LogoLoaderProps) {
   const bee = (
     <span className="relative flex items-center justify-center">
-      <span className="absolute size-[70%] animate-ping rounded-full bg-brand/10 [animation-duration:2s]" aria-hidden />
-      <img src="/images/loader.gif" alt="" width={size} height={size} className="relative select-none" draggable={false} />
+      <span className="absolute -inset-x-6 inset-y-0 rounded-full bg-brand/5 blur-2xl" aria-hidden />
+      <img src="/images/loader.gif" alt="" width={size} height={Math.round((size * 112) / 503)} className="relative h-auto max-w-[80vw] select-none" draggable={false} />
     </span>
   );
 

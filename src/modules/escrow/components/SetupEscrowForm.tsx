@@ -8,6 +8,7 @@ import { Field } from "@/components/ui/Field";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Escrow } from "@/lib/api/types";
+import { DateField } from "@/components/ui/DatePicker";
 import { useMoney } from "../lib/useMoney";
 
 type Row = { title: string; amount: string; dueDate: string };
@@ -77,7 +78,7 @@ export function SetupEscrowForm({ projectId, total, currency, onCreated }: { pro
               error={errors[`milestones.${index}.amount`]}
               onChange={(event) => update(index, "amount", event.target.value)}
             />
-            <Field label={t("dueDate")} type="date" value={row.dueDate} error={errors[`milestones.${index}.dueDate`]} onChange={(event) => update(index, "dueDate", event.target.value)} />
+            <DateField label={t("dueDate")} value={row.dueDate} error={errors[`milestones.${index}.dueDate`]} onChange={(value) => update(index, "dueDate", value)} min={new Date().toISOString().slice(0, 10)} />
             <button
               type="button"
               aria-label={t("remove")}

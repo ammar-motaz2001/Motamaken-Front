@@ -10,6 +10,7 @@ import { TextArea } from "@/components/ui/TextArea";
 import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
+import { DateField } from "@/components/ui/DatePicker";
 import type { Campaign, CampaignFilters, Paginated, Project } from "@/lib/api/types";
 
 const PLATFORM_FEE = 20;
@@ -149,7 +150,7 @@ export function CampaignForm({ campaign, currency, hasProfile }: { campaign?: Ca
       </div>
       {estimate && <p className="-mt-2 text-sm text-brand">{t("form.estimate", { visits: estimate.visits, reward: money(estimate.reward), fee: PLATFORM_FEE })}</p>}
 
-      <Field label={t("form.endsAt")} type="date" dir="ltr" value={form.endsAt} error={errors.endsAt} onChange={(event) => set("endsAt", event.target.value)} className="sm:max-w-xs" />
+      <DateField label={t("form.endsAt")} value={form.endsAt} error={errors.endsAt} onChange={(value) => set("endsAt", value)} min={new Date().toISOString().slice(0, 10)} className="sm:max-w-xs" />
 
       <fieldset className="flex flex-col gap-4 rounded-xl border border-border p-4">
         <legend className="px-1 font-bold">{t("form.filtersTitle")}</legend>

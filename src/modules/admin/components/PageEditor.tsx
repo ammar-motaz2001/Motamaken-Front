@@ -7,6 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import type { AdminPage } from "../types";
 import { inputClasses } from "./ActionButton";
 import { SaveBar, TextInput } from "./FormBits";
+import { Listbox } from "@/components/ui/Listbox";
 import { useAdminSave } from "./useAdminSave";
 
 type Lang = "En" | "Ar";
@@ -53,13 +54,12 @@ export function PageEditor({ page, placeholders }: { page: AdminPage | null; pla
           <label htmlFor="page-section" className="text-sm font-medium">
             {t("section")}
           </label>
-          <select id="page-section" value={section} onChange={(event) => setSection(event.target.value as AdminPage["section"])} className={inputClasses}>
-            {(["about", "help", "legal"] as const).map((value) => (
-              <option key={value} value={value}>
-                {t(`sections.${value}`)}
-              </option>
-            ))}
-          </select>
+          <Listbox
+            id="page-section"
+            value={section}
+            onChange={(value) => setSection(value as AdminPage["section"])}
+            options={(["about", "help", "legal"] as const).map((value) => ({ value, label: t(`sections.${value}`) }))}
+          />
         </div>
         <TextInput label={t("sortOrder")} type="number" value={sortOrder} onChange={setSortOrder} error={fields.sortOrder} />
         <label className="flex items-center gap-2 self-end pb-3 text-sm">

@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { Listbox } from "@/components/ui/Listbox";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
 type Filter = { name: string; label: string; options: { value: string; label: string }[] };
@@ -44,21 +45,14 @@ export function AdminSearch({ placeholder, filters = [] }: { placeholder?: strin
         </label>
       )}
       {filters.map((filter) => (
-        <label key={filter.name} className="flex items-center gap-2 text-sm">
-          <span className="sr-only">{filter.label}</span>
-          <select
-            value={params.get(filter.name) ?? ""}
-            onChange={(event) => go({ [filter.name]: event.target.value })}
-            className="h-10 rounded-md border border-border bg-surface px-3 text-sm outline-none focus:border-brand"
-          >
-            <option value="">{filter.label}</option>
-            {filter.options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Listbox
+          key={filter.name}
+          aria-label={filter.label}
+          value={params.get(filter.name) ?? ""}
+          onChange={(value) => go({ [filter.name]: value })}
+          options={[{ value: "", label: filter.label }, ...filter.options]}
+          className="w-52"
+        />
       ))}
       {placeholder !== undefined && (
         <button type="submit" className="h-10 rounded-md bg-brand px-4 text-sm font-semibold text-white hover:opacity-90">

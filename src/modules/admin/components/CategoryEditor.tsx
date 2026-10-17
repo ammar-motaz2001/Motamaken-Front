@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { CATEGORY_ICONS, CategoryIcon } from "@/components/ui/CategoryIcon";
 import type { AdminCategory } from "../types";
-import { inputClasses } from "./ActionButton";
 import { SaveBar, TextInput } from "./FormBits";
+import { Listbox } from "@/components/ui/Listbox";
 import { useAdminSave } from "./useAdminSave";
 
 type Draft = { type: AdminCategory["type"]; slug: string; nameEn: string; nameAr: string; icon: string; sortOrder: string };
@@ -64,10 +64,15 @@ export function CategoryEditor({ categories }: { categories: AdminCategory[] }) 
               <label htmlFor="category-type" className="text-sm font-medium">
                 {t("type")}
               </label>
-              <select id="category-type" value={draft.type} onChange={(event) => set("type")(event.target.value)} className={inputClasses}>
-                <option value="project">{t("types.project")}</option>
-                <option value="influencer">{t("types.influencer")}</option>
-              </select>
+              <Listbox
+                id="category-type"
+                value={draft.type}
+                onChange={set("type")}
+                options={[
+                  { value: "project", label: t("types.project") },
+                  { value: "influencer", label: t("types.influencer") },
+                ]}
+              />
             </div>
             <TextInput label={t("slug")} hint={t("slugHint")} dir="ltr" value={draft.slug} onChange={set("slug")} error={fields.slug} required />
             <div className="flex flex-col gap-1.5">
@@ -78,14 +83,16 @@ export function CategoryEditor({ categories }: { categories: AdminCategory[] }) 
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-surface text-brand">
                   <CategoryIcon icon={draft.icon} className="size-5" />
                 </span>
-                <select id="category-icon" value={draft.icon} onChange={(event) => set("icon")(event.target.value)} className={inputClasses}>
-                  <option value="">{t("noIcon")}</option>
-                  {CATEGORY_ICONS.map((icon) => (
-                    <option key={icon} value={icon}>
-                      {icon}
-                    </option>
-                  ))}
-                </select>
+                <Listbox
+                  id="category-icon"
+                  className="flex-1"
+                  value={draft.icon}
+                  onChange={set("icon")}
+                  options={[
+                    { value: "", label: t("noIcon") },
+                    ...CATEGORY_ICONS.map((icon) => ({ value: icon, label: icon, icon: <CategoryIcon icon={icon} className="size-4 text-brand" /> })),
+                  ]}
+                />
               </div>
             </div>
             <TextInput label={t("nameEn")} dir="ltr" value={draft.nameEn} onChange={set("nameEn")} error={fields.nameEn} required />

@@ -8,6 +8,7 @@ import { Select } from "@/components/ui/Select";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { KycSubmission } from "@/lib/api/types";
+import { DateField } from "@/components/ui/DatePicker";
 import { FilePick } from "./FilePick";
 
 const DOCUMENTS = ["national_id", "passport", "driver_license"] as const;
@@ -15,6 +16,9 @@ const MAX = 10 * 1024 * 1024;
 
 type Form = { documentType: string; documentNumber: string; fullName: string; dateOfBirth: string };
 type Files = { front: File | null; back: File | null; selfie: File | null };
+
+// An adult today at the latest, so the calendar opens on a plausible year.
+const adultMax = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate()).toISOString().slice(0, 10);
 
 export function KycForm({ defaultName, onSubmitted }: { defaultName: string; onSubmitted: (submission: KycSubmission) => void }) {
   const t = useTranslations("Verification.form");
@@ -75,7 +79,7 @@ export function KycForm({ defaultName, onSubmitted }: { defaultName: string; onS
         />
         <Field label={t("documentNumber")} required dir="ltr" value={form.documentNumber} error={errors.documentNumber} onChange={(event) => set("documentNumber", event.target.value)} />
         <Field label={t("fullName")} required hint={t("fullNameHint")} value={form.fullName} error={errors.fullName} onChange={(event) => set("fullName", event.target.value)} />
-        <Field label={t("dateOfBirth")} required type="date" value={form.dateOfBirth} error={errors.dateOfBirth} onChange={(event) => set("dateOfBirth", event.target.value)} />
+        <DateField label={t("dateOfBirth")} required value={form.dateOfBirth} error={errors.dateOfBirth} onChange={(value) => set("dateOfBirth", value)} min="1920-01-01" max={adultMax} />
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <FilePick label={t("front")} hint={t("fileHint")} accept="image/jpeg,image/png,image/webp,application/pdf" required file={files.front} error={errors.front} onChange={(file) => pick("front", file)} />

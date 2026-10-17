@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
+import { Listbox } from "@/components/ui/Listbox";
 import type { ApiError } from "@/lib/api/errors";
 
 export type ActionField = {
@@ -142,16 +143,7 @@ export function ActionButton({ label, endpoint, method = "POST", tone = "outline
                 {field.type === "textarea" ? (
                   <textarea id={id} rows={4} required={field.required} value={values[field.name]} placeholder={field.placeholder} onChange={(event) => set(event.target.value)} className={inputClasses} />
                 ) : field.type === "select" ? (
-                  <select id={id} required={field.required} value={values[field.name]} onChange={(event) => set(event.target.value)} className={inputClasses}>
-                    <option value="" disabled>
-                      {t("choose")}
-                    </option>
-                    {field.options?.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                  <Listbox id={id} required={field.required} value={values[field.name]} onChange={set} placeholder={t("choose")} options={field.options ?? []} />
                 ) : (
                   <input
                     id={id}

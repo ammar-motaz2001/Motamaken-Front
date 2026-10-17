@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { inputClasses } from "./ActionButton";
 import { SaveBar, TextInput } from "./FormBits";
+import { Listbox } from "@/components/ui/Listbox";
+import { DateField } from "@/components/ui/DatePicker";
 import { useAdminSave } from "./useAdminSave";
 
 type Prize = { nameEn: string; nameAr: string; kind: "cash" | "item"; value: string; currency: string };
@@ -57,8 +59,8 @@ export function DrawForm({ currencies }: { currencies: string[] }) {
         <TextInput label={t("titleAr")} dir="rtl" value={titleAr} onChange={setTitleAr} error={fields.titleAr} required />
         <TextInput label={t("ticketCost")} hint={t("ticketCostHint")} type="number" value={ticketCost} onChange={setTicketCost} error={fields.ticketCost} required />
         <TextInput label={t("maxTickets")} hint={t("maxTicketsHint")} type="number" value={maxTickets} onChange={setMaxTickets} error={fields.maxTicketsPerUser} />
-        <TextInput label={t("startsAt")} type="datetime-local" value={startsAt} onChange={setStartsAt} error={fields.startsAt} required />
-        <TextInput label={t("drawAt")} type="datetime-local" value={drawAt} onChange={setDrawAt} error={fields.drawAt} required />
+        <DateField withTime label={t("startsAt")} value={startsAt} onChange={setStartsAt} error={fields.startsAt} required />
+        <DateField withTime label={t("drawAt")} value={drawAt} onChange={setDrawAt} error={fields.drawAt} required min={startsAt.slice(0, 10)} />
       </div>
       <div className="flex flex-col gap-2">
         <p className="text-sm font-medium">{t("prizes")}</p>
@@ -67,16 +69,17 @@ export function DrawForm({ currencies }: { currencies: string[] }) {
             <span className="text-sm font-bold text-orange">#{index + 1}</span>
             <input aria-label={t("prizeNameEn")} placeholder={t("prizeNameEn")} dir="ltr" required value={prize.nameEn} onChange={(e) => setPrize(index, { nameEn: e.target.value })} className={inputClasses} />
             <input aria-label={t("prizeNameAr")} placeholder={t("prizeNameAr")} dir="rtl" required value={prize.nameAr} onChange={(e) => setPrize(index, { nameAr: e.target.value })} className={inputClasses} />
-            <select aria-label={t("kind")} value={prize.kind} onChange={(e) => setPrize(index, { kind: e.target.value as Prize["kind"] })} className={inputClasses}>
-              <option value="cash">{t("kinds.cash")}</option>
-              <option value="item">{t("kinds.item")}</option>
-            </select>
+            <Listbox
+              aria-label={t("kind")}
+              value={prize.kind}
+              onChange={(value) => setPrize(index, { kind: value as Prize["kind"] })}
+              options={[
+                { value: "cash", label: t("kinds.cash") },
+                { value: "item", label: t("kinds.item") },
+              ]}
+            />
             <input aria-label={t("value")} placeholder={t("value")} type="number" step="0.01" required value={prize.value} onChange={(e) => setPrize(index, { value: e.target.value })} className={inputClasses} />
-            <select aria-label={t("currency")} value={prize.currency} onChange={(e) => setPrize(index, { currency: e.target.value })} className={inputClasses}>
-              {currencies.map((code) => (
-                <option key={code}>{code}</option>
-              ))}
-            </select>
+            <Listbox aria-label={t("currency")} value={prize.currency} onChange={(value) => setPrize(index, { currency: value })} options={currencies.map((code) => ({ value: code, label: code }))} />
             <button
               type="button"
               aria-label={t("removePrize")}

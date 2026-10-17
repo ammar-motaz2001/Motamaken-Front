@@ -6,6 +6,7 @@ import { useCallback, useRef, useState, type FormEvent } from "react";
 import { useDismiss } from "@/components/ui/useDismiss";
 import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
+import { Listbox } from "@/components/ui/Listbox";
 import type { City, Country } from "@/lib/api/types";
 
 const SEARCH_TYPES = ["all", "projects", "influencer_requests", "influencers", "freelancers"] as const;
@@ -20,31 +21,17 @@ function SelectField({ label, value, onChange, options, disabled, className }: {
   className: string;
 }) {
   return (
-    <label className={`relative hidden h-[45px] items-center rounded-[5px] border border-border bg-surface xl:flex ${className}`}>
-      <select
-        value={value}
-        disabled={disabled}
-        aria-label={label}
-        onChange={(event) => onChange(event.target.value)}
-        className={`h-full w-full cursor-pointer appearance-none bg-transparent ps-2.5 pe-9 text-base outline-none disabled:cursor-default ${
-          value ? "" : "text-placeholder"
-        }`}
-      >
-        <option value="">{label}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value} className="text-foreground">
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <Image
-        src="/images/arrow-down-outline.svg"
-        alt=""
-        width={20}
-        height={20}
-        className="pointer-events-none absolute end-2.5 dark:invert"
-      />
-    </label>
+    <Listbox
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+      aria-label={label}
+      placeholder={label}
+      options={[{ value: "", label }, ...options]}
+      className={`hidden xl:block ${className}`}
+      buttonClassName="flex h-[45px] w-full items-center gap-2 rounded-[5px] border border-border bg-surface px-2.5 text-base outline-none focus-visible:border-brand aria-expanded:border-brand"
+      menuClassName="w-64"
+    />
   );
 }
 

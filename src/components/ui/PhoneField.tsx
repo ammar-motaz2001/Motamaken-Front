@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useId, type ComponentType } from "react";
 import PhoneInput, { getCountryCallingCode, type Country, type Value } from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 import ar from "react-phone-number-input/locale/ar.json";
 import en from "react-phone-number-input/locale/en.json";
+import { Listbox } from "./Listbox";
 import { FieldShell } from "./Field";
 
 type CountryOption = { value?: Country; label: string; divider?: boolean };
@@ -20,37 +20,38 @@ type CountrySelectProps = {
 };
 
 function CountrySelect({ value, onChange, options, disabled, "aria-label": ariaLabel }: CountrySelectProps) {
-  const Flag = value ? (flags[value] as ComponentType<{ title: string }> | undefined) : undefined;
+
+  const FlagOf = (code?: Country) => {
+    const Icon = code ? (flags[code] as ComponentType<{ title: string }> | undefined) : undefined;
+    return Icon ? (
+      <span className="flex h-4 w-[22px] shrink-0 overflow-hidden rounded-[2px] [&_svg]:size-full">
+        <Icon title={code ?? ""} />
+      </span>
+    ) : undefined;
+  };
 
   return (
-    <div className="relative flex shrink-0 items-center gap-1">
-      <span className="flex items-center gap-0.5">
-        {Flag && (
-          <span className="flex h-4 w-[22px] overflow-hidden rounded-[2px] [&_svg]:size-full">
-            <Flag title={value ?? ""} />
-          </span>
-        )}
-        {value && (
-          <span dir="ltr" className="text-base font-medium">
-            +{getCountryCallingCode(value)}
-          </span>
-        )}
-      </span>
-      <Image src="/images/arrow-down-dark.svg" alt="" width={20} height={20} className="dark:invert" />
-      <select
-        value={value ?? ""}
-        disabled={disabled}
-        aria-label={ariaLabel}
-        onChange={(event) => onChange((event.target.value || undefined) as Country | undefined)}
-        className="absolute inset-0 cursor-pointer opacity-0"
-      >
-        {options.map((option) => (
-          <option key={option.value ?? option.label} value={option.value ?? ""} disabled={option.divider}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Listbox
+      value={value ?? ""}
+      onChange={(next) => onChange((next || undefined) as Country | undefined)}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      searchable
+      options={options.map((option) => ({ value: option.value ?? "", label: option.label, disabled: option.divider, icon: FlagOf(option.value) }))}
+      className="shrink-0"
+      menuClassName="w-72"
+      buttonClassName="flex h-full items-center gap-1 bg-transparent outline-none"
+      renderValue={() => (
+        <span className="flex items-center gap-1">
+          {FlagOf(value)}
+          {value && (
+            <span dir="ltr" className="text-base font-medium">
+              +{getCountryCallingCode(value)}
+            </span>
+          )}
+        </span>
+      )}
+    />
   );
 }
 
