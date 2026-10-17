@@ -1,12 +1,8 @@
 import { useTranslations } from "next-intl";
+import { LogoLoader } from "@/components/ui/LogoLoader";
 
-export default function AuthLoading() {
+/** Shown while any page loads; the header and footer stay in place. */
+export default function Loading() {
   const t = useTranslations("Auth");
-
-  return (
-    <div role="status" className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
-      <span className="size-14 animate-spin rounded-full border-4 border-brand/20 border-t-brand" />
-      <p className="text-base font-medium text-muted">{t("loadingPage")}</p>
-    </div>
-  );
+  return <LogoLoader label={t("loadingPage")} />;
 }

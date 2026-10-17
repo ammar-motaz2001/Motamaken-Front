@@ -3,6 +3,7 @@ import { Mulish, Quicksand, Tajawal } from "next/font/google";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { preload } from "react-dom";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Footer } from "@/components/footer/Footer";
 import { getHeaderData } from "@/components/header/data";
@@ -48,6 +49,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  // The loading animation is fetched with the page, so it shows at once the first time it is needed.
+  preload("/images/loader.gif", { as: "image" });
   const signedIn = (await cookies()).has(SESSION_COOKIE);
   const [headerData, authMethods] = await Promise.all([getHeaderData(signedIn), getAuthMethods()]);
 
