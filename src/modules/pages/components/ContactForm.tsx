@@ -48,11 +48,11 @@ export function ContactForm({ signedIn }: { signedIn: boolean }) {
   };
 
   if (state === "sent") {
-    return <p className="max-w-3xl rounded-xl bg-brand-soft p-5 font-medium text-brand-ink">{t("sent")}</p>;
+    return <p className="rounded-2xl bg-brand-soft p-6 font-medium text-brand-ink">{t("sent")}</p>;
   }
 
   return (
-    <form onSubmit={submit} noValidate className="flex max-w-3xl flex-col gap-4 rounded-xl border border-border bg-surface p-5 sm:p-8">
+    <form onSubmit={submit} noValidate className="flex flex-col gap-5 rounded-2xl border border-border bg-surface p-6 sm:p-10">
       <h2 className="text-lg font-bold">{t("title")}</h2>
       {!signedIn && (
         <div className="grid gap-4 sm:grid-cols-2">

@@ -2025,6 +2025,15 @@
         "technical": "Technical problem",
         "partnership": "Partnership",
         "other": "Other"
+      },
+      "facts": {
+        "replyTitle": "Fast replies",
+        "reply": "Usually within one business day.",
+        "emailTitle": "Email us",
+        "disputeTitle": "Payment issue?",
+        "dispute": "Open a dispute on the milestone so the money stays frozen.",
+        "helpTitle": "Help pages",
+        "help": "Guides, fees and policies in the footer."
       }
     },
     "sitemap": {
@@ -2048,6 +2057,27 @@
         "gifts": "Points & gifts",
         "promote": "Promote & earn"
       }
+    },
+    "hero": {
+      "services": "Everything you can do on Mutamakin, whether you hire or you work.",
+      "guide": "From your first project to getting paid, in five simple steps.",
+      "contact": "Questions about your account, a payment or a partnership? We're here to help.",
+      "support": "Find answers fast, or write to our team.",
+      "site-fees": "Clear, simple fees with no surprises.",
+      "payment-protection": "Your money waits safely in escrow until the work is approved.",
+      "disputes-system": "When something goes wrong, a fair process settles it.",
+      "sections": {
+        "about": "Get to know Mutamakin and how it works.",
+        "help": "Clear answers about how things work on Mutamakin.",
+        "legal": "The rules that keep Mutamakin fair and safe for everyone."
+      }
+    },
+    "aside": {
+      "related": "Related pages",
+      "ctaTitle": "Ready to get started?",
+      "ctaText": "Post your project for free and receive offers from skilled people.",
+      "postProject": "Post a project",
+      "postRequest": "Influencer request"
     }
   },
   "Admin": {
