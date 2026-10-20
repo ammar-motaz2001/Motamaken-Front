@@ -8,9 +8,10 @@ import { Link } from "@/i18n/navigation";
 import type { Paginated, Project } from "@/lib/api/types";
 import { formatAmount, timeAgo } from "@/lib/format";
 import { PROJECT_STATUS_TONE } from "../lib/status";
+import { PublishDraftButton } from "./PublishDraftButton";
 import { StatusTabs } from "./StatusTabs";
 
-const STATUSES = ["", "open", "in_progress", "completed", "closed"] as const;
+const STATUSES = ["", "draft", "open", "in_progress", "completed", "closed"] as const;
 
 export function MyProjects({ result, status }: { result: Paginated<Project> | null; status: string }) {
   const t = useTranslations("Projects");
@@ -42,7 +43,21 @@ export function MyProjects({ result, status }: { result: Paginated<Project> | nu
       {result?.data.length === 0 && <p className="py-10 text-center text-muted">{t("mine.empty")}</p>}
       <ul className="flex flex-col gap-3">
         {result?.data.map((project) => (
-          <li key={project.id}>
+          <li key={project.id} className="flex flex-col gap-2">
+            {project.isHidden && (
+              <p className="rounded-lg bg-danger-soft px-3 py-2 text-xs text-danger">{t("mine.hidden", { reason: project.hiddenReason ?? "" })}</p>
+            )}
+            {project.status === "draft" && (
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-orange/5 px-3 py-2 text-xs">
+                <span className="text-orange">{t("mine.draftNote")}</span>
+                <span className="flex gap-2">
+                  <Button href={`/projects/${project.id}/edit`} variant="ghost" pill>
+                    {t("mine.editDraft")}
+                  </Button>
+                  <PublishDraftButton projectId={project.id} />
+                </span>
+              </div>
+            )}
             <Link href={`/projects/${project.id}`} className={`${outlinedPanelClasses} flex flex-wrap items-center gap-4 hover:border-brand`}>
               <div className="flex min-w-0 flex-1 flex-col gap-1">
                 <p className="truncate font-bold">{project.title}</p>

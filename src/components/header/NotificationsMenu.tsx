@@ -87,7 +87,8 @@ export function NotificationsMenu({ unread }: { unread: number }) {
                   <UserAvatar name={item.user?.fullName ?? "M"} src={item.user?.avatarUrl ?? null} size={36} />
                   <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                     {item.user && <span className="truncate text-sm font-bold">{item.user.fullName}</span>}
-                    <span className="line-clamp-2 text-sm">{item.message}</span>
+                    <span className="line-clamp-2 text-sm">{item.title && <strong className="block">{item.title}</strong>}
+{item.message}</span>
                     <span className="text-xs text-muted">{timeAgo(item.createdAt, locale)}</span>
                   </span>
                 </button>

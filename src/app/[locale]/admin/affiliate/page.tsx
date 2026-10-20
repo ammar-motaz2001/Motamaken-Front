@@ -1,10 +1,17 @@
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { apiGet } from "@/lib/api/server";
-import { AdminHeader, AdminSection, AdminTable, Cell, StatCard, UserCell, dateTime, money, type AffiliateOverview } from "@/modules/admin";
+import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, StatCard, UserCell, dateTime, money, type AffiliateOverview, type Person } from "@/modules/admin";
+
+type Suspicious = { user: Person; referrer: Person | null; reasons: string[]; sharedIps: string[]; createdAt: string; revoked: boolean };
 
 export default async function AdminAffiliate({ params }: PageProps<"/[locale]/admin/affiliate">) {
   setRequestLocale((await params).locale);
-  const [t, locale, data] = await Promise.all([getTranslations("Admin.affiliate"), getLocale(), apiGet<AffiliateOverview>("/admin/affiliate")]);
+  const [t, locale, data, suspicious] = await Promise.all([
+    getTranslations("Admin.affiliate"),
+    getLocale(),
+    apiGet<AffiliateOverview>("/admin/affiliate"),
+    apiGet<{ data: Suspicious[] }>("/admin/affiliate/suspicious"),
+  ]);
   const totals = data.totals;
 
   return (
@@ -44,6 +51,43 @@ export default async function AdminAffiliate({ params }: PageProps<"/[locale]/ad
               <Cell>{row.ratePercent}%</Cell>
               <Cell className="text-brand">{money(row.amount, row.currency, locale)}</Cell>
               <Cell className="whitespace-nowrap">{dateTime(row.createdAt, locale)}</Cell>
+            </tr>
+          ))}
+        </AdminTable>
+      </AdminSection>
+      <AdminSection title={t("suspicious")}>
+        <p className="text-sm text-muted">{t("suspiciousHint")}</p>
+        <AdminTable head={[t("invited"), t("invitedBy"), t("signals"), t("date"), ""]} empty={suspicious.data.length ? false : t("noSuspicious")}>
+          {suspicious.data.map((row) => (
+            <tr key={row.user.id}>
+              <Cell>
+                <UserCell user={row.user} />
+              </Cell>
+              <Cell>
+                <UserCell user={row.referrer} />
+              </Cell>
+              <Cell className="text-xs">
+                {row.reasons.map((reason) => (
+                  <div key={reason} className="text-orange">
+                    {t(`signalNames.${reason}`)}
+                  </div>
+                ))}
+                {row.sharedIps.length > 0 && <div className="text-muted" dir="ltr">{row.sharedIps.join(", ")}</div>}
+              </Cell>
+              <Cell className="whitespace-nowrap">{dateTime(row.createdAt, locale)}</Cell>
+              <Cell>
+                {row.revoked ? (
+                  <span className="text-xs text-muted">{t("revoked")}</span>
+                ) : (
+                  <ActionButton
+                    label={t("revoke")}
+                    tone="danger"
+                    endpoint={`/admin/affiliate/referrals/${row.user.id}/revoke`}
+                    description={t("revokeHint")}
+                    fields={[{ name: "reason", label: t("reason"), type: "text", required: true, defaultValue: t("selfReferral") }]}
+                  />
+                )}
+              </Cell>
             </tr>
           ))}
         </AdminTable>

@@ -27,6 +27,8 @@ export type User = {
   currency: string;
   theme: "light" | "dark" | null;
   isAdmin?: boolean;
+  /** Admin panel permissions (empty for non-admins). */
+  adminPermissions?: string[];
 };
 
 export type CategoryType = "project" | "influencer";
@@ -41,7 +43,7 @@ export type Category = {
 
 export type ProjectType = "project" | "influencer_request";
 
-export type ProjectStatus = "open" | "in_progress" | "completed" | "closed";
+export type ProjectStatus = "draft" | "open" | "in_progress" | "completed" | "closed";
 
 export type Project = {
   id: number;
@@ -51,6 +53,9 @@ export type Project = {
   excerpt: string;
   budget: { min: number; max: number; currency: string };
   status: ProjectStatus;
+  /** Taken off the site by the moderators (owner and staff still see it). */
+  isHidden?: boolean;
+  hiddenReason?: string | null;
   proposalsCount?: number;
   acceptedProposalId: number | null;
   myProposal?: Proposal | null;
@@ -102,6 +107,8 @@ export type AppNotification = {
   id: string;
   type: string;
   message: string;
+  /** Announcements from the staff: shown in bold above the message. */
+  title?: string | null;
   user: { id: number; fullName: string; avatarUrl: string | null } | null;
   conversationId: number | null;
   projectId: number | null;
@@ -136,6 +143,8 @@ export type Message = {
   duration: number | null;
   attachment?: { name: string; mime: string; size: number; url: string };
   status: "sent" | "read" | null;
+  /** Cleared by a moderator after a report. */
+  removed?: boolean;
   createdAt: string;
 };
 
@@ -204,7 +213,7 @@ export type PublicProfile = {
   isMe: boolean;
 };
 
-export type ReportTarget = "user" | "project" | "portfolio" | "review";
+export type ReportTarget = "user" | "project" | "portfolio" | "review" | "message" | "proposal" | "team";
 
 export type ContentReport = {
   id: number;
@@ -357,7 +366,7 @@ export type Escrow = {
   createdAt: string;
 };
 
-export type KycStatus = "none" | "pending" | "approved" | "rejected";
+export type KycStatus = "none" | "pending" | "approved" | "rejected" | "needs_update";
 
 export type KycSubmission = {
   id: number;
@@ -375,7 +384,7 @@ export type DisputeStatus = "open" | "under_review" | "resolved" | "withdrawn";
 
 export type DisputeEntry = {
   id: number;
-  kind: "message" | "system" | "admin_note";
+  kind: "message" | "system" | "admin_note" | "appeal";
   author: { id: number; fullName: string; avatarUrl: string | null; isAdmin: boolean } | null;
   body: string | null;
   attachment?: { name: string; mime: string; size: number; url: string };
@@ -397,10 +406,43 @@ export type Dispute = {
   clientPercent: number | null;
   resolutionNote: string | null;
   assignedTo?: UserBrief | null;
-  permissions: { canPost: boolean; canWithdraw: boolean; canConcede: boolean; canResolve: boolean };
+  permissions: { canPost: boolean; canWithdraw: boolean; canConcede: boolean; canResolve: boolean; canAppeal?: boolean };
+  /** Appeals against the decision (settled disputes only). */
+  appeals?: DisputeAppeal[];
   timeline?: DisputeEntry[];
   createdAt: string;
   resolvedAt: string | null;
+};
+
+export type PublicSiteSettings = {
+  nameEn: string;
+  nameAr: string;
+  taglineEn: string | null;
+  taglineAr: string | null;
+  logoUrl: string | null;
+  email: string | null;
+  phone: string | null;
+  whatsapp: string | null;
+  addressEn: string | null;
+  addressAr: string | null;
+  social: Partial<Record<"x" | "facebook" | "instagram" | "linkedin" | "youtube" | "tiktok" | "snapchat", string>>;
+  apps: Partial<Record<"android" | "ios", string>>;
+  maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
+  uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
+  depositMethods: string[];
+  withdrawalMethods: string[];
+};
+
+export type DisputeAppeal = {
+  id: number;
+  user: UserBrief | null;
+  reason: string;
+  status: "pending" | "upheld" | "overturned";
+  decisionNote: string | null;
+  adjustment: number | null;
+  adjustmentTo: "client" | "freelancer" | null;
+  createdAt: string;
+  decidedAt: string | null;
 };
 
 export type PointsSummary = {

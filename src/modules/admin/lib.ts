@@ -16,8 +16,8 @@ export function date(value: string | null | undefined, locale: string) {
 
 /** One colour language for every status pill in the panel. */
 export function toneFor(status: string): StatusTone {
-  if (["pending", "open", "new", "draft", "under_review", "paused"].includes(status)) return "warning";
-  if (["approved", "paid", "active", "handled", "actioned", "completed", "resolved", "in_progress", "drawn"].includes(status)) return "success";
-  if (["rejected", "suspended", "cancelled", "closed"].includes(status)) return "danger";
+  if (["pending", "open", "new", "draft", "under_review", "paused", "needs_update", "awaiting_funding", "funded", "submitted", "invited", "past_due", "high"].includes(status)) return "warning";
+  if (["approved", "paid", "active", "handled", "actioned", "completed", "resolved", "in_progress", "drawn", "succeeded", "answered", "released", "accepted", "upheld", "overturned", "sent"].includes(status)) return "success";
+  if (["rejected", "suspended", "cancelled", "closed", "failed", "disputed", "refunded", "declined", "disbanded", "expired", "error"].includes(status)) return "danger";
   return "muted";
 }

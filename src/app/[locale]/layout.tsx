@@ -7,6 +7,8 @@ import { preload } from "react-dom";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Footer } from "@/components/footer/Footer";
 import { getHeaderData } from "@/components/header/data";
+import { MaintenanceGate } from "@/components/MaintenanceGate";
+import { getSiteSettings, getSummary } from "@/lib/api/reference";
 import { Header } from "@/components/header/Header";
 import { FavoritesProvider } from "@/components/providers/FavoritesProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
@@ -72,11 +74,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   // The loading animation is fetched with the page, so it shows at once the first time it is needed.
   preload("/images/loader.gif", { as: "image" });
   const signedIn = (await cookies()).has(SESSION_COOKIE);
-  const [headerData, authMethods, seoDescription] = await Promise.all([
+  const [headerData, authMethods, seoDescription, site] = await Promise.all([
     getHeaderData(signedIn),
     getAuthMethods(),
     getTranslations({ locale, namespace: "Seo" }).then((t) => t("home")),
+    getSiteSettings(),
   ]);
+  // Only checked while maintenance is on, to let the staff through.
+  const isStaff = Boolean(site?.maintenance.enabled && signedIn && (await getSummary())?.user.isAdmin);
 
   return (
     <html
@@ -92,8 +97,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             <AuthGateProvider signedIn={signedIn} methods={authMethods}>
               <FavoritesProvider signedIn={signedIn}>
                 <Header signedIn={signedIn} data={headerData} />
-                <main className="flex-1">{children}</main>
-                <Footer />
+                <main className="flex-1">
+                  <MaintenanceGate maintenance={site?.maintenance ?? null} isStaff={isStaff}>
+                    {children}
+                  </MaintenanceGate>
+                </main>
+                <Footer site={site} />
               </FavoritesProvider>
               <WelcomeToast />
             </AuthGateProvider>

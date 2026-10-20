@@ -13,6 +13,7 @@ import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Dispute } from "@/lib/api/types";
 import { DISPUTE_TONE } from "../lib";
+import { AppealSection } from "./AppealSection";
 import { Timeline } from "./Timeline";
 
 const STEPS = ["open", "under_review", "resolved"] as const;
@@ -139,6 +140,8 @@ export function DisputeCase({ dispute: initial, viewerId }: { dispute: Dispute; 
             {dispute.resolutionNote && <p className="mt-1">{dispute.resolutionNote}</p>}
           </div>
         )}
+
+        <AppealSection dispute={dispute} onDone={reload} />
 
         {(dispute.permissions.canWithdraw || dispute.permissions.canConcede) && (
           <div className="flex flex-wrap gap-3 border-t border-border pt-4">

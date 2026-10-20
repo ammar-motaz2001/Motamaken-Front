@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cache } from "react";
 import type { ApiError } from "@/lib/api/errors";
 import { getSummary } from "@/lib/api/reference";
@@ -37,8 +37,13 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
   const reviews = project.status === "completed" ? await apiGetOrNull<{ data: Review[]; canReview: boolean }>(`/projects/${id}/reviews`) : null;
   const escrow = viewerId && hired ? ((await apiGetOrNull<{ data: Escrow }>(`/projects/${id}/escrow`))?.data ?? null) : null;
 
+  const t = await getTranslations("Projects.mine");
+  const isOwner = viewerId === project.owner.id;
+
   return (
-    <div className="page-container py-10">
+    <div className="page-container flex flex-col gap-4 py-10">
+      {isOwner && project.isHidden && <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-danger">{t("hidden", { reason: project.hiddenReason ?? "" })}</p>}
+      {isOwner && project.status === "draft" && <p className="rounded-lg bg-orange/10 px-4 py-3 text-sm text-orange">{t("draftNote")}</p>}
       <ProjectView project={project} viewerId={viewerId} proposals={proposals} escrow={escrow} reviews={reviews} />
     </div>
   );

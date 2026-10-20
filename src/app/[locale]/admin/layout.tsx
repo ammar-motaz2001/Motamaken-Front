@@ -14,13 +14,14 @@ export default async function AdminLayout({ children }: LayoutProps<"/[locale]/a
   // Not an admin: behave as if the panel did not exist.
   if (!summary?.user.isAdmin) notFound();
 
-  const [t, overview] = await Promise.all([getTranslations("Admin"), apiGetOrNull<Overview>("/admin/overview")]);
+  const permissions = summary.user.adminPermissions ?? [];
+  const [t, overview] = await Promise.all([getTranslations("Admin"), permissions.includes("overview") ? apiGetOrNull<Overview>("/admin/overview") : null]);
 
   return (
     <div className="page-container flex flex-col gap-6 py-10">
       <h1 className="text-2xl font-bold text-orange uppercase">{t("title")}</h1>
       <div className="grid items-start gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-        <AdminNav queues={overview?.queues ?? null} />
+        <AdminNav queues={overview?.queues ?? null} permissions={permissions} />
         <div className="flex min-w-0 flex-col gap-5">{children}</div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { ReportButton } from "@/modules/reports/components/ReportButton";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -116,6 +117,7 @@ export function OwnerPanel({ project, proposals }: { project: Project; proposals
             <div className="flex flex-wrap items-center gap-2">
               <StatusPill tone={PROPOSAL_STATUS_TONE[proposal.status]}>{to(`status.${proposal.status}`)}</StatusPill>
               <span className="text-xs text-muted">{timeAgo(proposal.createdAt, locale)}</span>
+              <ReportButton targetType="proposal" targetId={proposal.id} />
               <span className="ms-auto flex flex-wrap gap-2">
                 {proposal.freelancer && <MessageUserButton userId={proposal.freelancer.id} projectId={project.id} />}
                 {proposal.status === "pending" && project.status === "open" && (

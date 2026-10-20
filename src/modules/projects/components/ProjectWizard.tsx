@@ -74,7 +74,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const submit = async () => {
+  const submit = async (asDraft = false) => {
     // The deciding moment: a guest confirms an email or phone here and publishing simply carries on.
     if (!(await requireAuth(t(`publish.signUpReason.${kind}`)))) return;
     setSaving(true);
@@ -83,7 +83,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
     try {
       const { data } = project
         ? await api<{ data: Project }>(`/projects/${project.id}`, { method: "PATCH", body: payload })
-        : await api<{ data: Project }>("/projects", { method: "POST", body: { ...payload, type } });
+        : await api<{ data: Project }>("/projects", { method: "POST", body: { ...payload, type, draft: asDraft } });
       if (project) {
         router.push(`/projects/${data.id}`);
         router.refresh();
@@ -117,8 +117,8 @@ export function ProjectWizard({ type, categories, currencies, countries, project
     return (
       <section className={`${panelClasses} flex flex-col items-center gap-4 py-16 text-center`}>
         <StatusIcon type="success" size={96} />
-        <h1 className="text-2xl font-bold text-brand">{t(`publish.publishedTitle.${kind}`)}</h1>
-        <p className="text-muted">{t("publish.publishedText")}</p>
+        <h1 className="text-2xl font-bold text-brand">{published.status === "draft" ? t("publish.draftTitle") : t(`publish.publishedTitle.${kind}`)}</h1>
+        <p className="text-muted">{published.status === "draft" ? t("publish.draftText") : t("publish.publishedText")}</p>
         <div className="flex flex-wrap justify-center gap-3">
           <Button href={`/projects/${published.id}`} variant="solid" pill>
             {t("publish.viewProject")}
@@ -298,9 +298,16 @@ export function ProjectWizard({ type, categories, currencies, countries, project
             {t("actions.back")}
           </Button>
         )}
-        <Button variant="solid" pill onClick={next} loading={saving}>
-          {nextLabel}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          {step === "publish" && !editing && (
+            <Button variant="outline" pill onClick={() => submit(true)} disabled={saving}>
+              {t("actions.saveDraft")}
+            </Button>
+          )}
+          <Button variant="solid" pill onClick={next} loading={saving}>
+            {nextLabel}
+          </Button>
+        </div>
       </div>
     </section>
   );

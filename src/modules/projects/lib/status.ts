@@ -2,6 +2,7 @@ import type { StatusTone } from "@/components/ui/StatusPill";
 import type { ProjectStatus, ProposalStatus } from "@/lib/api/types";
 
 export const PROJECT_STATUS_TONE: Record<ProjectStatus, StatusTone> = {
+  draft: "muted",
   open: "success",
   in_progress: "warning",
   completed: "muted",

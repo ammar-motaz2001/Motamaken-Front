@@ -4,11 +4,12 @@ import { Pagination } from "@/components/ui/Pagination";
 import { Link } from "@/i18n/navigation";
 import { apiGet } from "@/lib/api/server";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
-import { AdminHeader, AdminSearch, AdminSection, AdminTable, Cell, dateTime, money, type LedgerTransaction, type List, type TrialBalance } from "@/modules/admin";
+import { getCurrencies } from "@/lib/api/reference";
+import { AdminHeader, AdminSearch, AdminSection, AdminTable, Cell, ExportLink, dateTime, money, type LedgerTransaction, type List, type TrialBalance } from "@/modules/admin";
 
 const TYPES = [
-  "deposit", "withdrawal_request", "withdrawal_paid", "withdrawal_rejected", "withdrawal_cancelled", "escrow_fund", "escrow_release",
-  "dispute_settlement", "tip", "promotion", "subscription", "campaign_funding", "campaign_earning", "campaign_refund", "draw_prize", "adjustment",
+  "deposit", "withdrawal_request", "withdrawal_paid", "withdrawal_rejected", "withdrawal_cancelled", "escrow_fund", "escrow_release", "escrow_refund",
+  "dispute_settlement", "appeal_adjustment", "tip", "promotion", "subscription", "campaign_funding", "campaign_earning", "campaign_refund", "draw_prize", "adjustment",
 ];
 
 const label = (value: string) => value.replaceAll("_", " ");
@@ -16,10 +17,11 @@ const label = (value: string) => value.replaceAll("_", " ");
 export default async function AdminLedger({ params, searchParams }: PageProps<"/[locale]/admin/ledger">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;
-  const filter = pickParams(query, ["type", "userId"]);
-  const [t, locale, balance, result] = await Promise.all([
+  const filter = pickParams(query, ["type", "userId", "projectId", "reference", "currency", "from", "to"]);
+  const [t, locale, currencies, balance, result] = await Promise.all([
     getTranslations("Admin.ledger"),
     getLocale(),
+    getCurrencies(),
     apiGet<{ data: TrialBalance }>("/admin/ledger/trial-balance"),
     apiGet<List<LedgerTransaction>>(`/admin/ledger/transactions${toQuery({ ...filter, page: pageParam(query) })}`),
   ]);
@@ -60,12 +62,20 @@ export default async function AdminLedger({ params, searchParams }: PageProps<"/
       </AdminSection>
       <AdminSection title={t("transactions")}>
         <div className="flex flex-wrap items-center gap-3">
-          <AdminSearch filters={[{ name: "type", label: t("allTypes"), options: TYPES.map((value) => ({ value, label: label(value) })) }]} />
-          {filter.userId && (
+          <AdminSearch
+            texts={[{ name: "reference", label: t("reference") }, { name: "projectId", label: t("projectId") }]}
+            filters={[
+              { name: "type", label: t("allTypes"), options: TYPES.map((value) => ({ value, label: label(value) })) },
+              { name: "currency", label: t("anyCurrency"), options: currencies.map((c) => ({ value: c.code, label: c.code })) },
+            ]}
+            dates
+          />
+          {(filter.userId || filter.projectId) && (
             <Link href="/admin/ledger" className="text-sm text-link hover:underline">
-              {t("clearUser", { id: filter.userId })}
+              {filter.userId ? t("clearUser", { id: filter.userId }) : t("clearProject", { id: filter.projectId ?? "" })}
             </Link>
           )}
+          <ExportLink dataset="ledger" query={filter} />
         </div>
         <AdminTable head={[t("id"), t("type"), t("entries"), t("date")]} empty={result.data.length ? false : t("empty")}>
           {result.data.map((tx) => (
@@ -74,6 +84,7 @@ export default async function AdminLedger({ params, searchParams }: PageProps<"/
               <Cell>
                 <div className="font-medium capitalize">{label(tx.type)}</div>
                 {tx.description && <div className="max-w-56 text-xs text-muted">{tx.description}</div>}
+                {tx.createdBy && <div className="text-xs text-orange">{t("by", { name: tx.createdBy.fullName })}</div>}
               </Cell>
               <Cell>
                 <ul className="flex flex-col gap-0.5 text-xs">

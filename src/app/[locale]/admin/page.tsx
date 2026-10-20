@@ -1,4 +1,4 @@
-import { CircleDollarSign, FileWarning, FolderKanban, Handshake, IdCard, Inbox, Scale, UserPlus, Users, WalletCards } from "lucide-react";
+import { CircleDollarSign, Coins, FileWarning, FolderKanban, Gavel, HandCoins, Handshake, IdCard, Inbox, LifeBuoy, Medal, Megaphone, Repeat, Scale, UserPlus, Users, WalletCards } from "lucide-react";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { UserAvatar } from "@/components/ui/UserAvatar";
@@ -8,6 +8,8 @@ import { pickParams } from "@/lib/params";
 import {
   AdminSection,
   AdminTable,
+  BarList,
+  ExportLink,
   Cell,
   GrowthChart,
   KpiCard,
@@ -53,6 +55,9 @@ export default async function AdminOverview({ params, searchParams }: PageProps<
     { key: "openDisputes", href: "/admin/disputes", Icon: Scale },
     { key: "openReports", href: "/admin/reports", Icon: FileWarning },
     { key: "newContactMessages", href: "/admin/contact", Icon: Inbox },
+    { key: "pendingAppeals", href: "/admin/appeals", Icon: Gavel },
+    { key: "openTickets", href: "/admin/support", Icon: LifeBuoy },
+    { key: "pendingDeposits", href: "/admin/deposits?status=pending", Icon: HandCoins },
   ] as const;
   const waiting = queues.reduce((sum, queue) => sum + data.queues[queue.key], 0);
 
@@ -63,6 +68,8 @@ export default async function AdminOverview({ params, searchParams }: PageProps<
           <h2 className="text-xl font-bold">{t("title")}</h2>
           <p className="text-sm text-muted">{waiting ? td("waiting", { count: waiting }) : td("allClear")}</p>
         </div>
+        <div className="flex flex-wrap items-center gap-2">
+        <ExportLink dataset="overview" query={{ days }} />
         <nav aria-label={td("range")} className="flex rounded-xl border border-border bg-surface p-1">
           {RANGES.map((range) => (
             <Link
@@ -75,6 +82,7 @@ export default async function AdminOverview({ params, searchParams }: PageProps<
             </Link>
           ))}
         </nav>
+        </div>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -127,7 +135,7 @@ export default async function AdminOverview({ params, searchParams }: PageProps<
       </div>
 
       <AdminSection title={td("waitingTitle")}>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {queues.map(({ key, href, Icon }) => {
             const count = data.queues[key];
             return (
@@ -148,6 +156,47 @@ export default async function AdminOverview({ params, searchParams }: PageProps<
           })}
         </div>
       </AdminSection>
+
+      <div className="grid gap-5 lg:grid-cols-3">
+        <AdminSection title={td("usersByType")}>
+          <BarList
+            format={number}
+            rows={(["client", "freelancer", "influencer"] as const).map((type, index) => ({
+              label: td(`types.${type}`),
+              value: data.usersByType[type] ?? 0,
+              tone: ["bg-brand", "bg-link", "bg-orange"][index],
+            }))}
+          />
+        </AdminSection>
+        <AdminSection title={td("offersByStatus")}>
+          <BarList format={number} rows={Object.entries(data.proposals).map(([status, value]) => ({ label: td(`offerStatus.${status}`), value }))} />
+        </AdminSection>
+        <AdminSection title={td("influencerRequests")}>
+          <BarList format={number} rows={Object.entries(data.influencerRequests).map(([status, value]) => ({ label: t(`status.${status}`), value, tone: "bg-orange" }))} />
+        </AdminSection>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+        {(
+          [
+            { key: "activeSubscriptions", Icon: Repeat, href: "/admin/subscriptions" },
+            { key: "activePromotions", Icon: Megaphone, href: "/admin/promotions?state=active" },
+            { key: "pointsIssued", Icon: Coins, href: "/admin/points" },
+            { key: "pointsSpent", Icon: Coins, href: "/admin/points" },
+            { key: "medalsAwarded", Icon: Medal, href: "/admin/medals" },
+          ] as const
+        ).map(({ key, Icon, href }) => (
+          <Link key={key} href={href} className="flex items-center gap-3 rounded-xl border border-border bg-surface p-3 hover:border-brand">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+              <Icon className="size-4.5" aria-hidden />
+            </span>
+            <span className="flex min-w-0 flex-col">
+              <span className="text-xl leading-tight font-bold">{number(data.engagement[key])}</span>
+              <span className="truncate text-xs text-muted">{td(`engagement.${key}`, { days: data.days })}</span>
+            </span>
+          </Link>
+        ))}
+      </div>
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
         <AdminSection title={td("money")}>

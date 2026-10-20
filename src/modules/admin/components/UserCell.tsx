@@ -1,7 +1,7 @@
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Link } from "@/i18n/navigation";
 
-type Person = { id: number; fullName: string | null; avatarUrl?: string | null; username?: string; email?: string | null };
+type Person = { id: number; fullName: string | null; avatarUrl?: string | null; username?: string | null; email?: string | null };
 
 /** Avatar + name linking to the admin user page, with a second line (username or email). */
 export function UserCell({ user }: { user: Person | null | undefined }) {

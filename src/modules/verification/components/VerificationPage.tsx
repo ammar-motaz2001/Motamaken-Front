@@ -20,7 +20,7 @@ export function VerificationPage({ user, kyc: initial, hasPaymentMethod }: Verif
   const format = useFormatter();
   const [kyc, setKyc] = useState(initial);
 
-  const identityTone: StatusTone = { none: "muted", pending: "warning", approved: "success", rejected: "danger" }[kyc.status] as StatusTone;
+  const identityTone: StatusTone = { none: "muted", pending: "warning", approved: "success", rejected: "danger", needs_update: "warning" }[kyc.status] as StatusTone;
   const checks: Check[] = [
     { key: "email", done: Boolean(user.emailVerifiedAt), tone: user.emailVerifiedAt ? "success" : "muted", label: user.emailVerifiedAt ? t("verified") : t("notVerified") },
     { key: "phone", done: Boolean(user.phoneVerifiedAt), tone: user.phoneVerifiedAt ? "success" : "muted", label: user.phoneVerifiedAt ? t("verified") : t("notVerified") },
@@ -80,7 +80,13 @@ export function VerificationPage({ user, kyc: initial, hasPaymentMethod }: Verif
             <p>{kyc.submission.rejectionReason}</p>
           </div>
         )}
-        {(kyc.status === "none" || kyc.status === "rejected") && (
+        {kyc.status === "needs_update" && kyc.submission?.rejectionReason && (
+          <div role="alert" className="rounded-lg border border-orange/40 bg-orange/10 p-4 text-sm">
+            <p className="font-bold text-orange">{t("identity.needsUpdate")}</p>
+            <p>{kyc.submission.rejectionReason}</p>
+          </div>
+        )}
+        {(kyc.status === "none" || kyc.status === "rejected" || kyc.status === "needs_update") && (
           <KycForm defaultName={user.fullName} onSubmitted={(submission) => setKyc({ status: "pending", submission })} />
         )}
       </SettingsPanel>

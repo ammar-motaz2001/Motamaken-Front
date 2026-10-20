@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { FileText } from "lucide-react";
-import { useLocale } from "next-intl";
+import { Ban, FileText } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { Message } from "@/lib/api/types";
 import { formatTime } from "@/lib/format";
+import { ReportButton } from "@/modules/reports/components/ReportButton";
 import { VoiceMessage } from "./VoiceMessage";
 
 function formatSize(bytes: number) {
@@ -40,10 +41,21 @@ function Attachment({ message }: { message: Message }) {
   );
 }
 
+/** A message a moderator cleared after a report. */
+function Removed() {
+  const t = useTranslations("Messages");
+  return (
+    <p className="flex items-center gap-1.5 text-sm italic opacity-70">
+      <Ban className="size-4" aria-hidden /> {t("removed")}
+    </p>
+  );
+}
+
 export function MessageBubble({ message, showSender }: { message: Message; showSender: boolean }) {
+  const t = useTranslations("Messages");
   const locale = useLocale();
   const time = formatTime(message.createdAt, locale);
-  const isVoice = message.type === "voice";
+  const isVoice = message.type === "voice" && !message.removed;
 
   if (message.isMine) {
     return (
@@ -53,8 +65,14 @@ export function MessageBubble({ message, showSender }: { message: Message; showS
             isVoice ? "bg-brand-soft" : "bg-brand text-white"
           }`}
         >
-          <Attachment message={message} />
-          {message.body && <p dir="auto">{message.body}</p>}
+          {message.removed ? (
+            <Removed />
+          ) : (
+            <>
+              <Attachment message={message} />
+              {message.body && <p dir="auto">{message.body}</p>}
+            </>
+          )}
         </div>
         <span className="flex items-center gap-1 text-sm text-bubble-meta">
           {message.status === "read" ? (
@@ -69,7 +87,7 @@ export function MessageBubble({ message, showSender }: { message: Message; showS
   }
 
   return (
-    <div className="flex items-start gap-2.5">
+    <div className="group flex items-start gap-2.5">
       {showSender && message.sender ? (
         <UserAvatar name={message.sender.fullName} src={message.sender.avatarUrl} size={40} />
       ) : (
@@ -82,10 +100,23 @@ export function MessageBubble({ message, showSender }: { message: Message; showS
             isVoice ? "" : "rounded-xl rounded-ss-none bg-brand-soft px-[15px] py-2.5"
           }`}
         >
-          <Attachment message={message} />
-          {message.body && <p dir="auto">{message.body}</p>}
+          {message.removed ? (
+            <Removed />
+          ) : (
+            <>
+              <Attachment message={message} />
+              {message.body && <p dir="auto">{message.body}</p>}
+            </>
+          )}
         </div>
-        <span className="self-end text-sm text-bubble-meta">{time}</span>
+        <span className="flex items-center justify-end gap-3 text-sm text-bubble-meta">
+          {!message.removed && (
+            <span className="opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+              <ReportButton targetType="message" targetId={message.id} label={t("report")} />
+            </span>
+          )}
+          {time}
+        </span>
       </div>
     </div>
   );

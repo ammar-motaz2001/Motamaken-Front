@@ -43,10 +43,12 @@ async function forward(request: NextRequest, { params }: { params: Promise<{ pat
   if (!response) return Response.json({ message: "Service unavailable" }, { status: 503 });
   if (response.status === 401 && token) store.delete(SESSION_COOKIE);
 
-  return new Response(response.body, {
-    status: response.status,
-    headers: { "content-type": response.headers.get("content-type") ?? "application/json" },
-  });
+  const out = new Headers({ "content-type": response.headers.get("content-type") ?? "application/json" });
+  // CSV exports from the admin panel download under their own name.
+  const disposition = response.headers.get("content-disposition");
+  if (disposition) out.set("content-disposition", disposition);
+
+  return new Response(response.body, { status: response.status, headers: out });
 }
 
 export { forward as DELETE, forward as GET, forward as PATCH, forward as POST, forward as PUT };

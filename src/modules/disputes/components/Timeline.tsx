@@ -25,12 +25,19 @@ export function Timeline({ entries, viewerId }: { entries: DisputeEntry[]; viewe
             <UserAvatar name={entry.author?.fullName ?? "?"} src={entry.author?.avatarUrl ?? null} size={36} />
             <div
               className={`flex max-w-[80%] flex-col gap-1 rounded-xl p-3 text-sm ${
-                entry.author?.isAdmin ? "border border-link/40 bg-link/10" : entry.author?.id === viewerId ? "bg-brand-soft" : "bg-surface-muted"
+                entry.kind === "appeal"
+                  ? "border border-orange/40 bg-orange/5"
+                  : entry.author?.isAdmin
+                    ? "border border-link/40 bg-link/10"
+                    : entry.author?.id === viewerId
+                      ? "bg-brand-soft"
+                      : "bg-surface-muted"
               }`}
             >
               <span className="text-xs font-bold">
                 {entry.author?.fullName}
                 {entry.author?.isAdmin && <span className="ms-1.5 text-link">{t("admin")}</span>}
+                {entry.kind === "appeal" && <span className="ms-1.5 text-orange">{t("appeal")}</span>}
               </span>
               {entry.body && <p className="text-start whitespace-pre-line">{entry.body}</p>}
               {entry.attachment &&

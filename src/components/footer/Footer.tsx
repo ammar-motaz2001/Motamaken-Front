@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { FaApple, FaGooglePlay, FaInstagram, FaSquareFacebook, FaTiktok, FaXTwitter } from "react-icons/fa6";
+import { FaApple, FaGooglePlay, FaInstagram, FaLinkedin, FaSnapchat, FaSquareFacebook, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import { Mail, Phone } from "lucide-react";
 import { AuthLink } from "@/components/AuthLink";
 import { Link } from "@/i18n/navigation";
+import type { PublicSiteSettings } from "@/lib/api/types";
 
 const CTAS = [
   { key: "freelancer", action: "postProject", href: "/projects/new" },
@@ -50,16 +52,21 @@ const COLUMNS = [
       { key: "projects", href: "/projects" },
       { key: "payments", href: "/settings/wallet" },
       { key: "support", href: "/support" },
+      { key: "faq", href: "/faq" },
     ],
   },
 ] as const;
 
+/** Networks the admins can link under Site settings, in display order. */
 const SOCIALS = [
-  { label: "X", href: "https://x.com", Icon: FaXTwitter },
-  { label: "Facebook", href: "https://facebook.com", Icon: FaSquareFacebook },
-  { label: "TikTok", href: "https://tiktok.com", Icon: FaTiktok },
-  { label: "Instagram", href: "https://instagram.com", Icon: FaInstagram },
-];
+  { key: "x", label: "X", Icon: FaXTwitter },
+  { key: "facebook", label: "Facebook", Icon: FaSquareFacebook },
+  { key: "instagram", label: "Instagram", Icon: FaInstagram },
+  { key: "tiktok", label: "TikTok", Icon: FaTiktok },
+  { key: "linkedin", label: "LinkedIn", Icon: FaLinkedin },
+  { key: "youtube", label: "YouTube", Icon: FaYoutube },
+  { key: "snapchat", label: "Snapchat", Icon: FaSnapchat },
+] as const;
 
 const LEGAL = [
   { key: "userAgreement", href: "/user-agreement" },
@@ -84,8 +91,9 @@ function StoreBadge({ href, icon, caption, store }: { href: string; icon: React.
   );
 }
 
-export function Footer() {
+export function Footer({ site }: { site: PublicSiteSettings | null }) {
   const t = useTranslations("Footer");
+  const socials = SOCIALS.filter(({ key }) => site?.social[key]);
 
   return (
     <footer className="mt-10">
@@ -130,12 +138,42 @@ export function Footer() {
             ))}
 
             <div className="col-span-2 flex flex-col items-center gap-5 md:col-span-4 lg:col-span-1">
-              <Image src="/images/logo.png" alt="Mutamakin" width={181} height={48} className="self-center" />
-              <ul className="flex gap-3">
-                {SOCIALS.map(({ label, href, Icon }) => (
-                  <li key={label}>
+              {site?.logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- uploaded from the admin panel
+                <img src={site.logoUrl} alt="Mutamakin" className="h-12 max-w-[181px] self-center object-contain" />
+              ) : (
+                <Image src="/images/logo.png" alt="Mutamakin" width={181} height={48} className="self-center" />
+              )}
+              {(site?.email || site?.phone || site?.whatsapp) && (
+                <ul className="flex flex-col items-center gap-1.5 text-sm">
+                  {site.email && (
+                    <li>
+                      <a href={`mailto:${site.email}`} className="flex items-center gap-1.5 hover:text-brand">
+                        <Mail className="size-4" aria-hidden /> {site.email}
+                      </a>
+                    </li>
+                  )}
+                  {site.phone && (
+                    <li>
+                      <a href={`tel:${site.phone}`} className="flex items-center gap-1.5 hover:text-brand" dir="ltr">
+                        <Phone className="size-4" aria-hidden /> {site.phone}
+                      </a>
+                    </li>
+                  )}
+                  {site.whatsapp && (
+                    <li>
+                      <a href={`https://wa.me/${site.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-brand" dir="ltr">
+                        <FaWhatsapp className="size-4" aria-hidden /> {site.whatsapp}
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              )}
+              <ul className="flex flex-wrap justify-center gap-3">
+                {socials.map(({ key, label, Icon }) => (
+                  <li key={key}>
                     <a
-                      href={href}
+                      href={site?.social[key]}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={label}
@@ -161,20 +199,12 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <StoreBadge
-              href="https://play.google.com"
-              icon={<FaGooglePlay className="size-6" />}
-              caption={t("getItOn")}
-              store="Google Play"
-            />
-            <StoreBadge
-              href="https://apps.apple.com"
-              icon={<FaApple className="size-7" />}
-              caption={t("downloadOn")}
-              store="App Store"
-            />
-          </div>
+          {(site?.apps.android || site?.apps.ios) && (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {site.apps.android && <StoreBadge href={site.apps.android} icon={<FaGooglePlay className="size-6" />} caption={t("getItOn")} store="Google Play" />}
+              {site.apps.ios && <StoreBadge href={site.apps.ios} icon={<FaApple className="size-7" />} caption={t("downloadOn")} store="App Store" />}
+            </div>
+          )}
 
           <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 text-sm md:flex-row md:items-center md:justify-between">
             <p>{t("rights", { year: new Date().getFullYear() })}</p>

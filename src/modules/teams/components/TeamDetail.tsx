@@ -1,5 +1,6 @@
 "use client";
 
+import { ReportButton } from "@/modules/reports/components/ReportButton";
 import { CircleAlert, CircleCheck } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
@@ -136,7 +137,12 @@ export function TeamDetail({ team }: { team: Team }) {
         crumbs={[{ label: t("home"), href: "/" }, { label: t("title"), href: "/teams" }, { label: team.name }]}
         title={team.name}
         subtitle={team.description ?? undefined}
-        actions={<StatusPill tone={TEAM_STATUS_TONE[team.status]}>{t(`status.${team.status}`)}</StatusPill>}
+        actions={
+          <span className="flex items-center gap-3">
+            {!isLead && <ReportButton targetType="team" targetId={team.id} />}
+            <StatusPill tone={TEAM_STATUS_TONE[team.status]}>{t(`status.${team.status}`)}</StatusPill>
+          </span>
+        }
       />
 
       {membership && !membership.isLead && membership.status === "invited" && (

@@ -16,7 +16,8 @@ import { EMPTY_CARD, toCardPayload, validateCard, type CardForm } from "@/module
 import { ProcessingScreen } from "./ProcessingScreen";
 
 // With Moyasar every card (Visa, Mastercard, mada) goes through the card form; the other methods need their own contracts.
-const METHODS = moyasarEnabled ? (["card"] as const) : (["card", "mada", "apple_pay", "bank_transfer"] as const);
+type Method = "card" | "mada" | "apple_pay" | "bank_transfer";
+const ALL_METHODS: Method[] = moyasarEnabled ? ["card"] : ["card", "mada", "apple_pay", "bank_transfer"];
 const SIMULATE = process.env.NEXT_PUBLIC_PAYMENTS_SIMULATE === "true";
 
 type Step = "amount" | "method" | "processing" | "success" | "error";
@@ -34,7 +35,22 @@ export function AddBalanceModal({ open, onClose, onDone, currencies, currency: i
   const [step, setStep] = useState<Step>("amount");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState(initialCurrency);
-  const [method, setMethod] = useState<(typeof METHODS)[number]>("card");
+  const [method, setMethod] = useState<Method>("card");
+  // The methods the admins offer (Site settings), in their order.
+  const [offered, setOffered] = useState<string[] | null>(null);
+  const METHODS = offered ? ALL_METHODS.filter((m) => offered.includes(m)).sort((a, b) => offered.indexOf(a) - offered.indexOf(b)) : ALL_METHODS;
+
+  useEffect(() => {
+    if (!open || offered) return;
+    api<{ data: { depositMethods: string[] } }>("/site-settings")
+      .then(({ data }) => {
+        const list = moyasarEnabled ? ["card"] : data.depositMethods;
+        setOffered(list);
+        const first = ALL_METHODS.find((m) => m === list[0]);
+        if (first) setMethod(first);
+      })
+      .catch(() => setOffered(null));
+  }, [open, offered]);
   const [saved, setSaved] = useState<PaymentMethod[]>([]);
   const [cardId, setCardId] = useState("new");
   const [card, setCard] = useState<CardForm>(EMPTY_CARD);

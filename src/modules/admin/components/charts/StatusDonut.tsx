@@ -6,6 +6,7 @@ import { ChartTooltip } from "./ChartTooltip";
 import { CHART_COLORS } from "./colors";
 
 const COLORS: Record<string, string> = {
+  draft: CHART_COLORS.grid,
   open: CHART_COLORS.brand,
   in_progress: CHART_COLORS.link,
   completed: CHART_COLORS.brandLight,

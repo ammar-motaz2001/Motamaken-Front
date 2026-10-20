@@ -140,7 +140,8 @@ export function NotificationsPage() {
               >
                 <UserAvatar name={item.user?.fullName ?? "Mutamakin"} src={item.user?.avatarUrl ?? null} size={40} />
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                  <span className="text-sm">{item.message}</span>
+                  <span className="text-sm">{item.title && <strong className="block">{item.title}</strong>}
+{item.message}</span>
                   <span className="text-xs text-muted">{format.dateTime(new Date(item.createdAt), { dateStyle: "medium", timeStyle: "short" })}</span>
                 </span>
                 {!item.readAt && <span className="mt-1.5 size-2.5 shrink-0 rounded-full bg-brand" aria-label={t("unread")} />}

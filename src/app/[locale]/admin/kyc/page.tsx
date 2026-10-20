@@ -6,7 +6,7 @@ import { apiGet } from "@/lib/api/server";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { AdminHeader, AdminSection, AdminTable, Cell, StatusTabs, dateTime, toneFor, type KycSubmission, type List } from "@/modules/admin";
 
-const STATUSES = ["pending", "approved", "rejected"] as const;
+const STATUSES = ["pending", "needs_update", "approved", "rejected"] as const;
 
 export default async function AdminKyc({ params, searchParams }: PageProps<"/[locale]/admin/kyc">) {
   setRequestLocale((await params).locale);

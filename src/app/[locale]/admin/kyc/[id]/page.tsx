@@ -27,6 +27,7 @@ export default async function AdminKycSubmission({ params }: PageProps<"/[locale
           k.status === "pending" && (
             <>
               <ActionButton label={t("approve")} endpoint={`/admin/kyc/${k.id}/approve`} tone="brand" size="md" confirm={t("confirmApprove", { name: k.fullName })} />
+              <ActionButton label={t("requestUpdate")} endpoint={`/admin/kyc/${k.id}/request-update`} tone="orange" size="md" description={t("requestUpdateHint")} fields={[{ name: "reason", label: t("whatToFix"), type: "textarea", required: true, hint: t("reasonHint") }]} />
               <ActionButton label={t("reject")} endpoint={`/admin/kyc/${k.id}/reject`} tone="danger" size="md" fields={[{ name: "reason", label: t("reason"), type: "textarea", required: true, hint: t("reasonHint") }]} />
             </>
           )
@@ -77,6 +78,24 @@ export default async function AdminKycSubmission({ params }: PageProps<"/[locale
         </div>
         <p className="text-xs text-muted">{t("filesHint")}</p>
       </AdminSection>
+      {k.history && k.history.length > 0 && (
+        <AdminSection title={t("history")}>
+          <ol className="relative flex flex-col gap-4 border-s border-border ps-5">
+            {k.history.map((event) => (
+              <li key={event.id} className="relative">
+                <span className={`absolute -start-[1.65rem] top-1 size-3 rounded-full ring-4 ring-surface ${event.status === "approved" ? "bg-brand" : event.status === "submitted" ? "bg-link" : "bg-orange"}`} />
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                  <StatusPill tone={toneFor(event.status === "submitted" ? "pending" : event.status)}>{t(`events.${event.status}`)}</StatusPill>
+                  <span className="text-muted">{dateTime(event.createdAt, locale)}</span>
+                  {event.actor && <span className="text-muted">· {event.actor.fullName}</span>}
+                  {event.submissionId === k.id && <span className="text-xs text-link">{t("thisSubmission")}</span>}
+                </div>
+                {event.note && <p className="mt-1 text-sm">{event.note}</p>}
+              </li>
+            ))}
+          </ol>
+        </AdminSection>
+      )}
     </>
   );
 }
