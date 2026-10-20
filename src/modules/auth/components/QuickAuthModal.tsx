@@ -144,7 +144,7 @@ export function QuickAuthModal({ open, methods, reason, loginNext, onClose, onDo
             error={errors.name && tv(errors.name)}
             onChange={(event) => (setName(event.target.value), setErrors({}))}
           />
-          <Recaptcha resetKey={captchaReset} onChange={setCaptcha} />
+          <Recaptcha action="quick_start" resetKey={captchaReset} onChange={setCaptcha} />
           {formError && (
             <p role="alert" className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-danger">
               {formError}

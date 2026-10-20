@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -8,27 +8,28 @@ const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 /** Without a site key the captcha is off: nothing is shown and forms send no token (the API does the same without a secret). */
 export const recaptchaEnabled = Boolean(SITE_KEY);
 
+/** Tokens are valid for two minutes; a fresh one is fetched before that. */
+const REFRESH_MS = 100_000;
+
 type Grecaptcha = {
-  render: (element: HTMLElement, options: Record<string, unknown>) => number;
-  reset: (id?: number) => void;
+  ready: (callback: () => void) => void;
+  execute: (siteKey: string, options: { action: string }) => Promise<string>;
 };
 
 declare global {
   interface Window {
     grecaptcha?: Grecaptcha;
-    onRecaptchaReady?: () => void;
   }
 }
 
 let loader: Promise<Grecaptcha> | null = null;
 
-function loadScript(locale: string) {
+function loadScript() {
   loader ??= new Promise<Grecaptcha>((resolve, reject) => {
-    window.onRecaptchaReady = () => resolve(window.grecaptcha!);
     const script = document.createElement("script");
-    script.src = `https://www.google.com/recaptcha/api.js?onload=onRecaptchaReady&render=explicit&hl=${locale}`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`;
     script.async = true;
-    script.defer = true;
+    script.onload = () => window.grecaptcha!.ready(() => resolve(window.grecaptcha!));
     script.onerror = () => {
       loader = null;
       reject(new Error("reCAPTCHA failed to load"));
@@ -39,18 +40,21 @@ function loadScript(locale: string) {
 }
 
 type RecaptchaProps = {
-  /** Gets the token once ticked, and null when it expires. */
+  /** Gets a fresh token whenever one is ready, and null while none is. */
   onChange: (token: string | null) => void;
-  /** Change it to show a fresh, unticked box (tokens work only once, so after every failed submit). */
+  /** Change it after a failed submit: tokens work only once, so a new one is fetched. */
   resetKey?: number;
   error?: string;
+  /** What the form does, as reported to Google (letters and underscores). */
+  action?: string;
 };
 
-/** Google's "I'm not a robot" checkbox (reCAPTCHA v2), in the page's language and theme. */
-export function Recaptcha({ onChange, resetKey = 0, error }: RecaptchaProps) {
-  const locale = useLocale();
-  const box = useRef<HTMLDivElement>(null);
-  const widget = useRef<number | null>(null);
+/**
+ * reCAPTCHA v3: invisible. Google scores the visit in the background and the API refuses low scores, so people never
+ * solve a puzzle. Only Google's required notice is shown.
+ */
+export function Recaptcha({ onChange, resetKey = 0, error, action = "submit" }: RecaptchaProps) {
+  const t = useTranslations("Auth");
   const callback = useRef(onChange);
 
   useEffect(() => {
@@ -60,35 +64,38 @@ export function Recaptcha({ onChange, resetKey = 0, error }: RecaptchaProps) {
   useEffect(() => {
     if (!SITE_KEY) return;
     let cancelled = false;
-    loadScript(locale)
-      .then((grecaptcha) => {
-        if (cancelled || !box.current || widget.current !== null) return;
-        widget.current = grecaptcha.render(box.current, {
-          sitekey: SITE_KEY,
-          theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
-          callback: (token: string) => callback.current(token),
-          "expired-callback": () => callback.current(null),
-          "error-callback": () => callback.current(null),
-        });
-      })
-      .catch(() => callback.current(null));
+    const fetchToken = () =>
+      loadScript()
+        .then((grecaptcha) => grecaptcha.execute(SITE_KEY, { action }))
+        .then((token) => !cancelled && callback.current(token))
+        .catch(() => !cancelled && callback.current(null));
+
+    void fetchToken();
+    const timer = window.setInterval(fetchToken, REFRESH_MS);
     return () => {
       cancelled = true;
+      window.clearInterval(timer);
     };
-  }, [locale]);
-
-  useEffect(() => {
-    if (resetKey && widget.current !== null) {
-      window.grecaptcha?.reset(widget.current);
-      callback.current(null);
-    }
-  }, [resetKey]);
+  }, [resetKey, action]);
 
   if (!SITE_KEY) return null;
 
   return (
     <div className="flex flex-col gap-1">
-      <div ref={box} className="min-h-[78px]" />
+      <p className="text-[11px] leading-snug text-muted">
+        {t.rich("recaptchaNotice", {
+          privacy: (chunks) => (
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline">
+              {chunks}
+            </a>
+          ),
+          terms: (chunks) => (
+            <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline">
+              {chunks}
+            </a>
+          ),
+        })}
+      </p>
       {error && (
         <p role="alert" className="font-hint text-xs font-light tracking-[0.6px] text-danger">
           {error}

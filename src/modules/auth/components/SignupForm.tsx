@@ -217,6 +217,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
             {t("subscribe")}
           </Checkbox>
           <Recaptcha
+            action="signup"
             resetKey={captchaReset}
             error={captchaError}
             onChange={(token) => {

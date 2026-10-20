@@ -139,7 +139,8 @@
     "welcomeTitle": "Welcome to the Community!",
     "welcomeMessage": "Congratulations on registering! You've earned {points} points to get started. Explore the platform and discover ways to earn more.",
     "loadingPage": "Loading, please wait...",
-    "recaptchaRequired": "Please tick \"I'm not a robot\"."
+    "recaptchaRequired": "The security check is still loading. Please try again in a moment.",
+    "recaptchaNotice": "Protected by reCAPTCHA: Google <privacy>Privacy</privacy> and <terms>Terms</terms> apply."
   },
   "Signup": {
     "title": "Signup",
@@ -3854,7 +3855,7 @@
     "phone": "Phone number",
     "name": "Your name",
     "nameHint": "Optional. Shown on your profile; you can change it later.",
-    "captcha": "Please tick \"I'm not a robot\".",
+    "captcha": "The security check is still loading. Please try again in a moment.",
     "failed": "We couldn't send the code. Please try again.",
     "sendCode": "Send code",
     "terms": "Continuing creates your account if you don't have one yet, and you accept the terms and the privacy policy.",

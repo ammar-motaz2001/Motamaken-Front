@@ -65,7 +65,7 @@ export function ContactForm({ signedIn }: { signedIn: boolean }) {
         <Field label={t("subject")} required value={form.subject} error={errors.subject} onChange={(event) => set("subject", event.target.value)} />
       </div>
       <TextArea label={t("message")} required rows={6} value={form.message} error={errors.message} onChange={(event) => set("message", event.target.value)} />
-      {!signedIn && <Recaptcha resetKey={captchaReset} error={errors.recaptchaToken} onChange={setCaptcha} />}
+      {!signedIn && <Recaptcha action="contact" resetKey={captchaReset} error={errors.recaptchaToken} onChange={setCaptcha} />}
       {error && <p className="rounded-lg bg-danger-soft p-3 text-sm text-danger">{error}</p>}
       <Button type="submit" variant="solid" font="button" loading={state === "busy"} className="self-end">
         {t("send")}
