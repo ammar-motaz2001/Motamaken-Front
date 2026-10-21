@@ -154,7 +154,7 @@
   background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.35) 0 2px, transparent 2px 5px);
 }
 
-/* reCAPTCHA v3: the notice is shown next to each protected form instead of the floating badge (Google allows this). */
+/* reCAPTCHA v3: Google's floating badge stays visible on the protected forms, above page content. */
 .grecaptcha-badge {
-  visibility: hidden;
+  z-index: 60;
 }
