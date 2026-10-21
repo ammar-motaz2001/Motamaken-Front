@@ -39,3 +39,21 @@ export async function apiGetOrNull<T>(path: string): Promise<T | null> {
     return null;
   });
 }
+
+/**
+ * Public reference data (categories, countries, currencies, site settings) that is the same for every visitor: fetched
+ * without the session or visitor headers and kept in the Next.js data cache for a minute, so a page render does not
+ * hit the API for it each time. Null on API errors.
+ */
+export async function apiGetPublic<T>(path: string, revalidate = 60): Promise<T | null> {
+  if (!API_URL) return null;
+  try {
+    const response = await fetch(`${API_URL}${path}`, {
+      headers: { Accept: "application/json", "Accept-Language": await getLocale() },
+      next: { revalidate },
+    });
+    return response.ok ? ((await response.json()) as T) : null;
+  } catch {
+    return null;
+  }
+}
