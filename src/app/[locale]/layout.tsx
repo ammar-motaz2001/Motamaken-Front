@@ -77,6 +77,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   setRequestLocale(locale);
   // The loading animation is fetched with the page, so it shows at once the first time it is needed.
   preload("/images/loader.gif", { as: "image" });
+  // The header background is a CSS image (found late) and the largest paint on phones: fetch it first.
+  preload("/images/header-bg.png", { as: "image", fetchPriority: "high" });
   const signedIn = (await cookies()).has(SESSION_COOKIE);
   const [headerData, authMethods, seoDescription, site] = await Promise.all([
     getHeaderData(signedIn),
