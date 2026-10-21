@@ -95,6 +95,26 @@ export default async function AdminProjectPage({ params }: PageProps<"/[locale]/
         </AdminSection>
       )}
 
+      {p.agreementChanges.length > 0 && (
+        <AdminSection title={t("agreementChanges")}>
+          <ul className="flex flex-col gap-2">
+            {p.agreementChanges.map((c) => (
+              <li key={c.id} className="flex flex-col gap-1 rounded-lg border border-border p-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2">
+                  <StatusPill tone={c.status === "accepted" ? "success" : c.status === "pending" ? "warning" : c.status === "declined" ? "danger" : "muted"}>{t(`agreementStatus.${c.status}`)}</StatusPill>
+                  <span className="font-semibold">{t(`agreementType.${c.type}`)}</span>
+                  {c.amount !== null && <span className="text-muted">{t("agreementPrice", { amount: c.amount })}</span>}
+                  {c.deliveryDays !== null && <span className="text-muted">{t("agreementDays", { count: c.deliveryDays })}</span>}
+                  <span className="ms-auto text-xs text-muted">{c.requester.fullName} · {when(c.createdAt)}</span>
+                </div>
+                <p className="text-muted" dir="auto">{c.reason}</p>
+                {c.responseNote && <p className="text-xs text-muted" dir="auto">{c.responder?.fullName}: {c.responseNote}</p>}
+              </li>
+            ))}
+          </ul>
+        </AdminSection>
+      )}
+
       {p.matches.length > 0 && (
         <AdminSection title={t("matches")}>
           <p className="text-sm text-muted">{t("matchesHint")}</p>

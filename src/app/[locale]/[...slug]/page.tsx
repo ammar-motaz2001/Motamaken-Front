@@ -18,7 +18,15 @@ async function loadPage(slug: string[]) {
 export async function generateMetadata({ params }: PageProps<"/[locale]/[...slug]">) {
   const { locale, slug } = await params;
   const page = await loadPage(slug);
-  if (page) return pageMetadata({ title: `${page.title} | Mutamakin`, description: describe(page.body), path: `/${page.slug}`, locale });
+  if (page) {
+    return pageMetadata({
+      title: page.seo?.title || `${page.title} | Mutamakin`,
+      description: page.seo?.description || describe(page.body),
+      path: `/${page.slug}`,
+      locale,
+      noindex: page.seo?.noindex,
+    });
+  }
   const t = await getTranslations({ locale, namespace: "Metadata" });
   // Unknown addresses show the "under construction" screen; keep them out of search results.
   return { title: t("underConstruction"), robots: { index: false, follow: true } };

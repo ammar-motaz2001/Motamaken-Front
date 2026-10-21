@@ -1,3 +1,4 @@
+import { BadgeCheck } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -5,7 +6,7 @@ import type { ProfileCard as Profile } from "@/lib/api/types";
 import { FavoriteButton } from "./FavoriteButton";
 import { HireButton } from "./HireButton";
 
-/** Card of a freelancer or influencer: photo (or initial), name, role and stars, linking to the public profile. */
+/** Card of a freelancer or influencer: photo (or initial), name with a verified badge, role and stars, linking to the public profile. */
 export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn: boolean }) {
   const t = useTranslations("Home");
   const stars = Math.round(profile.rating);
@@ -21,7 +22,10 @@ export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn:
           </span>
         )}
         <div className="relative bg-nav/65 px-4 py-2 text-white backdrop-blur-[4.5px]">
-          <p className="truncate text-base font-bold tracking-[-0.176px]">{profile.fullName}</p>
+          <p className="flex items-center gap-1 text-base font-bold tracking-[-0.176px]">
+            <span className="truncate">{profile.fullName}</span>
+            {profile.verified && <BadgeCheck className="size-4 shrink-0 text-brand-light" aria-label={t("verified")} />}
+          </p>
           <div className="flex" role="img" aria-label={t("rating", { rating: profile.rating })}>
             {Array.from({ length: 5 }, (_, index) => (
               <Image

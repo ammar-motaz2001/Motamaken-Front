@@ -9,7 +9,8 @@ import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { Select } from "@/components/ui/Select";
 import { api } from "@/lib/api/client";
-import { CardError, cardDeposit, moyasarEnabled, open3dsWindow } from "@/lib/moyasar";
+import { CardError, cardDeposit, open3dsWindow } from "@/lib/moyasar";
+import { useMoyasarEnabled } from "@/components/providers/PaymentsProvider";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit, PaymentMethod, WalletBalance } from "@/lib/api/types";
 import { CardFields } from "@/modules/settings";
@@ -37,6 +38,7 @@ type PayModalProps = {
  * with 3-D Secure), then success, error and a short feedback step.
  */
 export function PayModal({ open, onClose, amount, currency, rows, pay, success, errorActions, feedbackContext }: PayModalProps) {
+  const moyasarEnabled = useMoyasarEnabled();
   const t = useTranslations("Payments");
   const locale = useLocale();
   const [step, setStep] = useState<Step>("summary");

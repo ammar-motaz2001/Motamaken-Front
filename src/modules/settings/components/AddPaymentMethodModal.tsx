@@ -10,7 +10,8 @@ import { ResultModal } from "@/components/ui/ResultModal";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { PaymentMethod } from "@/lib/api/types";
-import { CardError, moyasarEnabled, open3dsWindow, saveTokenizedCard } from "@/lib/moyasar";
+import { CardError, open3dsWindow, saveTokenizedCard } from "@/lib/moyasar";
+import { useMoyasarEnabled } from "@/components/providers/PaymentsProvider";
 import { EMPTY_CARD, toCardPayload, validateCard, type CardForm } from "../lib/card";
 import { CardFields } from "./CardFields";
 
@@ -21,6 +22,7 @@ type Step = "form" | "success" | "error";
  * passes 3-D Secure in a pop-up, and only its token reaches the API.
  */
 export function AddPaymentMethodModal({ open, onClose, onSaved }: { open: boolean; onClose: () => void; onSaved: (method: PaymentMethod) => void }) {
+  const moyasarEnabled = useMoyasarEnabled();
   const t = useTranslations("Settings.payment");
   const [type, setType] = useState<"card" | "paypal">("card");
   const [card, setCard] = useState<CardForm>(EMPTY_CARD);

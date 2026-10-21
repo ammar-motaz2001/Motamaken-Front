@@ -2,7 +2,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { apiGet } from "@/lib/api/server";
 import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, StatCard, UserCell, dateTime, money, type AffiliateOverview, type Person } from "@/modules/admin";
 
-type Suspicious = { user: Person; referrer: Person | null; reasons: string[]; sharedIps: string[]; createdAt: string; revoked: boolean };
+type Suspicious = { user: Person; referrer: Person | null; reasons: string[]; sharedIps: string[]; createdAt: string; held: boolean; revoked: boolean };
 
 /** Admin › Affiliate: referral totals, top referrers and suspicious referrals to revoke, from GET /admin/affiliate. */
 export default async function AdminAffiliate({ params }: PageProps<"/[locale]/admin/affiliate">) {
@@ -68,6 +68,7 @@ export default async function AdminAffiliate({ params }: PageProps<"/[locale]/ad
                 <UserCell user={row.referrer} />
               </Cell>
               <Cell className="text-xs">
+                {row.held && !row.revoked && <div className="mb-1 inline-block rounded-full bg-orange/10 px-2 py-0.5 font-semibold text-orange">{t("held")}</div>}
                 {row.reasons.map((reason) => (
                   <div key={reason} className="text-orange">
                     {t(`signalNames.${reason}`)}
@@ -80,13 +81,18 @@ export default async function AdminAffiliate({ params }: PageProps<"/[locale]/ad
                 {row.revoked ? (
                   <span className="text-xs text-muted">{t("revoked")}</span>
                 ) : (
-                  <ActionButton
-                    label={t("revoke")}
-                    tone="danger"
-                    endpoint={`/admin/affiliate/referrals/${row.user.id}/revoke`}
-                    description={t("revokeHint")}
-                    fields={[{ name: "reason", label: t("reason"), type: "text", required: true, defaultValue: t("selfReferral") }]}
-                  />
+                  <div className="flex flex-wrap gap-2">
+                    {row.held && (
+                      <ActionButton label={t("approve")} endpoint={`/admin/affiliate/referrals/${row.user.id}/approve`} confirm={t("approveConfirm")} />
+                    )}
+                    <ActionButton
+                      label={t("revoke")}
+                      tone="danger"
+                      endpoint={`/admin/affiliate/referrals/${row.user.id}/revoke`}
+                      description={t("revokeHint")}
+                      fields={[{ name: "reason", label: t("reason"), type: "text", required: true, defaultValue: t("selfReferral") }]}
+                    />
+                  </div>
                 )}
               </Cell>
             </tr>

@@ -22,6 +22,8 @@ type EscrowPanelProps = {
   viewerId: number;
   isClient: boolean;
   offer: { amount: number; currency: string } | null;
+  /** Influencer requests: deliveries must carry links to the published posts. */
+  proofRequired?: boolean;
 };
 
 const STATUS_TONE = { awaiting_funding: "warning", active: "success", completed: "muted" } as const;
@@ -30,7 +32,7 @@ const STATUS_TONE = { awaiting_funding: "warning", active: "success", completed:
  * Escrow box on a hired project: setup for the client, summary, team split approval, milestones and tip;
  * re-reads GET /projects/{id}/escrow after every change.
  */
-export function EscrowPanel({ projectId, escrow: initial, viewerId, isClient, offer }: EscrowPanelProps) {
+export function EscrowPanel({ projectId, escrow: initial, viewerId, isClient, offer, proofRequired }: EscrowPanelProps) {
   const t = useTranslations("Escrow");
   const router = useRouter();
   const [escrow, setEscrow] = useState(initial);
@@ -84,7 +86,7 @@ export function EscrowPanel({ projectId, escrow: initial, viewerId, isClient, of
           <EscrowSummary escrow={escrow} />
           {escrow.payees.length > 1 && <SplitApproval escrow={escrow} viewerId={viewerId} onChanged={reload} />}
           {!escrow.splitApproved && isClient && <p className="rounded-lg bg-orange/10 p-3 text-sm text-orange">{t("split.blocked")}</p>}
-          <MilestoneList escrow={escrow} role={role} onChanged={reload} />
+          <MilestoneList escrow={escrow} role={role} onChanged={reload} proofRequired={proofRequired} />
           {escrow.milestones.some((item) => item.status === "released") && (
             <TipBox escrow={escrow} canTip={isClient} onChanged={reload} />
           )}

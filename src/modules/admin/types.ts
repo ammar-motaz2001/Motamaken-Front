@@ -1,4 +1,4 @@
-import type { UserBrief } from "@/lib/api/types";
+import type { AgreementChange, UserBrief } from "@/lib/api/types";
 
 type Meta = { current_page: number; last_page: number; per_page: number; total: number };
 
@@ -202,6 +202,11 @@ export type AdminPage = {
   titleAr: string;
   bodyEn: string;
   bodyAr: string;
+  metaTitleEn: string | null;
+  metaTitleAr: string | null;
+  metaDescriptionEn: string | null;
+  metaDescriptionAr: string | null;
+  noindex: boolean;
   isPublished: boolean;
   sortOrder: number;
   updatedAt: string | null;
@@ -285,6 +290,7 @@ export type AdminProjectDetail = AdminProject & {
   proposals: { id: number; user: Person | null; team: { id: number; name: string } | null; amount: number; currency: string; deliveryDays: number; message: string; status: string; createdAt: string }[];
   escrow: AdminEscrow | null;
   disputes: { id: number; status: string; reason: string; resolution: string | null; openedBy: Person | null; against: Person | null; createdAt: string }[];
+  agreementChanges: AgreementChange[];
   reviews: { id: number; rating: number; comment: string | null; hidden: boolean; reviewer: Person | null; reviewee: Person | null; createdAt: string }[];
   reports: { id: number; reason: string; details: string | null; status: string; source: string; reporter: Person | null; createdAt: string }[];
   adminLog: AdminLogRow[];
@@ -405,6 +411,7 @@ export type SiteConfig = {
   apps: Record<string, string | null>;
   maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
   uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
+  seo: { descriptionEn: string | null; descriptionAr: string | null };
   security: { requireAdmin2fa: boolean };
   payments: { depositMethods: string[]; withdrawalMethods: string[] };
   choices: { attachmentTypes: string[]; depositMethods: string[]; withdrawalMethods: string[]; social: string[] };

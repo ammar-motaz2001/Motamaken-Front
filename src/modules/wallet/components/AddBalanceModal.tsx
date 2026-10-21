@@ -8,7 +8,8 @@ import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { Select } from "@/components/ui/Select";
 import { api } from "@/lib/api/client";
-import { CardError, cardDeposit, moyasarEnabled, open3dsWindow } from "@/lib/moyasar";
+import { CardError, cardDeposit, open3dsWindow } from "@/lib/moyasar";
+import { useMoyasarEnabled } from "@/components/providers/PaymentsProvider";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit, PaymentMethod } from "@/lib/api/types";
 import { CardFields } from "@/modules/settings";
@@ -17,7 +18,7 @@ import { ProcessingScreen } from "./ProcessingScreen";
 
 // With Moyasar every card (Visa, Mastercard, mada) goes through the card form; the other methods need their own contracts.
 type Method = "card" | "mada" | "apple_pay" | "bank_transfer";
-const ALL_METHODS: Method[] = moyasarEnabled ? ["card"] : ["card", "mada", "apple_pay", "bank_transfer"];
+const methodsFor = (moyasar: boolean): Method[] => (moyasar ? ["card"] : ["card", "mada", "apple_pay", "bank_transfer"]);
 const SIMULATE = process.env.NEXT_PUBLIC_PAYMENTS_SIMULATE === "true";
 
 type Step = "amount" | "method" | "processing" | "success" | "error";
@@ -33,6 +34,8 @@ type AddBalanceModalProps = {
 /** Top up the wallet: amount, currency and one of the methods the admins offer (GET /site-settings), then POST /wallet/deposits. */
 export function AddBalanceModal({ open, onClose, onDone, currencies, currency: initialCurrency }: AddBalanceModalProps) {
   const t = useTranslations("Wallet.add");
+  const moyasarEnabled = useMoyasarEnabled();
+  const ALL_METHODS = methodsFor(moyasarEnabled);
   const [step, setStep] = useState<Step>("amount");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState(initialCurrency);
@@ -47,11 +50,11 @@ export function AddBalanceModal({ open, onClose, onDone, currencies, currency: i
       .then(({ data }) => {
         const list = moyasarEnabled ? ["card"] : data.depositMethods;
         setOffered(list);
-        const first = ALL_METHODS.find((m) => m === list[0]);
+        const first = methodsFor(moyasarEnabled).find((m) => m === list[0]);
         if (first) setMethod(first);
       })
       .catch(() => setOffered(null));
-  }, [open, offered]);
+  }, [open, offered, moyasarEnabled]);
   const [saved, setSaved] = useState<PaymentMethod[]>([]);
   const [cardId, setCardId] = useState("new");
   const [card, setCard] = useState<CardForm>(EMPTY_CARD);

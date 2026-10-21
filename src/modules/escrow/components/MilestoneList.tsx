@@ -1,5 +1,6 @@
 "use client";
 
+import { ExternalLink, Plus, X } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -17,19 +18,28 @@ import { TextModal } from "./TextModal";
 
 export type EscrowRole = "client" | "lead" | "member";
 
-type MilestoneListProps = { escrow: Escrow; role: EscrowRole; onChanged: () => Promise<void> };
+type MilestoneListProps = {
+  escrow: Escrow;
+  role: EscrowRole;
+  onChanged: () => Promise<void>;
+  /** Influencer requests: a delivery must carry links to the published posts. */
+  proofRequired?: boolean;
+};
+
+const MAX_LINKS = 5;
 
 /**
  * Milestones with the actions the viewer's role allows: the client funds and approves or asks for changes,
  * the freelancer delivers, and both sides (not team members) can dispute.
  */
-export function MilestoneList({ escrow, role, onChanged }: MilestoneListProps) {
+export function MilestoneList({ escrow, role, onChanged, proofRequired = false }: MilestoneListProps) {
   const t = useTranslations("Escrow");
   const format = useFormatter();
   const money = useMoney(escrow.currency);
   const [funding, setFunding] = useState<Milestone[] | null>(null);
   const [approving, setApproving] = useState<Milestone | null>(null);
   const [delivering, setDelivering] = useState<Milestone | null>(null);
+  const [links, setLinks] = useState<string[]>([""]);
   const [changing, setChanging] = useState<Milestone | null>(null);
   const [disputing, setDisputing] = useState<Milestone | null>(null);
   const [busy, setBusy] = useState(false);
@@ -87,6 +97,18 @@ export function MilestoneList({ escrow, role, onChanged }: MilestoneListProps) {
                     {item.position}. {item.title}
                   </p>
                   {item.submissionNote && <p className="mt-1 text-xs text-muted">{t("milestones.delivered", { note: item.submissionNote })}</p>}
+                  {item.deliveryLinks.length > 0 && (
+                    <ul className="mt-1 flex flex-col gap-0.5">
+                      {item.deliveryLinks.map((link) => (
+                        <li key={link}>
+                          <a href={link} target="_blank" rel="noreferrer nofollow" dir="ltr" className="inline-flex max-w-[260px] items-center gap-1 truncate text-xs text-link hover:underline">
+                            <ExternalLink className="size-3 shrink-0" aria-hidden />
+                            <span className="truncate">{link.replace(/^https:\/\/(www\.)?/, "")}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {item.changesNote && item.status === "funded" && <p className="mt-1 text-xs text-orange">{t("milestones.changes", { note: item.changesNote })}</p>}
                 </td>
                 <td dir="ltr" className="px-3 py-3 text-start font-bold whitespace-nowrap">
@@ -193,13 +215,61 @@ export function MilestoneList({ escrow, role, onChanged }: MilestoneListProps) {
 
       <TextModal
         open={Boolean(delivering)}
-        onClose={() => setDelivering(null)}
+        onClose={() => {
+          setDelivering(null);
+          setLinks([""]);
+        }}
         title={t("milestones.deliverTitle", { milestone: delivering?.title ?? "" })}
         label={t("milestones.deliverNote")}
         submitLabel={t("milestones.deliver")}
         cancelLabel={t("cancel")}
-        onSubmit={(note) => action(`/milestones/${delivering?.id}/submit`, { note: note || null })}
-      />
+        onSubmit={(note) => {
+          const filled = links.map((link) => link.trim()).filter(Boolean);
+          if (proofRequired && filled.length === 0) return Promise.resolve(t("milestones.proofRequired"));
+          if (filled.some((link) => !/^https:\/\/\S+\.\S+/.test(link))) return Promise.resolve(t("milestones.linkInvalid"));
+          return action(`/milestones/${delivering?.id}/submit`, { note: note || null, links: filled }).then((failure) => {
+            if (!failure) setLinks([""]);
+            return failure;
+          });
+        }}
+      >
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium">
+            {t(proofRequired ? "milestones.proofLinks" : "milestones.deliveryLinks")}
+            {proofRequired && <span className="text-danger"> *</span>}
+          </p>
+          <p className="text-xs text-muted">{t(proofRequired ? "milestones.proofHint" : "milestones.linksHint")}</p>
+          {links.map((link, index) => (
+            <div key={index} className="flex gap-2">
+              <input
+                type="url"
+                dir="ltr"
+                inputMode="url"
+                placeholder="https://"
+                aria-label={t("milestones.linkLabel", { number: index + 1 })}
+                value={link}
+                onChange={(event) => setLinks((current) => current.map((value, position) => (position === index ? event.target.value : value)))}
+                className="h-10 min-w-0 flex-1 rounded-md border border-border bg-surface px-3 text-sm focus:border-brand focus:outline-none"
+              />
+              {links.length > 1 && (
+                <button
+                  type="button"
+                  aria-label={t("milestones.removeLink")}
+                  onClick={() => setLinks((current) => current.filter((_, position) => position !== index))}
+                  className="flex size-10 items-center justify-center rounded-md border border-border text-danger"
+                >
+                  <X className="size-4" />
+                </button>
+              )}
+            </div>
+          ))}
+          {links.length < MAX_LINKS && (
+            <button type="button" onClick={() => setLinks((current) => [...current, ""])} className="flex items-center gap-1 self-start text-sm font-medium text-brand">
+              <Plus className="size-4" /> {t("milestones.addLink")}
+            </button>
+          )}
+        </div>
+      </TextModal>
       <TextModal
         open={Boolean(changing)}
         onClose={() => setChanging(null)}

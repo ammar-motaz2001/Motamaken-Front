@@ -51,6 +51,24 @@ export default async function AdminIntegrations({ params, searchParams }: PagePr
                 ))}
               </dl>
               {t.has(`help.${service.service}`) && service.status !== "ok" && <p className="rounded-md bg-surface-muted px-2.5 py-2 text-xs text-muted">{t(`help.${service.service}`)}</p>}
+              {service.service === "payments" && Array.isArray(service.details.availableModes) && (
+                <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+                  {(service.details.availableModes as string[])
+                    .filter((mode) => mode !== service.details.mode)
+                    .map((mode) => (
+                      <ActionButton
+                        key={mode}
+                        label={t(`switchMode.${mode}`)}
+                        tone={mode === "live" ? "orange" : "outline"}
+                        method="PUT"
+                        endpoint="/admin/integrations/payments/mode"
+                        body={{ mode }}
+                        confirm={t(`switchModeConfirm.${mode}`)}
+                      />
+                    ))}
+                  {(service.details.availableModes as string[]).length < 2 && <p className="text-xs text-muted">{t("switchModeHint")}</p>}
+                </div>
+              )}
             </section>
           );
         })}

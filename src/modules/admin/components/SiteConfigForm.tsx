@@ -22,6 +22,7 @@ export function SiteConfigForm({ config }: { config: SiteConfig }) {
   const [apps, setApps] = useState({ android: config.apps.android ?? "", ios: config.apps.ios ?? "" });
   const [maintenance, setMaintenance] = useState({ ...config.maintenance, endsAt: config.maintenance.endsAt ?? "" });
   const [uploads, setUploads] = useState({ ...config.uploads });
+  const [seo, setSeo] = useState({ descriptionEn: config.seo?.descriptionEn ?? "", descriptionAr: config.seo?.descriptionAr ?? "" });
   const [security, setSecurity] = useState(config.security);
   const [deposits, setDeposits] = useState(config.payments.depositMethods);
   const [withdrawals, setWithdrawals] = useState(config.payments.withdrawalMethods);
@@ -38,6 +39,7 @@ export function SiteConfigForm({ config }: { config: SiteConfig }) {
       apps: { android: apps.android || null, ios: apps.ios || null },
       maintenance: { ...maintenance, endsAt: maintenance.endsAt || null },
       uploads: { ...uploads, avatarMb: Number(uploads.avatarMb), portfolioMb: Number(uploads.portfolioMb), documentMb: Number(uploads.documentMb), chatMb: Number(uploads.chatMb) },
+      seo: { descriptionEn: seo.descriptionEn.trim() || null, descriptionAr: seo.descriptionAr.trim() || null },
       security,
       payments: { depositMethods: deposits, withdrawalMethods: withdrawals },
     });
@@ -156,6 +158,19 @@ export function SiteConfigForm({ config }: { config: SiteConfig }) {
             {(id) => <textarea id={id} dir="rtl" rows={2} value={maintenance.messageAr} onChange={(e) => setMaintenance((m) => ({ ...m, messageAr: e.target.value }))} className={inputClasses} />}
           </LabeledInput>
           <DateField withTime label={t("endsAt")} hint={t("endsAtHint")} value={maintenance.endsAt ? maintenance.endsAt.slice(0, 16) : ""} onChange={(v) => setMaintenance((m) => ({ ...m, endsAt: v }))} />
+        </div>
+      </fieldset>
+
+      <fieldset className={section}>
+        <legend className="px-1 font-bold">{t("seo")}</legend>
+        <p className="text-xs text-muted">{t("seoHint")}</p>
+        <div className="grid gap-3 md:grid-cols-2">
+          <LabeledInput label={t("seoDescriptionEn")} hint={`${seo.descriptionEn.length}/170`} error={fields["seo.descriptionEn"]}>
+            {(id) => <textarea id={id} dir="ltr" rows={3} maxLength={170} value={seo.descriptionEn} onChange={(e) => setSeo((s) => ({ ...s, descriptionEn: e.target.value }))} className={inputClasses} />}
+          </LabeledInput>
+          <LabeledInput label={t("seoDescriptionAr")} hint={`${seo.descriptionAr.length}/170`} error={fields["seo.descriptionAr"]}>
+            {(id) => <textarea id={id} dir="rtl" rows={3} maxLength={170} value={seo.descriptionAr} onChange={(e) => setSeo((s) => ({ ...s, descriptionAr: e.target.value }))} className={inputClasses} />}
+          </LabeledInput>
         </div>
       </fieldset>
 

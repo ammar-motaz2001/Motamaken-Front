@@ -6,11 +6,12 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { panelClasses, sectionTitleClasses } from "@/components/ui/styles";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Link } from "@/i18n/navigation";
-import type { Escrow, Project, Proposal, Review } from "@/lib/api/types";
+import type { AgreementChange, Escrow, Project, Proposal, Review } from "@/lib/api/types";
 import { formatAmount, timeAgo } from "@/lib/format";
 import { EscrowPanel } from "@/modules/escrow";
 import { ProjectReviews } from "@/modules/reviews";
 import { PROJECT_STATUS_TONE } from "../lib/status";
+import { AgreementPanel } from "./AgreementPanel";
 import { MessageUserButton } from "./MessageUserButton";
 import { OfferPanel } from "./OfferPanel";
 import { OwnerPanel } from "./OwnerPanel";
@@ -21,13 +22,15 @@ type ProjectViewProps = {
   proposals: Proposal[] | null;
   escrow: Escrow | null;
   reviews?: { data: Review[]; canReview: boolean } | null;
+  /** Change / cancel requests; null unless the viewer is the client or the hired freelancer. */
+  agreementChanges?: AgreementChange[] | null;
 };
 
 /**
  * Full project page: details, budget, owner and tags, then the owner's panel or the offer form; hired parties
  * also see the escrow and, when completed, the reviews.
  */
-export function ProjectView({ project, viewerId, proposals, escrow, reviews }: ProjectViewProps) {
+export function ProjectView({ project, viewerId, proposals, escrow, reviews, agreementChanges }: ProjectViewProps) {
   const t = useTranslations("Projects");
   const locale = useLocale();
   const isOwner = viewerId === project.owner.id;
@@ -105,6 +108,16 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews }: P
           viewerId={viewerId}
           isClient={isOwner}
           offer={accepted ? { amount: accepted.amount, currency: accepted.currency } : null}
+          proofRequired={project.type === "influencer_request"}
+        />
+      )}
+
+      {agreementChanges && (
+        <AgreementPanel
+          projectId={project.id}
+          open={project.status === "in_progress"}
+          offer={accepted ? { amount: accepted.amount, currency: accepted.currency, deliveryDays: accepted.deliveryDays } : project.myProposal?.status === "accepted" ? { amount: project.myProposal.amount, currency: project.myProposal.currency, deliveryDays: project.myProposal.deliveryDays } : null}
+          changes={agreementChanges}
         />
       )}
 

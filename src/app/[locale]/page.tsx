@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getSummary } from "@/lib/api/reference";
+import { getSiteSettings, getSummary } from "@/lib/api/reference";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { Home as HomeData } from "@/lib/api/types";
 import { SESSION_COOKIE } from "@/lib/session";
@@ -10,8 +10,9 @@ import { HomePage } from "@/modules/home";
 /** Search-engine title and description of the home page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Seo" });
-  return pageMetadata({ title: t("homeTitle"), description: t("home"), path: "/", locale });
+  const [t, site] = await Promise.all([getTranslations({ locale, namespace: "Seo" }), getSiteSettings()]);
+  const description = (locale === "ar" ? site?.seo?.descriptionAr : site?.seo?.descriptionEn) || t("home");
+  return pageMetadata({ title: t("homeTitle"), description, path: "/", locale });
 }
 
 /** Home page, fed by GET /home; signed-in visitors also get their account summary for the greeting and currency. */

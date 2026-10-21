@@ -493,7 +493,8 @@
     "next": "Next",
     "loading": "Loading...",
     "loadFailed": "We could not load this section. Please try again later.",
-    "noProjects": "No projects in this category yet."
+    "noProjects": "No projects in this category yet.",
+    "verified": "Verified identity"
   },
   "Messages": {
     "title": "Messages",
@@ -1276,7 +1277,16 @@
       "deliverTitle": "Deliver \"{milestone}\"",
       "deliverNote": "What did you deliver? (optional)",
       "changesTitle": "Request changes on \"{milestone}\"",
-      "changesNote": "What needs to change?"
+      "changesNote": "What needs to change?",
+      "proofLinks": "Links to the published posts",
+      "deliveryLinks": "Links (optional)",
+      "proofHint": "Add the link to each post, story or video you published, so the client can check it.",
+      "linksHint": "A live site, a shared folder or a file link, if any.",
+      "linkLabel": "Link {number}",
+      "removeLink": "Remove link",
+      "addLink": "Add another link",
+      "proofRequired": "Add at least one link to the published post as proof.",
+      "linkInvalid": "Every link must start with https://"
     },
     "split": {
       "title": "Payout split",
@@ -2440,7 +2450,20 @@
       "matches": "Best matching profiles (AI)",
       "matchesHint": "Freelancers or influencers whose profiles are closest to this project in meaning.",
       "none": "Nothing yet.",
-      "adminLog": "Admin actions"
+      "adminLog": "Admin actions",
+      "agreementChanges": "Change & cancel requests",
+      "agreementStatus": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "withdrawn": "Withdrawn"
+      },
+      "agreementType": {
+        "change": "Change",
+        "cancel": "Cancellation"
+      },
+      "agreementPrice": "New price {amount}",
+      "agreementDays": "{count} days"
     },
     "withdrawals": {
       "title": "Withdrawals",
@@ -2717,20 +2740,25 @@
       "amount": "Amount",
       "date": "Joined",
       "suspicious": "Suspicious referrals",
-      "suspiciousHint": "Invited accounts that look like the inviter's own: same sign-up address, or signed in from an address the inviter uses.",
+      "suspiciousHint": "Invited accounts that look like the inviter's own: same sign-up address, signed in from an address the inviter uses, or over the daily limit. Their points and commissions are held until you approve or revoke them.",
       "invited": "Invited account",
       "invitedBy": "Invited by",
       "signals": "Signals",
       "noSuspicious": "Nothing suspicious.",
       "signalNames": {
         "same_signup_ip": "Same sign-up address",
-        "shared_login_ip": "Shared sign-in address"
+        "shared_login_ip": "Shared sign-in address",
+        "daily_cap": "Over the daily referral limit",
+        "held": "Held"
       },
       "revoked": "Revoked",
       "revoke": "Revoke",
       "revokeHint": "Takes back the inviter's points for this account and unlinks it, so no further commission is paid on it.",
       "reason": "Reason",
-      "selfReferral": "Self-referral"
+      "selfReferral": "Self-referral",
+      "held": "Held",
+      "approve": "Approve",
+      "approveConfirm": "Approve this referral? The inviter gets their points now and future commissions are paid."
     },
     "ledger": {
       "title": "Ledger",
@@ -2836,7 +2864,13 @@
       "body": "Text (Markdown)",
       "help": "Use # for headings, - for lists, **bold**, [links](/contact). Live values:",
       "delete": "Delete page",
-      "pageTitle": "Page title"
+      "pageTitle": "Page title",
+      "seoHeading": "Search engines (Google)",
+      "metaTitle": "Search title",
+      "metaTitleHint": "{count}/70 · empty uses the page title",
+      "metaDescription": "Search description",
+      "metaDescriptionHint": "{count}/170 · empty uses the start of the text",
+      "noindex": "Hide this page from search engines"
     },
     "draws": {
       "title": "Draws",
@@ -3741,7 +3775,11 @@
       "moveDown": "Move down",
       "staffPolicy": "Staff sign-in policy",
       "require2fa": "Staff must use two-factor sign-in to open the panel",
-      "require2faHint": "Staff without it are asked to turn it on in their account settings first."
+      "require2faHint": "Staff without it are asked to turn it on in their account settings first.",
+      "seo": "Search engines (SEO)",
+      "seoHint": "The description Google shows for the home page and any page without its own. Leave empty to keep the built-in text.",
+      "seoDescriptionEn": "Default description (English)",
+      "seoDescriptionAr": "Default description (Arabic)"
     },
     "blacklist": {
       "title": "Blacklist",
@@ -3811,7 +3849,9 @@
         "embeddingModel": "Embedding model",
         "reachable": "Reachable",
         "pgvector": "pgvector installed",
-        "embeddings": "Stored embeddings"
+        "embeddings": "Stored embeddings",
+        "availableModes": "Keys on the server for",
+        "publishableKey": "Publishable key set"
       },
       "help": {
         "payments": "Set PAYMENTS_DRIVER=moyasar and the Moyasar keys in the server's backend.env (see the keys guide).",
@@ -3840,7 +3880,16 @@
       },
       "service": "Service",
       "message": "Message",
-      "noErrors": "No errors logged."
+      "noErrors": "No errors logged.",
+      "switchMode": {
+        "live": "Switch to live (real payments)",
+        "test": "Switch to test mode"
+      },
+      "switchModeConfirm": {
+        "live": "Switch card payments to LIVE? Real cards will be charged from now on.",
+        "test": "Switch card payments to TEST? No real money will move; real customers cannot pay until you switch back."
+      },
+      "switchModeHint": "To switch between test and live, add the other mode's keys (MOYASAR_TEST_* or MOYASAR_LIVE_*) to backend.env on the server."
     }
   },
   "QuickAuth": {
@@ -3957,5 +4006,47 @@
     "stillNeedHelp": "Didn't find your answer?",
     "contactSupport": "Contact support",
     "contactForm": "Contact form"
+  },
+  "Agreement": {
+    "title": "Agreement",
+    "current": "Agreed: {amount} · {count, plural, one {# day} other {# days}}",
+    "intro": "Need to change the price or delivery time, or to stop the project? Ask the other side; nothing changes until they accept.",
+    "requestChange": "Request a change",
+    "requestCancel": "Request cancellation",
+    "changeHint": "Propose a new price and/or delivery time. The price can only change while nothing has been paid into escrow.",
+    "cancelHint": "If the other side accepts, money still held in escrow goes back to the client and the project closes. Released payments stay paid.",
+    "price": "New price ({currency})",
+    "days": "New delivery time (days)",
+    "reason": "Why?",
+    "reasonHint": "{count} characters (at least {min})",
+    "reasonTooShort": "Explain the request (at least {min} characters).",
+    "send": "Send request",
+    "close": "Close",
+    "types": {
+      "change": "Change",
+      "cancel": "Cancellation"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "withdrawn": "Withdrawn"
+    },
+    "newPrice": "Price {amount}",
+    "newDays": "{count, plural, one {# day} other {# days}}",
+    "cancelSummary": "End the agreement",
+    "youAsked": "You asked {time}. Waiting for the other side.",
+    "theyAsked": "{name} asked {time}.",
+    "cancelEffect": "Accepting refunds the money held in escrow to the client and closes the project.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "withdraw": "Withdraw request",
+    "acceptConfirm": {
+      "change": "Accept the new terms? The offer is updated at once.",
+      "cancel": "Cancel the agreement? Money in escrow goes back to the client and the project closes. This cannot be undone."
+    },
+    "history": "Earlier requests ({count})",
+    "note": "Reply: {note}",
+    "failed": "Something went wrong. Please try again."
   }
 }

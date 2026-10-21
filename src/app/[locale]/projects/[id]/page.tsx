@@ -4,7 +4,7 @@ import { cache } from "react";
 import type { ApiError } from "@/lib/api/errors";
 import { getSummary } from "@/lib/api/reference";
 import { apiGet, apiGetOrNull } from "@/lib/api/server";
-import type { Escrow, Paginated, Project, Proposal, Review } from "@/lib/api/types";
+import type { AgreementChange, Escrow, Paginated, Project, Proposal, Review } from "@/lib/api/types";
 import { describe, pageMetadata } from "@/lib/seo";
 import { ProjectView } from "@/modules/projects";
 
@@ -41,6 +41,8 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
   const hired = project.status === "in_progress" || project.status === "completed";
   const reviews = project.status === "completed" ? await apiGetOrNull<{ data: Review[]; canReview: boolean }>(`/projects/${id}/reviews`) : null;
   const escrow = viewerId && hired ? ((await apiGetOrNull<{ data: Escrow }>(`/projects/${id}/escrow`))?.data ?? null) : null;
+  // Change / cancel requests: only the two parties get them (others get a 403, read as none).
+  const agreementChanges = viewerId && hired ? ((await apiGetOrNull<{ data: AgreementChange[] }>(`/projects/${id}/agreement-changes`))?.data ?? null) : null;
 
   const t = await getTranslations("Projects.mine");
   const isOwner = viewerId === project.owner.id;
@@ -49,7 +51,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
     <div className="page-container flex flex-col gap-4 py-10">
       {isOwner && project.isHidden && <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-danger">{t("hidden", { reason: project.hiddenReason ?? "" })}</p>}
       {isOwner && project.status === "draft" && <p className="rounded-lg bg-orange/10 px-4 py-3 text-sm text-orange">{t("draftNote")}</p>}
-      <ProjectView project={project} viewerId={viewerId} proposals={proposals} escrow={escrow} reviews={reviews} />
+      <ProjectView project={project} viewerId={viewerId} proposals={proposals} escrow={escrow} reviews={reviews} agreementChanges={agreementChanges} />
     </div>
   );
 }

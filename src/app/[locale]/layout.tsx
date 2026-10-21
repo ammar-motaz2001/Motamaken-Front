@@ -11,6 +11,7 @@ import { MaintenanceGate } from "@/components/MaintenanceGate";
 import { getSiteSettings, getSummary } from "@/lib/api/reference";
 import { Header } from "@/components/header/Header";
 import { FavoritesProvider } from "@/components/providers/FavoritesProvider";
+import { PaymentsProvider } from "@/components/providers/PaymentsProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { routing } from "@/i18n/routing";
 import { SESSION_COOKIE } from "@/lib/session";
@@ -47,15 +48,17 @@ export function generateStaticParams() {
 /** Default title, description and social card for every page; public pages override them with their own. */
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const [t, site] = await Promise.all([getTranslations({ locale, namespace: "Metadata" }), getSiteSettings()]);
+  // The admins' default description (Site settings › SEO) wins over the built-in one.
+  const description = (locale === "ar" ? site?.seo?.descriptionAr : site?.seo?.descriptionEn) || t("description");
   // Defaults for every page; public pages add their own canonical link, language links and social card (lib/seo.ts).
   return {
     metadataBase: new URL(SITE_URL),
     title: t("title"),
-    description: t("description"),
+    description,
     applicationName: SITE_NAME,
     formatDetection: { telephone: false },
-    openGraph: { type: "website", siteName: SITE_NAME, title: t("title"), description: t("description"), images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE_NAME }] },
+    openGraph: { type: "website", siteName: SITE_NAME, title: t("title"), description, images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE_NAME }] },
     twitter: { card: "summary_large_image", images: ["/og.png"] },
   };
 }
@@ -90,6 +93,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const publicMessages = { ...(await getMessages()) };
   delete publicMessages.Admin;
   // Only checked while maintenance is on, to let the staff through.
+  // Newer APIs say which Moyasar key is in use (null: cards off); older ones leave it to the build-time key.
+  const moyasarKey = site?.payments ? site.payments.moyasarPublishableKey : (process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY ?? null);
   const isStaff = Boolean(site?.maintenance.enabled && signedIn && (await getSummary())?.user.isAdmin);
 
   return (
@@ -104,15 +109,17 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <NextIntlClientProvider messages={publicMessages}>
           <ThemeProvider>
             <AuthGateProvider signedIn={signedIn} methods={authMethods}>
-              <FavoritesProvider signedIn={signedIn}>
-                <Header signedIn={signedIn} data={headerData} />
-                <main className="flex-1">
-                  <MaintenanceGate maintenance={site?.maintenance ?? null} isStaff={isStaff}>
-                    {children}
-                  </MaintenanceGate>
-                </main>
-                <Footer site={site} />
-              </FavoritesProvider>
+              <PaymentsProvider moyasarKey={moyasarKey}>
+                <FavoritesProvider signedIn={signedIn}>
+                  <Header signedIn={signedIn} data={headerData} />
+                  <main className="flex-1">
+                    <MaintenanceGate maintenance={site?.maintenance ?? null} isStaff={isStaff}>
+                      {children}
+                    </MaintenanceGate>
+                  </main>
+                  <Footer site={site} />
+                </FavoritesProvider>
+              </PaymentsProvider>
               <WelcomeToast />
             </AuthGateProvider>
           </ThemeProvider>

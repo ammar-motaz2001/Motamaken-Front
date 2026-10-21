@@ -24,6 +24,9 @@ export function PageEditor({ page, placeholders }: { page: AdminPage | null; pla
   const [published, setPublished] = useState(page?.isPublished ?? true);
   const [title, setTitle] = useState({ En: page?.titleEn ?? "", Ar: page?.titleAr ?? "" });
   const [body, setBody] = useState({ En: page?.bodyEn ?? "", Ar: page?.bodyAr ?? "" });
+  const [metaTitle, setMetaTitle] = useState({ En: page?.metaTitleEn ?? "", Ar: page?.metaTitleAr ?? "" });
+  const [metaDescription, setMetaDescription] = useState({ En: page?.metaDescriptionEn ?? "", Ar: page?.metaDescriptionAr ?? "" });
+  const [noindex, setNoindex] = useState(page?.noindex ?? false);
   const [lang, setLang] = useState<Lang>("En");
   const [preview, setPreview] = useState(false);
 
@@ -35,6 +38,11 @@ export function PageEditor({ page, placeholders }: { page: AdminPage | null; pla
       titleAr: title.Ar,
       bodyEn: body.En,
       bodyAr: body.Ar,
+      metaTitleEn: metaTitle.En.trim() || null,
+      metaTitleAr: metaTitle.Ar.trim() || null,
+      metaDescriptionEn: metaDescription.En.trim() || null,
+      metaDescriptionAr: metaDescription.Ar.trim() || null,
+      noindex,
       isPublished: published,
       sortOrder: Number(sortOrder || 0),
     });
@@ -65,6 +73,10 @@ export function PageEditor({ page, placeholders }: { page: AdminPage | null; pla
         <label className="flex items-center gap-2 self-end pb-3 text-sm">
           <input type="checkbox" checked={published} onChange={(event) => setPublished(event.target.checked)} className="size-4 accent-brand" />
           {t("published")}
+        </label>
+        <label className="flex items-center gap-2 text-sm sm:col-span-2 lg:col-span-4">
+          <input type="checkbox" checked={noindex} onChange={(event) => setNoindex(event.target.checked)} className="size-4 accent-brand" />
+          {t("noindex")}
         </label>
       </div>
 
@@ -97,6 +109,23 @@ export function PageEditor({ page, placeholders }: { page: AdminPage | null; pla
           required
           error={fields[`title${lang}`]}
         />
+        <fieldset className="flex flex-col gap-3 rounded-lg border border-border p-4">
+          <legend className="px-1 text-sm font-semibold">{t("seoHeading")}</legend>
+          <TextInput
+            label={t("metaTitle")}
+            hint={t("metaTitleHint", { count: metaTitle[lang].length })}
+            value={metaTitle[lang]}
+            onChange={(value) => setMetaTitle((current) => ({ ...current, [lang]: value.slice(0, 70) }))}
+            error={fields[`metaTitle${lang}`]}
+          />
+          <TextInput
+            label={t("metaDescription")}
+            hint={t("metaDescriptionHint", { count: metaDescription[lang].length })}
+            value={metaDescription[lang]}
+            onChange={(value) => setMetaDescription((current) => ({ ...current, [lang]: value.slice(0, 170) }))}
+            error={fields[`metaDescription${lang}`]}
+          />
+        </fieldset>
         <div className={`grid gap-4 ${preview ? "lg:grid-cols-2" : ""}`}>
           <div className="flex flex-col gap-1.5">
             <label htmlFor="page-body" className="text-sm font-medium">

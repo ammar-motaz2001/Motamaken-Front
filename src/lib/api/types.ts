@@ -72,6 +72,8 @@ export type ProfileCard = {
   fullName: string;
   username: string;
   avatarUrl: string | null;
+  /** Identity checked by the platform (approved KYC). */
+  verified?: boolean;
   type: "freelancer" | "influencer";
   jobTitle: string | null;
   rating: number;
@@ -343,6 +345,8 @@ export type Milestone = {
   refunded: number;
   fee: number;
   submissionNote: string | null;
+  /** Links handed in with the delivery (influencer requests: the published posts). */
+  deliveryLinks: string[];
   changesNote: string | null;
   fundedAt: string | null;
   submittedAt: string | null;
@@ -429,6 +433,10 @@ export type PublicSiteSettings = {
   apps: Partial<Record<"android" | "ios", string>>;
   maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
   uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
+  /** Default search-engine description per language; null means the built-in text. */
+  seo?: { descriptionEn: string | null; descriptionAr: string | null };
+  /** Card payments: the Moyasar publishable key of the mode in use (null: cards off) and that mode. */
+  payments?: { moyasarPublishableKey: string | null; mode: "test" | "live" | null };
   depositMethods: string[];
   withdrawalMethods: string[];
 };
@@ -573,4 +581,26 @@ export type FavoriteIds = { projects: number[]; profiles: number[] };
 
 export type SitePageSummary = { slug: string; section: "about" | "help" | "legal"; title: string; updatedAt: string | null };
 
-export type SitePage = SitePageSummary & { body: string };
+export type SitePage = SitePageSummary & {
+  body: string;
+  /** Admin-written search title and description (null: the page title and the start of the text), and noindex. */
+  seo?: { title: string | null; description: string | null; noindex: boolean };
+};
+
+/** A request to change (price / delivery time) or cancel an accepted offer, answered by the other side. */
+export type AgreementChange = {
+  id: number;
+  projectId: number;
+  type: "change" | "cancel";
+  amount: number | null;
+  deliveryDays: number | null;
+  reason: string;
+  status: "pending" | "accepted" | "declined" | "withdrawn";
+  requester: { id: number; fullName: string };
+  responder: { id: number; fullName: string } | null;
+  responseNote: string | null;
+  /** The viewer made this request (and can withdraw it). */
+  mine: boolean;
+  respondedAt: string | null;
+  createdAt: string;
+};

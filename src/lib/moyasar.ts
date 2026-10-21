@@ -2,10 +2,13 @@ import { api } from "@/lib/api/client";
 import type { Deposit, PaymentMethod } from "@/lib/api/types";
 import { parseExpiry, type CardForm } from "@/modules/settings/lib/card";
 
-const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY;
+/** The publishable key of the Moyasar mode in use; set by PaymentsProvider from the site settings. */
+let publishableKey: string | null = process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY ?? null;
 
-/** Real card payments through Moyasar. Without the key the site keeps the development flow (fake gateway + simulate). */
-export const moyasarEnabled = Boolean(PUBLISHABLE_KEY);
+/** Called by PaymentsProvider with the key of the mode the admins chose (test or live). */
+export function setMoyasarKey(key: string | null) {
+  publishableKey = key;
+}
 
 export const RETURN_MESSAGE = "mutamakin:payment-return";
 
@@ -38,7 +41,7 @@ async function tokenizeCard(card: CardForm, saveOnly = true): Promise<{ id: stri
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({
-      publishable_api_key: PUBLISHABLE_KEY,
+      publishable_api_key: publishableKey,
       name: card.holderName.trim(),
       number: card.number.replace(/\D/g, ""),
       cvc: card.cvc,
