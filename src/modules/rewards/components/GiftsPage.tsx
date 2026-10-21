@@ -6,6 +6,7 @@ import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { Draw, DrawHistoryItem } from "@/lib/api/types";
 import { DrawPanel } from "./DrawPanel";
 
+/** Gifts page: the current draw (or a note that none is running), how it works step by step, and past draws. */
 export async function GiftsPage({ draw, history, signedIn }: { draw: Draw | null; history: DrawHistoryItem[]; signedIn: boolean }) {
   const t = await getTranslations("Rewards.draw");
   const format = await getFormatter();

@@ -15,6 +15,7 @@ type CurrencySwitcherProps = {
   signedIn: boolean;
 };
 
+/** Currency menu; saves the choice to the account and re-renders prices when signed in. */
 export function CurrencySwitcher({ currencies, initial = "USD", signedIn }: CurrencySwitcherProps) {
   const router = useRouter();
   const [currency, setCurrency] = useState(initial);

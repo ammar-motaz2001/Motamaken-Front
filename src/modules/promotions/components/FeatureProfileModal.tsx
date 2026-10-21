@@ -17,6 +17,7 @@ import type { Promotion, PromotionPackage } from "./types";
 
 type Step = "loading" | "noProfile" | "photo" | "crop" | "packages" | "pay";
 
+/** Feature-your-profile flow: check a profile exists, confirm or change the photo, pick a package, then pay. */
 export function FeatureProfileModal({ open, onClose, user, currency }: { open: boolean; onClose: () => void; user: User; currency: string }) {
   const t = useTranslations("Promotions");
   const router = useRouter();

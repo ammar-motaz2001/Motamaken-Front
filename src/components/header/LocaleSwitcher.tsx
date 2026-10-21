@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { savePreference } from "./preferences";
 
+/** Flag shown next to a language: Saudi for Arabic, British for English. */
 function Flag({ locale }: { locale: Locale }) {
   return locale === "ar" ? (
     <Image src="/images/flag-sa.svg" alt="" width={22} height={16} />
@@ -17,6 +18,7 @@ function Flag({ locale }: { locale: Locale }) {
   );
 }
 
+/** Language menu: reloads the same page in the chosen language and saves the choice to the account when signed in. */
 export function LocaleSwitcher({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header.languages");
   const locale = useLocale() as Locale;

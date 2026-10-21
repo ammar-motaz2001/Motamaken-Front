@@ -7,12 +7,14 @@ import { SESSION_COOKIE } from "@/lib/session";
 import { pageMetadata } from "@/lib/seo";
 import { ContactForm, SitePageView } from "@/modules/pages";
 
+/** Search-engine title and description of the contact page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/contact">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "SitePages.contact" }), getTranslations({ locale, namespace: "Seo" })]);
   return pageMetadata({ title: `${t("pageTitle")} | Mutamakin`, description: seo("contact"), path: "/contact", locale });
 }
 
+/** Contact us: the admin-written intro from GET /pages/contact (a default when missing), the contact form and support facts. */
 export default async function Contact({ params }: PageProps<"/[locale]/contact">) {
   setRequestLocale((await params).locale);
   const t = await getTranslations("SitePages.contact");

@@ -3,11 +3,13 @@ import { redirect } from "@/i18n/navigation";
 import { safeNextPath } from "@/lib/session";
 import { AuthCard, AuthShell, getAuthMethods, LoginVerification, parseMethod } from "@/modules/auth";
 
+/** Browser title of the sign-in code screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/login/verify">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
   return { title: t("loginVerify") };
 }
 
+/** Sign-in step 2: the one-time code sent to `?to=`, or the two-factor code when `?tf=` is set. */
 export default async function LoginVerifyPage({ params, searchParams }: PageProps<"/[locale]/login/verify">) {
   const { locale } = await params;
   setRequestLocale(locale);

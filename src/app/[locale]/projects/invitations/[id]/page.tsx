@@ -4,11 +4,13 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { TeamInvitation } from "@/lib/api/types";
 import { InvitationCard } from "@/modules/teams";
 
+/** Browser title of a team invitation. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/invitations/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Teams" });
   return { title: `${t("invitation.title")} | Mutamakin` };
 }
 
+/** One team invitation to accept or decline, looked up in GET /me/team-invitations; 404 when it is not the user's. */
 export default async function InvitationPage({ params }: PageProps<"/[locale]/projects/invitations/[id]">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

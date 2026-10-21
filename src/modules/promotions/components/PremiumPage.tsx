@@ -9,6 +9,7 @@ import type { Promotion } from "./types";
 
 type PremiumPageProps = { user: User | null; currency: string; promotions: (Promotion & { project: { id: number; title: string } | null })[] };
 
+/** Premium page: cards to feature the profile or a project, and the user's current and past promotions. */
 export async function PremiumPage({ user, currency, promotions }: PremiumPageProps) {
   const t = await getTranslations("Promotions");
   const format = await getFormatter();

@@ -2,11 +2,13 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { safeNextPath } from "@/lib/session";
 import { AuthCard, AuthShell, getAuthMethods, LoginForm, parseMethod } from "@/modules/auth";
 
+/** Browser title of the sign-in screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/login">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
   return { title: t("login") };
 }
 
+/** Sign in by email or phone (tabs); a safe `?next=` path is where the user lands afterwards. */
 export default async function LoginPage({ params, searchParams }: PageProps<"/[locale]/login">) {
   const { locale } = await params;
   setRequestLocale(locale);

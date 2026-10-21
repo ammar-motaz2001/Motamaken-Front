@@ -10,6 +10,7 @@ type ConversationItemProps = {
   onSelect: () => void;
 };
 
+/** One row of the inbox: avatar, name, last message preview, time and unread count. */
 export function ConversationItem({ conversation, selected, onSelect }: ConversationItemProps) {
   const t = useTranslations("Messages");
   const locale = useLocale();

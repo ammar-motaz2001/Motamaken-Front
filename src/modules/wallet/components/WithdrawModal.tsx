@@ -17,6 +17,7 @@ type Form = { amount: string; currency: string; method: "bank_transfer" | "paypa
 
 type WithdrawModalProps = { open: boolean; onClose: () => void; onDone: (withdrawal: Withdrawal) => void; balances: WalletBalance[]; currency: string };
 
+/** Withdraw request: amount up to the available balance, bank transfer (IBAN) or PayPal, sent to POST /wallet/withdrawals. */
 export function WithdrawModal({ open, onClose, onDone, balances, currency }: WithdrawModalProps) {
   const t = useTranslations("Wallet.withdraw");
   const initial: Form = { amount: "", currency, method: "bank_transfer", accountName: "", iban: "", email: "" };

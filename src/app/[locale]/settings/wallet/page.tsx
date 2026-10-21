@@ -7,11 +7,13 @@ import { Transactions, WalletOverview } from "@/modules/wallet";
 
 type Monthly = { currency: string; data: { month: string; income: number; spending: number }[] };
 
+/** Browser title of the wallet screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/wallet">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Wallet" });
   return { title: `${t("title")} | Mutamakin` };
 }
 
+/** Settings › Wallet: balances, six-month chart, transactions and pending withdrawals from the /wallet endpoints, per currency. */
 export default async function WalletPage({ params, searchParams }: PageProps<"/[locale]/settings/wallet">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

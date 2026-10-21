@@ -18,11 +18,13 @@ type FieldShellProps = {
   children: ReactNode;
 };
 
-export const controlClasses = (invalid: boolean, multiline = false) =>
+/** Border and layout classes of a field's box, red when invalid; multiline boxes grow with their content. */
+const controlClasses = (invalid: boolean, multiline = false) =>
   `flex gap-[15px] rounded-[5px] border bg-surface px-2.5 transition-colors ${multiline ? "items-start py-2.5" : "h-[45px] items-center"} ${
     invalid ? "border-danger text-danger" : "border-border focus-within:border-brand"
   }`;
 
+/** Label, info tip and error/hint text around any form control, so every field in the site lines up the same way. */
 export function FieldShell({ id, label, required, info, hint, error, invalid, multiline, className = "", children }: FieldShellProps) {
   const message = error ?? hint;
 
@@ -60,6 +62,7 @@ type FieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "prefix"> &
     trailing?: ReactNode;
   };
 
+/** Text input with the shared label, icon, trailing slot and error styling; forwards its ref to the input. */
 export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
   { label, required, info, hint, error, invalid, icon, trailing, id, className, ...inputProps },
   ref,
@@ -92,6 +95,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
   );
 });
 
+/** Password input with a show/hide eye button. */
 export const PasswordField = forwardRef<HTMLInputElement, Omit<FieldProps, "type" | "trailing">>(function PasswordField(
   props,
   ref,

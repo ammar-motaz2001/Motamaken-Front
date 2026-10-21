@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 
+/** Five stars filled up to the rating, read out to screen readers as one label. */
 export function Stars({ rating, size = 14, label }: { rating: number; size?: number; label: string }) {
   return (
     <span className="inline-flex items-center gap-0.5" role="img" aria-label={label}>

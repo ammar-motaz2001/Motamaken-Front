@@ -1,3 +1,4 @@
+/** Big tick or cross drawing used on success and error screens. */
 export function StatusIcon({ type, size = 88 }: { type: "success" | "error"; size?: number }) {
   if (type === "success") {
     return (

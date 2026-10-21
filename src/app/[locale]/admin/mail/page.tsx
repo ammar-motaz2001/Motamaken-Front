@@ -8,6 +8,7 @@ import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 
 type MailLogRow = { id: number; to: string; subject: string | null; notification: string | null; status: "sent" | "failed"; error: string | null; createdAt: string };
 
+/** Admin › Mail: outgoing mail settings and the send log with failures, from GET /admin/mail and /admin/mail/logs. */
 export default async function AdminMail({ params, searchParams }: PageProps<"/[locale]/admin/mail">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

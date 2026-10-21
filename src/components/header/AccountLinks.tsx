@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { LogoutButton } from "./LogoutButton";
 
+/** Top-bar links: "My account" and sign out when signed in, otherwise sign-up and sign-in links. */
 export function AccountLinks({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header");
 

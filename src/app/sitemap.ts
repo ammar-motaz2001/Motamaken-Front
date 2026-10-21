@@ -8,6 +8,7 @@ const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 // Rebuilt at most once an hour.
 export const revalidate = 3600;
 
+/** Reads a public API endpoint for the sitemap, cached for an hour; null when the API is missing or fails. */
 async function get<T>(path: string): Promise<T | null> {
   if (!API_URL) return null;
   return fetch(`${API_URL}${path}`, { headers: { Accept: "application/json" }, next: { revalidate } })
@@ -38,6 +39,7 @@ async function openProjects() {
   return projects;
 }
 
+/** sitemap.xml: the main sections, every category, the admin-written info pages (GET /pages) and up to 1,000 open projects. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [pages, categories, projects] = await Promise.all([
     get<{ data: SitePageSummary[] }>("/pages"),

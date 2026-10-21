@@ -5,6 +5,7 @@ import { apiGet } from "@/lib/api/server";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { AdminHeader, AdminSearch, AdminSection, AdminTable, Cell, ExportLink, UserCell, date, toneFor, type AdminUser, type List } from "@/modules/admin";
 
+/** Admin › Users: every account with search and filters, from GET /admin/users. */
 export default async function AdminUsers({ params, searchParams }: PageProps<"/[locale]/admin/users">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

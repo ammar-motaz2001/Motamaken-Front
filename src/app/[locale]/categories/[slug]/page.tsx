@@ -10,18 +10,21 @@ import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { pageMetadata } from "@/lib/seo";
 import { FILTER_KEYS, ProjectFilters, ProjectGrid } from "@/modules/projects";
 
+/** Category with the given slug from the reference data; 404 when there is none. */
 async function findCategory(slug: string) {
   const category = (await getCategories()).find((item) => item.slug === slug);
   if (!category) notFound();
   return category;
 }
 
+/** Search-engine title and description of one category. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/categories/[slug]">) {
   const { locale, slug } = await params;
   const [category, t] = await Promise.all([findCategory(slug), getTranslations({ locale, namespace: "Seo" })]);
   return pageMetadata({ title: `${category.name} | Mutamakin`, description: t("category", { name: category.name }), path: `/categories/${category.slug}`, locale });
 }
 
+/** One category: its open projects or influencer requests from GET /projects with the usual filters; 404 for unknown slugs. */
 export default async function CategoryPage({ params, searchParams }: PageProps<"/[locale]/categories/[slug]">) {
   const { locale, slug } = await params;
   setRequestLocale(locale);

@@ -11,11 +11,13 @@ type Ymd = { y: number; m: number; d: number };
 const pad = (n: number) => String(n).padStart(2, "0");
 const toKey = ({ y, m, d }: Ymd) => `${y}-${pad(m + 1)}-${pad(d)}`;
 
+/** Reads "YYYY-MM-DD" or "YYYY-MM-DDTHH:mm" into its parts (month zero-based); null when the text does not match. */
 function parse(value: string | undefined): (Ymd & { hh: number; mm: number }) | null {
   const found = value?.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
   return found ? { y: +found[1], m: +found[2] - 1, d: +found[3], hh: +(found[4] ?? 0), mm: +(found[5] ?? 0) } : null;
 }
 
+/** Today's date in the browser's time zone, as year, month and day. */
 function todayYmd(): Ymd {
   const now = new Date();
   return { y: now.getFullYear(), m: now.getMonth(), d: now.getDate() };

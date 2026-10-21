@@ -6,6 +6,7 @@ type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   invalid?: boolean;
 };
 
+/** Styled checkbox with its label text (links inside are underlined), red when invalid. */
 export function Checkbox({ children, invalid, className = "", ...inputProps }: CheckboxProps) {
   return (
     <label className={`inline-flex cursor-pointer items-center gap-2.5 pt-2 ${className}`}>

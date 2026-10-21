@@ -14,6 +14,7 @@ import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { actionsClasses, fieldsClasses, formClasses, switchClasses } from "./styles";
 
+/** Sign-in form (POST /auth/login): signs in at once, or goes to the code screen when a one-time or two-factor code is needed. */
 export function LoginForm({ method, next }: { method: AuthMethod; next?: string }) {
   const t = useTranslations("Login");
   const ta = useTranslations("Auth");

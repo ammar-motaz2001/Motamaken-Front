@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 const TYPES = ["deposit", "withdrawal_request", "escrow_fund", "escrow_release", "subscription", "promotion"] as const;
 
+/** Transaction type select that rewrites `?type=` and goes back to the first page. */
 export function TypeFilter({ value }: { value: string }) {
   const t = useTranslations("Wallet.transactions");
   const router = useRouter();

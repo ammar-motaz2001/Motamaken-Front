@@ -9,12 +9,14 @@ type FaqGroup = { id: number; name: string; faqs: { id: number; question: string
 
 const AUDIENCES = ["client", "freelancer", "influencer"] as const;
 
+/** Search-engine title and description of the FAQ page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/faq">) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Faq" });
   return pageMetadata({ title: `${t("title")} | Mutamakin`, description: t("subtitle"), path: "/faq", locale });
 }
 
+/** FAQ: questions grouped by category from GET /faqs, with a search box and audience tabs (client, freelancer, influencer). */
 export default async function FaqPage({ params, searchParams }: PageProps<"/[locale]/faq">) {
   setRequestLocale((await params).locale);
   const filter = pickParams(await searchParams, ["q", "audience"]);

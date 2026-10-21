@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { FaPersonDigging } from "react-icons/fa6";
 import { Button } from "@/components/ui/Button";
 
+/** "Under construction" screen for addresses that have no page yet, with a button back home. */
 export function UnderConstruction() {
   const t = useTranslations("UnderConstruction");
 

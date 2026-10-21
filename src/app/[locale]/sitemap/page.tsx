@@ -6,6 +6,7 @@ import { apiGetOrNull } from "@/lib/api/server";
 import { pageMetadata } from "@/lib/seo";
 import type { SitePageSummary } from "@/lib/api/types";
 
+/** Search-engine title and description of the human sitemap page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/sitemap">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "SitePages.sitemap" }), getTranslations({ locale, namespace: "Seo" })]);

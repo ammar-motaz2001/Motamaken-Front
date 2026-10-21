@@ -7,6 +7,7 @@ import { apiGetOrNull } from "@/lib/api/server";
 import { pageParam, toQuery } from "@/lib/params";
 import type { SupportTicket } from "@/modules/support";
 
+/** Browser title of the support tickets list. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/support">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Support" });
   return { title: `${t("title")} | Mutamakin`, robots: { index: false } };
@@ -14,6 +15,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/support"
 
 const TONES = { open: "warning", answered: "success", closed: "muted" } as const;
 
+/** Support: the user's tickets and their status from GET /support, with links to the FAQ and to a new ticket. */
 export default async function SupportPage({ params, searchParams }: PageProps<"/[locale]/support">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

@@ -8,6 +8,7 @@ import { AdminHeader, AdminSection, AdminTable, Cell, StatusTabs, dateTime, tone
 
 const STATUSES = ["pending", "needs_update", "approved", "rejected"] as const;
 
+/** Admin › KYC: identity verification requests by status, from GET /admin/kyc. */
 export default async function AdminKyc({ params, searchParams }: PageProps<"/[locale]/admin/kyc">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

@@ -7,6 +7,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const TYPES = ["email", "phone", "domain", "ip", "keyword"] as const;
 
+/** Admin › Blacklist: blocked emails, phones, domains, IPs and keywords with add/remove, from GET /admin/blacklist. */
 export default async function AdminBlacklist({ params, searchParams }: PageProps<"/[locale]/admin/blacklist">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

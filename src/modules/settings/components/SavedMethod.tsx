@@ -4,6 +4,7 @@ import { CircleCheck, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { PaymentMethod } from "@/lib/api/types";
 
+/** One saved card (masked number, brand, expiry) or PayPal account, drawn as a small card with a remove button. */
 export function SavedMethod({ method, onRemove }: { method: PaymentMethod; onRemove: () => void }) {
   const t = useTranslations("Settings.payment");
   const isCard = method.type === "card";

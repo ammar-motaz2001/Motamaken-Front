@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { apiGet } from "@/lib/api/server";
 import { AdminHeader, AdminSection, AdminTable, Cell, dateTime, type AdminPage } from "@/modules/admin";
 
+/** Admin › Pages: the info pages (terms, guide, fees...) to open and edit, from GET /admin/pages. */
 export default async function AdminPages({ params }: PageProps<"/[locale]/admin/pages">) {
   setRequestLocale((await params).locale);
   const [t, locale, { data }] = await Promise.all([getTranslations("Admin.pages"), getLocale(), apiGet<{ data: AdminPage[] }>("/admin/pages")]);

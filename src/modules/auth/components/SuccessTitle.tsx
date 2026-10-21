@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
+/** Animated tick with the "signed up" text, used as a dialog title. */
 export function SuccessTitle() {
   const t = useTranslations("Auth");
 

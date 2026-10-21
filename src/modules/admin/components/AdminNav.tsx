@@ -135,6 +135,7 @@ const GROUPS: { key: string; items: NavItem[] }[] = [
   },
 ];
 
+/** Admin menu showing only the sections the staff member's role allows, with queue counts; a scrolling row on small screens. */
 export function AdminNav({ queues, permissions }: { queues: Overview["queues"] | null; permissions: string[] }) {
   const t = useTranslations("Admin.nav");
   const pathname = usePathname();
@@ -174,6 +175,7 @@ export function AdminNav({ queues, permissions }: { queues: Overview["queues"] |
   );
 }
 
+/** Grouped, sticky admin sidebar for large screens, with the open section marked and a count on each queue. */
 function AdminSidebar({ groups, queues, isActive }: { groups: typeof GROUPS; queues: Overview["queues"] | null; isActive: (href: string) => boolean }) {
   const t = useTranslations("Admin.nav");
 

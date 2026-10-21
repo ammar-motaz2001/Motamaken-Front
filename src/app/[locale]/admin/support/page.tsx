@@ -9,6 +9,7 @@ import { SUPPORT_CATEGORIES, type SupportTicket } from "@/modules/support";
 
 const STATUSES = ["open", "answered", "closed"] as const;
 
+/** Admin › Support: user tickets by status with search, from GET /admin/support. */
 export default async function AdminSupport({ params, searchParams }: PageProps<"/[locale]/admin/support">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

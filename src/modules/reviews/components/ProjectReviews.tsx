@@ -15,6 +15,7 @@ import type { Review } from "@/lib/api/types";
 
 type ProjectReviewsProps = { projectId: number; initial: { data: Review[]; canReview: boolean }; otherName: string | null };
 
+/** Reviews of a completed project; each side can rate the other once with stars and a comment (POST /projects/{id}/reviews). */
 export function ProjectReviews({ projectId, initial, otherName }: ProjectReviewsProps) {
   const t = useTranslations("Reviews");
   const format = useFormatter();

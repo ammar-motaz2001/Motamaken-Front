@@ -21,6 +21,10 @@ type ChatPanelProps = {
   onRead: () => void;
 };
 
+/**
+ * Open conversation: loads GET /conversations/{id}/messages, polls for new ones, loads older ones on scroll up,
+ * marks it read and sends text, files and voice.
+ */
 export function ChatPanel({ conversation, onBack, onActivity, onRead }: ChatPanelProps) {
   const t = useTranslations("Messages");
   const scroller = useRef<HTMLDivElement>(null);

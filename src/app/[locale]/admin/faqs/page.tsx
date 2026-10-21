@@ -5,6 +5,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const AUDIENCES = ["all", "client", "freelancer", "influencer"] as const;
 
+/** Admin › FAQs: add, edit and order FAQ categories and questions, from GET /admin/faqs. */
 export default async function AdminFaqs({ params }: PageProps<"/[locale]/admin/faqs">) {
   setRequestLocale((await params).locale);
   const [t, locale, groups] = await Promise.all([getTranslations("Admin.faqs"), getLocale(), adminGet<{ data: AdminFaqGroup[] }>("/admin/faqs")]);

@@ -12,6 +12,7 @@ import { WelcomeModal } from "./WelcomeModal";
 
 type VerificationProps = { method: AuthMethod; target: string };
 
+/** Sign-up code step: once the code is right it shows the welcome dialog, then sends the user to sign in. */
 export function SignupVerification({ method, target }: VerificationProps) {
   const router = useRouter();
   const [done, setDone] = useState(false);
@@ -24,6 +25,7 @@ export function SignupVerification({ method, target }: VerificationProps) {
   );
 }
 
+/** Sign-in code step (one-time or two-factor): saves the session, queues the welcome greeting and goes to `next`. */
 export function LoginVerification({ method, target, next, twoFactor }: VerificationProps & { next?: string; twoFactor?: { method: string; hint: string } }) {
   const t = useTranslations("Otp");
   const router = useRouter();
@@ -44,6 +46,7 @@ export function LoginVerification({ method, target, next, twoFactor }: Verificat
   );
 }
 
+/** Password-reset code step: a right code opens the new-password form with the token it returns. */
 export function ResetVerification({ method, target }: VerificationProps) {
   const t = useTranslations("Otp");
   const router = useRouter();

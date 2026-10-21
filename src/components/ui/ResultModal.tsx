@@ -13,6 +13,7 @@ type ResultModalProps = {
   children?: ReactNode;
 };
 
+/** Dialog that reports an outcome (success, error or warning) with a message and optional buttons. */
 export function ResultModal({ open, onClose, type, title, message, children }: ResultModalProps) {
   return (
     <Modal open={open} onClose={onClose} title={title} showClose>

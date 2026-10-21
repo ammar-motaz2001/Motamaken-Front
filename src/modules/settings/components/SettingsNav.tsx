@@ -51,6 +51,7 @@ const MORE = [
   { key: "disputes", href: "/disputes", Icon: Scale },
 ] as const;
 
+/** Side menu of the settings screens; the less-used items fold under "More" unless one of them is open. */
 export function SettingsNav() {
   const t = useTranslations("Settings.nav");
   const pathname = usePathname();

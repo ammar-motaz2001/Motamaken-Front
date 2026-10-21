@@ -12,6 +12,7 @@ import { SettingsPanel } from "./SettingsPanel";
 
 type Settings = { data: Record<string, boolean>; required: string[] };
 
+/** Switches per notification group, saved with PATCH /me/notification-settings; required groups cannot be turned off. */
 export function NotificationSettings({ initial, email }: { initial: Settings; email: string | null }) {
   const t = useTranslations("Settings.notifications");
   const [values, setValues] = useState(initial.data);

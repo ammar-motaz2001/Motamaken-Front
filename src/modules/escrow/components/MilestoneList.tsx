@@ -19,6 +19,10 @@ export type EscrowRole = "client" | "lead" | "member";
 
 type MilestoneListProps = { escrow: Escrow; role: EscrowRole; onChanged: () => Promise<void> };
 
+/**
+ * Milestones with the actions the viewer's role allows: the client funds and approves or asks for changes,
+ * the freelancer delivers, and both sides (not team members) can dispute.
+ */
 export function MilestoneList({ escrow, role, onChanged }: MilestoneListProps) {
   const t = useTranslations("Escrow");
   const format = useFormatter();

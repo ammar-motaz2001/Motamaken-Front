@@ -4,11 +4,13 @@ import type { Paginated, Proposal } from "@/lib/api/types";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { MyOffers } from "@/modules/projects";
 
+/** Browser title of the my-offers screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/offers">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Projects.metadata" });
   return { title: t("offers") };
 }
 
+/** My offers: proposals the user has sent, filterable by status, from GET /me/proposals. */
 export default async function MyOffersPage({ params, searchParams }: PageProps<"/[locale]/offers">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

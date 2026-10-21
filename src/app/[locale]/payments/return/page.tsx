@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PaymentReturn } from "@/modules/wallet";
 
+/** Browser title of the payment result screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/payments/return">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Wallet.return" });
   return { title: `${t("title")} | Mutamakin`, robots: { index: false } };

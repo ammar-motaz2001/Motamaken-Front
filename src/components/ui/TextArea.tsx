@@ -10,6 +10,7 @@ type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   hint?: string;
 };
 
+/** Multi-line text input with the shared label, hint and error styling. */
 export function TextArea({ label, required, error, hint, id, className, rows = 4, ...rest }: TextAreaProps) {
   const generatedId = useId();
   const areaId = id ?? generatedId;

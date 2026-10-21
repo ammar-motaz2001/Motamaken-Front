@@ -28,6 +28,10 @@ const TILES = [
   { key: "pendingWithdrawals", tone: "bg-link text-white" },
 ] as const;
 
+/**
+ * Wallet screen: balance of the chosen currency, add-balance and withdraw dialogs, pending withdrawals to cancel,
+ * the monthly chart and, below, the transactions.
+ */
 export function WalletOverview({ balances, currencies, currency, monthly, pending, children }: WalletOverviewProps) {
   const t = useTranslations("Wallet");
   const locale = useLocale();

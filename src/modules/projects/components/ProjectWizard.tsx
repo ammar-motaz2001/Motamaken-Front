@@ -39,6 +39,10 @@ type ProjectWizardProps = {
   initialCityName?: string | null;
 };
 
+/**
+ * Step-by-step form to post or edit a project or influencer request. New ones are kept as a draft on the device;
+ * guests sign up only when publishing (POST /projects, or PATCH /projects/{id} when editing).
+ */
 export function ProjectWizard({ type, categories, currencies, countries, project, initial, initialCityName }: ProjectWizardProps) {
   const t = useTranslations("Projects");
   const tv = useTranslations("Projects.validation");

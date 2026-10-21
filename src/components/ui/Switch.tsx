@@ -2,6 +2,7 @@
 
 type SwitchProps = { checked: boolean; disabled?: boolean; label: string; onChange: (checked: boolean) => void };
 
+/** Accessible on/off toggle (role="switch") that mirrors in right-to-left pages. */
 export function Switch({ checked, disabled, label, onChange }: SwitchProps) {
   return (
     <button

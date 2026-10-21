@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useId, type ReactNode } from "react";
 import { inputClasses } from "./ActionButton";
 
+/** Label, control and error/hint text for admin forms; the control gets the generated id through a render function. */
 export function LabeledInput({
   label,
   error,
@@ -29,6 +30,7 @@ export function LabeledInput({
   );
 }
 
+/** Labelled text or number input for admin forms with its error and hint. */
 export function TextInput({
   label,
   value,
@@ -63,6 +65,7 @@ export function TextInput({
   );
 }
 
+/** Bottom row of an admin form: the error or "saved" message and the save button with its busy state. */
 export function SaveBar({ busy, error, saved, label, extra }: { busy: boolean; error: string | null; saved: boolean; label?: string; extra?: ReactNode }) {
   const t = useTranslations("Admin");
   return (

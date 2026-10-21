@@ -20,7 +20,7 @@ const SIMULATE = process.env.NEXT_PUBLIC_PAYMENTS_SIMULATE === "true";
 
 type Step = "summary" | "method" | "processing" | "success" | "error" | "feedback";
 
-export type PayModalProps = {
+type PayModalProps = {
   open: boolean;
   onClose: () => void;
   amount: number;
@@ -32,6 +32,10 @@ export type PayModalProps = {
   feedbackContext: FeedbackContext;
 };
 
+/**
+ * Checkout dialog for any purchase: summary, then pay from the wallet balance or a card (topping up the wallet first,
+ * with 3-D Secure), then success, error and a short feedback step.
+ */
 export function PayModal({ open, onClose, amount, currency, rows, pay, success, errorActions, feedbackContext }: PayModalProps) {
   const t = useTranslations("Payments");
   const locale = useLocale();

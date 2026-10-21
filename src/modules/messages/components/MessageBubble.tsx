@@ -7,10 +7,12 @@ import { formatTime } from "@/lib/format";
 import { ReportButton } from "@/modules/reports/components/ReportButton";
 import { VoiceMessage } from "./VoiceMessage";
 
+/** File size as KB (at least 1) or MB with one decimal. */
 function formatSize(bytes: number) {
   return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
+/** File inside a message: voice player, image preview or a download link for other files. */
 function Attachment({ message }: { message: Message }) {
   const file = message.attachment;
   if (!file) return null;
@@ -51,6 +53,7 @@ function Removed() {
   );
 }
 
+/** One chat message: the user's own on one side in brand colours, others' on the other with sender name, time and attachment. */
 export function MessageBubble({ message, showSender }: { message: Message; showSender: boolean }) {
   const t = useTranslations("Messages");
   const locale = useLocale();

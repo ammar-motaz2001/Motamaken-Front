@@ -5,6 +5,7 @@ import { useId } from "react";
 
 type FilePickProps = { label: string; hint: string; accept: string; file: File | null; error?: string; required?: boolean; onChange: (file: File | null) => void };
 
+/** File chooser for one document photo, showing the chosen file's name and the error. */
 export function FilePick({ label, hint, accept, file, error, required, onChange }: FilePickProps) {
   const id = useId();
 

@@ -5,6 +5,7 @@ import type { ApiError } from "@/lib/api/errors";
 import { apiGet } from "@/lib/api/server";
 import { ActionButton, AdminHeader, AdminSection, UserCell, date, dateTime, toneFor, type KycSubmission } from "@/modules/admin";
 
+/** Admin › KYC request: the documents with approve, reject or ask-for-update actions, from GET /admin/kyc/{id}. */
 export default async function AdminKycSubmission({ params }: PageProps<"/[locale]/admin/kyc/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

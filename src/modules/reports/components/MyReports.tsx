@@ -10,6 +10,7 @@ const TONE = { open: "warning", actioned: "success", dismissed: "muted" } as con
 
 type Result = Paginated<ContentReport> & { counts: Partial<Record<ContentReport["status"], number>> };
 
+/** The user's reports with counts by status, what was reported (linked when possible) and the outcome. */
 export async function MyReports({ result }: { result: Result | null }) {
   const t = await getTranslations("Reports");
   const format = await getFormatter();

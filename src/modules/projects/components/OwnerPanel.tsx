@@ -15,6 +15,7 @@ import { formatAmount, timeAgo } from "@/lib/format";
 import { PROPOSAL_STATUS_TONE } from "../lib/status";
 import { MessageUserButton } from "./MessageUserButton";
 
+/** Project owner's tools: edit, close, complete or delete the project, and accept one of the received offers. */
 export function OwnerPanel({ project, proposals }: { project: Project; proposals: Proposal[] }) {
   const t = useTranslations("Projects.owner");
   const to = useTranslations("Projects.offer");

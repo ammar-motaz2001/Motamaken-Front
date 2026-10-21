@@ -11,11 +11,13 @@ import { pageParam, toQuery } from "@/lib/params";
 
 type Saved<T> = { data: { type: string; savedAt: string; item: T }[]; meta: { current_page: number; last_page: number; total: number } };
 
+/** Browser title of the favourites screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/favorites">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Favorites" });
   return { title: `${t("title")} | Mutamakin` };
 }
 
+/** Favourites: saved projects or saved profiles (tabs) from GET /me/favorites, 24 per page. */
 export default async function Favorites({ params, searchParams }: PageProps<"/[locale]/favorites">) {
   setRequestLocale((await params).locale);
   const t = await getTranslations("Favorites");

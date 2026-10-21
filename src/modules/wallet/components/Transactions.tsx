@@ -4,6 +4,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import type { LedgerEntry, Paginated } from "@/lib/api/types";
 import { TypeFilter } from "./TypeFilter";
 
+/** Wallet transaction history with a type filter, amounts coloured in or out, and paging. */
 export async function Transactions({ result, query }: { result: Paginated<LedgerEntry> | null; query: Record<string, string | undefined> }) {
   const t = await getTranslations("Wallet.transactions");
   const format = await getFormatter();

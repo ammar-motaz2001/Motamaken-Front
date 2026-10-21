@@ -13,6 +13,7 @@ const feature = (plan: AdminPlan, key: string) => {
   return value === null || value === undefined ? "" : String(value);
 };
 
+/** One subscription plan's price, flags and features (offers, fee, promotion discount, priority support), saved with PATCH /admin/plans/{id}. */
 export function PlanEditor({ plan }: { plan: AdminPlan }) {
   const t = useTranslations("Admin.plans");
   const locale = useLocale();

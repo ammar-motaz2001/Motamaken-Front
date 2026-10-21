@@ -5,6 +5,7 @@ import type { ApiError } from "@/lib/api/errors";
 import { apiGet } from "@/lib/api/server";
 import { AdminHeader, AdminSection, PageEditor, type AdminPage } from "@/modules/admin";
 
+/** Admin › Page editor: edit one info page (or create one at "new"), from GET /admin/pages/{slug}. */
 export default async function AdminPageEdit({ params }: PageProps<"/[locale]/admin/pages/[slug]">) {
   const { locale, slug } = await params;
   setRequestLocale(locale);

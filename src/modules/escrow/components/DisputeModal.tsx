@@ -10,6 +10,7 @@ import type { Milestone } from "@/lib/api/types";
 import { DISPUTE_REASONS } from "../lib/status";
 import { TextModal } from "./TextModal";
 
+/** Opens a dispute on a milestone with a reason and description (POST /milestones/{id}/dispute), then goes to the case. */
 export function DisputeModal({ milestone, onClose }: { milestone: Milestone | null; onClose: () => void }) {
   const t = useTranslations("Escrow.dispute");
   const router = useRouter();

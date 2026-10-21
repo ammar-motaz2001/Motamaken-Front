@@ -2,6 +2,7 @@ import { Files } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 
+/** Shown when the user has no conversations yet, with a link to browse projects. */
 export function EmptyInbox() {
   const t = useTranslations("Messages");
 

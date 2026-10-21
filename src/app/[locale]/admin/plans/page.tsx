@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { apiGet } from "@/lib/api/server";
 import { AdminHeader, PlanEditor, type AdminPlan } from "@/modules/admin";
 
+/** Admin › Plans: edit the subscription plans and their prices, from GET /admin/plans. */
 export default async function AdminPlans({ params }: PageProps<"/[locale]/admin/plans">) {
   setRequestLocale((await params).locale);
   const [t, { data }] = await Promise.all([getTranslations("Admin.plans"), apiGet<{ data: AdminPlan[] }>("/admin/plans")]);

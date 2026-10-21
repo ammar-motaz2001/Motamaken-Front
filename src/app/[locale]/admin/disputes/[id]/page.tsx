@@ -7,6 +7,7 @@ import type { Dispute } from "@/lib/api/types";
 import { ActionButton, AdminSection, money } from "@/modules/admin";
 import { DisputeCase } from "@/modules/disputes";
 
+/** Admin › Dispute: the case thread from GET /disputes/{id}, where staff can post, review and resolve it. */
 export default async function AdminDispute({ params }: PageProps<"/[locale]/admin/disputes/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

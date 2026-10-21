@@ -5,6 +5,7 @@ import { ActionButton, AdminHeader, AdminSection, InfoGrid, UserCell, dateTime, 
 import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 import { ReplyBox, TicketThread, type SupportTicket } from "@/modules/support";
 
+/** Admin › Support ticket: the thread with reply, assign and status actions, from GET /admin/support/{id}. */
 export default async function AdminSupportTicket({ params }: PageProps<"/[locale]/admin/support/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

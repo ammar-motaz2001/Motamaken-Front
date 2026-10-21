@@ -29,7 +29,7 @@ type ListboxProps = {
   renderValue?: (selected: ListboxOption | undefined) => ReactNode;
 };
 
-export const listboxFieldClasses =
+const listboxFieldClasses =
   "flex h-10 w-full items-center gap-2 rounded-[5px] border border-border bg-surface px-3 text-sm outline-none transition-colors focus-visible:border-brand aria-expanded:border-brand";
 
 /**

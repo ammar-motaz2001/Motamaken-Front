@@ -10,6 +10,7 @@ import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 
 const STATES = ["active", "scheduled", "ended"] as const;
 
+/** Admin › Promotions: paid promotions with the price list editor and an end-now action, from GET /admin/promotions. */
 export default async function AdminPromotions({ params, searchParams }: PageProps<"/[locale]/admin/promotions">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

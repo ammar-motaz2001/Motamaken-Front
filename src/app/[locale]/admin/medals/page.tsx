@@ -8,6 +8,7 @@ import { adminGet } from "@/modules/admin/server";
 
 type Holder = { user: Person | null; awardedAt: string | null; manual: boolean; awardedBy: Person | null; reason: string | null };
 
+/** Admin › Medals: edit medals and see or revoke a medal's holders, from GET /admin/medals. */
 export default async function AdminMedals({ params, searchParams }: PageProps<"/[locale]/admin/medals">) {
   setRequestLocale((await params).locale);
   const selected = pickParams(await searchParams, ["medal"]).medal;

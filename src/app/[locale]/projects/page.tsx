@@ -8,12 +8,14 @@ import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { pageMetadata } from "@/lib/seo";
 import { FILTER_KEYS, ProjectFilters, ProjectGrid } from "@/modules/projects";
 
+/** Search-engine title and description of the projects list. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Projects.metadata" }), getTranslations({ locale, namespace: "Seo" })]);
   return pageMetadata({ title: t("browse"), description: seo("projects"), path: "/projects", locale });
 }
 
+/** Browse projects: open projects from GET /projects with the category, country and budget filters, 20 per page. */
 export default async function ProjectsPage({ params, searchParams }: PageProps<"/[locale]/projects">) {
   const { locale } = await params;
   setRequestLocale(locale);

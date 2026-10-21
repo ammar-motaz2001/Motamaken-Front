@@ -1,4 +1,3 @@
-export { AddPaymentMethodModal } from "./components/AddPaymentMethodModal";
 export { CardFields } from "./components/CardFields";
 export { PaymentSettings } from "./components/PaymentSettings";
 export { SettingsNav } from "./components/SettingsNav";

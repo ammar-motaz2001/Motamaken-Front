@@ -28,6 +28,7 @@ import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 
 const TABS = ["projects", "proposals", "reviews", "points", "kyc", "sessions", "reports", "notes", "log"] as const;
 
+/** Admin › User: account, wallet, activity, notes and medals with ban/adjust actions, from GET /admin/users/{id}; sections follow the role. */
 export default async function AdminUserPage({ params, searchParams }: PageProps<"/[locale]/admin/users/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

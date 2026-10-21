@@ -3,6 +3,7 @@ import type { Medal } from "@/lib/api/types";
 import { SettingsPanel } from "@/modules/settings";
 import { MedalIcon } from "./MedalIcon";
 
+/** Medals screen: the earned medals, then every medal with its award date or the progress towards it. */
 export async function MedalsPage({ medals }: { medals: Medal[] }) {
   const t = await getTranslations("Rewards.medals");
   const format = await getFormatter();

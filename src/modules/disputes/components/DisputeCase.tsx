@@ -18,6 +18,10 @@ import { Timeline } from "./Timeline";
 
 const STEPS = ["open", "under_review", "resolved"] as const;
 
+/**
+ * Dispute case: details, timeline and a reply box with an attachment; parties can withdraw or concede,
+ * and appeal a ruling.
+ */
 export function DisputeCase({ dispute: initial, viewerId }: { dispute: Dispute; viewerId: number }) {
   const t = useTranslations("Disputes");
   const format = useFormatter();

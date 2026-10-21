@@ -5,6 +5,7 @@ import type { Campaign } from "@/lib/api/types";
 import { CampaignForm } from "@/modules/campaigns";
 import { SettingsPanel } from "@/modules/settings";
 
+/** Settings › Edit campaign: full edit of a draft from GET /campaigns/{id}; running campaigns go back to the detail page. */
 export default async function EditCampaign({ params }: PageProps<"/[locale]/settings/campaigns/[id]/edit">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

@@ -10,7 +10,7 @@ import { Select } from "@/components/ui/Select";
 import type { ApiError } from "@/lib/api/errors";
 import { firstError } from "./saveSection";
 
-export type FieldSpec = {
+type FieldSpec = {
   key: string;
   label: string;
   type?: "text" | "month" | "number" | "url" | "select";
@@ -32,6 +32,7 @@ type ListSectionProps = {
   onSave: (items: Item[]) => Promise<void>;
 };
 
+/** Editable profile list (languages, experience, education...): add, edit and delete rows in a dialog, up to `max`, saved together. */
 export function ListSection({ title, empty, items, fields, max, render, validate, onSave }: ListSectionProps) {
   const t = useTranslations("ProfileEditor");
   const [editing, setEditing] = useState<{ index: number | null; values: Record<string, string> } | null>(null);

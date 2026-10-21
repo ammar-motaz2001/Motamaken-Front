@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import type { ApiError } from "@/lib/api/errors";
 
+/** Runs a team action with a busy key and error message, then runs `after` or refreshes the page. */
 export function useAction(fallbackError: string) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);

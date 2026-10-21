@@ -11,6 +11,7 @@ import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod } from "../types";
 import { actionsClasses, fieldsClasses, formClasses, formErrorClasses, switchClasses } from "./styles";
 
+/** Asks for the email or phone and calls POST /auth/password/forgot; then opens the reset form or the code screen. */
 export function ForgotPasswordForm({ method }: { method: AuthMethod }) {
   const t = useTranslations("ForgotPassword");
   const tv = useTranslations("Validation");

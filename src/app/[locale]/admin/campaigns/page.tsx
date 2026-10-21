@@ -9,6 +9,7 @@ import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, StatusTabs, 
 
 const STATUSES = ["active", "paused", "draft", "completed", "cancelled"] as const;
 
+/** Admin › Campaigns: paid-visit campaigns by status with a cancel action, from GET /admin/campaigns. */
 export default async function AdminCampaigns({ params, searchParams }: PageProps<"/[locale]/admin/campaigns">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

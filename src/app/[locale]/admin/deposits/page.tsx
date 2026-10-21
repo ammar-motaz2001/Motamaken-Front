@@ -7,6 +7,7 @@ import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 
 const STATUSES = ["pending", "succeeded", "failed"] as const;
 
+/** Admin › Deposits: wallet top-ups by status, with a refresh from the payment gateway, from GET /admin/deposits. */
 export default async function AdminDeposits({ params, searchParams }: PageProps<"/[locale]/admin/deposits">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

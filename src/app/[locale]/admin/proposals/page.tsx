@@ -8,6 +8,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const STATUSES = ["pending", "accepted", "declined", "withdrawn"] as const;
 
+/** Admin › Proposals: every offer sent on projects, with counts by status and filters, from GET /admin/proposals. */
 export default async function AdminProposals({ params, searchParams }: PageProps<"/[locale]/admin/proposals">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

@@ -10,6 +10,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const STATUSES = ["draft", "open", "in_progress", "completed", "closed"] as const;
 
+/** Admin › Projects: every project with filters and feature/hide/reactivate actions, from GET /admin/projects. */
 export default async function AdminProjects({ params, searchParams }: PageProps<"/[locale]/admin/projects">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

@@ -6,12 +6,14 @@ import { SESSION_COOKIE } from "@/lib/session";
 import { pageMetadata } from "@/lib/seo";
 import { GiftsPage } from "@/modules/rewards";
 
+/** Search-engine title and description of the gifts page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/gifts">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Rewards.draw" }), getTranslations({ locale, namespace: "Seo" })]);
   return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("gifts"), path: "/gifts", locale });
 }
 
+/** Gifts: the current prize draw from GET /draws/current and the last five winners from GET /draws/history. */
 export default async function Gifts({ params }: PageProps<"/[locale]/gifts">) {
   setRequestLocale((await params).locale);
   const [draw, history, signedIn] = await Promise.all([

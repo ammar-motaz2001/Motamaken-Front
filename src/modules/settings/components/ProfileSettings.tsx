@@ -16,6 +16,7 @@ import { SettingsPanel } from "./SettingsPanel";
 
 type Form = { firstName: string; lastName: string; username: string; subscribed: boolean };
 
+/** Account details form (name, username, newsletter) saved with PATCH /me, and the profile photo editor. */
 export function ProfileSettings({ user: initial }: { user: User & { subscribed?: boolean } }) {
   const t = useTranslations("Settings.profile");
   const v = useTranslations("Validation");

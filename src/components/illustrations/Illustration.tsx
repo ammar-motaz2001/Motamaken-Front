@@ -30,6 +30,7 @@ function Backdrop() {
   );
 }
 
+/** Pointy-top hexagon centred at (x, y) for the illustrations, outlined or filled. */
 function Hex({ x, y, size, className, filled }: { x: number; y: number; size: number; className: string; filled?: boolean }) {
   const points = Array.from({ length: 6 }, (_, i) => {
     const a = (Math.PI / 3) * i - Math.PI / 6;

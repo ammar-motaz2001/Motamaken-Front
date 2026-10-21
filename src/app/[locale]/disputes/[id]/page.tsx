@@ -6,11 +6,13 @@ import { apiGet } from "@/lib/api/server";
 import type { Dispute } from "@/lib/api/types";
 import { DisputeCase } from "@/modules/disputes";
 
+/** Browser title of a dispute case. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/disputes/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Disputes.case" });
   return { title: `${t("title")} | Mutamakin` };
 }
 
+/** One dispute case with its messages and evidence, from GET /disputes/{id}; 403/404 from the API become those screens. */
 export default async function DisputePage({ params }: PageProps<"/[locale]/disputes/[id]">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

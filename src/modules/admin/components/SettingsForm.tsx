@@ -8,6 +8,7 @@ import { useAdminSave } from "./useAdminSave";
 
 const NUMBERS = ["siteFeePercent", "depositMin", "depositMax", "withdrawalMin", "withdrawalFee"] as const;
 
+/** Site fee, deposit and withdrawal limits and the KYC-before-withdrawal switch, saved with PUT /admin/settings. */
 export function SettingsForm({ settings }: { settings: SiteSettings }) {
   const t = useTranslations("Admin.settings");
   const { busy, error, fields, saved, save } = useAdminSave();

@@ -3,11 +3,13 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { Campaign, Paginated, PromoterDashboard } from "@/lib/api/types";
 import { PromoterPage } from "@/modules/campaigns";
 
+/** Browser title of the promoter screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/promoter">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Campaigns.promoter" });
   return { title: `${t("title")} | Mutamakin` };
 }
 
+/** Settings › Promoter: the user's links and earnings from GET /me/promoter and campaigns open to join from /campaigns/available. */
 export default async function Promoter({ params }: PageProps<"/[locale]/settings/promoter">) {
   setRequestLocale((await params).locale);
   const [dashboard, available] = await Promise.all([

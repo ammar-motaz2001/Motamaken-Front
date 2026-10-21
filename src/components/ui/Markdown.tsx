@@ -9,6 +9,7 @@ export function Markdown({ source }: { source: string }) {
   return <div className="flex flex-col gap-4 leading-relaxed">{blocks(source.replace(/\r\n/g, "\n"))}</div>;
 }
 
+/** Splits admin-written text into headings, lists, quotes and paragraphs (the small Markdown subset the site supports). */
 function blocks(source: string): ReactNode[] {
   const lines = source.split("\n");
   const out: ReactNode[] = [];
@@ -110,6 +111,7 @@ function blocks(source: string): ReactNode[] {
 
 const INLINE = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)\s]+\))/g;
 
+/** Renders bold, code and links inside a line; site links stay in the app, outside links open in a new tab. */
 function inline(text: string): ReactNode {
   return text.split(INLINE).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) return <strong key={index}>{part.slice(2, -2)}</strong>;

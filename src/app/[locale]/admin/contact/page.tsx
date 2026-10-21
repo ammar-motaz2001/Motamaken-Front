@@ -6,6 +6,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const TOPICS = ["general", "account", "payments", "disputes", "technical", "partnership", "other"] as const;
 
+/** Admin › Contact: messages from the contact form to reply to, mark handled or archive, from GET /admin/contact-messages. */
 export default async function AdminContact({ params, searchParams }: PageProps<"/[locale]/admin/contact">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

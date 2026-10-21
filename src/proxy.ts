@@ -6,6 +6,7 @@ import { AFTER_LOGIN_PATH, GUEST_ONLY_PATHS, PROTECTED_PATHS, SESSION_COOKIE } f
 const intl = createMiddleware(routing);
 const LOCALE_PREFIX = new RegExp(`^/(${routing.locales.join("|")})(?=/|$)`);
 
+/** Runs before every page: guests opening a private page go to sign in (with `next`), signed-in users skip the auth pages, then locale routing. */
 export default function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const prefix = pathname.match(LOCALE_PREFIX)?.[0] ?? "";

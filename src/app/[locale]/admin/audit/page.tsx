@@ -10,6 +10,7 @@ const SUBJECT_PATHS: Record<string, string> = {
   users: "/admin/users", projects: "/admin/projects", disputes: "/admin/disputes", kyc: "/admin/kyc", teams: "/admin/teams", escrows: "/admin/escrows", support: "/admin/support",
 };
 
+/** Admin › Audit: every staff action, filterable by staff member and action, from GET /admin/audit. */
 export default async function AdminAudit({ params, searchParams }: PageProps<"/[locale]/admin/audit">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

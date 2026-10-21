@@ -48,6 +48,10 @@ const TONES = {
 
 export const inputClasses = "w-full rounded-[5px] border border-border bg-surface px-3 py-2.5 text-sm outline-none focus:border-brand";
 
+/**
+ * Button that calls an admin endpoint, optionally after a confirm dialog with extra fields (reason, amount...);
+ * shows errors inline, then refreshes the page or goes to `redirectTo`.
+ */
 export function ActionButton({ label, endpoint, method = "POST", tone = "outline", size = "sm", confirm, fields, title, description, body, redirectTo }: Props) {
   const t = useTranslations("Admin");
   const router = useRouter();

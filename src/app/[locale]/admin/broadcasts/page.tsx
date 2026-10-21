@@ -6,6 +6,7 @@ import { AdminHeader, AdminSection, UserCell, dateTime, type Broadcast, type Lis
 import { BroadcastForm } from "@/modules/admin/components/BroadcastForm";
 import { adminGet } from "@/modules/admin/server";
 
+/** Admin › Broadcasts: send an announcement to users and see past ones, from GET /admin/broadcasts. */
 export default async function AdminBroadcasts({ params, searchParams }: PageProps<"/[locale]/admin/broadcasts">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

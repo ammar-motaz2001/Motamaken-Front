@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import type { ProfileCard, Project } from "@/lib/api/types";
 import { formatAmount, timeAgo } from "@/lib/format";
 
+/** List-view row of a project: title, budget, category, location and date. */
 export function ProjectRow({ project }: { project: Project }) {
   const t = useTranslations("Search.rows");
   const locale = useLocale();
@@ -51,6 +52,7 @@ export function ProjectRow({ project }: { project: Project }) {
   );
 }
 
+/** List-view row of a freelancer or influencer: photo, name, role, rating and location. */
 export function ProfileRow({ profile }: { profile: ProfileCard }) {
   const t = useTranslations("Search.rows");
   const location = [profile.city, profile.country].filter(Boolean).join(", ");

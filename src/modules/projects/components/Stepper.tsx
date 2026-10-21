@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+/** Numbered progress line of the project wizard: done, current and coming steps. */
 export function Stepper({ steps, current }: { steps: readonly string[]; current: number }) {
   const t = useTranslations("Projects");
 

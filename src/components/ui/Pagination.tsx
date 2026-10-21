@@ -8,6 +8,7 @@ type PaginationProps = {
   query?: Record<string, string | undefined>;
 };
 
+/** Page links for a server-rendered list: keeps the current filters in the URL and hides itself when there is one page. */
 export function Pagination({ page, lastPage, pathname, query = {} }: PaginationProps) {
   const t = useTranslations("Common");
   if (lastPage <= 1) return null;

@@ -14,6 +14,7 @@ import { deleteSession } from "@/modules/auth/actions";
 import { SettingsPanel } from "./SettingsPanel";
 import { TwoFactorModal, type SecurityState } from "./TwoFactorModal";
 
+/** Two-factor status with turn on/off, and the list of signed-in devices to log out one by one or all others. */
 export function SecuritySettings({ initial, email, phone }: { initial: SecurityState; email: string | null; phone: string | null }) {
   const t = useTranslations("Settings.security");
   const format = useFormatter();

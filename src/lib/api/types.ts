@@ -118,7 +118,7 @@ export type AppNotification = {
   createdAt: string;
 };
 
-export type MessageType = "text" | "voice" | "attachment";
+type MessageType = "text" | "voice" | "attachment";
 
 export type Conversation = {
   id: number;
@@ -189,7 +189,7 @@ export type Profile = {
   portfolio?: PortfolioItem[];
 };
 
-export type Channel = { platform: string; handle: string; url?: string | null; followers: number; engagementRate?: number | null };
+type Channel = { platform: string; handle: string; url?: string | null; followers: number; engagementRate?: number | null };
 
 export type PortfolioItem = { id: number; title: string; description: string | null; imageUrl: string; link: string | null };
 
@@ -229,7 +229,7 @@ export type ContentReport = {
 
 export type TeamMemberStatus = "invited" | "accepted" | "declined" | "expired";
 
-export type TeamBlocker = "too_few_members" | "awaiting_acceptances" | "invitations_not_accepted" | "lead_share_too_low";
+type TeamBlocker = "too_few_members" | "awaiting_acceptances" | "invitations_not_accepted" | "lead_share_too_low";
 
 export type Team = {
   id: number;
@@ -433,7 +433,7 @@ export type PublicSiteSettings = {
   withdrawalMethods: string[];
 };
 
-export type DisputeAppeal = {
+type DisputeAppeal = {
   id: number;
   user: UserBrief | null;
   reason: string;
@@ -517,7 +517,7 @@ export type CampaignPromoter = {
   joinedAt: string;
 };
 
-export type CampaignStats = {
+type CampaignStats = {
   visits: number;
   validVisits: number;
   rejectedVisits: number;

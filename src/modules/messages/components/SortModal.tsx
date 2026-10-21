@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 
-export const SORTS = ["oldest", "newest", "unread"] as const;
+const SORTS = ["oldest", "newest", "unread"] as const;
 export type Sort = (typeof SORTS)[number];
 
 type SortModalProps = {
@@ -15,6 +15,7 @@ type SortModalProps = {
   onApply: (sort: Sort) => void;
 };
 
+/** Dialog to order the inbox by oldest, newest or unread first. */
 export function SortModal({ open, value, onClose, onApply }: SortModalProps) {
   const t = useTranslations("Messages");
   const [choice, setChoice] = useState(value);

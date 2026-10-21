@@ -20,6 +20,10 @@ type Props = {
   visitFilter: { status?: string; reason?: string };
 };
 
+/**
+ * Campaign detail: status and actions (launch, pause, resume, cancel), spend, the daily chart, rejection reasons and the visit log;
+ * filters stay editable while it runs.
+ */
 export async function CampaignDetail({ campaign, daily, visits, visitFilter }: Props) {
   const t = await getTranslations("Campaigns");
   const format = await getFormatter();

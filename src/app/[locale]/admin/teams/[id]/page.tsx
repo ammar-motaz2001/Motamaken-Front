@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, InfoGrid, UserCell, dateTime, money, toneFor, type AdminTeamDetail } from "@/modules/admin";
 import { adminGet } from "@/modules/admin/server";
 
+/** Admin › Team: members, projects and disband/remove-member actions, from GET /admin/teams/{id}. */
 export default async function AdminTeamPage({ params }: PageProps<"/[locale]/admin/teams/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

@@ -5,11 +5,13 @@ import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { Pagination } from "@/components/ui/Pagination";
 import { CampaignList } from "@/modules/campaigns";
 
+/** Browser title of the campaigns list. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/campaigns">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Campaigns" });
   return { title: `${t("title")} | Mutamakin` };
 }
 
+/** Settings › Campaigns: the user's paid-visit campaigns from GET /me/campaigns, filterable by status. */
 export default async function Campaigns({ params, searchParams }: PageProps<"/[locale]/settings/campaigns">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

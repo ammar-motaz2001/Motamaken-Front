@@ -25,6 +25,7 @@ export type SecurityState = {
 
 type TwoFactorModalProps = { open: boolean; onClose: () => void; onEnabled: (state: SecurityState) => void; email: string | null; phone: string | null };
 
+/** Turns on two-factor sign-in: pick phone or email, confirm the password, then enter the code (POST /me/two-factor and /confirm). */
 export function TwoFactorModal({ open, onClose, onEnabled, email, phone }: TwoFactorModalProps) {
   const t = useTranslations("Settings.security.enable");
   const [step, setStep] = useState<Step>("method");

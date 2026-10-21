@@ -12,6 +12,7 @@ type FailedJob = { id: number; uuid: string; job: string; queue: string; error: 
 const ICONS = { ok: CheckCircle2, warning: TriangleAlert, error: XCircle, off: CircleOff } as const;
 const COLORS = { ok: "text-brand", warning: "text-orange", error: "text-danger", off: "text-muted" } as const;
 
+/** Admin › Integrations: status of each outside service, its call log and failed jobs to retry, from GET /admin/integrations. */
 export default async function AdminIntegrations({ params, searchParams }: PageProps<"/[locale]/admin/integrations">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

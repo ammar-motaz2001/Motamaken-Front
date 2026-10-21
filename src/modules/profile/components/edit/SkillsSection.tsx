@@ -6,6 +6,7 @@ import { useState, type KeyboardEvent } from "react";
 import type { ApiError } from "@/lib/api/errors";
 import { firstError } from "./saveSection";
 
+/** Skill tags to add and remove; each change is saved to the profile at once. */
 export function SkillsSection({ skills, onSave }: { skills: string[]; onSave: (skills: string[]) => Promise<void> }) {
   const t = useTranslations("ProfileEditor");
   const [value, setValue] = useState("");

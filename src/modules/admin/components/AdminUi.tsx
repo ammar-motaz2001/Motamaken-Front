@@ -14,6 +14,7 @@ export function AdminHeader({ title, subtitle, actions }: { title: string; subti
   );
 }
 
+/** Bordered admin panel card with an optional title and action buttons. */
 export function AdminSection({ title, actions, children }: { title?: string; actions?: ReactNode; children: ReactNode }) {
   return (
     <section className="flex min-w-0 flex-col gap-4 rounded-xl border border-border bg-surface p-4 sm:p-5">
@@ -28,6 +29,7 @@ export function AdminSection({ title, actions, children }: { title?: string; act
   );
 }
 
+/** Figure tile for admin dashboards (label, value, hint), coloured by tone and optionally a link. */
 export function StatCard({
   label,
   value,
@@ -81,6 +83,7 @@ export function AdminTable({ head, children, empty }: { head: ReactNode[]; child
   );
 }
 
+/** Table cell with the admin tables' padding. */
 export function Cell({ children, className = "" }: { children?: ReactNode; className?: string }) {
   return <td className={`px-3 py-3 align-top first:ps-4 sm:first:ps-3 ${className}`}>{children}</td>;
 }

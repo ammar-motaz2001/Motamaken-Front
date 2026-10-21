@@ -10,12 +10,14 @@ import type { CategoryType } from "@/lib/api/types";
 const GROUPS: CategoryType[] = ["project", "influencer"];
 const TONES = ["bg-brand/10 text-brand", "bg-orange/10 text-orange", "bg-link/10 text-link", "bg-brand-light/15 text-brand-light"];
 
+/** Search-engine title and description of the categories page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/categories">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Projects.metadata" }), getTranslations({ locale, namespace: "Seo" })]);
   return pageMetadata({ title: t("categories"), description: seo("categories"), path: "/categories", locale });
 }
 
+/** Categories: every project and influencer category from the reference data, grouped by type, each linking to its list. */
 export default async function CategoriesPage({ params }: PageProps<"/[locale]/categories">) {
   setRequestLocale((await params).locale);
   const t = await getTranslations("Projects");

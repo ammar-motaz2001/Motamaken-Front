@@ -15,6 +15,7 @@ const TABS = [
   { method: "phone", label: "mobile" },
 ] as const;
 
+/** Frame of the auth screens: title, subtitle and email/phone tabs when more than one method is on. */
 export function AuthShell({ title, subtitle, tabs, children }: AuthShellProps) {
   const t = useTranslations("Auth");
 
@@ -55,6 +56,7 @@ export function AuthShell({ title, subtitle, tabs, children }: AuthShellProps) {
   );
 }
 
+/** White card that holds an auth form. */
 export function AuthCard({ children }: { children: ReactNode }) {
   return (
     <div className="flex w-full max-w-[872px] flex-col gap-4 rounded-xl bg-surface px-4 pt-4 pb-6 shadow-card dark:border dark:border-border">

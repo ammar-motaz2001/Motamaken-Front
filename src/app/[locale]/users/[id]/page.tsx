@@ -14,6 +14,7 @@ const loadProfile = cache(async (id: string) => {
   return (await apiGetOrNull<PublicProfile>(`/users/${id}`)) ?? notFound();
 });
 
+/** Search-engine title, description and photo of a public profile; accounts without a profile are not indexed. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/users/[id]">) {
   const { locale, id } = await params;
   const data = await loadProfile(id);
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/users/[i
   });
 }
 
+/** Public profile from GET /users/{id}, in tabs; the reviews tab also loads GET /users/{id}/reviews. */
 export default async function UserProfilePage({ params, searchParams }: PageProps<"/[locale]/users/[id]">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

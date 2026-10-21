@@ -9,6 +9,7 @@ const STATUSES = ["active", "past_due", "cancelled", "expired"] as const;
 
 type ByPlan = { planId: number; plan: string; planAr: string; audience: string; active: number }[];
 
+/** Admin › Subscriptions: every plan subscription with counts by status and by plan, from GET /admin/subscriptions. */
 export default async function AdminSubscriptions({ params, searchParams }: PageProps<"/[locale]/admin/subscriptions">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

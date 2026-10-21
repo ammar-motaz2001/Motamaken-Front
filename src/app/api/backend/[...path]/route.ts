@@ -6,6 +6,10 @@ import { SESSION_COOKIE } from "@/lib/session";
 const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 const FORWARDED_HEADERS = ["accept", "accept-language", "content-type"];
 
+/**
+ * Proxy from the browser to the API: adds the session token from the cookie, refuses cross-site changes and dot paths,
+ * and clears the cookie when the API answers 401.
+ */
 async function forward(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   if (!API_URL) return Response.json({ message: "API is not configured" }, { status: 503 });
 

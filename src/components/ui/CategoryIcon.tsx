@@ -33,6 +33,7 @@ const ICONS: Record<string, LucideIcon | IconType> = {
 
 export const CATEGORY_ICONS = Object.keys(ICONS);
 
+/** Icon for a category by the name stored in the API; unknown names fall back to a grid icon. */
 export function CategoryIcon({ icon, className }: { icon: string; className?: string }) {
   const Icon = ICONS[icon] ?? LayoutGrid;
   return <Icon className={className} aria-hidden />;

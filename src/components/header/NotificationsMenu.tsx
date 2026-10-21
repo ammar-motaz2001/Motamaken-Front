@@ -13,6 +13,7 @@ import { timeAgo } from "@/lib/format";
 import { notificationHref } from "@/lib/notifications";
 
 
+/** Bell menu: loads the latest alerts from GET /notifications when opened, marks one or all read, links to the full list. */
 export function NotificationsMenu({ unread }: { unread: number }) {
   const t = useTranslations("Header");
   const locale = useLocale();

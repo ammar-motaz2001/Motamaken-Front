@@ -8,6 +8,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const STATUSES = ["pending", "upheld", "overturned"] as const;
 
+/** Admin › Appeals: requests to reopen a dispute ruling, by status, to decide, from GET /admin/appeals. */
 export default async function AdminAppeals({ params, searchParams }: PageProps<"/[locale]/admin/appeals">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

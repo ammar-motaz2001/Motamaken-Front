@@ -5,6 +5,7 @@ import { AdminHeader, AdminSection, AdminTable, Cell, dateTime, type AdminEscrow
 import { EscrowPanel } from "@/modules/admin/components/EscrowPanel";
 import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 
+/** Admin › Escrow: one held payment, its payees and release/refund actions, from GET /admin/escrows/{id}. */
 export default async function AdminEscrowPage({ params }: PageProps<"/[locale]/admin/escrows/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

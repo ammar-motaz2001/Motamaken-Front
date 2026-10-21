@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { SettingsNav } from "@/modules/settings";
 
+/** Shell for every account settings screen: the settings menu on the side and the chosen screen next to it. */
 export default async function SettingsLayout({ children }: LayoutProps<"/[locale]/settings">) {
   const t = await getTranslations("Settings");
 

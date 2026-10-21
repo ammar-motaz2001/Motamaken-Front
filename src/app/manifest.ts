@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+/** Web app manifest so the site can be installed to a phone's home screen, with the brand colour and icons. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Mutamakin — Freelancers & Influencers",

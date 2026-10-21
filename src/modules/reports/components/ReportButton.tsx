@@ -16,6 +16,7 @@ const REASONS = ["spam", "fake", "inappropriate", "copyright", "scam", "other"] 
 
 type ReportButtonProps = { targetType: ReportTarget; targetId: number; signedIn?: boolean; className?: string; label?: string };
 
+/** Report link for a user, project or other content: reason and details sent to POST /reports (sign-in asked first). */
 export function ReportButton({ targetType, targetId, className = "", label }: ReportButtonProps) {
   const t = useTranslations("Reports.modal");
   const { requireAuth } = useAuthGate();

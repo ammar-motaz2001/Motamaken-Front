@@ -19,6 +19,7 @@ type ProjectFiltersProps = {
   lockCategory?: boolean;
 };
 
+/** Filter form for project lists (type, category, budget, country, city...); applying it rewrites the page URL. */
 export function ProjectFilters({ filters, categories, countries, lockCategory }: ProjectFiltersProps) {
   const t = useTranslations("Projects.filters");
   const router = useRouter();

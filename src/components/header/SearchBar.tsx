@@ -12,6 +12,7 @@ import type { City, Country } from "@/lib/api/types";
 const SEARCH_TYPES = ["all", "projects", "influencer_requests", "influencers", "freelancers"] as const;
 type SearchType = (typeof SEARCH_TYPES)[number];
 
+/** Compact select used inside the header search bar (country and city), built on the shared Listbox. */
 function SelectField({ label, value, onChange, options, disabled, className }: {
   label: string;
   value: string;
@@ -35,6 +36,7 @@ function SelectField({ label, value, onChange, options, disabled, className }: {
   );
 }
 
+/** Header search: type, keywords, country and city (cities load from the API), then opens /search with them. */
 export function SearchBar({ countries }: { countries: Country[] }) {
   const t = useTranslations("Header");
   const router = useRouter();

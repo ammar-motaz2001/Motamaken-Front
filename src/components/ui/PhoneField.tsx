@@ -19,6 +19,7 @@ type CountrySelectProps = {
   "aria-label"?: string;
 };
 
+/** Country picker of the phone field: a searchable list with flags, built on the shared Listbox. */
 function CountrySelect({ value, onChange, options, disabled, "aria-label": ariaLabel }: CountrySelectProps) {
 
   const FlagOf = (code?: Country) => {
@@ -65,6 +66,7 @@ type PhoneFieldProps = {
   defaultCountry?: Country;
 };
 
+/** International phone number input with a country picker, Saudi Arabia by default, labels in the page language. */
 export function PhoneField({ label, placeholder, value, onChange, error, invalid, defaultCountry = "SA" }: PhoneFieldProps) {
   const id = useId();
   const locale = useLocale();

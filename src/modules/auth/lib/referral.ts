@@ -14,6 +14,7 @@ export function rememberReferral(code: string | undefined) {
   }
 }
 
+/** True the first time a referral code is seen in this browser session, so its visit is counted once. */
 export function shouldRecordVisit(code: string) {
   try {
     const key = `${KEY}_visit_${code}`;

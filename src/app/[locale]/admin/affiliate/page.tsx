@@ -4,6 +4,7 @@ import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, StatCard, Us
 
 type Suspicious = { user: Person; referrer: Person | null; reasons: string[]; sharedIps: string[]; createdAt: string; revoked: boolean };
 
+/** Admin › Affiliate: referral totals, top referrers and suspicious referrals to revoke, from GET /admin/affiliate. */
 export default async function AdminAffiliate({ params }: PageProps<"/[locale]/admin/affiliate">) {
   setRequestLocale((await params).locale);
   const [t, locale, data, suspicious] = await Promise.all([

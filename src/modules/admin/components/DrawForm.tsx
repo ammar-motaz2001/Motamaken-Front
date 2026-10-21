@@ -11,8 +11,10 @@ import { useAdminSave } from "./useAdminSave";
 
 type Prize = { nameEn: string; nameAr: string; kind: "cash" | "item"; value: string; currency: string };
 
+/** A date as the "YYYY-MM-DDTHH:mm" local time a datetime-local input expects. */
 const localInput = (date: Date) => new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 
+/** New prize draw: titles in both languages, ticket cost and limit, dates and the prizes list, sent to POST /admin/draws. */
 export function DrawForm({ currencies }: { currencies: string[] }) {
   const t = useTranslations("Admin.draws");
   const { busy, error, fields, saved, save } = useAdminSave();

@@ -12,12 +12,13 @@ import { api } from "@/lib/api/client";
 import type { Category, Country, SearchType } from "@/lib/api/types";
 import { toQuery } from "@/lib/params";
 
-export type SearchValues = Partial<Record<"q" | "category" | "budgetMin" | "budgetMax" | "skill" | "minRating" | "platform" | "countryId" | "cityId" | "sort", string>>;
+type SearchValues = Partial<Record<"q" | "category" | "budgetMin" | "budgetMax" | "skill" | "minRating" | "platform" | "countryId" | "cityId" | "sort", string>>;
 
 const PLATFORMS = ["instagram", "facebook", "youtube", "tiktok", "snapchat", "x", "pinterest", "telegram", "whatsapp", "linkedin"];
 
 type SearchFiltersProps = { type: SearchType; values: SearchValues; categories: Category[]; countries: Country[]; view: string };
 
+/** Search side filters that change with the type (budget and category for projects; skill, rating, platform for profiles). */
 export function SearchFilters({ type, values, categories, countries, view }: SearchFiltersProps) {
   const t = useTranslations("Search.filters");
   const p = useTranslations("PublicProfile");

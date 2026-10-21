@@ -3,6 +3,7 @@ import { AdminHeader, AdminSection, type SiteConfig } from "@/modules/admin";
 import { SiteConfigForm } from "@/modules/admin/components/SiteConfigForm";
 import { adminGet } from "@/modules/admin/server";
 
+/** Admin › Site settings: site details, social and app links and maintenance mode, from GET /admin/site-settings. */
 export default async function AdminSiteSettings({ params }: PageProps<"/[locale]/admin/site-settings">) {
   setRequestLocale((await params).locale);
   const [t, { data }] = await Promise.all([getTranslations("Admin.siteSettings"), adminGet<{ data: SiteConfig }>("/admin/site-settings")]);

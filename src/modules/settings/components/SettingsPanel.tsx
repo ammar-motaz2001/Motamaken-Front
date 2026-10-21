@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+/** Bordered card with a title and optional subtitle that holds one settings section. */
 export function SettingsPanel({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) {
   return (
     <section className="flex flex-col gap-5 rounded-xl border border-border bg-surface p-4 sm:p-6">

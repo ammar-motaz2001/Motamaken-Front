@@ -13,6 +13,7 @@ import { useMoney } from "../lib/useMoney";
 
 type Row = { title: string; amount: string; dueDate: string };
 
+/** Client splits the agreed amount into milestones (title, amount, due date); the sum must match before POST /projects/{id}/escrow. */
 export function SetupEscrowForm({ projectId, total, currency, onCreated }: { projectId: number; total: number; currency: string; onCreated: (escrow: Escrow) => void }) {
   const t = useTranslations("Escrow.setup");
   const money = useMoney(currency);

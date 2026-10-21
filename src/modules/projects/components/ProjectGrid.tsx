@@ -9,6 +9,7 @@ type ProjectGridProps = {
   query: Record<string, string | undefined>;
 };
 
+/** Grid of project cards with the total count and paging; separate messages for a failed load and an empty list. */
 export function ProjectGrid({ result, pathname, query }: ProjectGridProps) {
   const t = useTranslations("Projects.list");
 

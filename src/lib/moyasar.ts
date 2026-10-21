@@ -32,7 +32,7 @@ export class CardError extends Error {
  * - otherwise (a card to keep): the customer confirms it once at `verificationUrl`; it then stays usable until the card
  *   expires and later payments usually need no bank page.
  */
-export async function tokenizeCard(card: CardForm, saveOnly = true): Promise<{ id: string; verificationUrl: string | null }> {
+async function tokenizeCard(card: CardForm, saveOnly = true): Promise<{ id: string; verificationUrl: string | null }> {
   const { expMonth, expYear } = parseExpiry(card.expiry);
   const response = await fetch("https://api.moyasar.com/v1/tokens", {
     method: "POST",

@@ -58,6 +58,10 @@ export function PolicyCheckbox({ checked, onChange, invalid, children, slug = "p
   );
 }
 
+/**
+ * Shows a policy from GET /pages/{slug} in a dialog; the agree button unlocks once it has been scrolled to the end
+ * (a short one counts as read at once).
+ */
 function PolicyDialog({ slug, onClose, onAgree }: { slug: string; onClose: () => void; onAgree: () => void }) {
   const t = useTranslations("Policy");
   const box = useRef<HTMLDivElement>(null);

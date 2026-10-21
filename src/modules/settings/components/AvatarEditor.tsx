@@ -10,6 +10,7 @@ import type { ApiError } from "@/lib/api/errors";
 import type { User } from "@/lib/api/types";
 import { CropStep, PhotoStep } from "@/modules/promotions";
 
+/** Change or remove the profile photo: pick, crop, then POST or DELETE /me/avatar. */
 export function AvatarEditor({ user, onChange }: { user: User; onChange: (user: User) => void }) {
   const t = useTranslations("Settings.profile");
   const [open, setOpen] = useState(false);

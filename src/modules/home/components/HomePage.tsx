@@ -10,6 +10,7 @@ import { ProjectCard } from "@/components/cards/ProjectCard";
 import { ProjectTabs } from "./ProjectTabs";
 import { Slider } from "./Slider";
 
+/** Large "what are you looking for" card linking to a part of the site, highlighted when active. */
 function LookingForCard({ href, title, text, icon, active }: {
   href: string;
   title: string;
@@ -33,6 +34,7 @@ function LookingForCard({ href, title, text, icon, active }: {
   );
 }
 
+/** First card of a home carousel inviting the user to feature their profile or project (opens the promotion flow). */
 function AddCard({ icon, label, kind, user, currency }: { icon: string; label: string; kind: "profile" | "project"; user: User | null; currency: string }) {
   return (
     <div className="hidden w-[212px] shrink-0 flex-col items-center justify-center gap-3 self-stretch rounded-xl bg-surface px-4 py-2 shadow-card md:flex dark:border dark:border-border">
@@ -49,6 +51,7 @@ function AddCard({ icon, label, kind, user, currency }: { icon: string; label: s
   );
 }
 
+/** Grey full-width band with a title and a row of cards, used for the home carousels. */
 function SliderSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="bg-surface-muted py-12">
@@ -60,6 +63,7 @@ function SliderSection({ title, children }: { title: string; children: ReactNode
   );
 }
 
+/** Home page: "what are you looking for" cards, then featured profiles and projects and category tabs from GET /home. */
 export function HomePage({ home, signedIn, user, currency }: { home: Home | null; signedIn: boolean; user: User | null; currency: string }) {
   const t = useTranslations("Home");
 

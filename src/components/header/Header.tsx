@@ -16,10 +16,12 @@ import { SearchBar } from "./SearchBar";
 import { AuthLink } from "@/components/AuthLink";
 import { ThemeToggle } from "./ThemeToggle";
 
+/** Thin vertical line between items of the header's top bar. */
 function Divider() {
   return <span className="h-4 w-[0.5px] bg-foreground" aria-hidden />;
 }
 
+/** Small rounded figure in the header (e.g. the points balance) with its icon and a tooltip. */
 function Pill({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
     <span
@@ -32,6 +34,7 @@ function Pill({ icon, label, value }: { icon: string; label: string; value: stri
   );
 }
 
+/** Site header: logo, search, language/currency/theme switches, account menu or sign-in links, and the main navigation. */
 export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData }) {
   const t = useTranslations("Header");
   const locale = useLocale();

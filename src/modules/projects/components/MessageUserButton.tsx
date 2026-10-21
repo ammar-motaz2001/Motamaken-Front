@@ -4,6 +4,7 @@ import { MessageSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { StartChat } from "@/components/chat/StartChat";
 
+/** "Send message" button that opens (or creates) a conversation with the user, tied to a project when given. */
 export function MessageUserButton({ userId, projectId, label }: { userId: number; projectId?: number; label?: string }) {
   const t = useTranslations("Projects");
 

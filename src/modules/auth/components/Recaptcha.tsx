@@ -24,6 +24,7 @@ declare global {
 
 let loader: Promise<Grecaptcha> | null = null;
 
+/** Loads Google's reCAPTCHA v3 script once for the whole page; a failed load can be retried. */
 function loadScript() {
   loader ??= new Promise<Grecaptcha>((resolve, reject) => {
     const script = document.createElement("script");

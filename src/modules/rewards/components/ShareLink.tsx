@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FaFacebookF, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 
+/** Referral link and code with copy buttons and share links (WhatsApp, X, Facebook) carrying a ready-made message. */
 export function ShareLink({ link, code }: { link: string; code: string }) {
   const t = useTranslations("Rewards.invite");
   const [copied, setCopied] = useState<"link" | "code" | null>(null);

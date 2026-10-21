@@ -10,6 +10,7 @@ type Earning = { id: number; referred: string | null; rate: number; amount: numb
 
 type InvitePageProps = { summary: AffiliateSummary; referrals: Paginated<Referral> | null; earnings: Paginated<Earning> | null; currency: string };
 
+/** Invite screen: share link, referral tier and progress to the next, monthly earnings chart, referred users and earnings. */
 export async function InvitePage({ summary, referrals, earnings, currency }: InvitePageProps) {
   const t = await getTranslations("Rewards.invite");
   const format = await getFormatter();

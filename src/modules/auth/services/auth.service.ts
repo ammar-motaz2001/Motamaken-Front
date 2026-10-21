@@ -12,7 +12,7 @@ export class AuthError extends Error {
   }
 }
 
-export type AuthUser = {
+type AuthUser = {
   id: number;
   firstName: string;
   lastName: string;
@@ -23,6 +23,7 @@ export type AuthUser = {
   fullName?: string;
 };
 
+/** POSTs JSON to an auth endpoint of the API directly (with cookies); errors become AuthError with field messages. */
 async function request<T>(path: string, body: unknown): Promise<T> {
   if (!API_URL) throw new AuthError();
 

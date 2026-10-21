@@ -14,6 +14,10 @@ export type ProfileTab = "overview" | "portfolio" | "reviews" | "channels" | "pr
 
 type PublicProfileViewProps = { data: PublicProfile; tab: ProfileTab; reviews: Paginated<Review> | null; signedIn: boolean };
 
+/**
+ * Public profile with tabs: overview, portfolio, reviews, channels (influencers) and open projects; tabs with
+ * nothing to show are left out.
+ */
 export async function PublicProfileView({ data, tab, reviews, signedIn }: PublicProfileViewProps) {
   const t = await getTranslations("PublicProfile");
   const format = await getFormatter();
@@ -206,6 +210,7 @@ export async function PublicProfileView({ data, tab, reviews, signedIn }: Public
   );
 }
 
+/** Reviews on a profile: reviewer, stars, date, comment and a report button for signed-in users. */
 async function ReviewList({ reviews, signedIn, canReport }: { reviews: Review[]; signedIn: boolean; canReport: boolean }) {
   const t = await getTranslations("PublicProfile");
   const format = await getFormatter();

@@ -13,6 +13,7 @@ const LEVELS = ["native", "fluent", "good", "basic"];
 
 type Row = Record<string, string | number | null | undefined>;
 
+/** Extra profile sections under the main form: skills, languages, experience, education, certificates and portfolio. */
 export function ProfileSections({ initial }: { initial: Profile }) {
   const t = useTranslations("ProfileEditor");
   const p = useTranslations("PublicProfile");

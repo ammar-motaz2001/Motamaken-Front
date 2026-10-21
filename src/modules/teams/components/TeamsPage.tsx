@@ -16,6 +16,7 @@ import type { Team, TeamInvitation } from "@/lib/api/types";
 import { TEAM_STATUS_TONE } from "../lib/status";
 import { InvitationCard } from "./InvitationCard";
 
+/** Create a team with a name and description (POST /teams), then open it. */
 function CreateTeamForm() {
   const t = useTranslations("Teams");
   const router = useRouter();
@@ -80,6 +81,7 @@ function CreateTeamForm() {
   );
 }
 
+/** Teams screen: pending invitations first, the create-team form, then the user's teams. */
 export function TeamsPage({ teams, invitations }: { teams: Team[] | null; invitations: TeamInvitation[] | null }) {
   const t = useTranslations("Teams");
   const pending = invitations?.filter((invitation) => invitation.status === "invited") ?? [];

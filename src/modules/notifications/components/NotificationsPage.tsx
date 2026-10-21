@@ -14,6 +14,10 @@ import { NOTIFICATION_GROUPS, notificationHref, type NotificationGroup } from "@
 
 type Result = Paginated<AppNotification> & { unreadByGroup: Record<NotificationGroup, number> };
 
+/**
+ * Notifications in group tabs with an unread-only switch, paged from GET /notifications; opening one marks it
+ * read and goes to its page.
+ */
 export function NotificationsPage() {
   const t = useTranslations("Notifications");
   const format = useFormatter();

@@ -10,6 +10,7 @@ const TONES: Record<CampaignStatus, StatusTone> = {
   cancelled: "danger",
 };
 
+/** Status label of a campaign in its colour (draft, active, paused...). */
 export function CampaignStatusPill({ status }: { status: CampaignStatus }) {
   const t = useTranslations("Campaigns.statuses");
   return <StatusPill tone={TONES[status]}>{t(status)}</StatusPill>;

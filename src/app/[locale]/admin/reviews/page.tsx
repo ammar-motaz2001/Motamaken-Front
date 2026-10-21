@@ -9,6 +9,7 @@ import { adminGet } from "@/modules/admin/server";
 
 type Summary = { average: number; total: number; hidden: number; stars: Record<string, number> };
 
+/** Admin › Reviews: every rating with filters and hide/show, from GET /admin/reviews. */
 export default async function AdminReviews({ params, searchParams }: PageProps<"/[locale]/admin/reviews">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

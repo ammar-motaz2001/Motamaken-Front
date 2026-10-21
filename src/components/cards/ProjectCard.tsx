@@ -7,10 +7,12 @@ import { FavoriteButton } from "./FavoriteButton";
 
 const EXCERPT_LENGTH = 36;
 
+/** Cuts a description to the card's excerpt length, ending with an ellipsis. */
 function shorten(text: string) {
   return text.length > EXCERPT_LENGTH ? `${text.slice(0, EXCERPT_LENGTH).trimEnd()}…` : text;
 }
 
+/** Card of one project in lists and carousels: budget, title, owner, read-more and add-offer links and a save heart. */
 export function ProjectCard({ project }: { project: Project }) {
   const t = useTranslations("Home");
   const locale = useLocale();

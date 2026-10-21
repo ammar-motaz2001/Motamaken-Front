@@ -19,6 +19,7 @@ type MobileMenuProps = {
   currency: string;
 };
 
+/** Slide-in menu for small screens; closes on Escape or when the page changes and locks scrolling while open. */
 export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) {
   const t = useTranslations("Header");
   const pathname = usePathname();

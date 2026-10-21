@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { Field } from "@/components/ui/Field";
 import { formatCardNumber, formatExpiry, type CardForm } from "../lib/card";
 
-export function CardBrands() {
+/** Row of accepted card brands shown above the card form. */
+function CardBrands() {
   return (
     <div className="flex gap-1.5" aria-hidden>
       {["VISA", "MC", "AMEX", "mada"].map((brand) => (
@@ -23,6 +24,7 @@ type CardFieldsProps = {
   onChange: (card: CardForm) => void;
 };
 
+/** Card holder, number, expiry and CVC inputs, formatted as the user types, with per-field errors. */
 export function CardFields({ card, errors, onChange }: CardFieldsProps) {
   const t = useTranslations("Settings.payment.card");
   const set = (key: keyof CardForm, value: string) => onChange({ ...card, [key]: value });

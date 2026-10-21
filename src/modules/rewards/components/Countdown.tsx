@@ -3,11 +3,13 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+/** Time left until the target split into days, hours, minutes and seconds (never below zero). */
 function parts(target: number, now: number) {
   const seconds = Math.max(0, Math.floor((target - now) / 1000));
   return { days: Math.floor(seconds / 86400), hours: Math.floor((seconds % 86400) / 3600), minutes: Math.floor((seconds % 3600) / 60), seconds: seconds % 60 };
 }
 
+/** Days, hours, minutes and seconds left until a date, ticking every second (starts after the page loads). */
 export function Countdown({ to }: { to: string }) {
   const t = useTranslations("Rewards.countdown");
   const target = new Date(to).getTime();

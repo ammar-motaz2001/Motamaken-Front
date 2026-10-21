@@ -7,6 +7,7 @@ import { AdminHeader, AdminSearch, AdminSection, AdminTable, Cell, StatCard, Use
 
 type Result = List<AdminFeedback> & { summary: { context: string; up: number; down: number; satisfaction: number | null }[] };
 
+/** Admin › Feedback: thumbs up/down and comments users left, with satisfaction per context, from GET /admin/feedback. */
 export default async function AdminFeedbackPage({ params, searchParams }: PageProps<"/[locale]/admin/feedback">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

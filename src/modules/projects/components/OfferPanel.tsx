@@ -31,6 +31,7 @@ async function loadMyProfile() {
   }
 }
 
+/** Offer form values from an existing proposal, or empty for a new offer. */
 function formFrom(proposal?: Proposal | null): OfferForm {
   return {
     amount: proposal ? String(proposal.amount) : "",
@@ -41,6 +42,10 @@ function formFrom(proposal?: Proposal | null): OfferForm {
   };
 }
 
+/**
+ * Send, edit or withdraw an offer on a project (alone or as a team). New offers are kept as a draft so guests can sign
+ * up when sending; people without a profile give a job title and one is created.
+ */
 export function OfferPanel({ project }: { project: Project }) {
   const t = useTranslations("Projects.offer");
   const locale = useLocale();

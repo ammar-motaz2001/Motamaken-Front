@@ -17,6 +17,7 @@ import { SettingsPanel } from "./SettingsPanel";
 
 type PaymentSettingsProps = { methods: PaymentMethod[]; currencies: Currency[]; currency: string };
 
+/** Saved payment methods with add, remove and set-default (/me/payment-methods), plus the preferred currency (PATCH /me/preferences). */
 export function PaymentSettings({ methods: initial, currencies, currency: initialCurrency }: PaymentSettingsProps) {
   const t = useTranslations("Settings.payment");
   const router = useRouter();

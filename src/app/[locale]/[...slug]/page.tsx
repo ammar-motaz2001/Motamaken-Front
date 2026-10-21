@@ -8,11 +8,13 @@ import { SitePageView } from "@/modules/pages";
 /** Old addresses that now live under another page slug. */
 const ALIASES: Record<string, string> = { privacy: "privacy-policy" };
 
+/** Info page for a one-part slug from GET /pages/{slug} (old aliases mapped); null for anything else. */
 async function loadPage(slug: string[]) {
   if (slug.length !== 1 || !/^[a-z0-9-]{1,60}$/.test(slug[0])) return null;
   return (await apiGetOrNull<{ data: SitePage }>(`/pages/${ALIASES[slug[0]] ?? slug[0]}`))?.data ?? null;
 }
 
+/** Title and description of an admin-written info page; unknown addresses get none so they stay out of search results. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/[...slug]">) {
   const { locale, slug } = await params;
   const page = await loadPage(slug);

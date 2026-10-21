@@ -23,6 +23,10 @@ type ProjectViewProps = {
   reviews?: { data: Review[]; canReview: boolean } | null;
 };
 
+/**
+ * Full project page: details, budget, owner and tags, then the owner's panel or the offer form; hired parties
+ * also see the escrow and, when completed, the reviews.
+ */
 export function ProjectView({ project, viewerId, proposals, escrow, reviews }: ProjectViewProps) {
   const t = useTranslations("Projects");
   const locale = useLocale();

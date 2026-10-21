@@ -12,6 +12,7 @@ import { useMoney } from "../lib/useMoney";
 
 const PRESETS = [5, 10, 15];
 
+/** After completion, the client can tip the freelancer or team a percentage or a custom amount (POST .../escrow/tip). */
 export function TipBox({ escrow, canTip, onChanged }: { escrow: Escrow; canTip: boolean; onChanged: () => Promise<void> }) {
   const t = useTranslations("Escrow.tip");
   const format = useFormatter();

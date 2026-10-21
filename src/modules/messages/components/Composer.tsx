@@ -18,6 +18,7 @@ type ComposerProps = {
   onError: (message: string) => void;
 };
 
+/** Voice recording with the browser's MediaRecorder: start, stop to send, or cancel, with a running seconds counter. */
 function useRecorder(onDone: (blob: Blob, seconds: number) => void) {
   const recorder = useRef<MediaRecorder | null>(null);
   const startedAt = useRef(0);
@@ -57,6 +58,7 @@ function useRecorder(onDone: (blob: Blob, seconds: number) => void) {
   return { seconds, start, stop };
 }
 
+/** Message box: text with emoji picker, file attachments and voice recording. */
 export function Composer({ sending, onSendText, onSendFile, onError }: ComposerProps) {
   const t = useTranslations("Messages");
   const fileInput = useRef<HTMLInputElement>(null);

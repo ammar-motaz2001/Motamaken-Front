@@ -12,7 +12,7 @@ export function localizedPath(path: string, locale: string) {
 }
 
 /** Canonical link plus the English/Arabic versions of the same page, for search engines. */
-export function alternatesFor(path: string, locale: string): Metadata["alternates"] {
+function alternatesFor(path: string, locale: string): Metadata["alternates"] {
   return {
     canonical: localizedPath(path, locale),
     languages: {

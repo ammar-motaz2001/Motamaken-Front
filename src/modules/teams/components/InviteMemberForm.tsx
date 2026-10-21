@@ -14,6 +14,7 @@ import type { Paginated, ProfileCard } from "@/lib/api/types";
 
 const SEARCH_DELAY_MS = 300;
 
+/** Invite a freelancer to the team: search by name, pick one, set role and share, then POST /teams/{id}/members. */
 export function InviteMemberForm({ teamId, maxShare, excludeIds }: { teamId: number; maxShare: number; excludeIds: number[] }) {
   const t = useTranslations("Teams.invite");
   const router = useRouter();

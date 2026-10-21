@@ -1,6 +1,6 @@
 import type { UserBrief } from "@/lib/api/types";
 
-export type Meta = { current_page: number; last_page: number; per_page: number; total: number };
+type Meta = { current_page: number; last_page: number; per_page: number; total: number };
 
 export type List<T> = { data: T[]; meta: Meta };
 
@@ -38,7 +38,7 @@ export type Overview = {
   };
 };
 
-export type Trend = { current: number; previous: number };
+type Trend = { current: number; previous: number };
 
 export type AdminUser = {
   id: number;
@@ -62,7 +62,7 @@ export type AdminUser = {
   stats?: { projects: number; offers: number; acceptedOffers: number; openDisputes: number; reviewsReceived: number; rating: number; reportsAgainst: number; referrals: number };
 };
 
-export type KycState = "none" | "pending" | "approved" | "rejected" | "needs_update";
+type KycState = "none" | "pending" | "approved" | "rejected" | "needs_update";
 
 export type Person = { id: number; fullName: string; username?: string | null; avatarUrl: string | null };
 
@@ -85,7 +85,7 @@ export type AdminUserDetail = AdminUser & {
   } | null;
 };
 
-export type AdminLogRow = { id: number; action: string; changes: Record<string, unknown> | null; admin: Person | null; createdAt: string };
+type AdminLogRow = { id: number; action: string; changes: Record<string, unknown> | null; admin: Person | null; createdAt: string };
 
 export type UserActivity = {
   projects: { id: number; title: string; type: string; status: string; hidden: boolean; budgetMin: number; budgetMax: number; currency: string; proposals: number; createdAt: string }[];
@@ -101,7 +101,7 @@ export type UserActivity = {
   adminLog: AdminLogRow[];
 };
 
-export type ReviewRow = { id: number; projectId: number; rating: number; comment: string | null; hidden: boolean; user: Person | null; createdAt: string };
+type ReviewRow = { id: number; projectId: number; rating: number; comment: string | null; hidden: boolean; user: Person | null; createdAt: string };
 
 export type WalletBalance = { currency: string; available: number; inEscrow: number; incoming: number; pendingWithdrawals: number };
 
@@ -380,12 +380,6 @@ export type AdminSkill = { id: number; slug: string; nameEn: string; nameAr: str
 export type AdminFaqGroup = {
   id: number; nameEn: string; nameAr: string; sortOrder: number; isActive: boolean;
   faqs: { id: number; categoryId: number; questionEn: string; questionAr: string; answerEn: string; answerAr: string; audience: string; isPublished: boolean; sortOrder: number }[];
-};
-
-export type SupportTicket = {
-  id: number; subject: string; category: string; status: "open" | "answered" | "closed"; user: Person | null; assignedTo: Person | null;
-  lastMessageAt: string | null; createdAt: string;
-  messages: { id: number; isStaff: boolean; author: Person | null; body: string | null; attachment: { name: string; mime: string; size: number; url: string } | null; createdAt: string }[] | null;
 };
 
 export type Broadcast = {

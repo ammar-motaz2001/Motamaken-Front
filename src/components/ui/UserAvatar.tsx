@@ -8,6 +8,7 @@ type UserAvatarProps = {
   className?: string;
 };
 
+/** Round profile photo, or the name's first letter when there is none, with an optional online dot. */
 export function UserAvatar({ name, src, size, online, className = "" }: UserAvatarProps) {
   return (
     <span className={`relative inline-flex shrink-0 ${className}`} style={{ width: size, height: size }}>

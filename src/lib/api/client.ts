@@ -2,6 +2,7 @@ import { ApiError, toApiError } from "./errors";
 
 type Body = Record<string, unknown> | FormData;
 
+/** Browser-side API call through the /api/backend proxy (which adds the session); JSON or form data, throws ApiError on failure. */
 export async function api<T>(path: string, options: { method?: string; body?: Body } = {}): Promise<T> {
   const { method = "GET", body } = options;
   const isForm = body instanceof FormData;

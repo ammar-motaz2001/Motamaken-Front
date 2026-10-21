@@ -29,6 +29,7 @@ const ACTIVE_STATUSES = ["invited", "accepted"];
 
 type Member = Team["members"][number];
 
+/** One member row: share and role editable by the lead while the team is a draft, plus resend or remove. */
 function MemberRow({ team, member, editable }: { team: Team; member: Member; editable: boolean }) {
   const t = useTranslations("Teams");
   const locale = useLocale();
@@ -119,6 +120,10 @@ function MemberRow({ team, member, editable }: { team: Team; member: Member; edi
   );
 }
 
+/**
+ * Team page: members and shares, invite form and publish/unpublish/disband for the lead, leave for the others;
+ * shares are capped so the lead keeps a minimum.
+ */
 export function TeamDetail({ team }: { team: Team }) {
   const t = useTranslations("Teams");
   const router = useRouter();

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { preload } from "react-dom";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { Footer } from "@/components/footer/Footer";
 import { getHeaderData } from "@/components/header/data";
 import { MaintenanceGate } from "@/components/MaintenanceGate";
@@ -39,10 +39,12 @@ const mulish = Mulish({
   weight: ["300", "600"],
 });
 
+/** Pre-renders the layout once per supported language (English and Arabic). */
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/** Default title, description and social card for every page; public pages override them with their own. */
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
@@ -58,6 +60,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   };
 }
 
+/** Browser bar colour that follows the light or dark system theme. */
 export function generateViewport(): Viewport {
   return {
     themeColor: [
@@ -67,6 +70,7 @@ export function generateViewport(): Viewport {
   };
 }
 
+/** Root layout for every page: checks the language, sets fonts and direction, header and footer; non-staff see maintenance mode when on. */
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
@@ -80,6 +84,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     getTranslations({ locale, namespace: "Seo" }).then((t) => t("home")),
     getSiteSettings(),
   ]);
+  // The admin texts are a third of the bundle; only the admin panel sends them to the browser (see admin/layout.tsx).
+  const publicMessages = { ...(await getMessages()) };
+  delete publicMessages.Admin;
   // Only checked while maintenance is on, to let the staff through.
   const isStaff = Boolean(site?.maintenance.enabled && signedIn && (await getSummary())?.user.isAdmin);
 
@@ -92,7 +99,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     >
       <body className="flex flex-col">
         <StructuredData locale={locale} description={seoDescription} />
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={publicMessages}>
           <ThemeProvider>
             <AuthGateProvider signedIn={signedIn} methods={authMethods}>
               <FavoritesProvider signedIn={signedIn}>

@@ -17,6 +17,10 @@ import { Countdown } from "./Countdown";
 const RANK_TONES = ["border-[#f5b301] bg-[#f5b301]/10", "border-[#9ca3af] bg-[#9ca3af]/10", "border-[#b45309] bg-[#b45309]/10"];
 const ADDRESS = ["name", "phone", "address", "city", "country"] as const;
 
+/**
+ * Current prize draw: prizes, countdown and buying tickets with points (POST /draws/{id}/entries, sign-in asked first);
+ * a winner can claim the prize here.
+ */
 export function DrawPanel({ initial }: { initial: Draw; signedIn?: boolean }) {
   const t = useTranslations("Rewards.draw");
   const format = useFormatter();

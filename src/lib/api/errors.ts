@@ -11,6 +11,7 @@ export class ApiError extends Error {
   }
 }
 
+/** Turns an API error response into an ApiError with its message, code and the first error of each field. */
 export function toApiError(status: number, data: unknown) {
   const body = (data ?? {}) as { message?: unknown; code?: unknown; errors?: Record<string, unknown> };
   const fields = Object.fromEntries(

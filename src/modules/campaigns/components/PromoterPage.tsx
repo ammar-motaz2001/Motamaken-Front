@@ -7,6 +7,7 @@ import { CopyLink } from "./CopyLink";
 import { DailyBars } from "./DailyBars";
 import { JoinButton } from "./JoinButton";
 
+/** Promoter screen: totals of valid and rejected visits and earnings, the user's links, and campaigns open to join. */
 export async function PromoterPage({ dashboard, available }: { dashboard: PromoterDashboard; available: Campaign[] }) {
   const t = await getTranslations("Campaigns.promoter");
   const format = await getFormatter();

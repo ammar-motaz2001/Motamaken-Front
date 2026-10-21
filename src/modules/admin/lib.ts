@@ -1,14 +1,17 @@
 import type { StatusTone } from "@/components/ui/StatusPill";
 
+/** Money with its currency sign and up to two decimals, in the page language. */
 export function money(amount: number, currency: string, locale: string) {
   return new Intl.NumberFormat(locale, { style: "currency", currency, maximumFractionDigits: 2 }).format(amount);
 }
 
+/** Date and time in the page language, or a dash when there is none. */
 export function dateTime(value: string | null | undefined, locale: string) {
   if (!value) return "—";
   return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 }
 
+/** Date only in the page language, or a dash when there is none. */
 export function date(value: string | null | undefined, locale: string) {
   if (!value) return "—";
   return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(value));

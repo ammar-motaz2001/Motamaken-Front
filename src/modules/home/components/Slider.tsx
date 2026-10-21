@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRef, type ReactNode } from "react";
 
+/** Horizontal card carousel with previous/next arrows that scroll by most of a screen, mirrored in right-to-left pages. */
 export function Slider({ children }: { children: ReactNode }) {
   const t = useTranslations("Home");
   const track = useRef<HTMLDivElement>(null);

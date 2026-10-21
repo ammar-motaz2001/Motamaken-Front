@@ -22,6 +22,7 @@ type OtpFormProps = {
   className?: string;
 };
 
+/** Four-box one-time code entry with a resend countdown; checked once the last box fills, via POST /auth/otp/verify unless `verify` is given. */
 export function OtpForm({ purpose, method, target, subtitle, onVerified, verify, className }: OtpFormProps) {
   const t = useTranslations("Otp");
   const [digits, setDigits] = useState<string[]>(Array(LENGTH).fill(""));

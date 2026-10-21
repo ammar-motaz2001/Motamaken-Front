@@ -12,8 +12,10 @@ const TYPES = [
   "dispute_settlement", "appeal_adjustment", "tip", "promotion", "subscription", "campaign_funding", "campaign_earning", "campaign_refund", "draw_prize", "adjustment",
 ];
 
+/** Turns a ledger code such as "escrow_hold" into readable words. */
 const label = (value: string) => value.replaceAll("_", " ");
 
+/** Admin › Ledger: the trial balance and every double-entry transaction with filters, from GET /admin/ledger/trial-balance and /transactions. */
 export default async function AdminLedger({ params, searchParams }: PageProps<"/[locale]/admin/ledger">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

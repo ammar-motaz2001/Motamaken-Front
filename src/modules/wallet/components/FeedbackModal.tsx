@@ -13,6 +13,7 @@ export type FeedbackContext = "deposit" | "withdrawal" | "promotion" | "subscrip
 
 type FeedbackModalProps = { open: boolean; onClose: () => void; context: FeedbackContext; referenceId?: number };
 
+/** Asks "how did it go?" with thumbs up/down and a comment after a payment step such as a deposit or withdrawal (POST /feedback). */
 export function FeedbackModal({ open, onClose, context, referenceId }: FeedbackModalProps) {
   const t = useTranslations("Wallet.feedback");
   const [rating, setRating] = useState<"up" | "down" | null>(null);

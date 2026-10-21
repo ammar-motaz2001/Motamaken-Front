@@ -15,6 +15,7 @@ import type { Promotion, PromotionPackage } from "./types";
 
 const PER_PAGE = 3;
 
+/** Feature-a-project flow: pick one of the user's open projects (searchable), choose a package, then pay. */
 export function FeatureProjectModal({ open, onClose, currency }: { open: boolean; onClose: () => void; currency: string }) {
   const t = useTranslations("Promotions");
   const locale = useLocale();

@@ -25,16 +25,22 @@ const GROUPS = [
   { key: "influencers", type: "influencers" },
 ] as const;
 
+/** Responsive grid that holds the search result cards. */
 function Grid({ children }: { children: ReactNode }) {
   return <div className="card-grid grid grid-cols-[repeat(auto-fill,minmax(212px,1fr))] justify-center gap-5 sm:justify-start">{children}</div>;
 }
 
+/** Search-engine title and description of the search page. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/search">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Search" }), getTranslations({ locale, namespace: "Seo" })]);
   return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("search"), path: "/search", locale });
 }
 
+/**
+ * Search: with type "all" a few results of each kind from GET /search, otherwise one paged, filterable list of
+ * projects, requests, freelancers or influencers.
+ */
 export default async function SearchPage({ params, searchParams }: PageProps<"/[locale]/search">) {
   setRequestLocale((await params).locale);
   const t = await getTranslations("Search");

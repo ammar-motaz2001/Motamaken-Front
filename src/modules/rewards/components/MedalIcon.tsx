@@ -11,6 +11,7 @@ const MEDALS: Record<string, { Icon: LucideIcon; tone: string }> = {
   connector: { Icon: Users, tone: "bg-link/15 text-link" },
 };
 
+/** Round medal badge with the icon and colour of its code (unknown codes look like "verified"); greyed out when not earned. */
 export function MedalIcon({ code, size = 48, muted }: { code: string; size?: number; muted?: boolean }) {
   const { Icon, tone } = MEDALS[code] ?? MEDALS.verified;
 

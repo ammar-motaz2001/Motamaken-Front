@@ -18,12 +18,17 @@ const loadProject = cache(async (id: string) => {
     });
 });
 
+/** Search-engine title and description of a project, taken from its title and description. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/[id]">) {
   const { locale, id } = await params;
   const project = await loadProject(id);
   return pageMetadata({ title: `${project.title} | Mutamakin`, description: describe(project.description), path: `/projects/${project.id}`, locale, type: "article" });
 }
 
+/**
+ * Project page from GET /projects/{id}. The owner also sees the proposals; hired projects show the escrow,
+ * completed ones the reviews.
+ */
 export default async function ProjectPage({ params }: PageProps<"/[locale]/projects/[id]">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

@@ -4,6 +4,7 @@ export const NOTIFICATION_GROUPS = ["messages", "proposals", "projects", "paymen
 
 export type NotificationGroup = (typeof NOTIFICATION_GROUPS)[number];
 
+/** Page a notification opens (conversation, dispute, project, wallet...), worked out from its type and context; null when none fits. */
 export function notificationHref(notification: AppNotification) {
   const context = notification.context ?? {};
   if (notification.conversationId) return `/messages?c=${notification.conversationId}`;

@@ -7,6 +7,7 @@ import type { Escrow, Paginated } from "@/lib/api/types";
 
 const TONE = { awaiting_funding: "warning", active: "success", completed: "muted" } as const;
 
+/** The user's escrows (as client or payee) with project, amounts and status, and paging. */
 export async function EscrowList({ result, viewerId }: { result: Paginated<Escrow> | null; viewerId: number | null }) {
   const t = await getTranslations("Escrow");
   const format = await getFormatter();

@@ -9,6 +9,7 @@ import { AdminHeader, AdminSection, AdminTable, Cell, StatusTabs, UserCell, date
 
 const STATUSES = ["open", "under_review", "resolved", "withdrawn"] as const;
 
+/** Admin › Disputes: open and closed cases by status, from GET /admin/disputes. */
 export default async function AdminDisputes({ params, searchParams }: PageProps<"/[locale]/admin/disputes">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

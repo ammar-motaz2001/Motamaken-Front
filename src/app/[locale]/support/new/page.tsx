@@ -2,11 +2,13 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { NewTicketForm } from "@/modules/support";
 
+/** Browser title of the new support ticket screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/support/new">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Support" });
   return { title: `${t("new")} | Mutamakin`, robots: { index: false } };
 }
 
+/** New support ticket: the ticket form (it posts to the API itself). */
 export default async function NewSupportTicket({ params }: PageProps<"/[locale]/support/new">) {
   setRequestLocale((await params).locale);
   const t = await getTranslations("Support");

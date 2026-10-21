@@ -6,6 +6,7 @@ import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, InfoGrid, St
 import { EscrowPanel } from "@/modules/admin/components/EscrowPanel";
 import { adminGet, getAdminPermissions } from "@/modules/admin/server";
 
+/** Admin › Project: details, proposals, escrow and disputes with moderation actions, from GET /admin/projects/{id}. */
 export default async function AdminProjectPage({ params }: PageProps<"/[locale]/admin/projects/[id]">) {
   const { locale: routeLocale, id } = await params;
   setRequestLocale(routeLocale);

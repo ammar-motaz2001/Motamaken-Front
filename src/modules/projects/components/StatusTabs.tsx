@@ -6,6 +6,7 @@ type StatusTabsProps = {
   tabs: { value: string; label: string }[];
 };
 
+/** Underlined status tabs that link to `?status=`, with the current one marked. */
 export function StatusTabs({ pathname, active, tabs }: StatusTabsProps) {
   return (
     <nav className="flex gap-5 overflow-x-auto border-b border-border [scrollbar-width:none]">

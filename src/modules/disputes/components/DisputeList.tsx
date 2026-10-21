@@ -8,6 +8,7 @@ import { Link } from "@/i18n/navigation";
 import type { Dispute, Paginated } from "@/lib/api/types";
 import { DISPUTE_TONE } from "../lib";
 
+/** The user's disputes with project, milestone, amount and status, and paging. */
 export async function DisputeList({ result }: { result: Paginated<Dispute> | null }) {
   const t = await getTranslations("Disputes");
   const format = await getFormatter();

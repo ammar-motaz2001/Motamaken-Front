@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { formatDuration } from "@/lib/format";
 
+/** Play/pause control for a voice message with its elapsed and total time. */
 export function VoiceMessage({ url, duration }: { url: string; duration: number }) {
   const t = useTranslations("Messages");
   const audio = useRef<HTMLAudioElement>(null);

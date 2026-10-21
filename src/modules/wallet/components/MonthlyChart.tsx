@@ -7,6 +7,7 @@ export type MonthlyRow = { month: string; income: number; spending: number };
 
 const HEIGHT = 160;
 
+/** Bar chart of income and spending per month, with the figures shown for the hovered month. */
 export function MonthlyChart({ rows, currency }: { rows: MonthlyRow[]; currency: string }) {
   const t = useTranslations("Wallet.chart");
   const locale = useLocale();

@@ -15,6 +15,7 @@ type Draft = { id: number | null; title: string; description: string; link: stri
 
 const MAX_BYTES = 8 * 1024 * 1024;
 
+/** Portfolio works with image, title, link and description, added, edited and removed through /me/portfolio. */
 export function PortfolioSection({ initial }: { initial: PortfolioItem[] }) {
   const t = useTranslations("ProfileEditor.portfolio");
   const [items, setItems] = useState(initial);

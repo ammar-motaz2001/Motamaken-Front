@@ -3755,7 +3755,7 @@
         "keyword": "كلمة"
       },
       "value": "القيمة",
-      "valueHint": "مثال: name@spam.com أو +966500000000 أو spam.com أو 10.0.0.1 أو كلمة",
+      "valueHint": "مثال: name@spam.com أو +966500000000 أو spam.com أو 203.0.113.7 أو كلمة",
       "reason": "السبب",
       "expiresAt": "ينتهي في",
       "expiresHint": "YYYY-MM-DD، أو فارغ بلا نهاية.",

@@ -11,6 +11,7 @@ import { StatusTabs } from "./StatusTabs";
 
 const STATUSES = ["", "pending", "accepted", "declined", "withdrawn"] as const;
 
+/** The user's sent offers in status tabs, each with its project, amount and status, and paging. */
 export function MyOffers({ result, status }: { result: Paginated<Proposal> | null; status: string }) {
   const t = useTranslations("Projects");
   const locale = useLocale();

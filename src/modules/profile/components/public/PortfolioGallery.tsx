@@ -7,6 +7,7 @@ import { Modal } from "@/components/ui/Modal";
 import type { PortfolioItem } from "@/lib/api/types";
 import { ReportButton } from "@/modules/reports";
 
+/** Grid of portfolio works that open in a larger view; an empty-state message when there are none. */
 export function PortfolioGallery({ items, signedIn, canReport }: { items: PortfolioItem[]; signedIn: boolean; canReport: boolean }) {
   const t = useTranslations("PublicProfile.portfolio");
   const [open, setOpen] = useState<PortfolioItem | null>(null);

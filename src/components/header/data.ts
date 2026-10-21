@@ -8,6 +8,7 @@ export type HeaderData = {
   categories: Category[];
 };
 
+/** Everything the header needs, loaded on the server: the account summary (signed in only), currencies, countries, categories. */
 export async function getHeaderData(signedIn: boolean): Promise<HeaderData> {
   const [summary, currencies, countries, categories] = await Promise.all([
     signedIn ? getSummary() : null,

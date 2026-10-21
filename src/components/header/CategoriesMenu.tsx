@@ -10,6 +10,7 @@ import type { Category, CategoryType } from "@/lib/api/types";
 
 const TABS: CategoryType[] = ["project", "influencer"];
 
+/** Categories mega-menu with project and influencer tabs, each category linking to its list. */
 export function CategoriesMenu({ categories }: { categories: Category[] }) {
   const t = useTranslations("Header");
   const ref = useRef<HTMLLIElement>(null);

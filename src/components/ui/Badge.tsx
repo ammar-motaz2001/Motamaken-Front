@@ -1,3 +1,4 @@
+/** Unread-count bubble; hidden at zero and capped at "99+". */
 export function Badge({ count, tone = "danger", className = "" }: { count: number; tone?: "danger" | "brand"; className?: string }) {
   if (count <= 0) return null;
 

@@ -13,6 +13,7 @@ import { StatusTabs } from "./StatusTabs";
 
 const STATUSES = ["", "draft", "open", "in_progress", "completed", "closed"] as const;
 
+/** The user's posted projects in status tabs with buttons to post a new project or request, and paging. */
 export function MyProjects({ result, status }: { result: Paginated<Project> | null; status: string }) {
   const t = useTranslations("Projects");
   const locale = useLocale();

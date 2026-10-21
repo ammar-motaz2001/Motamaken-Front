@@ -7,6 +7,7 @@ import { Modal } from "@/components/ui/Modal";
 
 const WELCOME_POINTS = 50;
 
+/** Welcome dialog after sign-up, mentioning the starting points, with a button on to sign in. */
 export function WelcomeModal({ open, onContinue }: { open: boolean; onContinue: () => void }) {
   const t = useTranslations("Auth");
 

@@ -21,6 +21,7 @@ type ProjectTabsProps = {
   showSeeMore?: boolean;
 };
 
+/** Home section with one tab per category; each tab loads its projects from GET /projects on first open and pages in more. */
 export function ProjectTabs({ title, type, categories, initial, showSeeMore }: ProjectTabsProps) {
   const t = useTranslations("Home");
   const [active, setActive] = useState(categories[0]?.slug ?? "");

@@ -4,6 +4,7 @@ import { pickParams } from "@/lib/params";
 import { ActionButton, AdminHeader, AdminSearch, AdminSection, type NotificationTemplateRow } from "@/modules/admin";
 import { adminGet } from "@/modules/admin/server";
 
+/** Admin › Templates: the text of each notification type, editable per language, from GET /admin/notification-templates. */
 export default async function AdminTemplates({ params, searchParams }: PageProps<"/[locale]/admin/templates">) {
   setRequestLocale((await params).locale);
   const filter = pickParams(await searchParams, ["group", "q"]);

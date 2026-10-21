@@ -6,6 +6,7 @@ import type { Draw, PointsSummary } from "@/lib/api/types";
 import { SettingsPanel } from "@/modules/settings";
 import { Countdown } from "./Countdown";
 
+/** Points screen: current balance, ways to earn, the movement history and the current draw to spend points on. */
 export async function PointsPage({ summary, draw }: { summary: PointsSummary; draw: Draw | null }) {
   const t = await getTranslations("Rewards.points");
   const format = await getFormatter();

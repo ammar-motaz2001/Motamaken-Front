@@ -5,6 +5,7 @@ import type { ProfileCard as Profile } from "@/lib/api/types";
 import { FavoriteButton } from "./FavoriteButton";
 import { HireButton } from "./HireButton";
 
+/** Card of a freelancer or influencer: photo (or initial), name, role and stars, linking to the public profile. */
 export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn: boolean }) {
   const t = useTranslations("Home");
   const stars = Math.round(profile.rating);

@@ -17,11 +17,13 @@ type Analytics = {
   moderation: { reports: number; byTarget: Record<string, number>; byStatus: Record<string, number> };
 };
 
+/** Turns a count-by-key record into bar-list rows, biggest first, with translated labels. */
 const rows = (record: Record<string, number>, label: (key: string) => string) =>
   Object.entries(record)
     .sort((a, b) => b[1] - a[1])
     .map(([key, value]) => ({ label: label(key), value }));
 
+/** Admin › Analytics: growth, money, services, rewards and moderation figures for a period, from GET /admin/analytics. */
 export default async function AdminAnalytics({ params, searchParams }: PageProps<"/[locale]/admin/analytics">) {
   setRequestLocale((await params).locale);
   const filter = pickParams(await searchParams, ["from", "to"]);

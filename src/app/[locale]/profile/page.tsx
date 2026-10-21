@@ -6,11 +6,13 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { Profile } from "@/lib/api/types";
 import { ProfileForm, ProfileSections } from "@/modules/profile";
 
+/** Browser title of the edit-profile screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/profile">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Profile" });
   return { title: `${t("title")} | Mutamakin` };
 }
 
+/** Edit profile: the public profile form and its sections (skills, portfolio...) from GET /me/profile, with a link to the public view. */
 export default async function ProfilePage({ params }: PageProps<"/[locale]/profile">) {
   setRequestLocale((await params).locale);
   const [profile, countries, summary, t] = await Promise.all([

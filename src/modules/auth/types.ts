@@ -25,8 +25,9 @@ export type LoginPayload = {
 
 export type FieldErrors<T extends string> = Partial<Record<T, ValidationKey>>;
 
-export const AUTH_METHODS: readonly AuthMethod[] = ["email", "phone"];
+const AUTH_METHODS: readonly AuthMethod[] = ["email", "phone"];
 
+/** Sign-in method from the URL; anything unknown or switched off falls back to the given default or the first allowed method. */
 export function parseMethod(
   value: string | string[] | undefined,
   fallback: AuthMethod,

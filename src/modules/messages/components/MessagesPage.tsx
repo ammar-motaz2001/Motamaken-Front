@@ -19,6 +19,10 @@ type MessagesPageProps = {
   initialSelected: number | null;
 };
 
+/**
+ * Inbox: conversation list with search and sort beside the open chat (one at a time on phones). Re-reads
+ * GET /conversations on a timer while the tab is visible.
+ */
 export function MessagesPage({ initial, initialSelected }: MessagesPageProps) {
   const t = useTranslations("Messages");
   const router = useRouter();

@@ -22,6 +22,7 @@ const ACTIONS: Record<(typeof TARGETS)[number], string[]> = {
   team: ["none", "warned", "suspended"],
 };
 
+/** Admin › Reports: content users reported, by status, to prioritise and resolve, from GET /admin/reports. */
 export default async function AdminReports({ params, searchParams }: PageProps<"/[locale]/admin/reports">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

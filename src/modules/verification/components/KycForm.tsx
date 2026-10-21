@@ -20,6 +20,7 @@ type Files = { front: File | null; back: File | null; selfie: File | null };
 // An adult today at the latest, so the calendar opens on a plausible year.
 const adultMax = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate()).toISOString().slice(0, 10);
 
+/** Identity check form: document type and number, name, birth date and photos (front, back, selfie), sent to POST /me/kyc. */
 export function KycForm({ defaultName, onSubmitted }: { defaultName: string; onSubmitted: (submission: KycSubmission) => void }) {
   const t = useTranslations("Verification.form");
   const [form, setForm] = useState<Form>({ documentType: "national_id", documentNumber: "", fullName: defaultName, dateOfBirth: "" });

@@ -8,6 +8,7 @@ const PRIVATE = [
   "/reset-password", "/oauth", "/api/",
 ];
 
+/** robots.txt: lets crawlers in everywhere except the private areas (in both languages) and points them to the sitemap. */
 export default function robots(): MetadataRoute.Robots {
   const disallow = PRIVATE.flatMap((path) => [path, `/ar${path}`]);
   return {

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 const VIEW = 280;
 const OUTPUT = 512;
 
+/** Square crop of a chosen photo with drag and zoom; returns the cropped image. */
 export function CropStep({ file, busy, onCrop }: { file: Blob; busy: boolean; onCrop: (blob: Blob) => void }) {
   const t = useTranslations("Promotions.photo");
   const [url, setUrl] = useState("");

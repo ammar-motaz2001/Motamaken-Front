@@ -8,6 +8,7 @@ import type { PromotionPackage } from "./types";
 
 type PackagesStepProps = { currency: string; intro: string; illustration?: ReactNode; onChoose: (item: PromotionPackage) => void };
 
+/** Promotion packages with price, length and reach, from GET /promotions/packages in the user's currency. */
 export function PackagesStep({ currency, intro, illustration, onChoose }: PackagesStepProps) {
   const t = useTranslations("Promotions.packages");
   const locale = useLocale();

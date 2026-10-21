@@ -13,6 +13,7 @@ type ErrorModalProps = {
   message: string;
 };
 
+/** Error dialog of the auth screens with a "need help" link to the contact page. */
 export function ErrorModal({ open, onClose, title, message }: ErrorModalProps) {
   const t = useTranslations("Auth");
 

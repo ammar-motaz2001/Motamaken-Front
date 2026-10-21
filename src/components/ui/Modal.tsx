@@ -13,6 +13,7 @@ type ModalProps = {
 
 const openModals: symbol[] = [];
 
+/** Centred dialog over a dimmed page; Escape closes only the top one and the page stays locked until the last closes. */
 export function Modal({ open, onClose, title, showClose, children }: ModalProps) {
   const t = useTranslations("Auth");
 

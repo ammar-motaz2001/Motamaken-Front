@@ -24,6 +24,7 @@ const FONTS = {
   button: "font-button text-sm font-semibold",
 };
 
+/** The site's button in its colour variants (solid, outline, orange, ghost...), a spinner while loading, and a link when `href` is given. */
 export function Button({
   variant = "primary",
   font = "primary",

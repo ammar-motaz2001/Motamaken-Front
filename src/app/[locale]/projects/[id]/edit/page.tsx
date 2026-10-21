@@ -6,6 +6,7 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { Project } from "@/lib/api/types";
 import { formFromProject, ProjectWizard } from "@/modules/projects";
 
+/** Edit project: the wizard prefilled from GET /projects/{id}; only the owner of a still-open project may use it. */
 export default async function EditProjectPage({ params }: PageProps<"/[locale]/projects/[id]/edit">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

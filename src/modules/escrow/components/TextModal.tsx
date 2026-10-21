@@ -19,6 +19,7 @@ type TextModalProps = {
   onSubmit: (text: string) => Promise<string | null>;
 };
 
+/** Dialog with one text box (reason, delivery note...) that checks a minimum length and shows the submit error. */
 export function TextModal({ open, onClose, title, label, placeholder, submitLabel, cancelLabel, minLength = 0, required, children, onSubmit }: TextModalProps) {
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);

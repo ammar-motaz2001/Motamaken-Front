@@ -11,6 +11,7 @@ import type { FieldErrors } from "../types";
 import { PasswordStrength } from "./PasswordStrength";
 import { actionsClasses, fieldsClasses, formClasses } from "./styles";
 
+/** New password and confirmation, sent with the reset token to POST /auth/password/reset; then success or error screen. */
 export function ResetPasswordForm({ token }: { token: string }) {
   const t = useTranslations("ResetPassword");
   const tv = useTranslations("Validation");

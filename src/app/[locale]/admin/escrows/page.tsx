@@ -8,6 +8,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const STATUSES = ["awaiting_funding", "active", "completed", "cancelled"] as const;
 
+/** Admin › Escrows: every held payment with totals held per currency and filters, from GET /admin/escrows. */
 export default async function AdminEscrows({ params, searchParams }: PageProps<"/[locale]/admin/escrows">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

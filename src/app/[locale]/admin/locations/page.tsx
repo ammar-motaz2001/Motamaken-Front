@@ -8,6 +8,7 @@ import { adminGet } from "@/modules/admin/server";
 type CountryRow = { id: number; code: string; nameEn: string; nameAr: string; isActive: boolean; cities: number };
 type CityRow = { id: number; nameEn: string; nameAr: string; isActive: boolean };
 
+/** Admin › Locations: countries and, for the chosen one, its cities, from GET /admin/countries and its /cities list. */
 export default async function AdminLocations({ params, searchParams }: PageProps<"/[locale]/admin/locations">) {
   setRequestLocale((await params).locale);
   const selected = pickParams(await searchParams, ["country"]).country;

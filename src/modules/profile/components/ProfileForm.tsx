@@ -17,6 +17,7 @@ import type { Country, Profile } from "@/lib/api/types";
 
 type Form = { type: string; jobTitle: string; bio: string; countryId: string; cityId: string };
 
+/** Public profile basics: freelancer or influencer, job title, bio, country and city, saved with PUT /me/profile. */
 export function ProfileForm({ profile, countries }: { profile: Profile | null; countries: Country[] }) {
   const t = useTranslations("Profile");
   const router = useRouter();

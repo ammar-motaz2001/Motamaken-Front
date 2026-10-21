@@ -26,6 +26,10 @@ type EscrowPanelProps = {
 
 const STATUS_TONE = { awaiting_funding: "warning", active: "success", completed: "muted" } as const;
 
+/**
+ * Escrow box on a hired project: setup for the client, summary, team split approval, milestones and tip;
+ * re-reads GET /projects/{id}/escrow after every change.
+ */
 export function EscrowPanel({ projectId, escrow: initial, viewerId, isClient, offer }: EscrowPanelProps) {
   const t = useTranslations("Escrow");
   const router = useRouter();

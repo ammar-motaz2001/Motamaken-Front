@@ -5,6 +5,7 @@ import { useTransition } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { deleteSession } from "@/modules/auth/actions";
 
+/** Sign-out link: ends the session and goes to the sign-in page. */
 export function LogoutButton() {
   const t = useTranslations("Header");
   const router = useRouter();

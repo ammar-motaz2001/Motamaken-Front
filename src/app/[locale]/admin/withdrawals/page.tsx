@@ -7,6 +7,7 @@ import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, StatusTabs, 
 
 const STATUSES = ["pending", "paid", "rejected", "cancelled"] as const;
 
+/** Admin › Withdrawals: payout requests by status to approve or reject, from GET /admin/withdrawals. */
 export default async function AdminWithdrawals({ params, searchParams }: PageProps<"/[locale]/admin/withdrawals">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

@@ -15,6 +15,7 @@ type Report = {
 
 type Movement = { id: number; user: Person | null; amount: number; reason: string; label: string; manual: boolean; createdAt: string };
 
+/** Admin › Points: earning rules, a period report and every point movement, from GET /admin/points/*. */
 export default async function AdminPoints({ params, searchParams }: PageProps<"/[locale]/admin/points">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

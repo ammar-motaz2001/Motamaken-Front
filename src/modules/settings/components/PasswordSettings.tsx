@@ -11,6 +11,7 @@ import { PasswordStrength } from "@/modules/auth/components/PasswordStrength";
 import { hasErrors, validatePassword, validatePasswordConfirmation } from "@/modules/auth/lib/validation";
 import { SettingsPanel } from "./SettingsPanel";
 
+/** Change password: current, new and confirmation, checked here and sent to POST /me/password. */
 export function PasswordSettings() {
   const t = useTranslations("Settings.password");
   const v = useTranslations("Validation");

@@ -10,6 +10,7 @@ const TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 type PhotoStepProps = { name: string; currentUrl: string | null; onCurrent: () => void; onFile: (file: Blob) => void };
 
+/** Choose the photo for a featured profile: keep the current one, upload or drop a file, or take one with the camera. */
 export function PhotoStep({ name, currentUrl, onCurrent, onFile }: PhotoStepProps) {
   const t = useTranslations("Promotions.photo");
   const input = useRef<HTMLInputElement>(null);

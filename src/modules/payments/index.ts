@@ -1,1 +1,1 @@
-export { PayModal, type PayModalProps } from "./components/PayModal";
+export { PayModal } from "./components/PayModal";

@@ -18,6 +18,7 @@ type Stats = {
 
 const RANGES = ["7", "30", "90"] as const;
 
+/** Admin › Messages: chat activity stats (conversations, messages by type, top senders) from GET /admin/messages/stats. */
 export default async function AdminMessages({ params, searchParams }: PageProps<"/[locale]/admin/messages">) {
   setRequestLocale((await params).locale);
   const picked = pickParams(await searchParams, ["days"]).days;

@@ -15,6 +15,7 @@ const ICONS = { success: CircleCheck, warning: Clock, danger: CircleX, muted: Ci
 
 type VerificationPageProps = { user: User; kyc: { status: KycStatus; submission: KycSubmission | null }; hasPaymentMethod: boolean };
 
+/** Verification screen: email, phone, identity and payment method checks with their status, and the KYC form when needed. */
 export function VerificationPage({ user, kyc: initial, hasPaymentMethod }: VerificationPageProps) {
   const t = useTranslations("Verification");
   const format = useFormatter();

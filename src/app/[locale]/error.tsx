@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { ErrorState } from "@/components/error/ErrorState";
 import { Button } from "@/components/ui/Button";
 
+/** 500 screen for any page that throws: logs the error, offers a retry and shows the reference code (digest) for support. */
 export default function ErrorPage({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
   const t = useTranslations("Errors");
 

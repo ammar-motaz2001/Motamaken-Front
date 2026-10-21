@@ -10,6 +10,7 @@ type ShareStepperProps = {
   label: string;
 };
 
+/** Minus/plus control for a percentage share (e.g. a team member's cut), moving in steps within min and max. */
 export function ShareStepper({ value, onChange, step = 5, min = 0, max = 100, size = "sm", label }: ShareStepperProps) {
   const button = `flex items-center justify-center rounded-full border border-border bg-surface text-muted transition-colors hover:border-brand hover:text-brand disabled:opacity-40 ${
     size === "lg" ? "size-8" : "size-6"

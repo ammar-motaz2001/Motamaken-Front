@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import type { Escrow } from "@/lib/api/types";
 import { useMoney } from "../lib/useMoney";
 
+/** Escrow totals (total, held, released, refunded) and a bar of how much has been paid out or refunded. */
 export function EscrowSummary({ escrow }: { escrow: Escrow }) {
   const t = useTranslations("Escrow.summary");
   const money = useMoney(escrow.currency);

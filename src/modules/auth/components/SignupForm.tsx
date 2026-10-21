@@ -52,6 +52,7 @@ const INITIAL_VALUES: Values = {
   subscribe: true,
 };
 
+/** Checks every sign-up field, only email or phone depending on the method, and that the terms are accepted. */
 function validate(values: Values, method: AuthMethod): FieldErrors<FieldName> {
   return {
     firstName: validateName(values.firstName),
@@ -64,6 +65,10 @@ function validate(values: Values, method: AuthMethod): FieldErrors<FieldName> {
   };
 }
 
+/**
+ * Sign-up form: validates, confirms, passes reCAPTCHA, then POST /auth/signup and on to the code screen. Records a visit
+ * for a referral code once per session.
+ */
 export function SignupForm({ method, referralCode }: { method: AuthMethod; referralCode?: string }) {
   const t = useTranslations("Signup");
   const tv = useTranslations("Validation");

@@ -8,6 +8,7 @@ import type { PublicProfile } from "@/lib/api/types";
 import { ReportButton } from "@/modules/reports";
 import { MedalIcon } from "@/modules/rewards";
 
+/** Side column of a public profile: photo, name, online status, member since, rating, verifications, medals, skills and languages, with edit or report. */
 export async function ProfileSidebar({ data, signedIn }: { data: PublicProfile; signedIn: boolean }) {
   const t = await getTranslations("PublicProfile");
   const format = await getFormatter();

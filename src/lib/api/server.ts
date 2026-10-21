@@ -5,8 +5,9 @@ import { SESSION_COOKIE } from "@/lib/session";
 import { ApiError, toApiError } from "./errors";
 import { visitorHeaders } from "./visitor";
 
-export const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 
+/** Server-side GET to the API with the session token and visitor headers; a revoked token signs the user out, errors throw ApiError. */
 export async function apiGet<T>(path: string): Promise<T> {
   if (!API_URL) throw new ApiError(503);
 
@@ -31,6 +32,7 @@ export async function apiGet<T>(path: string): Promise<T> {
   return data as T;
 }
 
+/** Like apiGet but returns null on API errors (Next.js redirects and not-found still pass through). */
 export async function apiGetOrNull<T>(path: string): Promise<T | null> {
   return apiGet<T>(path).catch((error: unknown) => {
     unstable_rethrow(error);

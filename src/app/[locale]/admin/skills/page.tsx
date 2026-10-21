@@ -5,6 +5,7 @@ import { pickParams, toQuery } from "@/lib/params";
 import { ActionButton, AdminHeader, AdminSearch, AdminSection, AdminTable, Cell, type AdminSkill } from "@/modules/admin";
 import { adminGet } from "@/modules/admin/server";
 
+/** Admin › Skills: the skill list and skills users typed that are not on it yet, from GET /admin/skills. */
 export default async function AdminSkills({ params, searchParams }: PageProps<"/[locale]/admin/skills">) {
   setRequestLocale((await params).locale);
   const filter = pickParams(await searchParams, ["q", "categoryId"]);

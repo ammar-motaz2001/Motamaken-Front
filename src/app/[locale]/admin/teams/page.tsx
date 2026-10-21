@@ -8,6 +8,7 @@ import { adminGet } from "@/modules/admin/server";
 
 const STATUSES = ["active", "draft", "disbanded"] as const;
 
+/** Admin › Teams: every team with search, from GET /admin/teams. */
 export default async function AdminTeams({ params, searchParams }: PageProps<"/[locale]/admin/teams">) {
   setRequestLocale((await params).locale);
   const query = await searchParams;

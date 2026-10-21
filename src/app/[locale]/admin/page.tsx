@@ -25,6 +25,7 @@ import { CHART_COLORS } from "@/modules/admin/components/charts/colors";
 
 const RANGES = ["7", "30", "90"] as const;
 
+/** Admin › Overview: totals, queues to work, charts and newest users over a chosen range, from GET /admin/overview. */
 export default async function AdminOverview({ params, searchParams }: PageProps<"/[locale]/admin">) {
   setRequestLocale((await params).locale);
   const picked = pickParams(await searchParams, ["days"]).days;

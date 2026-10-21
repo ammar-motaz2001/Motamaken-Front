@@ -8,6 +8,7 @@ type StatusScreenProps = {
   action: { label: string; href: string };
 };
 
+/** Full-page success or error message with one action button (used after password resets). */
 export function StatusScreen({ type, title, message, action }: StatusScreenProps) {
   return (
     <section className="flex flex-col items-center gap-4 px-4 pt-12 pb-[120px] text-center">

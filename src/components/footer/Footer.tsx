@@ -74,6 +74,7 @@ const LEGAL = [
   { key: "terms", href: "/terms" },
 ] as const;
 
+/** App Store / Google Play badge linking to the store page in a new tab. */
 function StoreBadge({ href, icon, caption, store }: { href: string; icon: React.ReactNode; caption: string; store: string }) {
   return (
     <a
@@ -91,6 +92,7 @@ function StoreBadge({ href, icon, caption, store }: { href: string; icon: React.
   );
 }
 
+/** Site footer: call-to-action strip, info page links, social links and app badges set by the admins (site settings). */
 export function Footer({ site }: { site: PublicSiteSettings | null }) {
   const t = useTranslations("Footer");
   const socials = SOCIALS.filter(({ key }) => site?.social[key]);

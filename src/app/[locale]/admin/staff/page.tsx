@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, RoleEditor, UserCell, dateTime, type AdminRoleRow, type StaffMember } from "@/modules/admin";
 import { adminGet } from "@/modules/admin/server";
 
+/** Admin › Staff: staff accounts and roles with their permissions, from GET /admin/staff and /admin/roles. */
 export default async function AdminStaff({ params }: PageProps<"/[locale]/admin/staff">) {
   setRequestLocale((await params).locale);
   const [t, locale, staff, roles] = await Promise.all([

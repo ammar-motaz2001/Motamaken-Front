@@ -30,6 +30,7 @@ type AddBalanceModalProps = {
   currency: string;
 };
 
+/** Top up the wallet: amount, currency and one of the methods the admins offer (GET /site-settings), then POST /wallet/deposits. */
 export function AddBalanceModal({ open, onClose, onDone, currencies, currency: initialCurrency }: AddBalanceModalProps) {
   const t = useTranslations("Wallet.add");
   const [step, setStep] = useState<Step>("amount");

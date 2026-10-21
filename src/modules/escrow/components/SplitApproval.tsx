@@ -13,6 +13,7 @@ import { SPLIT_TONE } from "../lib/status";
 import { useMoney } from "../lib/useMoney";
 import { TextModal } from "./TextModal";
 
+/** Team members approve or object to their share of the escrow; shows who has objected so far. */
 export function SplitApproval({ escrow, viewerId, onChanged }: { escrow: Escrow; viewerId: number; onChanged: () => Promise<void> }) {
   const t = useTranslations("Escrow.split");
   const money = useMoney(escrow.currency);

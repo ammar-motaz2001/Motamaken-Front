@@ -9,6 +9,7 @@ import { savePreference } from "./preferences";
 
 const subscribe = () => () => {};
 
+/** Light/dark switch; saves the choice to the account when signed in (waits for the browser before showing the state). */
 export function ThemeToggle({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header");
   const { resolvedTheme, setTheme } = useTheme();

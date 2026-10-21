@@ -1,7 +1,7 @@
 import type { Project } from "@/lib/api/types";
 
 export const STEPS = ["details", "budget", "publish"] as const;
-export type StepKey = (typeof STEPS)[number];
+type StepKey = (typeof STEPS)[number];
 
 export type ProjectForm = {
   categoryId: string;
@@ -32,6 +32,7 @@ export const EMPTY_FORM: ProjectForm = {
   cityId: "",
 };
 
+/** Wizard values from an existing project, for the edit screen. */
 export function formFromProject(project: Project, countryId: string, cityId: string): ProjectForm {
   return {
     categoryId: String(project.category.id),
@@ -47,6 +48,7 @@ export function formFromProject(project: Project, countryId: string, cityId: str
 
 type Translate = (key: string, values?: Record<string, number>) => string;
 
+/** Errors of one wizard step: category, title and description on "details"; budget range and currency on "budget". */
 export function validateStep(step: StepKey, form: ProjectForm, t: Translate): FormErrors {
   if (step === "details") {
     return {
@@ -66,14 +68,17 @@ export function validateStep(step: StepKey, form: ProjectForm, t: Translate): Fo
   return {};
 }
 
+/** True when any wizard field has an error. */
 export function hasErrors(errors: FormErrors) {
   return Object.values(errors).some(Boolean);
 }
 
+/** Wizard step that holds a field, so an API error can send the user back to it. */
 export function stepOfField(field: string): StepKey {
   return STEP_FIELDS.details.includes(field as keyof ProjectForm) ? "details" : "budget";
 }
 
+/** Wizard values as the projects API expects them: numbers for ids and budget, trimmed text, null for no location. */
 export function toPayload(form: ProjectForm) {
   return {
     categoryId: Number(form.categoryId),

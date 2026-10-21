@@ -20,6 +20,7 @@ const key = (kind: Kind, id: number) => `${kind}:${id}`;
 /** Hearts a guest pressed, kept on this device until they have an account. */
 const GUEST_KEY = "mutamakin:guest-favorites";
 
+/** Hearts a guest saved on this device; an empty list when storage is blocked or broken. */
 function readGuest(): string[] {
   try {
     return JSON.parse(localStorage.getItem(GUEST_KEY) ?? "[]") as string[];
@@ -28,6 +29,7 @@ function readGuest(): string[] {
   }
 }
 
+/** Stores the guest's hearts on this device (removes the key when empty). */
 function writeGuest(items: Set<string>) {
   try {
     if (items.size) localStorage.setItem(GUEST_KEY, JSON.stringify([...items]));
@@ -98,4 +100,5 @@ export function FavoritesProvider({ children }: { signedIn?: boolean; children: 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>;
 }
 
+/** Reads the saved-items state and the heart toggle from the nearest FavoritesProvider. */
 export const useFavorites = () => useContext(FavoritesContext);

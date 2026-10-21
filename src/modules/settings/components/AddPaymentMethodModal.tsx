@@ -16,6 +16,10 @@ import { CardFields } from "./CardFields";
 
 type Step = "form" | "success" | "error";
 
+/**
+ * Add a card or PayPal account (POST /me/payment-methods). With Moyasar on, the card goes to Moyasar from the browser,
+ * passes 3-D Secure in a pop-up, and only its token reaches the API.
+ */
 export function AddPaymentMethodModal({ open, onClose, onSaved }: { open: boolean; onClose: () => void; onSaved: (method: PaymentMethod) => void }) {
   const t = useTranslations("Settings.payment");
   const [type, setType] = useState<"card" | "paypal">("card");

@@ -48,6 +48,7 @@ const EXTRA_LINKS = [
 
 const itemClasses = "flex w-full items-center gap-2 px-3 py-2 text-start text-sm hover:bg-surface-muted";
 
+/** Avatar menu of a signed-in user: account links, unread message count, post a project/request and sign out. */
 export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMessages: number }) {
   const t = useTranslations("Header");
   const router = useRouter();

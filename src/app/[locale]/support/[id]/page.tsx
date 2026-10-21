@@ -8,6 +8,7 @@ import { CloseTicketButton, ReplyBox, TicketThread, type SupportTicket } from "@
 
 const TONES = { open: "warning", answered: "success", closed: "muted" } as const;
 
+/** One support ticket and its replies from GET /support/{id}; the user can answer or close it while it is open. */
 export default async function SupportTicketPage({ params }: PageProps<"/[locale]/support/[id]">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { DisputeEntry } from "@/lib/api/types";
 
+/** Dispute history: system events as dividers, messages as bubbles with sender, time and attachments. */
 export function Timeline({ entries, viewerId }: { entries: DisputeEntry[]; viewerId: number }) {
   const t = useTranslations("Disputes.case");
   const format = useFormatter();

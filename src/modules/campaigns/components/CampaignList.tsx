@@ -8,6 +8,7 @@ import { CampaignStatusPill } from "./CampaignStatusPill";
 
 const STATUSES = ["active", "paused", "draft", "completed", "cancelled"] as const;
 
+/** The user's campaigns in status tabs with budget used, cost per visit and visits, and a button to create one. */
 export async function CampaignList({ campaigns, status }: { campaigns: Campaign[]; status?: string }) {
   const t = await getTranslations("Campaigns");
   const format = await getFormatter();

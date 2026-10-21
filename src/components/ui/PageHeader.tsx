@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 
 type Crumb = { label: string; href?: string };
 
+/** Breadcrumb trail, page title, optional subtitle and action buttons at the top of a page. */
 export function PageHeader({ crumbs, title, subtitle, actions }: {
   crumbs: Crumb[];
   title: string;

@@ -4,6 +4,7 @@ import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+/** Promoter's tracking link with a copy button that confirms for two seconds. */
 export function CopyLink({ link }: { link: string }) {
   const t = useTranslations("Campaigns.promoter");
   const [copied, setCopied] = useState(false);

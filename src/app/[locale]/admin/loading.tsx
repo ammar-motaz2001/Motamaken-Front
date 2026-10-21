@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { LogoLoader } from "@/components/ui/LogoLoader";
 
+/** Logo animation shown while an admin screen loads. */
 export default function Loading() {
   const t = useTranslations("Auth");
   return <LogoLoader label={t("loadingPage")} size={220} />;

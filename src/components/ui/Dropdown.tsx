@@ -12,6 +12,7 @@ type DropdownProps = {
   label: string;
 };
 
+/** Small menu that opens under a trigger, marks the selected item and closes on outside click or Escape. */
 export function Dropdown({ trigger, items, selected, onSelect, label }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

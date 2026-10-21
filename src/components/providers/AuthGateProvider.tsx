@@ -19,10 +19,15 @@ type AuthGate = {
 
 const AuthGateContext = createContext<AuthGate>({ signedIn: false, requireAuth: async () => false });
 
+/** Reads the sign-in gate (`signedIn`, `requireAuth`) from the nearest AuthGateProvider. */
 export function useAuthGate() {
   return useContext(AuthGateContext);
 }
 
+/**
+ * Lets any button ask for sign-in without leaving the page: guests get the quick sign-up dialog and the action
+ * carries on once they are in. Follows a new server render when the session changes.
+ */
 export function AuthGateProvider({ signedIn: initial, methods, children }: { signedIn: boolean; methods: AuthMethod[]; children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();

@@ -12,6 +12,7 @@ export function rememberWelcome(name: string) {
   window.dispatchEvent(new Event(WELCOME_EVENT));
 }
 
+/** Reads and clears the name saved by rememberWelcome, so the greeting shows once; null when there is none. */
 export function takeWelcome() {
   try {
     const name = sessionStorage.getItem(KEY);

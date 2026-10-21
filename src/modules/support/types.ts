@@ -1,6 +1,6 @@
-export type SupportPerson = { id: number; fullName: string; avatarUrl: string | null; username?: string | null };
+type SupportPerson = { id: number; fullName: string; avatarUrl: string | null; username?: string | null };
 
-export type SupportMessage = {
+type SupportMessage = {
   id: number;
   isStaff: boolean;
   author: SupportPerson | null;

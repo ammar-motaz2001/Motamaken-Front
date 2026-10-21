@@ -4,6 +4,7 @@ import { apiGetOrNull } from "@/lib/api/server";
 import type { Team } from "@/lib/api/types";
 import { TeamDetail } from "@/modules/teams";
 
+/** One team with its members and roles, from GET /teams/{id}. */
 export default async function TeamPage({ params }: PageProps<"/[locale]/teams/[id]">) {
   const { locale, id } = await params;
   setRequestLocale(locale);

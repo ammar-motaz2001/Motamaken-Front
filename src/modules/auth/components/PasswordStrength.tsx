@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { passwordScore } from "../lib/validation";
 
+/** Four-step strength bar under a password field, with the matching hint; hidden while the field is empty. */
 export function PasswordStrength({ password }: { password: string }) {
   const t = useTranslations("Validation");
   if (!password) return null;

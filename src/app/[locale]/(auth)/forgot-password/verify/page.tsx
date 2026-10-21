@@ -2,11 +2,13 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { AuthCard, AuthShell, getAuthMethods, parseMethod, ResetVerification } from "@/modules/auth";
 
+/** Browser title of the reset code screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/forgot-password/verify">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
   return { title: t("verify") };
 }
 
+/** Password reset by phone: enter the code sent to `?to=`; without a target it goes back to forgot password. */
 export default async function ForgotPasswordVerifyPage({ params, searchParams }: PageProps<"/[locale]/forgot-password/verify">) {
   const { locale } = await params;
   setRequestLocale(locale);

@@ -4,6 +4,7 @@ import { getCurrencies } from "@/lib/api/reference";
 import { apiGet } from "@/lib/api/server";
 import { ActionButton, AdminHeader, AdminSection, AdminTable, Cell, DrawForm, dateTime, money, toneFor, type AdminDraw } from "@/modules/admin";
 
+/** Admin › Draws: create prize draws and run them to pick winners, from GET /admin/draws. */
 export default async function AdminDraws({ params }: PageProps<"/[locale]/admin/draws">) {
   setRequestLocale((await params).locale);
   const [t, locale, currencies, result] = await Promise.all([

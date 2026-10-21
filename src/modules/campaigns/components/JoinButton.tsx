@@ -9,6 +9,7 @@ import type { ApiError } from "@/lib/api/errors";
 import type { CampaignPromoter } from "@/lib/api/types";
 import { CopyLink } from "./CopyLink";
 
+/** Joins a campaign as a promoter (POST /campaigns/{id}/join) and shows the personal link to share. */
 export function JoinButton({ campaignId }: { campaignId: number }) {
   const t = useTranslations("Campaigns.promoter");
   const router = useRouter();

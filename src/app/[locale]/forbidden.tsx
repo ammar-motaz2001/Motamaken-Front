@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { ErrorState } from "@/components/error/ErrorState";
 import { Button } from "@/components/ui/Button";
 
+/** 403 screen shown when a signed-in user opens something they may not see, with links home and to support. */
 export default function Forbidden() {
   const t = useTranslations("Errors");
 

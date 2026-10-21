@@ -12,6 +12,7 @@ import { timeAgo } from "@/lib/format";
 import { MEMBER_STATUS_TONE } from "../lib/status";
 import { useAction } from "../lib/useAction";
 
+/** A team invitation with team, role and share, and accept/decline buttons while it is still open. */
 export function InvitationCard({ invitation }: { invitation: TeamInvitation }) {
   const t = useTranslations("Teams");
   const locale = useLocale();

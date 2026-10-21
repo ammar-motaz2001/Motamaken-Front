@@ -3755,7 +3755,7 @@
         "keyword": "Word"
       },
       "value": "Value",
-      "valueHint": "e.g. name@spam.com, +966500000000, spam.com, 10.0.0.1 or a word",
+      "valueHint": "e.g. name@spam.com, +966500000000, spam.com, 203.0.113.7 or a word",
       "reason": "Reason",
       "expiresAt": "Ends on",
       "expiresHint": "YYYY-MM-DD, or empty for no end.",
