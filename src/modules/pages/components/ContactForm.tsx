@@ -8,7 +8,7 @@ import { Select } from "@/components/ui/Select";
 import { TextArea } from "@/components/ui/TextArea";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
-import { Recaptcha, recaptchaEnabled } from "@/modules/auth/components/Recaptcha";
+import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage } from "@/modules/auth/components/Recaptcha";
 
 const TOPICS = ["general", "account", "payments", "disputes", "technical", "partnership", "other"] as const;
 
@@ -30,7 +30,7 @@ export function ContactForm({ signedIn }: { signedIn: boolean }) {
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     if (!signedIn && recaptchaEnabled && !captcha) {
-      setErrors({ recaptchaToken: ta("recaptchaRequired") });
+      setErrors({ recaptchaToken: ta(recaptchaMissingMessage) });
       return;
     }
     setState("busy");

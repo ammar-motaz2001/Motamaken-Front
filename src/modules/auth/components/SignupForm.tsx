@@ -24,7 +24,7 @@ import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { ErrorModal } from "./ErrorModal";
 import { PasswordStrength } from "./PasswordStrength";
-import { Recaptcha, recaptchaEnabled } from "./Recaptcha";
+import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage } from "./Recaptcha";
 import { SuccessTitle } from "./SuccessTitle";
 import { actionsClasses, fieldsClasses, formClasses, modalTextClasses, switchClasses } from "./styles";
 
@@ -134,7 +134,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
     const nextErrors = validate(values, method);
     setErrors(nextErrors);
     const needsCaptcha = recaptchaEnabled && !captcha;
-    setCaptchaError(needsCaptcha ? ta("recaptchaRequired") : undefined);
+    setCaptchaError(needsCaptcha ? ta(recaptchaMissingMessage) : undefined);
     if (hasErrors(nextErrors) || needsCaptcha) return;
     setConfirmOpen(true);
   };

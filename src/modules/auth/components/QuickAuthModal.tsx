@@ -12,7 +12,7 @@ import { validateEmail, validateName, validatePhone, type ValidationKey } from "
 import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod } from "../types";
 import { OtpForm } from "./OtpForm";
-import { Recaptcha, recaptchaEnabled } from "./Recaptcha";
+import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage } from "./Recaptcha";
 
 export type QuickAuthResult = { accessToken: string; name: string; isNew: boolean };
 
@@ -34,6 +34,7 @@ type QuickAuthModalProps = {
 export function QuickAuthModal({ open, methods, reason, loginNext, onClose, onDone }: QuickAuthModalProps) {
   const t = useTranslations("QuickAuth");
   const tv = useTranslations("Validation");
+  const ta = useTranslations("Auth");
   const [method, setMethod] = useState<AuthMethod>(methods[0] ?? "email");
   const [identifier, setIdentifier] = useState("");
   const [name, setName] = useState("");
@@ -56,7 +57,7 @@ export function QuickAuthModal({ open, methods, reason, loginNext, onClose, onDo
     setFormError(null);
     if (found.identifier || found.name) return;
     if (recaptchaEnabled && !captcha) {
-      setFormError(t("captcha"));
+      setFormError(ta(recaptchaMissingMessage));
       return;
     }
     setBusy(true);
