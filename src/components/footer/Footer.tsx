@@ -5,6 +5,7 @@ import { Mail, Phone } from "lucide-react";
 import { AuthLink } from "@/components/AuthLink";
 import { Link } from "@/i18n/navigation";
 import type { PublicSiteSettings } from "@/lib/api/types";
+import { buttonClasses } from "@/components/ui/Button";
 
 const CTAS = [
   { key: "freelancer", action: "postProject", href: "/projects/new" },
@@ -188,13 +189,13 @@ export function Footer({ site }: { site: PublicSiteSettings | null }) {
               </ul>
               <Link
                 href="/projects/new"
-                className="flex h-[42px] w-full max-w-[235px] items-center justify-center rounded-md bg-gradient-brand font-button text-sm font-semibold text-white hover:opacity-90"
+                className={`${buttonClasses({ font: "button" })} w-full max-w-[235px]`}
               >
                 {t("postProject")}
               </Link>
               <AuthLink
                 href="/settings/invite"
-                className="flex h-[42px] w-full max-w-[235px] items-center justify-center rounded-md border border-brand-border bg-surface font-button text-sm font-semibold hover:opacity-90"
+                className={`${buttonClasses({ variant: "outline", font: "button" })} w-full max-w-[235px] text-brand`}
               >
                 <span className="text-gradient-brand">{t("inviteFriend")}</span>
               </AuthLink>

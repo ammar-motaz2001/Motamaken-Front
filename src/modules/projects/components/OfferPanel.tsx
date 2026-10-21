@@ -220,6 +220,8 @@ export function OfferPanel({ project }: { project: Project }) {
         placeholder={t("messagePlaceholder")}
         value={form.message}
         error={errors.message}
+        hint={t("messageHint", { count: form.message.trim().length })}
+        hintTone={form.message.trim().length < 10 ? "danger" : "success"}
         onChange={(event) => update("message", event.target.value)}
       />
       {error && (

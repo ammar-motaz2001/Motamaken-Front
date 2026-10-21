@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState, type ReactNode } from "react";
 import { api } from "@/lib/api/client";
 import type { PromotionPackage } from "./types";
+import { buttonClasses } from "@/components/ui/Button";
 
 type PackagesStepProps = { currency: string; intro: string; illustration?: ReactNode; onChoose: (item: PromotionPackage) => void };
 
@@ -44,7 +45,7 @@ export function PackagesStep({ currency, intro, illustration, onChoose }: Packag
             <button
               type="button"
               onClick={() => onChoose(item)}
-              className="mt-1 w-full rounded-md bg-gradient-brand py-2 text-sm font-medium text-white hover:opacity-90"
+              className={`${buttonClasses({ size: "sm" })} mt-1 w-full`}
             >
               {t("payNow")}
             </button>

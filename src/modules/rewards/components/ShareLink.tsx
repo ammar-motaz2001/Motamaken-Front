@@ -4,6 +4,7 @@ import { Check, Copy, Mail, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FaFacebookF, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
+import { buttonClasses } from "@/components/ui/Button";
 
 /** Referral link and code with copy buttons and share links (WhatsApp, X, Facebook) carrying a ready-made message. */
 export function ShareLink({ link, code }: { link: string; code: string }) {
@@ -29,7 +30,7 @@ export function ShareLink({ link, code }: { link: string; code: string }) {
     <div className="flex flex-col gap-3">
       <div className="flex gap-2">
         <input readOnly value={link} dir="ltr" aria-label={t("yourLink")} onFocus={(event) => event.target.select()} className="h-11 min-w-0 flex-1 rounded-md border border-border bg-surface-muted px-3 text-sm" />
-        <button type="button" onClick={() => copy(link, "link")} className="flex shrink-0 items-center gap-1.5 rounded-md bg-gradient-brand px-4 text-sm font-medium text-white hover:opacity-90">
+        <button type="button" onClick={() => copy(link, "link")} className={`${buttonClasses({ size: "sm" })} shrink-0`}>
           {copied === "link" ? <Check className="size-4" /> : <Copy className="size-4" />}
           {copied === "link" ? t("copied") : t("copy")}
         </button>

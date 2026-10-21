@@ -381,6 +381,7 @@
       "cancel": "Cancel",
       "failed": "We could not send your offer. Please try again.",
       "required": "Required.",
+      "messageHint": "{count} characters (at least 10)",
       "messageTooShort": "Write a few words about your offer (at least 10 characters).",
       "jobTitle": "Your job title",
       "jobTitlePlaceholder": "e.g. Graphic designer",

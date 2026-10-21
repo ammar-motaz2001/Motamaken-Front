@@ -9,6 +9,7 @@ import { ProfileCard } from "@/components/cards/ProfileCard";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { ProjectTabs } from "./ProjectTabs";
 import { Slider } from "./Slider";
+import { buttonClasses } from "@/components/ui/Button";
 
 /** Large "what are you looking for" card linking to a part of the site, highlighted when active. */
 function LookingForCard({ href, title, text, icon, active }: {
@@ -43,7 +44,7 @@ function AddCard({ icon, label, kind, user, currency }: { icon: string; label: s
         kind={kind}
         user={user}
         currency={currency}
-        className="flex h-[42px] w-full items-center justify-center rounded-full bg-gradient-brand text-base font-medium whitespace-nowrap text-white capitalize hover:opacity-90"
+        className={`${buttonClasses({ pill: true })} w-full`}
       >
         {label}
       </FeatureButton>

@@ -381,6 +381,7 @@
       "cancel": "إلغاء",
       "failed": "تعذّر إرسال عرضك. حاول مرة أخرى.",
       "required": "مطلوب.",
+      "messageHint": "{count} حرفاً (10 على الأقل)",
       "messageTooShort": "اكتب بضع كلمات عن عرضك (10 أحرف على الأقل).",
       "jobTitle": "مسماك الوظيفي",
       "jobTitlePlaceholder": "مثال: مصمم جرافيك",

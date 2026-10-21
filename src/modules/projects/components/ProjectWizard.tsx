@@ -207,6 +207,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
               value={form.description}
               error={errors.description}
               hint={t("fields.descriptionHint", { count: form.description.trim().length })}
+              hintTone={form.description.trim().length < 20 ? "danger" : "success"}
               onChange={(event) => update("description", event.target.value)}
             />
           </>

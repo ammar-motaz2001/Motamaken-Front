@@ -11,6 +11,8 @@ type FieldShellProps = {
   required?: boolean;
   info?: string;
   hint?: string;
+  /** Colour of the hint: orange by default, red while a requirement is not met yet, green once it is. */
+  hintTone?: "danger" | "success";
   error?: string;
   invalid?: boolean;
   className?: string;
@@ -25,7 +27,7 @@ const controlClasses = (invalid: boolean, multiline = false) =>
   }`;
 
 /** Label, info tip and error/hint text around any form control, so every field in the site lines up the same way. */
-export function FieldShell({ id, label, required, info, hint, error, invalid, multiline, className = "", children }: FieldShellProps) {
+export function FieldShell({ id, label, required, info, hint, hintTone, error, invalid, multiline, className = "", children }: FieldShellProps) {
   const message = error ?? hint;
 
   return (
@@ -47,7 +49,8 @@ export function FieldShell({ id, label, required, info, hint, error, invalid, mu
       {message && (
         <p
           id={`${id}-message`}
-          className={`-mt-[7px] text-end font-hint text-xs font-light tracking-[0.6px] ${error ? "text-danger" : "text-orange"}`}
+          className={`-mt-[7px] text-end font-hint text-xs font-light tracking-[0.6px] ${error || hintTone === "danger" ? "text-danger" : hintTone === "success" ? "text-brand" : "text-orange"}`}
+          aria-live={hintTone ? "polite" : undefined}
         >
           {message}
         </p>

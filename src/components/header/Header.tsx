@@ -15,6 +15,7 @@ import { NotificationsMenu } from "./NotificationsMenu";
 import { SearchBar } from "./SearchBar";
 import { AuthLink } from "@/components/AuthLink";
 import { ThemeToggle } from "./ThemeToggle";
+import { buttonClasses } from "@/components/ui/Button";
 
 /** Thin vertical line between items of the header's top bar. */
 function Divider() {
@@ -126,7 +127,7 @@ export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData
 
             <Link
               href="/search/advanced"
-              className="hidden w-[110px] shrink-0 items-center justify-center rounded-md border border-orange px-4 font-button text-sm font-semibold text-orange md:flex"
+              className={`${buttonClasses({ variant: "outlineOrange", font: "button", size: "sm" })} w-[110px] shrink-0 max-md:hidden`}
             >
               {t("advanced")}
             </Link>
@@ -134,7 +135,7 @@ export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData
 
           <Link
             href="/projects/new"
-            className="flex h-[45px] w-full items-center justify-center rounded-md bg-gradient-brand px-8 font-button text-sm font-semibold whitespace-nowrap text-white hover:opacity-90 lg:w-[235px]"
+            className={`${buttonClasses({ font: "button" })} w-full lg:w-[235px]`}
           >
             {t("postProject")}
           </Link>

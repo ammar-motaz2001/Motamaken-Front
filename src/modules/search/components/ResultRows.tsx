@@ -5,6 +5,7 @@ import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Link } from "@/i18n/navigation";
 import type { ProfileCard, Project } from "@/lib/api/types";
 import { formatAmount, timeAgo } from "@/lib/format";
+import { buttonClasses } from "@/components/ui/Button";
 
 /** List-view row of a project: title, budget, category, location and date. */
 export function ProjectRow({ project }: { project: Project }) {
@@ -44,7 +45,7 @@ export function ProjectRow({ project }: { project: Project }) {
         <span className="rounded-lg border border-brand-ink bg-brand-soft px-3 py-1 text-xs font-medium text-brand-ink">
           {t("budget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) })}
         </span>
-        <Link href={`/projects/${project.id}`} className="rounded-md bg-gradient-brand px-4 py-1.5 text-xs font-medium text-white hover:opacity-90">
+        <Link href={`/projects/${project.id}`} className={buttonClasses({ size: "xs" })}>
           {t("addOffer")}
         </Link>
       </div>

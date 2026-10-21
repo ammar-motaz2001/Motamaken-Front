@@ -76,8 +76,21 @@
   --color-selected: var(--selected);
 
   --font-sans: var(--font-tajawal), system-ui, sans-serif;
-  --font-button: var(--font-quicksand), var(--font-tajawal), system-ui, sans-serif;
-  --font-hint: var(--font-mulish), var(--font-tajawal), system-ui, sans-serif;
+  --font-button: var(--button-family);
+  --font-hint: var(--hint-family);
+}
+
+/*
+ * Button and hint fonts. Quicksand and Mulish have no Arabic letters, and their next/font fallback (local Arial) does,
+ * so Arabic text in buttons and hints came out in Arial. Arabic pages use Tajawal, the site's Arabic font, for both.
+ */
+:root {
+  --button-family: var(--font-quicksand), var(--font-tajawal), system-ui, sans-serif;
+  --hint-family: var(--font-mulish), var(--font-tajawal), system-ui, sans-serif;
+}
+:root[dir="rtl"] {
+  --button-family: var(--font-tajawal), system-ui, sans-serif;
+  --hint-family: var(--font-tajawal), system-ui, sans-serif;
 }
 
 @theme {

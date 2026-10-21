@@ -8,15 +8,16 @@ type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   required?: boolean;
   error?: string;
   hint?: string;
+  hintTone?: "danger" | "success";
 };
 
 /** Multi-line text input with the shared label, hint and error styling. */
-export function TextArea({ label, required, error, hint, id, className, rows = 4, ...rest }: TextAreaProps) {
+export function TextArea({ label, required, error, hint, hintTone, id, className, rows = 4, ...rest }: TextAreaProps) {
   const generatedId = useId();
   const areaId = id ?? generatedId;
 
   return (
-    <FieldShell id={areaId} label={label} required={required} error={error} hint={hint} className={className} multiline>
+    <FieldShell id={areaId} label={label} required={required} error={error} hint={hint} hintTone={hintTone} className={className} multiline>
       <textarea
         id={areaId}
         rows={rows}

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import type { Draw, PointsSummary } from "@/lib/api/types";
 import { SettingsPanel } from "@/modules/settings";
 import { Countdown } from "./Countdown";
+import { buttonClasses } from "@/components/ui/Button";
 
 /** Points screen: current balance, ways to earn, the movement history and the current draw to spend points on. */
 export async function PointsPage({ summary, draw }: { summary: PointsSummary; draw: Draw | null }) {
@@ -48,7 +49,7 @@ export async function PointsPage({ summary, draw }: { summary: PointsSummary; dr
           <p className="font-bold">{draw.title}</p>
           <p className="text-sm text-brand">{t("drawStartsIn")}</p>
           <Countdown to={draw.drawAt} />
-          <Link href="/gifts" className="rounded-full bg-gradient-brand px-6 py-2 text-sm font-medium text-white hover:opacity-90">
+          <Link href="/gifts" className={buttonClasses({ size: "sm", pill: true })}>
             {t("joinDraw", { cost: draw.ticketCost })}
           </Link>
         </section>

@@ -6,6 +6,7 @@ import { panelClasses } from "@/components/ui/styles";
 import type { User } from "@/lib/api/types";
 import { FeatureButton } from "./FeatureButton";
 import type { Promotion } from "./types";
+import { buttonClasses } from "@/components/ui/Button";
 
 type PremiumPageProps = { user: User | null; currency: string; promotions: (Promotion & { project: { id: number; title: string } | null })[] };
 
@@ -13,7 +14,7 @@ type PremiumPageProps = { user: User | null; currency: string; promotions: (Prom
 export async function PremiumPage({ user, currency, promotions }: PremiumPageProps) {
   const t = await getTranslations("Promotions");
   const format = await getFormatter();
-  const button = "rounded-full bg-gradient-brand px-6 py-2.5 text-sm font-medium text-white hover:opacity-90";
+  const button = buttonClasses({ size: "sm", pill: true });
 
   return (
     <div className="flex flex-col gap-6">
