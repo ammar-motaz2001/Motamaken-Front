@@ -455,7 +455,8 @@ type DisputeAppeal = {
 
 export type PointsSummary = {
   balance: number;
-  earn: { reason: string; label: string; points: number; once: boolean; done: boolean }[];
+  /** `times`: how often the action has paid out so far (repeatable ones show their count). */
+  earn: { reason: string; label: string; points: number; once: boolean; done: boolean; times?: number }[];
   data: { id: number; amount: number; reason: string; label: string; createdAt: string }[];
   meta: Paginated<unknown>["meta"];
 };

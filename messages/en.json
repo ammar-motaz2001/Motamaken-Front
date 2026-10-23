@@ -1789,7 +1789,8 @@
       "date": "Date",
       "reason": "Reason",
       "points": "Points",
-      "empty": "No points yet. Complete the steps above to start earning."
+      "empty": "No points yet. Complete the steps above to start earning.",
+      "timesEarned": "{count, plural, one {earned once} other {earned # times}}"
     },
     "medals": {
       "title": "Medals system",

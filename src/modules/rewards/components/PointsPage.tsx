@@ -28,17 +28,25 @@ export async function PointsPage({ summary, draw }: { summary: PointsSummary; dr
           <ul className="flex flex-col divide-y divide-border">
             {summary.earn
               .filter((rule) => rule.reason !== "promotion" || rule.points > 0)
-              .map((rule) => (
-                <li key={rule.reason} className="flex items-center gap-3 py-2 text-sm">
-                  <CircleCheck className={`size-5 shrink-0 ${rule.done ? "text-brand" : "text-border"}`} aria-hidden />
-                  <span className={`me-auto ${rule.done ? "text-muted line-through" : ""}`}>
-                    {rule.label}
-                    <span className="ms-1 text-xs text-muted">{rule.once ? t("once") : t("each")}</span>
-                  </span>
-                  <span className="font-bold text-brand">+{rule.points}</span>
-                  {rule.done && <span className="sr-only">{t("done")}</span>}
-                </li>
-              ))}
+              .map((rule) => {
+                // One-time actions are crossed out once done; repeatable ones stay open and count how often they paid.
+                const times = rule.times ?? (rule.done ? 1 : 0);
+                const earned = rule.done || times > 0;
+                return (
+                  <li key={rule.reason} className="flex items-center gap-3 py-2 text-sm">
+                    <CircleCheck className={`size-5 shrink-0 ${earned ? "text-brand" : "text-border"}`} aria-hidden />
+                    <span className={`me-auto ${rule.done ? "text-muted line-through" : ""}`}>
+                      {rule.label}
+                      <span className="ms-1 text-xs text-muted">{rule.once ? t("once") : t("each")}</span>
+                      {!rule.once && times > 0 && (
+                        <span className="ms-2 rounded-full bg-brand-soft px-2 py-0.5 text-xs font-semibold text-brand-ink">{t("timesEarned", { count: times })}</span>
+                      )}
+                    </span>
+                    <span className="font-bold text-brand">+{rule.points}</span>
+                    {earned && <span className="sr-only">{t("done")}</span>}
+                  </li>
+                );
+              })}
           </ul>
         </div>
       </SettingsPanel>
