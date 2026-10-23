@@ -21,9 +21,9 @@ export function ProjectCard({ project }: { project: Project }) {
   const href = `/projects/${project.id}`;
 
   return (
-    <article className="flex h-[293px] w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col justify-end gap-2.5 rounded-xl bg-surface px-2.5 pt-4 pb-[21px] shadow-card dark:border dark:border-border">
+    <article className="flex min-h-[293px] w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col gap-2.5 rounded-xl bg-surface px-2.5 pt-4 pb-[21px] shadow-card dark:border dark:border-border">
       <div className="flex flex-col gap-3">
-        <h3 className="line-clamp-2 text-xl leading-tight font-bold tracking-[-0.22px]">
+        <h3 className="line-clamp-2 text-start text-xl leading-tight font-bold tracking-[-0.22px]">
           <Link href={href} className="hover:text-brand">
             {project.title}
           </Link>
@@ -32,11 +32,11 @@ export function ProjectCard({ project }: { project: Project }) {
           {t("budget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) })}
         </span>
         <div className="flex items-center gap-2">
-          <span className="flex min-w-0 flex-1 items-center gap-0.5 text-sm tracking-[-0.154px] text-brand">
+          <span className="flex min-w-0 flex-1 items-center gap-1 text-sm tracking-[-0.154px] text-brand">
             <Image src="/images/user-outline.svg" alt="" width={15} height={15} />
             <span className="truncate">{project.owner.fullName}</span>
           </span>
-          <span className="flex shrink-0 items-center gap-0.5 text-xs text-muted" suppressHydrationWarning>
+          <span className="flex shrink-0 items-center gap-1.5 text-xs text-muted" suppressHydrationWarning>
             <Image src="/images/clock.svg" alt="" width={15} height={15} className="dark:invert" />
             {timeAgo(project.createdAt, locale)}
           </span>
@@ -48,7 +48,7 @@ export function ProjectCard({ project }: { project: Project }) {
           {t("readMore")}
         </Link>
       </p>
-      <div className="flex gap-2">
+      <div className="mt-auto flex gap-2 pt-1">
         <Link
           href={href}
           className={`${buttonClasses({ size: "sm", pill: true })} min-w-0 flex-1`}
