@@ -56,7 +56,7 @@ export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) 
 
       {open &&
         createPortal(
-          <div className="fixed inset-0 z-50 bg-overlay backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}>
+          <div className="fade-in fixed inset-0 z-50 bg-overlay backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}>
             <div
               role="dialog"
               aria-modal="true"
@@ -65,7 +65,7 @@ export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) 
                 event.stopPropagation();
                 closeOnLink(event);
               }}
-              className="absolute inset-y-0 start-0 flex w-[min(320px,85vw)] flex-col gap-6 overflow-y-auto bg-surface p-4 shadow-card"
+              className="drawer-in absolute inset-y-0 start-0 flex w-[min(320px,85vw)] flex-col gap-6 overflow-y-auto bg-surface p-4 shadow-card"
             >
               <div className="flex items-center justify-between">
                 <span className="text-lg font-bold text-brand">{t("menu")}</span>

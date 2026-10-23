@@ -194,7 +194,7 @@ export function Listbox({
       {open && (
         <div
           className={`absolute z-50 min-w-full overflow-hidden rounded-lg border border-border bg-surface shadow-[0_12px_32px_-8px_rgba(0,0,0,0.25)] ${
-            above ? "bottom-full mb-1.5" : "top-full mt-1.5"
+            above ? "bottom-full mb-1.5 pop-up" : "top-full mt-1.5 pop-down"
           } start-0 ${menuClassName}`}
         >
           {withSearch && (

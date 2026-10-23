@@ -11,6 +11,7 @@ import { api } from "@/lib/api/client";
 import type { AppNotification, Paginated } from "@/lib/api/types";
 import { timeAgo } from "@/lib/format";
 import { notificationHref } from "@/lib/notifications";
+import { usePresence } from "@/components/ui/usePresence";
 
 
 /** Bell menu: loads the latest alerts from GET /notifications when opened, marks one or all read, links to the full list. */
@@ -20,6 +21,7 @@ export function NotificationsMenu({ unread }: { unread: number }) {
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const menu = usePresence(open);
   const [items, setItems] = useState<AppNotification[] | null>(null);
   const [failed, setFailed] = useState(false);
   const close = useCallback(() => setOpen(false), []);
@@ -64,8 +66,8 @@ export function NotificationsMenu({ unread }: { unread: number }) {
         <Badge count={unread} className="-top-1 start-3" />
       </button>
 
-      {open && (
-        <div className="absolute end-0 top-full z-40 mt-2 flex max-h-[400px] w-[min(442px,calc(100vw-32px))] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card">
+      {menu.mounted && (
+        <div className={`${menu.leaving ? "pop-leave" : "pop-down"} absolute end-0 top-full z-40 mt-2 flex max-h-[400px] w-[min(442px,calc(100vw-32px))] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card`}>
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <span className="text-base font-bold">{t("notifications")}</span>
             {items?.some((item) => !item.readAt) && (

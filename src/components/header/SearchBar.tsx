@@ -8,6 +8,7 @@ import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import { Listbox } from "@/components/ui/Listbox";
 import type { City, Country } from "@/lib/api/types";
+import { usePresence } from "@/components/ui/usePresence";
 
 const SEARCH_TYPES = ["all", "projects", "influencer_requests", "influencers", "freelancers"] as const;
 type SearchType = (typeof SEARCH_TYPES)[number];
@@ -43,6 +44,7 @@ export function SearchBar({ countries }: { countries: Country[] }) {
   const typeRef = useRef<HTMLDivElement>(null);
   const [type, setType] = useState<SearchType>("all");
   const [typeOpen, setTypeOpen] = useState(false);
+  const typeMenu = usePresence(typeOpen);
   const [query, setQuery] = useState("");
   const [countryId, setCountryId] = useState("");
   const [cityId, setCityId] = useState("");
@@ -83,8 +85,8 @@ export function SearchBar({ countries }: { countries: Country[] }) {
             {t(`searchTypes.${type}`)}
             <Image src="/images/arrow-down-dark.svg" alt="" width={20} height={20} className="dark:invert" />
           </button>
-          {typeOpen && (
-            <ul role="listbox" className="absolute start-0 top-full z-40 mt-3 w-44 rounded-md border border-border bg-surface py-1 shadow-card">
+          {typeMenu.mounted && (
+            <ul role="listbox" className={`${typeMenu.leaving ? "pop-leave" : "pop-down"} absolute start-0 top-full z-40 mt-3 w-44 rounded-md border border-border bg-surface py-1 shadow-card`}>
               {SEARCH_TYPES.map((item) => (
                 <li key={item}>
                   <button

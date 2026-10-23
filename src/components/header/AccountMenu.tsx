@@ -26,6 +26,7 @@ import { useDismiss } from "@/components/ui/useDismiss";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { User as ApiUser } from "@/lib/api/types";
 import { deleteSession } from "@/modules/auth/actions";
+import { usePresence } from "@/components/ui/usePresence";
 
 const LINKS = [
   { key: "profile", href: "/profile", Icon: User },
@@ -54,6 +55,7 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const menu = usePresence(open);
   const [postOpen, setPostOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const close = useCallback(() => setOpen(false), []);
@@ -93,8 +95,8 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
         <Badge count={unreadMessages} className="-top-1.5 -start-2" />
       </button>
 
-      {open && (
-        <div role="menu" className="absolute end-0 top-full z-40 mt-2 w-[213px] rounded-lg border border-border bg-surface py-1.5 shadow-card">
+      {menu.mounted && (
+        <div role="menu" className={`${menu.leaving ? "pop-leave" : "pop-down"} absolute end-0 top-full z-40 mt-2 w-[213px] rounded-lg border border-border bg-surface py-1.5 shadow-card`}>
           <ul>
             {user.isAdmin && (
               <li>

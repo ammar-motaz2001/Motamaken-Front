@@ -7,6 +7,7 @@ import { CategoryIcon } from "@/components/ui/CategoryIcon";
 import { useDismiss } from "@/components/ui/useDismiss";
 import { Link } from "@/i18n/navigation";
 import type { Category, CategoryType } from "@/lib/api/types";
+import { usePresence } from "@/components/ui/usePresence";
 
 const TABS: CategoryType[] = ["project", "influencer"];
 
@@ -15,6 +16,7 @@ export function CategoriesMenu({ categories }: { categories: Category[] }) {
   const t = useTranslations("Header");
   const ref = useRef<HTMLLIElement>(null);
   const [open, setOpen] = useState(false);
+  const menu = usePresence(open);
   const [tab, setTab] = useState<CategoryType>("project");
   const close = useCallback(() => setOpen(false), []);
   useDismiss(open, ref, close);
@@ -37,8 +39,8 @@ export function CategoriesMenu({ categories }: { categories: Category[] }) {
         />
       </button>
 
-      {open && (
-        <div className="page-container absolute inset-x-0 top-full z-40">
+      {menu.mounted && (
+        <div className={`${menu.leaving ? "pop-leave" : "pop-down"} page-container absolute inset-x-0 top-full z-40`}>
           <div className="rounded-b-xl bg-surface p-6 text-foreground shadow-card">
             <h2 className="mb-4 text-xl font-bold uppercase">{t("nav.categories")}</h2>
             <div role="tablist" className="mb-5 flex gap-6 border-b border-border">
