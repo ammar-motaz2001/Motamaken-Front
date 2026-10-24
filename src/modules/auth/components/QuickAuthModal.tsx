@@ -12,7 +12,7 @@ import { validateEmail, validateName, validatePhone, type ValidationKey } from "
 import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod } from "../types";
 import { OtpForm } from "./OtpForm";
-import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage } from "./Recaptcha";
+import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage, recaptchaNeedsTick, recaptchaToken } from "./Recaptcha";
 
 export type QuickAuthResult = { accessToken: string; name: string; isNew: boolean };
 
@@ -56,13 +56,19 @@ export function QuickAuthModal({ open, methods, reason, loginNext, onClose, onDo
     setErrors(found);
     setFormError(null);
     if (found.identifier || found.name) return;
-    if (recaptchaEnabled && !captcha) {
+    if (recaptchaNeedsTick && !captcha) {
       setFormError(ta(recaptchaMissingMessage));
       return;
     }
     setBusy(true);
+    const token = await recaptchaToken(captcha, "quick_start");
+    if (recaptchaEnabled && !token) {
+      setFormError(ta(recaptchaMissingMessage));
+      setBusy(false);
+      return;
+    }
     try {
-      const { target: sentTo } = await authService.quickStart({ ...payload(), ...(captcha && { recaptchaToken: captcha }) });
+      const { target: sentTo } = await authService.quickStart({ ...payload(), ...(token && { recaptchaToken: token }) });
       setTarget(sentTo);
     } catch (error) {
       setFormError(error instanceof AuthError && error.message ? error.message : t("failed"));

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { FaApple, FaGooglePlay, FaInstagram, FaLinkedin, FaSnapchat, FaSquareFacebook, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { Mail, Phone } from "lucide-react";
 import { AuthLink } from "@/components/AuthLink";
@@ -14,7 +14,8 @@ const CTAS = [
   { key: "influencer", action: "postInfluencer", href: "/influencers/new" },
 ] as const;
 
-const COLUMNS = [
+/** The built-in link columns (labels under Footer.links), shown until the admins set their own under Site settings. */
+export const FOOTER_COLUMNS = [
   {
     title: "information",
     links: [
@@ -93,10 +94,41 @@ function StoreBadge({ href, icon, caption, store }: { href: string; icon: React.
   );
 }
 
-/** Site footer: call-to-action strip, info page links, social links and app badges set by the admins (site settings). */
+/** A footer link: in-site paths stay in the app (account pages ask guests to sign in), https addresses open in a new tab. */
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const classes = "text-sm transition-colors hover:text-brand";
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={classes}>
+        {children}
+      </a>
+    );
+  }
+  return href.startsWith("/settings") ? (
+    <AuthLink href={href} className={classes}>
+      {children}
+    </AuthLink>
+  ) : (
+    <Link href={href} className={classes}>
+      {children}
+    </Link>
+  );
+}
+
+/**
+ * Site footer: call-to-action strip, link columns (the admins' own from Site settings, else the built-in ones), social
+ * links and app badges set by the admins.
+ */
 export function Footer({ site }: { site: PublicSiteSettings | null }) {
   const t = useTranslations("Footer");
+  const ar = useLocale() === "ar";
   const socials = SOCIALS.filter(({ key }) => site?.social[key]);
+  const columns = site?.footer?.length
+    ? site.footer.map((column) => ({
+        title: ar ? column.titleAr : column.titleEn,
+        links: column.links.map((link) => ({ label: ar ? link.labelAr : link.labelEn, href: link.href })),
+      }))
+    : FOOTER_COLUMNS.map((column) => ({ title: t(column.title), links: column.links.map((link) => ({ label: t(`links.${link.key}`), href: link.href })) }));
 
   return (
     <footer className="mt-10">
@@ -119,21 +151,13 @@ export function Footer({ site }: { site: PublicSiteSettings | null }) {
       <div className="-mt-16 bg-surface-muted pt-28 pb-8">
         <div className="page-container">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-[repeat(4,minmax(0,1fr))_235px]">
-            {COLUMNS.map((column, index) => (
-              <div key={column.title}>
-                <h3 className={`mb-6 font-bold ${index === 0 ? "text-xl" : "text-lg"}`}>{t(column.title)}</h3>
+            {columns.map((column, index) => (
+              <div key={index}>
+                <h3 className={`mb-6 font-bold ${index === 0 ? "text-xl" : "text-lg"}`}>{column.title}</h3>
                 <ul className="flex flex-col gap-4">
-                  {column.links.map((link) => (
-                    <li key={link.key}>
-                      {link.href.startsWith("/settings") ? (
-                        <AuthLink href={link.href} className="text-sm transition-colors hover:text-brand">
-                          {t(`links.${link.key}`)}
-                        </AuthLink>
-                      ) : (
-                        <Link href={link.href} className="text-sm transition-colors hover:text-brand">
-                          {t(`links.${link.key}`)}
-                        </Link>
-                      )}
+                  {column.links.map((link, position) => (
+                    <li key={position}>
+                      <FooterLink href={link.href}>{link.label}</FooterLink>
                     </li>
                   ))}
                 </ul>

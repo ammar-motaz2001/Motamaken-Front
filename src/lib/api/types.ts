@@ -418,6 +418,9 @@ export type Dispute = {
   resolvedAt: string | null;
 };
 
+/** A footer link column set by the admins (Site settings), in both languages; links are site paths or https addresses. */
+export type FooterColumn = { titleEn: string; titleAr: string; links: { labelEn: string; labelAr: string; href: string }[] };
+
 export type PublicSiteSettings = {
   nameEn: string;
   nameAr: string;
@@ -431,6 +434,8 @@ export type PublicSiteSettings = {
   addressAr: string | null;
   social: Partial<Record<"x" | "facebook" | "instagram" | "linkedin" | "youtube" | "tiktok" | "snapchat", string>>;
   apps: Partial<Record<"android" | "ios", string>>;
+  /** Replaces the footer's built-in link columns; null keeps them. */
+  footer?: FooterColumn[] | null;
   maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
   uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
   /** Default search-engine description per language; null means the built-in text. */

@@ -6,13 +6,15 @@ import { useRef, useState, type FormEvent } from "react";
 import { DateField } from "@/components/ui/DatePicker";
 import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
+import type { FooterColumn } from "@/lib/api/types";
 import type { SiteConfig } from "../types";
 import { inputClasses } from "./ActionButton";
+import { FooterLinksEditor } from "./FooterLinksEditor";
 import { LabeledInput, SaveBar, TextInput } from "./FormBits";
 import { useAdminSave } from "./useAdminSave";
 
-/** Everything under "Site settings": identity, links, apps, maintenance, uploads, staff policy and payment methods. */
-export function SiteConfigForm({ config }: { config: SiteConfig }) {
+/** Everything under "Site settings": identity, links, footer, apps, maintenance, uploads, staff policy and payment methods. */
+export function SiteConfigForm({ config, defaultFooter }: { config: SiteConfig; defaultFooter: FooterColumn[] }) {
   const t = useTranslations("Admin.siteSettings");
   const router = useRouter();
   const { busy, error, fields, saved, save } = useAdminSave();
@@ -20,6 +22,7 @@ export function SiteConfigForm({ config }: { config: SiteConfig }) {
   const [site, setSite] = useState(() => Object.fromEntries(Object.entries(config.site).map(([k, v]) => [k, v ?? ""])) as Record<string, string>);
   const [social, setSocial] = useState(() => Object.fromEntries(config.choices.social.map((k) => [k, config.social[k] ?? ""])) as Record<string, string>);
   const [apps, setApps] = useState({ android: config.apps.android ?? "", ios: config.apps.ios ?? "" });
+  const [footer, setFooter] = useState<FooterColumn[] | null>(config.footer);
   const [maintenance, setMaintenance] = useState({ ...config.maintenance, endsAt: config.maintenance.endsAt ?? "" });
   const [uploads, setUploads] = useState({ ...config.uploads });
   const [seo, setSeo] = useState({ descriptionEn: config.seo?.descriptionEn ?? "", descriptionAr: config.seo?.descriptionAr ?? "" });
@@ -37,6 +40,11 @@ export function SiteConfigForm({ config }: { config: SiteConfig }) {
       site: Object.fromEntries(Object.entries(siteFields).map(([k, v]) => [k, v || null])),
       social: Object.fromEntries(Object.entries(social).map(([k, v]) => [k, v || null])),
       apps: { android: apps.android || null, ios: apps.ios || null },
+      footer: footer?.map((column) => ({
+        titleEn: column.titleEn.trim(),
+        titleAr: column.titleAr.trim(),
+        links: column.links.map((link) => ({ labelEn: link.labelEn.trim(), labelAr: link.labelAr.trim(), href: link.href.trim() })),
+      })) ?? null,
       maintenance: { ...maintenance, endsAt: maintenance.endsAt || null },
       uploads: { ...uploads, avatarMb: Number(uploads.avatarMb), portfolioMb: Number(uploads.portfolioMb), documentMb: Number(uploads.documentMb), chatMb: Number(uploads.chatMb) },
       seo: { descriptionEn: seo.descriptionEn.trim() || null, descriptionAr: seo.descriptionAr.trim() || null },
@@ -132,6 +140,11 @@ export function SiteConfigForm({ config }: { config: SiteConfig }) {
             <TextInput key={key} label={t(`social.${key}`)} dir="ltr" value={social[key]} onChange={(v) => setSocial((s) => ({ ...s, [key]: v }))} error={fields[`social.${key}`]} />
           ))}
         </div>
+      </fieldset>
+
+      <fieldset className={section}>
+        <legend className="px-1 font-bold">{t("footer.title")}</legend>
+        <FooterLinksEditor value={footer} onChange={setFooter} defaults={defaultFooter} errors={fields} />
       </fieldset>
 
       <fieldset className={section}>

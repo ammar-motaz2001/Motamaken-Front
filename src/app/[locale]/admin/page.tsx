@@ -2,7 +2,8 @@ import { CircleDollarSign, Coins, FileWarning, FolderKanban, Gavel, HandCoins, H
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { UserAvatar } from "@/components/ui/UserAvatar";
-import { Link } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
+import { getSummary } from "@/lib/api/reference";
 import { apiGet } from "@/lib/api/server";
 import { pickParams } from "@/lib/params";
 import {
@@ -22,12 +23,19 @@ import {
   type Overview,
 } from "@/modules/admin";
 import { CHART_COLORS } from "@/modules/admin/components/charts/colors";
+import { firstAdminPath } from "@/modules/admin/lib/sections";
 
 const RANGES = ["7", "30", "90"] as const;
 
-/** Admin › Overview: totals, queues to work, charts and newest users over a chosen range, from GET /admin/overview. */
+/**
+ * Admin › Overview: totals, queues to work, charts and newest users over a chosen range, from GET /admin/overview. A role
+ * without the overview lands on the first section it may open instead.
+ */
 export default async function AdminOverview({ params, searchParams }: PageProps<"/[locale]/admin">) {
-  setRequestLocale((await params).locale);
+  const { locale: routeLocale } = await params;
+  setRequestLocale(routeLocale);
+  const permissions = (await getSummary())?.user.adminPermissions ?? [];
+  if (!permissions.includes("overview")) redirect({ href: firstAdminPath(permissions), locale: routeLocale });
   const picked = pickParams(await searchParams, ["days"]).days;
   const days = RANGES.includes(picked as (typeof RANGES)[number]) ? picked! : "30";
   const [t, td, locale, data] = await Promise.all([

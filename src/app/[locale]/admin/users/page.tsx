@@ -1,6 +1,7 @@
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { Pagination } from "@/components/ui/Pagination";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { Link } from "@/i18n/navigation";
 import { apiGet } from "@/lib/api/server";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
 import { AdminHeader, AdminSearch, AdminSection, AdminTable, Cell, ExportLink, UserCell, date, toneFor, type AdminUser, type List } from "@/modules/admin";
@@ -30,7 +31,7 @@ export default async function AdminUsers({ params, searchParams }: PageProps<"/[
             { name: "activity", label: t("anyActivity"), options: (["online", "week", "month", "inactive"] as const).map((value) => ({ value, label: t(`activity.${value}`) })) },
           ]}
         />
-        <AdminTable head={[t("user"), t("type"), t("contact"), t("identity"), t("points"), t("lastSeen"), t("joined"), t("state")]} empty={result.data.length ? false : t("empty")}>
+        <AdminTable head={[t("user"), t("type"), t("contact"), t("identity"), t("points"), t("lastSeen"), t("joined"), t("state"), t("actions")]} empty={result.data.length ? false : t("empty")}>
           {result.data.map((user) => (
             <tr key={user.id}>
               <Cell>
@@ -55,6 +56,11 @@ export default async function AdminUsers({ params, searchParams }: PageProps<"/[
                 ) : (
                   <StatusPill tone="muted">{t("active")}</StatusPill>
                 )}
+              </Cell>
+              <Cell>
+                <Link href={`/admin/users/${user.id}`} className="inline-flex h-8 items-center rounded-md border border-border px-3 text-xs font-semibold whitespace-nowrap hover:border-brand">
+                  {t("manage")}
+                </Link>
               </Cell>
             </tr>
           ))}

@@ -11,7 +11,8 @@
     "resetError": "Password Reset Failed | Mutamakin",
     "underConstruction": "Under Construction | Mutamakin",
     "loginVerify": "Verify Login | Mutamakin",
-    "messages": "Messages | Mutamakin"
+    "messages": "Messages | Mutamakin",
+    "adminLogin": "Admin sign-in"
   },
   "Header": {
     "home": "Home",
@@ -139,7 +140,7 @@
     "welcomeTitle": "Welcome to the Community!",
     "welcomeMessage": "Congratulations on registering! You've earned {points} points to get started. Explore the platform and discover ways to earn more.",
     "loadingPage": "Loading, please wait...",
-    "recaptchaRequired": "The security check is still loading. Please try again in a moment.",
+    "recaptchaRequired": "Google's security check could not be reached. Check your connection, turn off any ad blocker or VPN for this site, then try again.",
     "recaptchaTick": "Please tick “I'm not a robot” to continue.",
     "recaptchaNotice": "Protected by reCAPTCHA: Google <privacy>Privacy</privacy> and <terms>Terms</terms> apply."
   },
@@ -182,7 +183,10 @@
     "noAccount": "Don't have an account?",
     "createAccount": "Create a new account",
     "invalidEmail": "The email address or password is incorrect.",
-    "invalidPhone": "The phone number or password is incorrect."
+    "invalidPhone": "The phone number or password is incorrect.",
+    "adminTitle": "Admin panel",
+    "adminSubtitle": "Staff sign-in",
+    "notStaff": "This account has no access to the admin panel."
   },
   "Otp": {
     "title": "Verification Code",
@@ -2208,7 +2212,8 @@
       "siteSettings": "Site settings",
       "blacklist": "Blacklist",
       "integrations": "Integrations",
-      "audit": "Audit log"
+      "audit": "Audit log",
+      "currencies": "Currencies"
     },
     "overview": {
       "title": "Overview",
@@ -2388,7 +2393,20 @@
       "confirmDeleteNote": "Delete this note?",
       "noNotes": "No notes yet.",
       "action": "Action",
-      "details": "Details"
+      "details": "Details",
+      "edit": "Edit details",
+      "editHint": "Change only what is wrong. An email or phone entered here counts as verified.",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "username": "Username",
+      "setPassword": "Set password",
+      "setPasswordHint": "For a user locked out of their account. They are signed out everywhere and sign in with the new password; send it to them yourself.",
+      "newPassword": "New password",
+      "passwordRule": "8+ characters with upper and lower case, a digit and a symbol.",
+      "deleteUser": "Delete account",
+      "confirmDeleteUser": "Delete this account for good? Only accounts with no projects, offers, contracts or payments can be deleted; ban the others.",
+      "manage": "Manage",
+      "actions": "Actions"
     },
     "projects": {
       "title": "Projects",
@@ -3780,7 +3798,26 @@
       "seo": "Search engines (SEO)",
       "seoHint": "The description Google shows for the home page and any page without its own. Leave empty to keep the built-in text.",
       "seoDescriptionEn": "Default description (English)",
-      "seoDescriptionAr": "Default description (Arabic)"
+      "seoDescriptionAr": "Default description (Arabic)",
+      "footer": {
+        "title": "Footer links",
+        "usingDefault": "The footer shows the built-in link columns.",
+        "customize": "Customize the links",
+        "hint": "Titles and links in English and Arabic. A link is a page of the site (/faq) or a full https address.",
+        "restore": "Restore the built-in links",
+        "confirmRestore": "Go back to the built-in footer links? Your columns are removed when you save.",
+        "titleEn": "Column title (English)",
+        "titleAr": "Column title (Arabic)",
+        "labelEn": "Link text (English)",
+        "labelAr": "Link text (Arabic)",
+        "href": "Address",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "removeColumn": "Remove column",
+        "removeLink": "Remove link",
+        "addLink": "Add a link",
+        "addColumn": "Add a column"
+      }
     },
     "blacklist": {
       "title": "Blacklist",
@@ -3891,6 +3928,21 @@
         "test": "Switch card payments to TEST? No real money will move; real customers cannot pay until you switch back."
       },
       "switchModeHint": "To switch between test and live, add the other mode's keys (MOYASAR_TEST_* or MOYASAR_LIVE_*) to backend.env on the server."
+    },
+    "currencies": {
+      "title": "Currencies",
+      "subtitle": "Which currencies projects, offers and wallets use, in the order of the currency menu.",
+      "on": "On",
+      "off": "Off",
+      "code": "ISO code",
+      "symbol": "Symbol",
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "remove": "Remove",
+      "inUse": "Users hold money in this currency, so it stays on.",
+      "add": "Add a currency"
     }
   },
   "QuickAuth": {

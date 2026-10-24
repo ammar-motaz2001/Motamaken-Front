@@ -24,7 +24,7 @@ import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { ErrorModal } from "./ErrorModal";
 import { PasswordStrength } from "./PasswordStrength";
-import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage } from "./Recaptcha";
+import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage, recaptchaNeedsTick, recaptchaToken } from "./Recaptcha";
 import { SuccessTitle } from "./SuccessTitle";
 import { actionsClasses, fieldsClasses, formClasses, modalTextClasses, switchClasses } from "./styles";
 
@@ -105,6 +105,12 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
   const submit = async () => {
     setConfirmOpen(false);
     setSubmitting(true);
+    const token = await recaptchaToken(captcha, "signup");
+    if (recaptchaEnabled && !token) {
+      setCaptchaError(ta(recaptchaMissingMessage));
+      setSubmitting(false);
+      return;
+    }
     try {
       await authService.signup({
         method,
@@ -116,7 +122,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
         password: values.password,
         subscribe: values.subscribe,
         ...(referral && { referralCode: referral }),
-        ...(captcha && { recaptchaToken: captcha }),
+        ...(token && { recaptchaToken: token }),
       });
       router.push({ pathname: "/signup/verify", query: { method, to: target } });
     } catch (caught) {
@@ -133,7 +139,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
     event.preventDefault();
     const nextErrors = validate(values, method);
     setErrors(nextErrors);
-    const needsCaptcha = recaptchaEnabled && !captcha;
+    const needsCaptcha = recaptchaNeedsTick && !captcha;
     setCaptchaError(needsCaptcha ? ta(recaptchaMissingMessage) : undefined);
     if (hasErrors(nextErrors) || needsCaptcha) return;
     setConfirmOpen(true);

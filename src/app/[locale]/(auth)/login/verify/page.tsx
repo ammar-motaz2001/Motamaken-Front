@@ -26,6 +26,7 @@ export default async function LoginVerifyPage({ params, searchParams }: PageProp
           method={method}
           target={target}
           next={safeNextPath(query.next)}
+          staff={query.staff === "1"}
           twoFactor={typeof query.tf === "string" && typeof query.hint === "string" ? { method: query.tf, hint: query.hint } : undefined}
         />
       </AuthCard>

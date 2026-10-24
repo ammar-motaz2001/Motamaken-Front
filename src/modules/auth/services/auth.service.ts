@@ -21,6 +21,7 @@ type AuthUser = {
   phone: string | null;
   points: number;
   fullName?: string;
+  isAdmin?: boolean;
 };
 
 /** POSTs JSON to an auth endpoint of the API directly (with cookies); errors become AuthError with field messages. */
@@ -50,7 +51,14 @@ async function request<T>(path: string, body: unknown): Promise<T> {
   return data as T;
 }
 
+/** Ends a session the website will not keep (POST /auth/logout with that token); best effort, never throws. */
+async function revoke(token: string): Promise<void> {
+  if (!API_URL) return;
+  await fetch(`${API_URL}/auth/logout`, { method: "POST", headers: { Accept: "application/json", Authorization: `Bearer ${token}` } }).catch(() => undefined);
+}
+
 export const authService = {
+  revoke,
   recordReferralVisit(code: string) {
     return request<{ recorded: boolean }>("/affiliate/visits", { code });
   },

@@ -96,6 +96,25 @@ export default async function AdminUserPage({ params, searchParams }: PageProps<
             )}
             {can.has("users.manage") && !user.isAdmin && (
               <>
+                <ActionButton
+                  label={t("edit")}
+                  endpoint={`/admin/users/${user.id}`}
+                  method="PATCH"
+                  description={t("editHint")}
+                  fields={[
+                    { name: "firstName", label: t("firstName"), defaultValue: user.firstName ?? "" },
+                    { name: "lastName", label: t("lastName"), defaultValue: user.lastName ?? "" },
+                    { name: "username", label: t("username"), required: true, defaultValue: user.username },
+                    { name: "email", label: t("email"), defaultValue: user.email ?? "" },
+                    { name: "phone", label: t("phone"), defaultValue: user.phone ?? "", placeholder: "+966501234567" },
+                  ]}
+                />
+                <ActionButton
+                  label={t("setPassword")}
+                  endpoint={`/admin/users/${user.id}/password`}
+                  description={t("setPasswordHint")}
+                  fields={[{ name: "password", label: t("newPassword"), required: true, hint: t("passwordRule") }]}
+                />
                 <ActionButton label={t("signOutEverywhere")} endpoint={`/admin/users/${user.id}/sessions/revoke`} confirm={t("confirmSignOut")} />
                 {user.suspendedAt ? (
                   <ActionButton label={t("unsuspend")} endpoint={`/admin/users/${user.id}/unsuspend`} tone="brand" confirm={t("confirmUnsuspend")} />
@@ -120,6 +139,14 @@ export default async function AdminUserPage({ params, searchParams }: PageProps<
                         { name: "reason", label: t("reason"), type: "textarea", required: true },
                         { name: "blacklist", label: t("banBlacklist"), type: "checkbox", defaultValue: "1" },
                       ]}
+                    />
+                    <ActionButton
+                      label={t("deleteUser")}
+                      endpoint={`/admin/users/${user.id}`}
+                      method="DELETE"
+                      tone="danger"
+                      confirm={t("confirmDeleteUser")}
+                      redirectTo="/admin/users"
                     />
                   </>
                 )}

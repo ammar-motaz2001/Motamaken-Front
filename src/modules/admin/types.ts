@@ -1,4 +1,4 @@
-import type { AgreementChange, UserBrief } from "@/lib/api/types";
+import type { AgreementChange, FooterColumn, UserBrief } from "@/lib/api/types";
 
 type Meta = { current_page: number; last_page: number; per_page: number; total: number };
 
@@ -43,6 +43,8 @@ type Trend = { current: number; previous: number };
 export type AdminUser = {
   id: number;
   fullName: string;
+  firstName?: string | null;
+  lastName?: string | null;
   username: string;
   email: string | null;
   phone: string | null;
@@ -405,10 +407,14 @@ export type MailSettings = {
 
 export type IntegrationStatus = { service: string; status: "ok" | "warning" | "error" | "off"; details: Record<string, unknown> };
 
+/** A currency of the marketplace as the admins manage it; `inUse` when users hold money in it. */
+export type AdminCurrency = { code: string; symbol: string; nameEn: string; nameAr: string; active: boolean; inUse: boolean };
+
 export type SiteConfig = {
   site: Record<string, string | null>;
   social: Record<string, string | null>;
   apps: Record<string, string | null>;
+  footer: FooterColumn[] | null;
   maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
   uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
   seo: { descriptionEn: string | null; descriptionAr: string | null };

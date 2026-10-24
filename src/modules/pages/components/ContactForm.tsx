@@ -8,7 +8,7 @@ import { Select } from "@/components/ui/Select";
 import { TextArea } from "@/components/ui/TextArea";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
-import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage } from "@/modules/auth/components/Recaptcha";
+import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage, recaptchaNeedsTick, recaptchaToken } from "@/modules/auth/components/Recaptcha";
 
 const TOPICS = ["general", "account", "payments", "disputes", "technical", "partnership", "other"] as const;
 
@@ -29,14 +29,20 @@ export function ContactForm({ signedIn }: { signedIn: boolean }) {
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!signedIn && recaptchaEnabled && !captcha) {
+    if (!signedIn && recaptchaNeedsTick && !captcha) {
       setErrors({ recaptchaToken: ta(recaptchaMissingMessage) });
       return;
     }
     setState("busy");
     setError(null);
+    const token = signedIn ? null : await recaptchaToken(captcha, "contact");
+    if (!signedIn && recaptchaEnabled && !token) {
+      setErrors({ recaptchaToken: ta(recaptchaMissingMessage) });
+      setState("idle");
+      return;
+    }
     try {
-      await api("/contact", { method: "POST", body: signedIn ? { topic: form.topic, subject: form.subject, message: form.message } : { ...form, recaptchaToken: captcha } });
+      await api("/contact", { method: "POST", body: signedIn ? { topic: form.topic, subject: form.subject, message: form.message } : { ...form, recaptchaToken: token } });
       setState("sent");
     } catch (caught) {
       const apiError = caught as ApiError;

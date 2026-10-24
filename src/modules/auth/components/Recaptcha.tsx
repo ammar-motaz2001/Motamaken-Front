@@ -7,14 +7,19 @@ const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 /** "2" shows Google's "I'm not a robot" checkbox (needs a v2 Checkbox key); anything else is the invisible v3. */
 const CHECKBOX = process.env.NEXT_PUBLIC_RECAPTCHA_VERSION === "2";
 
-/** Message key (Auth namespace) for a form sent before a token is ready: tick the box (v2) or wait for it to load (v3). */
+/** Message key (Auth namespace) for a form sent without a token: tick the box (v2), or Google's check could not be reached (v3). */
 export const recaptchaMissingMessage = CHECKBOX ? "recaptchaTick" : "recaptchaRequired";
+
+/** With the v2 checkbox the box must be ticked before a form is sent; v3 needs nothing from the user. */
+export const recaptchaNeedsTick = Boolean(SITE_KEY) && CHECKBOX;
 
 /** Without a site key the captcha is off: nothing is shown and forms send no token (the API does the same without a secret). */
 export const recaptchaEnabled = Boolean(SITE_KEY);
 
 /** v3 tokens are valid for two minutes; a fresh one is fetched before that. */
 const REFRESH_MS = 100_000;
+/** How long the script and a token may take before the attempt counts as failed (a blocked or stalled Google script). */
+const TIMEOUT_MS = 10_000;
 
 type Grecaptcha = {
   ready: (callback: () => void) => void;
@@ -42,11 +47,38 @@ function loadScript(locale: string) {
     script.onload = () => window.grecaptcha!.ready(() => resolve(window.grecaptcha!));
     script.onerror = () => {
       loader = null;
+      script.remove();
       reject(new Error("reCAPTCHA failed to load"));
     };
     document.head.appendChild(script);
   });
   return loader;
+}
+
+/** Rejects when `promise` takes longer than TIMEOUT_MS; a stalled script load is then started afresh next time. */
+function withTimeout<T>(promise: Promise<T>): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = window.setTimeout(() => {
+      if (!window.grecaptcha) loader = null;
+      reject(new Error("reCAPTCHA timed out"));
+    }, TIMEOUT_MS);
+    promise.then(resolve, reject).finally(() => window.clearTimeout(timer));
+  });
+}
+
+/**
+ * The token to send with a form, fetched when it is sent. v3: a fresh one (loading Google's script again if it failed
+ * or stalled before), else the one fetched in the background; v2: the ticked box's. Null when there is none, so the
+ * form shows a message instead of sending; when the captcha is off it is null and nothing is needed.
+ */
+export async function recaptchaToken(current: string | null, action: string): Promise<string | null> {
+  if (!SITE_KEY || CHECKBOX) return current;
+  try {
+    const grecaptcha = await withTimeout(loadScript(document.documentElement.lang));
+    return await withTimeout(grecaptcha.execute(SITE_KEY, { action }));
+  } catch {
+    return current;
+  }
 }
 
 type RecaptchaProps = {
