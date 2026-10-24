@@ -10,6 +10,7 @@ import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Link, useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { AppNotification, Paginated } from "@/lib/api/types";
+import { Badge } from "@/components/ui/Badge";
 import { NOTIFICATION_GROUPS, notificationHref, type NotificationGroup } from "@/lib/notifications";
 
 type Result = Paginated<AppNotification> & { unreadByGroup: Record<NotificationGroup, number> };
@@ -74,6 +75,7 @@ export function NotificationsPage() {
     if (!item.readAt) {
       await api(`/notifications/${item.id}/read`, { method: "POST" }).catch(() => undefined);
       setItems((current) => current.map((entry) => (entry.id === item.id ? { ...entry, readAt: new Date().toISOString() } : entry)));
+      router.refresh();
     }
     const href = notificationHref(item);
     if (href) router.push(href);
@@ -117,7 +119,7 @@ export function NotificationsPage() {
             className={`flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-sm ${group === name ? "bg-surface font-bold shadow-card" : "text-muted hover:text-foreground"}`}
           >
             {t(`groups.${name}`)}
-            {name !== "all" && (counts[name] ?? 0) > 0 && <span className="rounded-full bg-badge px-1.5 text-xs text-white">{counts[name]}</span>}
+            {name !== "all" && <Badge inline count={counts[name] ?? 0} />}
           </button>
         ))}
       </nav>

@@ -18,7 +18,7 @@ type ChatPanelProps = {
   conversation: Conversation;
   onBack: () => void;
   onActivity: () => void;
-  onRead: () => void;
+  onRead: (conversationId: number) => void;
 };
 
 /**
@@ -41,8 +41,8 @@ export function ChatPanel({ conversation, onBack, onActivity, onRead }: ChatPane
 
   const markRead = useCallback(async () => {
     await api(`${base}/read`, { method: "POST" }).catch(() => undefined);
-    onRead();
-  }, [base, onRead]);
+    onRead(conversation.id);
+  }, [base, onRead, conversation.id]);
 
   useEffect(() => {
     let cancelled = false;

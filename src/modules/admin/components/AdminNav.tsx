@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ADMIN_GROUPS } from "../lib/sections";
+import { Badge } from "@/components/ui/Badge";
 import type { Overview } from "../types";
 
 /** Admin menu showing only the sections the staff member's role allows, with queue counts; a scrolling row on small screens. */
@@ -33,7 +34,7 @@ export function AdminNav({ queues, permissions }: { queues: Overview["queues"] |
                 >
                   <item.Icon className="size-4" />
                   {t(item.key)}
-                  {count > 0 && <span className="rounded-full bg-badge px-1.5 text-xs text-white">{count}</span>}
+                  <Badge inline count={count} />
                 </Link>
               </li>
             );
@@ -69,7 +70,7 @@ function AdminSidebar({ groups, queues, isActive }: { groups: typeof ADMIN_GROUP
                   >
                     <item.Icon className="size-4 shrink-0" />
                     {t(item.key)}
-                    {count > 0 && <span className="ms-auto rounded-full bg-badge px-1.5 text-xs text-white">{count}</span>}
+                    <Badge inline count={count} className="ms-auto" />
                   </Link>
                 </li>
               );

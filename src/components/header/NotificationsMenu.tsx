@@ -24,6 +24,9 @@ export function NotificationsMenu({ unread }: { unread: number }) {
   const menu = usePresence(open);
   const [items, setItems] = useState<AppNotification[] | null>(null);
   const [failed, setFailed] = useState(false);
+  // The count the user already saw by opening the menu: hidden until new notifications change it.
+  const [seen, setSeen] = useState<number | null>(null);
+  const badge = seen === unread ? 0 : unread;
   const close = useCallback(() => setOpen(false), []);
   useDismiss(open, ref, close);
 
@@ -36,6 +39,13 @@ export function NotificationsMenu({ unread }: { unread: number }) {
       setItems((await api<Paginated<AppNotification>>("/notifications")).data);
     } catch {
       setFailed(true);
+      return;
+    }
+    // Opening the menu counts as seeing them: clear the badge here and on the server, but keep this list highlighted.
+    if (unread > 0) {
+      setSeen(unread);
+      await api("/notifications/read-all", { method: "POST" }).catch(() => undefined);
+      router.refresh();
     }
   };
 
@@ -63,7 +73,7 @@ export function NotificationsMenu({ unread }: { unread: number }) {
         className="relative flex items-center rounded-md px-1 py-[7.5px]"
       >
         <Image src="/images/notification-bold.svg" alt="" width={20} height={20} className="dark:invert" />
-        <Badge count={unread} className="-top-1 start-3" />
+        <Badge count={badge} className="-top-1 start-3" />
       </button>
 
       {menu.mounted && (

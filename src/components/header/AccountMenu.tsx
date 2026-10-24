@@ -73,9 +73,7 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
       <Link href={key === "myReviews" ? `/users/${user.id}?tab=reviews` : href} onClick={close} className={itemClasses}>
         <Icon className="size-4 text-muted" />
         {t(`account.${key}`)}
-        {key === "messages" && unreadMessages > 0 && (
-          <span className="ms-auto rounded-full bg-badge px-1.5 text-xs text-white">{unreadMessages}</span>
-        )}
+        {key === "messages" && <Badge inline count={unreadMessages} className="ms-auto" />}
       </Link>
     </li>
   );

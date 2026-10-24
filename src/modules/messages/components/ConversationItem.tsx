@@ -2,6 +2,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { Conversation } from "@/lib/api/types";
 import { timeAgo } from "@/lib/format";
+import { Badge } from "@/components/ui/Badge";
 import { conversationAvatar, conversationName } from "../lib/conversation";
 
 type ConversationItemProps = {
@@ -32,11 +33,7 @@ export function ConversationItem({ conversation, selected, onSelect }: Conversat
       >
         <span className="relative">
           <UserAvatar name={name} src={conversationAvatar(conversation)} size={62} online={conversation.participant?.isOnline} />
-          {conversation.unreadCount > 0 && (
-            <span className="absolute -start-1 top-0 flex size-5 items-center justify-center rounded-full bg-danger text-xs font-bold text-white">
-              +{conversation.unreadCount > 9 ? 9 : conversation.unreadCount}
-            </span>
-          )}
+          <Badge count={conversation.unreadCount} max={9} className="-start-0.5 top-0.5" />
         </span>
         <span className="flex min-w-0 flex-1 flex-col gap-1">
           <span className="truncate text-base font-medium tracking-[-0.5px]">{name}</span>

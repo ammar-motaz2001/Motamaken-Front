@@ -67,11 +67,16 @@ export function MessagesPage({ initial, initialSelected }: MessagesPageProps) {
   const select = (id: number) => {
     setSelectedId(id);
     setShowChatOnMobile(true);
-    setConversations((current) => current?.map((item) => (item.id === id ? { ...item, unreadCount: 0 } : item)) ?? null);
     window.history.replaceState(null, "", `?c=${id}`);
   };
 
-  const onRead = useCallback(() => router.refresh(), [router]);
+  const onRead = useCallback(
+    (id: number) => {
+      setConversations((current) => current?.map((item) => (item.id === id ? { ...item, unreadCount: 0 } : item)) ?? null);
+      router.refresh();
+    },
+    [router],
+  );
 
   const isEmpty = conversations?.length === 0 && !query.trim();
 
