@@ -1,10 +1,18 @@
+"use client";
+
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { ADMIN_LOGIN_PATH } from "@/lib/session";
 import { LogoutButton } from "./LogoutButton";
 
-/** Top-bar links: "My account" and sign out when signed in, otherwise sign-up and sign-in links. */
+/**
+ * Top-bar links: "My account" and sign out when signed in, otherwise sign-up and sign-in links (none on the staff
+ * sign-in page, which offers no way to create an account).
+ */
 export function AccountLinks({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header");
+  const pathname = usePathname();
+  if (!signedIn && pathname === ADMIN_LOGIN_PATH) return null;
 
   return (
     <div className="flex h-[35px] items-center gap-2">
