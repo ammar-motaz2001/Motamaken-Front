@@ -152,6 +152,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-2">
             <Field
               label={t("firstName")}
+              required
               placeholder={t("firstNamePlaceholder")}
               autoComplete="given-name"
               value={values.firstName}
@@ -160,6 +161,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
             />
             <Field
               label={t("lastName")}
+              required
               placeholder={t("lastNamePlaceholder")}
               autoComplete="family-name"
               value={values.lastName}

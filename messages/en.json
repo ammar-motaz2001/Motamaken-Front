@@ -239,14 +239,15 @@
     "phoneRequired": "Phone number is required.",
     "phoneInvalid": "Please enter a valid phone number.",
     "usernameRequired": "Username is required.",
-    "usernameInvalid": "Only letters and the dot (.) character, followed by a space, are allowed.",
+    "usernameInvalid": "Letters, numbers, the dot (.) and underscore (_); words separated by single spaces. Not your email address.",
     "nameInvalid": "Name can contain letters only.",
     "passwordRequired": "Password is required.",
     "passwordWeak": "Your password is too weak! Choose a stronger password with a mix of upper and lowercase letters, numbers, and symbols.",
     "confirmRequired": "Please confirm your new password.",
     "passwordMismatch": "Passwords do not match.",
     "termsRequired": "You must agree to the terms & conditions.",
-    "generic": "Something went wrong. Please try again."
+    "generic": "Something went wrong. Please try again.",
+    "nameRequired": "This field is required."
   },
   "UnderConstruction": {
     "title": "Under Construction",

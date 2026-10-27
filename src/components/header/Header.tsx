@@ -12,6 +12,7 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileMenu } from "./MobileMenu";
 import { NAV_ITEMS } from "./nav";
 import { NotificationsMenu } from "./NotificationsMenu";
+import { HideOnAuthPages } from "./HideOnAuthPages";
 import { SearchBar } from "./SearchBar";
 import { AuthLink } from "@/components/AuthLink";
 import { ThemeToggle } from "./ThemeToggle";
@@ -111,6 +112,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
         </div>
       </div>
 
+      <HideOnAuthPages>
       <div className="pt-2 pb-6">
         <div className="page-container flex flex-wrap items-stretch justify-between gap-3 lg:flex-nowrap">
           <div className="flex min-w-0 flex-1 items-stretch gap-3 lg:flex-none">
@@ -159,6 +161,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
           )}
         </ul>
       </nav>
+      </HideOnAuthPages>
     </header>
   );
 }

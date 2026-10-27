@@ -7,6 +7,7 @@ export type ValidationKey =
   | "phoneInvalid"
   | "usernameRequired"
   | "usernameInvalid"
+  | "nameRequired"
   | "nameInvalid"
   | "passwordRequired"
   | "passwordWeak"
@@ -15,7 +16,7 @@ export type ValidationKey =
   | "termsRequired";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const USERNAME_PATTERN = /^[\p{L}.]+( [\p{L}.]+)*$/u;
+const USERNAME_PATTERN = /^[\p{L}\p{N}._]+( [\p{L}\p{N}._]+)*$/u;
 const NAME_PATTERN = /^[\p{L} ]+$/u;
 
 /** Password strength from 0 to 4: length 8+, mixed case, a digit and a symbol each add one. */
@@ -49,7 +50,8 @@ export function validateUsername(value: string): ValidationKey | undefined {
 
 /** Error key when a name has characters that are not allowed; an empty name is fine. */
 export function validateName(value: string): ValidationKey | undefined {
-  if (value.trim() && !NAME_PATTERN.test(value.trim())) return "nameInvalid";
+  if (!value.trim()) return "nameRequired";
+  if (!NAME_PATTERN.test(value.trim())) return "nameInvalid";
 }
 
 /** Error key for an empty password or one weaker than all four strength rules. */
