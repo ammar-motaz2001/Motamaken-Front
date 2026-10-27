@@ -46,8 +46,8 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
       <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-4 dark:bg-none">
         <div className="page-container flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Link href="/" aria-label="Mutamakin" className="flex h-[51px] flex-col justify-end gap-1.5">
-              <Image src="/images/logo.png" alt="Mutamakin" width={181} height={48} priority />
+            <Link href="/" aria-label="Mutamakin" className="flex shrink-0 flex-col gap-1">
+              <Image src="/images/logo.png" alt="Mutamakin" width={158} height={42} priority className="h-[42px] w-auto" />
               <span dir="rtl" className="text-end text-sm leading-none font-medium tracking-[-0.154px]">
                 مـــتـــــمــــكــن.
               </span>
