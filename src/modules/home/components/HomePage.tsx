@@ -38,8 +38,8 @@ function LookingForCard({ href, title, text, icon, active }: {
 /** First card of a home carousel inviting the user to feature their profile or project (opens the promotion flow). */
 function AddCard({ icon, label, kind, user, currency }: { icon: string; label: string; kind: "profile" | "project"; user: User | null; currency: string }) {
   return (
-    <div className="hidden w-[212px] shrink-0 flex-col items-center justify-center gap-3 self-stretch rounded-xl bg-surface px-4 py-2 shadow-card md:flex dark:border dark:border-border">
-      <Image src={icon} alt="" width={80} height={80} />
+    <div className="flex w-full shrink-0 items-center gap-3 rounded-xl bg-surface px-4 py-3 shadow-card md:w-[212px] md:flex-col md:justify-center md:self-stretch md:py-2 dark:border dark:border-border">
+      <Image src={icon} alt="" width={80} height={80} className="size-12 shrink-0 md:size-20" />
       <FeatureButton
         kind={kind}
         user={user}
@@ -58,7 +58,7 @@ function SliderSection({ title, children }: { title: string; children: ReactNode
     <section className="bg-surface-muted py-12">
       <div className="page-container flex flex-col gap-3">
         <h2 className="text-[28.8px] leading-9 font-bold uppercase">{title}</h2>
-        <div className="flex items-stretch gap-3">{children}</div>
+        <div className="flex flex-col gap-3 md:flex-row md:items-stretch">{children}</div>
       </div>
     </section>
   );
