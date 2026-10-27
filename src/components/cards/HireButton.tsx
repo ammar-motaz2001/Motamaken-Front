@@ -15,7 +15,7 @@ export function HireButton({ userId }: { userId: number; signedIn?: boolean }) {
           type="button"
           onClick={start}
           disabled={pending}
-          className={`${buttonClasses({ size: "sm" })} flex-1`}
+          className={`${buttonClasses({ size: "sm" })} w-full`}
         >
           {t("hireMe")}
         </button>

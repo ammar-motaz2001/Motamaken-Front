@@ -1,6 +1,7 @@
 import { BadgeCheck } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { buttonClasses } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
 import type { ProfileCard as Profile } from "@/lib/api/types";
 import { FavoriteButton } from "./FavoriteButton";
@@ -13,50 +14,48 @@ export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn:
 
   return (
     <article className="relative flex w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col overflow-hidden rounded-xl bg-surface shadow-card dark:border dark:border-border">
-      <div className="relative flex aspect-square w-full flex-col justify-end bg-gradient-brand">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-brand">
         {/* The whole picture (photo or initial), name and stars open the profile; the heart sits above this link. */}
         <Link href={`/users/${profile.userId}`} aria-label={profile.fullName} className="absolute inset-0">
           {profile.avatarUrl ? (
             <Image src={profile.avatarUrl} alt="" fill unoptimized className="object-cover transition-transform duration-300 hover:scale-105" />
           ) : (
-            <span className="absolute inset-0 flex items-center justify-center pb-10 text-7xl font-bold text-white/90 uppercase">
+            <span className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-white/90 uppercase">
               {profile.fullName.charAt(0)}
             </span>
           )}
         </Link>
-        <div className="pointer-events-none relative bg-nav/65 px-4 py-2 text-white backdrop-blur-[4.5px]">
-          <p className="flex items-center gap-1 text-base font-bold tracking-[-0.176px]">
+        <FavoriteButton kind="profile" id={profile.id} className="absolute start-3 top-3" />
+      </div>
+      <div className="flex flex-1 flex-col gap-3 p-3">
+        <div className="min-w-0">
+          <Link href={`/users/${profile.userId}`} className="flex items-center gap-1 text-base font-bold text-heading hover:text-brand">
             <span className="truncate">{profile.fullName}</span>
-            {profile.verified && <BadgeCheck className="size-4 shrink-0 text-brand-light" aria-label={t("verified")} />}
-          </p>
-          <div className="flex" role="img" aria-label={t("rating", { rating: profile.rating })}>
+            {profile.verified && <BadgeCheck className="size-4 shrink-0 text-brand" aria-label={t("verified")} />}
+          </Link>
+          <p className="mt-0.5 truncate text-sm text-muted">{profile.jobTitle || "\u00a0"}</p>
+          <div className="mt-1.5 flex gap-0.5" role="img" aria-label={t("rating", { rating: profile.rating })}>
             {Array.from({ length: 5 }, (_, index) => (
               <Image
                 key={index}
                 src="/images/star.svg"
                 alt=""
-                width={12}
-                height={12}
+                width={14}
+                height={14}
                 className={index < stars ? "" : "opacity-30 grayscale"}
               />
             ))}
           </div>
         </div>
-        <FavoriteButton kind="profile" id={profile.id} className="absolute start-3 top-3" />
-        {profile.jobTitle && (
-          <span className="absolute end-0 top-3 max-w-[calc(100%-3.5rem)] truncate rounded-s-xl bg-nav/65 px-4 py-1.5 text-base leading-none font-medium tracking-[-0.176px] text-white backdrop-blur-[4.5px]">
-            {profile.jobTitle}
-          </span>
-        )}
-      </div>
-      <div className="flex gap-2 px-3 pt-7 pb-4">
-        <HireButton userId={profile.userId} signedIn={signedIn} />
-        <Link
-          href={`/users/${profile.userId}?tab=portfolio`}
-          className="flex h-[37px] flex-1 items-center justify-center rounded-md border border-brand bg-surface text-sm font-medium whitespace-nowrap text-brand capitalize hover:opacity-85"
-        >
-          {t("portfolio")}
-        </Link>
+        <div className="mt-auto grid grid-cols-2 gap-2 [&>*]:min-w-0">
+          <HireButton userId={profile.userId} signedIn={signedIn} />
+          <Link
+            href={`/users/${profile.userId}?tab=portfolio`}
+            className={`${buttonClasses({ variant: "outline", size: "sm" })} w-full`}
+          >
+            <span className="truncate text-gradient-brand">{t("portfolio")}</span>
+          </Link>
+        </div>
       </div>
     </article>
   );
