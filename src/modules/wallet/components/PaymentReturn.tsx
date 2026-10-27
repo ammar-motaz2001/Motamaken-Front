@@ -2,12 +2,12 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonClasses } from "@/components/ui/Button";
 import { StatusIcon } from "@/components/ui/StatusIcon";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit } from "@/lib/api/types";
-import { PENDING_CARD_KEY, RETURN_MESSAGE, storeCardToken } from "@/lib/moyasar";
+import { PENDING_CARD_KEY, RETURN_MESSAGE, RETURN_TO_KEY, storeCardToken } from "@/lib/moyasar";
 
 type Outcome = { state: "checking" | "succeeded" | "pending" | "failed" | "cardSaved"; message?: string };
 
@@ -18,6 +18,7 @@ type Outcome = { state: "checking" | "succeeded" | "pending" | "failed" | "cardS
 export function PaymentReturn({ depositId, card }: { depositId: number | null; card: boolean }) {
   const t = useTranslations("Wallet.return");
   const locale = useLocale();
+  const [returnTo, setReturnTo] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<Outcome>(depositId === null && !card ? { state: "failed" } : { state: "checking" });
 
   useEffect(() => {
@@ -28,11 +29,18 @@ export function PaymentReturn({ depositId, card }: { depositId: number | null; c
       return;
     }
 
+    try {
+      const from = sessionStorage.getItem(RETURN_TO_KEY);
+      sessionStorage.removeItem(RETURN_TO_KEY);
+      // Only a path on this site (not "//host"), and not this page itself; sessionStorage is only readable here.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (from?.startsWith("/") && !from.startsWith("//") && !from.includes("/payments/return")) setReturnTo(from);
+    } catch {}
+
     if (card) {
       const pending = JSON.parse(sessionStorage.getItem(PENDING_CARD_KEY) ?? "null") as { token: string; makeDefault: boolean } | null;
       sessionStorage.removeItem(PENDING_CARD_KEY);
       if (!pending) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- nothing to finish: report straight away
         setOutcome({ state: "failed" });
         return;
       }
@@ -72,9 +80,16 @@ export function PaymentReturn({ depositId, card }: { depositId: number | null; c
           <p className="text-sm text-muted">
             {message || (state === "pending" ? t("pending") : state === "cardSaved" ? t("cardSaved") : state === "failed" ? t("failed") : null)}
           </p>
-          <Button variant="solid" font="button" href={state === "cardSaved" ? "/settings/payment" : "/settings/wallet"}>
-            {t(state === "cardSaved" ? "toCards" : "toWallet")}
-          </Button>
+          <div className="flex w-full flex-wrap justify-center gap-3">
+            {returnTo && (
+              <a href={returnTo} className={buttonClasses({ variant: "solid", font: "button" })}>
+                {t("backToPage")}
+              </a>
+            )}
+            <Button variant={returnTo ? "outline" : "solid"} font="button" href={state === "cardSaved" ? "/settings/payment" : "/settings/wallet"}>
+              {t(state === "cardSaved" ? "toCards" : "toWallet")}
+            </Button>
+          </div>
         </>
       )}
     </div>

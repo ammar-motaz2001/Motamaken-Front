@@ -8,7 +8,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { Select } from "@/components/ui/Select";
 import { api } from "@/lib/api/client";
-import { CardError, cardDeposit, open3dsWindow } from "@/lib/moyasar";
+import { CardError, cardDeposit } from "@/lib/moyasar";
 import { useMoyasarEnabled } from "@/components/providers/PaymentsProvider";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit, PaymentMethod } from "@/lib/api/types";
@@ -102,7 +102,7 @@ export function AddBalanceModal({ open, onClose, onDone, currencies, currency: i
     }
 
     if (moyasarEnabled) {
-      const popup = open3dsWindow();
+      const popup = null;
       setStep("processing");
       try {
         const paid = await cardDeposit({

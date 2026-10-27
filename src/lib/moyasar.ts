@@ -15,6 +15,17 @@ export const RETURN_MESSAGE = "mutamakin:payment-return";
 /** A card waiting for its one-time bank check when the check had to run in this tab (popup blocked). */
 export const PENDING_CARD_KEY = "mutamakin:pending-card";
 
+/** The page the customer paid from, so the result page can send them back to it. */
+export const RETURN_TO_KEY = "mutamakin:payment-return-to";
+
+/** Leaves for the bank page in this tab, remembering where to come back to. */
+function redirectToGateway(url: string) {
+  try {
+    sessionStorage.setItem(RETURN_TO_KEY, window.location.pathname + window.location.search);
+  } catch {}
+  window.location.assign(url);
+}
+
 type ReturnTarget = { depositId: number } | { card: true };
 
 /** Thrown when Moyasar rejects the card details; `fields` uses the card form's names (number, expiry, cvc, holderName). */
@@ -79,7 +90,7 @@ export async function saveTokenizedCard(card: CardForm, popup: Window | null, ma
     if (verificationUrl) {
       if (!popup || popup.closed) {
         sessionStorage.setItem(PENDING_CARD_KEY, JSON.stringify({ token: id, makeDefault }));
-        window.location.assign(verificationUrl);
+        redirectToGateway(verificationUrl);
         return new Promise<never>(() => undefined);
       }
       popup.location.href = verificationUrl;
@@ -91,18 +102,6 @@ export async function saveTokenizedCard(card: CardForm, popup: Window | null, ma
   }
 }
 
-/**
- * Opens an empty window for 3-D Secure. It must happen right in the click handler (before any `await`) or the browser
- * blocks it; when it is blocked anyway, the payment continues in this tab with a full redirect.
- */
-export function open3dsWindow() {
-  const width = 480;
-  const height = 720;
-  const left = window.screenX + (window.outerWidth - width) / 2;
-  const top = window.screenY + (window.outerHeight - height) / 2;
-  return window.open("", "moyasar-3ds", `popup,width=${width},height=${height},left=${left},top=${top}`);
-}
-
 type CardDepositOptions = {
   amount: number;
   currency: string;
@@ -112,7 +111,7 @@ type CardDepositOptions = {
   saveCard?: boolean;
   /** Paying for something (exact price): the API waives the top-up minimum. */
   forPurchase?: boolean;
-  /** From {@link open3dsWindow}, opened in the click handler. */
+  /** A window for the bank page; null sends this tab there and back to the result page. */
   popup: Window | null;
 };
 
@@ -139,7 +138,7 @@ export async function cardDeposit({ amount, currency, savedCardId, card, saveCar
     }
 
     if (!popup || popup.closed) {
-      window.location.assign(data.checkoutUrl);
+      redirectToGateway(data.checkoutUrl);
       return new Promise<Deposit>(() => undefined);
     }
 

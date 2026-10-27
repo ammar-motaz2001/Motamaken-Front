@@ -10,7 +10,7 @@ import { ResultModal } from "@/components/ui/ResultModal";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { PaymentMethod } from "@/lib/api/types";
-import { CardError, open3dsWindow, saveTokenizedCard } from "@/lib/moyasar";
+import { CardError, saveTokenizedCard } from "@/lib/moyasar";
 import { useMoyasarEnabled } from "@/components/providers/PaymentsProvider";
 import { EMPTY_CARD, toCardPayload, validateCard, type CardForm } from "../lib/card";
 import { CardFields } from "./CardFields";
@@ -52,7 +52,7 @@ export function AddPaymentMethodModal({ open, onClose, onSaved }: { open: boolea
     if (Object.keys(found).length) return;
 
     // The bank's one-time card check opens in a small window, which must open right here in the click.
-    const popup = type === "card" && moyasarEnabled ? open3dsWindow() : null;
+    const popup = null;
     setSaving(true);
     try {
       const body = type === "card" ? { ...toCardPayload(card), makeDefault } : { type, email, makeDefault };

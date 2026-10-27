@@ -1118,7 +1118,8 @@
       "toWallet": "Go to my wallet",
       "cardSavedTitle": "Card saved",
       "cardSaved": "Your bank confirmed the card. You can now pay with it in one click.",
-      "toCards": "My payment methods"
+      "toCards": "My payment methods",
+      "backToPage": "Back to where I was"
     }
   },
   "Payments": {

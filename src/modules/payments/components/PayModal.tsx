@@ -9,7 +9,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ResultModal } from "@/components/ui/ResultModal";
 import { Select } from "@/components/ui/Select";
 import { api } from "@/lib/api/client";
-import { CardError, cardDeposit, open3dsWindow } from "@/lib/moyasar";
+import { CardError, cardDeposit } from "@/lib/moyasar";
 import { useMoyasarEnabled } from "@/components/providers/PaymentsProvider";
 import type { ApiError } from "@/lib/api/errors";
 import type { Deposit, PaymentMethod, WalletBalance } from "@/lib/api/types";
@@ -98,7 +98,7 @@ export function PayModal({ open, onClose, amount, currency, rows, pay, success, 
     if (Object.keys(found).length) return;
 
     // Card: top the wallet up with exactly the amount first (3-D Secure in a small window), then pay from the wallet.
-    const popup = method === "card" && moyasarEnabled ? open3dsWindow() : null;
+    const popup = null;
     setStep("processing");
     try {
       if (method === "card" && moyasarEnabled) {
