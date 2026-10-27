@@ -212,30 +212,8 @@
   .pop-down, .pop-up, .pop-leave, .fade-in, .drawer-in, .page-enter { animation: none; }
 }
 
-/*
- * Glass: frosted panels in the site's own colours (menus, popovers, dialogs, sticky bars). Semi-transparent surface,
- * blurred background, a faint green edge and a soft shadow; plain surface where the browser has no backdrop blur.
- * Declared outside Tailwind's layers so it wins over a `bg-surface` on the same element.
- */
+/* Panels (menus, popovers, dialogs, sticky bars): the solid surface with the usual card shadow. */
 .glass {
-  background-color: color-mix(in srgb, var(--surface) 90%, transparent);
-  border-color: color-mix(in srgb, var(--color-brand) 16%, var(--border));
-  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--color-brand) 22%, transparent), 0 1px 0 rgb(255 255 255 / 0.35) inset;
-  -webkit-backdrop-filter: blur(16px) saturate(170%);
-  backdrop-filter: blur(16px) saturate(170%);
-}
-.dark .glass {
-  background-color: color-mix(in srgb, var(--surface) 92%, transparent);
-  box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6), 0 1px 0 rgb(255 255 255 / 0.06) inset;
-}
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass { background-color: var(--surface); }
-}
-
-/* A faint green and orange glow behind the pages, so the glass panels have colour to frost. */
-body {
-  background-image:
-    radial-gradient(60rem 40rem at 100% -10%, color-mix(in srgb, var(--color-brand) 7%, transparent), transparent 70%),
-    radial-gradient(50rem 36rem at -10% 110%, color-mix(in srgb, var(--color-orange) 6%, transparent), transparent 70%);
-  background-attachment: fixed;
+  background-color: var(--surface);
+  box-shadow: var(--shadow-card, 0 4px 12px rgb(0 0 0 / 0.08));
 }
