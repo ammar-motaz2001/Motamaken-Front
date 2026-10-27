@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 type ModalProps = {
   open: boolean;
@@ -35,7 +36,8 @@ export function Modal({ open, onClose, title, showClose, children }: ModalProps)
 
   if (!open) return null;
 
-  return (
+  // Rendered straight into <body>: a parent with a transform or animation can then never move it off the screen's centre.
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4 backdrop-blur-sm" onClick={onClose}>
       <div
         role="dialog"
@@ -60,6 +62,7 @@ export function Modal({ open, onClose, title, showClose, children }: ModalProps)
         )}
         <div className="flex flex-col items-center gap-4 px-2 text-center sm:px-[30px]">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
