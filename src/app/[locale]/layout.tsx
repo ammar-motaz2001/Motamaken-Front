@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Mulish, Quicksand, Tajawal } from "next/font/google";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { preload } from "react-dom";
@@ -107,7 +107,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="flex flex-col">
         <StructuredData locale={locale} description={seoDescription} />
         <NextIntlClientProvider messages={publicMessages}>
-          <ThemeProvider>
+          <ThemeProvider nonce={(await headers()).get("x-nonce") ?? undefined}>
             <AuthGateProvider signedIn={signedIn} methods={authMethods}>
               <PaymentsProvider moyasarKey={moyasarKey}>
                 <FavoritesProvider signedIn={signedIn}>

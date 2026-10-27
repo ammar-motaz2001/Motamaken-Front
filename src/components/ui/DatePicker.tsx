@@ -210,7 +210,7 @@ export function DatePicker({ value, onChange, withTime, min, max, placeholder, d
         <div
           role="dialog"
           aria-label={t("title")}
-          className={`absolute start-0 z-50 w-[300px] max-w-[calc(100vw-2rem)] rounded-xl border border-border bg-surface p-3 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.3)] ${
+          className={`absolute start-0 z-50 w-[300px] max-w-[calc(100vw-2rem)] rounded-xl border border-border glass p-3 ${
             above ? "bottom-full mb-1.5 pop-up" : "top-full mt-1.5 pop-down"
           }`}
         >

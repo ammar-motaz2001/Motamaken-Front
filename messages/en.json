@@ -79,7 +79,14 @@
       "campaigns": "Promotion campaigns",
       "admin": "Admin panel"
     },
-    "allNotifications": "See all notifications"
+    "allNotifications": "See all notifications",
+    "suggest": {
+      "loading": "Searching…",
+      "none": "No matches yet: press Enter to search all.",
+      "all": "See all results for “{q}”",
+      "freelancer": "Freelancer",
+      "influencer": "Influencer"
+    }
   },
   "Footer": {
     "cta": {
@@ -638,7 +645,9 @@
         "budget_low": "Lowest budget",
         "rating": "Top rated",
         "reviews": "Most reviewed"
-      }
+      },
+      "advanced": "Advanced search",
+      "simple": "Simple search"
     },
     "rows": {
       "offers": "{count, plural, =0 {No offers yet} one {# offer} other {# offers}}",
@@ -2072,7 +2081,8 @@
     "browse": {
       "project": "Browse projects",
       "profile": "Find freelancers"
-    }
+    },
+    "signUpReason": "Sign in to save it to your favorites."
   },
   "SitePages": {
     "home": "Home",

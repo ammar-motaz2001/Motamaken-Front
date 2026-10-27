@@ -77,7 +77,7 @@ export function NotificationsMenu({ unread }: { unread: number }) {
       </button>
 
       {menu.mounted && (
-        <div className={`${menu.leaving ? "pop-leave" : "pop-down"} absolute end-0 top-full z-40 mt-2 flex max-h-[400px] w-[min(442px,calc(100vw-32px))] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card`}>
+        <div className={`${menu.leaving ? "pop-leave" : "pop-down"} absolute end-0 top-full z-40 mt-2 flex max-h-[400px] w-[min(442px,calc(100vw-32px))] flex-col overflow-hidden rounded-xl border border-border glass shadow-card`}>
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <span className="text-base font-bold">{t("notifications")}</span>
             {items?.some((item) => !item.readAt) && (

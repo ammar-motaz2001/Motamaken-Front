@@ -54,22 +54,23 @@ export async function PublicProfileView({ data, tab, reviews, signedIn }: Public
         </Link>{" "}
         / <span className="font-bold text-foreground">{user.fullName}</span>
       </nav>
+      {/* The sections come first, above the person's card, so they are on top on phones too. */}
+      <nav className="glass sticky top-2 z-20 grid gap-1 overflow-x-auto rounded-xl border border-border p-1 [scrollbar-width:none]" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(max-content, 1fr))` }} aria-label={t("sections")}>
+        {tabs.map((name) => (
+          <Link
+            key={name}
+            href={`/users/${user.id}${name === "overview" ? "" : `?tab=${name}`}`}
+            aria-current={active === name ? "page" : undefined}
+            className={`rounded-lg px-3 py-2 text-center text-sm font-medium whitespace-nowrap transition-colors ${active === name ? "bg-gradient-brand text-white" : "text-muted hover:text-foreground"}`}
+          >
+            {t(`tabs.${name}`)}
+          </Link>
+        ))}
+      </nav>
       <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
         <ProfileSidebar data={data} signedIn={signedIn} />
 
         <div className="flex min-w-0 flex-col gap-5">
-          <nav className="grid rounded-lg border border-border bg-surface p-1" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }} aria-label={t("sections")}>
-            {tabs.map((name) => (
-              <Link
-                key={name}
-                href={`/users/${user.id}${name === "overview" ? "" : `?tab=${name}`}`}
-                aria-current={active === name ? "page" : undefined}
-                className={`rounded-md px-2 py-2 text-center text-sm font-medium ${active === name ? "bg-gradient-brand text-white" : "text-muted hover:text-foreground"}`}
-              >
-                {t(`tabs.${name}`)}
-              </Link>
-            ))}
-          </nav>
 
           {active === "overview" && (
             <>

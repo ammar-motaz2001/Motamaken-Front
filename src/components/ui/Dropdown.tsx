@@ -71,7 +71,7 @@ export function Dropdown({ trigger, items, selected, onSelect, label }: Dropdown
       {mounted && (
         <ul
           role="listbox"
-          className={`absolute ${side === "right" ? "right-0" : "left-0"} z-30 min-w-32 overflow-hidden rounded-md border border-border bg-surface py-1 shadow-card ${
+          className={`absolute ${side === "right" ? "right-0" : "left-0"} z-30 min-w-32 overflow-hidden rounded-lg border border-border glass py-1 ${
             above ? "bottom-full mb-1" : "top-full mt-1"
           } ${leaving ? "pop-leave" : above ? "pop-up" : "pop-down"}`}
         >

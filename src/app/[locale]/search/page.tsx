@@ -47,10 +47,14 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
   const th = await getTranslations("Header.searchTypes");
   const signedIn = (await cookies()).has(SESSION_COOKIE);
   const query = await searchParams;
-  const picked = pickParams(query, ["type", "view", ...FILTERS]);
+  const picked = pickParams(query, ["type", "view", "advanced", ...FILTERS]);
   const type = TYPES.includes(picked.type as SearchType) ? (picked.type as SearchType) : "all";
   const view = picked.view === "list" ? "list" : "grid";
-  const filters = Object.fromEntries(FILTERS.map((key) => [key, picked[key]]).filter(([, value]) => value)) as Record<string, string>;
+  // A plain search is just words (and the header's place); the other filters only exist in advanced search.
+  const advanced = picked.advanced === "1";
+  const allowed: readonly string[] = advanced ? FILTERS : ["q", "countryId", "cityId"];
+  const filters = Object.fromEntries(FILTERS.filter((key) => allowed.includes(key)).map((key) => [key, picked[key]]).filter(([, value]) => value)) as Record<string, string>;
+  const mode = advanced ? "1" : undefined;
   const isProjects = type === "projects" || type === "influencer_requests";
 
   const [categories, countries, grouped, paged] = await Promise.all([
@@ -61,19 +65,19 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
   ]);
   const failed = type === "all" ? !grouped : !paged;
   const empty = grouped ? GROUPS.every((group) => !grouped[group.key].length) : paged?.data.length === 0;
-  const viewHref = (next: string) => `/search${toQuery({ ...filters, type, view: next === "list" ? "list" : undefined })}`;
+  const viewHref = (next: string) => `/search${toQuery({ ...filters, type, view: next === "list" ? "list" : undefined, advanced: mode })}`;
 
   return (
     <div className="page-container flex flex-col gap-5 py-10">
       <PageHeader crumbs={[{ label: t("home"), href: "/" }, { label: t("title") }]} title={filters.q ? t("resultsFor", { q: filters.q }) : t("title")} />
 
       <div className="grid items-start gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <nav aria-label={t("searchBy")} className="flex flex-col gap-1 rounded-xl border border-border bg-surface p-2.5 lg:sticky lg:top-4">
+        <nav aria-label={t("searchBy")} className="glass flex flex-col gap-1 rounded-xl border border-border p-2.5 lg:sticky lg:top-4">
           <p className="px-2.5 pt-1 pb-2 text-sm font-bold">{t("searchBy")}</p>
           {TYPES.map((item) => (
             <Link
               key={item}
-              href={`/search${toQuery({ q: filters.q, type: item === "all" ? undefined : item })}`}
+              href={`/search${toQuery({ q: filters.q, type: item === "all" ? undefined : item, advanced: item === "all" ? undefined : mode })}`}
               aria-current={item === type ? "page" : undefined}
               className={`rounded-md px-2.5 py-2 text-sm ${item === type ? "bg-orange/10 font-medium text-orange" : "hover:bg-surface-muted"}`}
             >
@@ -83,7 +87,7 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
         </nav>
 
         <div className="flex min-w-0 flex-col gap-5">
-          <SearchFilters key={`${type}-${JSON.stringify(filters)}`} type={type} values={filters} categories={categories} countries={countries} view={view} />
+          <SearchFilters key={`${type}-${advanced}-${JSON.stringify(filters)}`} type={type} values={filters} categories={categories} countries={countries} view={view} advanced={advanced} />
 
           <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4 sm:p-5">
             {paged && (
@@ -145,7 +149,7 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
                       : (paged.data as Profile[]).map((profile) => <ProfileCard key={profile.id} profile={profile} signedIn={signedIn} />)}
                   </Grid>
                 )}
-                <Pagination page={paged.meta.current_page} lastPage={paged.meta.last_page} pathname="/search" query={{ ...filters, type, view: view === "list" ? "list" : undefined }} />
+                <Pagination page={paged.meta.current_page} lastPage={paged.meta.last_page} pathname="/search" query={{ ...filters, type, view: view === "list" ? "list" : undefined, advanced: mode }} />
               </>
             )}
           </section>

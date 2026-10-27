@@ -15,6 +15,20 @@ export const ADMIN_LOGIN_PATH = "/admin-login";
 
 const ADMIN_PATH = /^\/admin(\/|$)/;
 
+/** Pages the admin address may show: the panel, the staff sign-in and its code / password-reset steps. */
+export const ADMIN_HOST_PATHS = [/^\/admin(\/|$)/, /^\/admin-login(\/|$)/, /^\/login\/verify(\/|$)/, /^\/(forgot-password|reset-password)(\/|$)/];
+
+/**
+ * Whether the request came in on the admin address: `NEXT_PUBLIC_ADMIN_HOST` when set (e.g. admin.mutamakin.com),
+ * otherwise any host that starts with "admin.".
+ */
+export function isAdminHost(host: string | null | undefined): boolean {
+  if (!host) return false;
+  const name = host.split(",")[0].trim().toLowerCase().replace(/:\d+$/, "");
+  const configured = process.env.NEXT_PUBLIC_ADMIN_HOST?.toLowerCase();
+  return configured ? name === configured : name.startsWith("admin.");
+}
+
 /** Whether a path is inside the admin panel (its sign-in page included). */
 export function isAdminPath(path: string): boolean {
   return ADMIN_PATH.test(path) || path === ADMIN_LOGIN_PATH;

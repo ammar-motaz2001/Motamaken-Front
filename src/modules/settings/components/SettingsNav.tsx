@@ -78,7 +78,7 @@ export function SettingsNav() {
   };
 
   return (
-    <nav aria-label={t("label")} className="rounded-xl border border-border bg-surface p-2.5 lg:sticky lg:top-4">
+    <nav aria-label={t("label")} className="glass rounded-xl border border-border p-2.5 lg:sticky lg:top-4">
       <ul className="flex flex-col gap-0.5">
         {MAIN.map(renderItem)}
         {showMore && MORE.map(renderItem)}

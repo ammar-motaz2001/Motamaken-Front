@@ -4,6 +4,7 @@ import { FaApple, FaGooglePlay, FaInstagram, FaLinkedin, FaSnapchat, FaSquareFac
 import { Mail, Phone } from "lucide-react";
 import { AuthLink } from "@/components/AuthLink";
 import { Link } from "@/i18n/navigation";
+import { PROTECTED_PATHS } from "@/lib/session";
 import type { PublicSiteSettings } from "@/lib/api/types";
 import { buttonClasses } from "@/components/ui/Button";
 
@@ -51,7 +52,7 @@ export const FOOTER_COLUMNS = [
     title: "helpSupport",
     links: [
       { key: "account", href: "/settings/profile" },
-      { key: "projects", href: "/projects" },
+      { key: "projects", href: "/my-projects" },
       { key: "payments", href: "/settings/wallet" },
       { key: "support", href: "/support" },
       { key: "faq", href: "/faq" },
@@ -104,7 +105,9 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
       </a>
     );
   }
-  return href.startsWith("/settings") ? (
+  // Pages that need an account ("My projects", wallet, settings...) ask guests to sign in, then open.
+  const path = href.split("?")[0];
+  return PROTECTED_PATHS.some((pattern) => pattern.test(path)) ? (
     <AuthLink href={href} className={classes}>
       {children}
     </AuthLink>

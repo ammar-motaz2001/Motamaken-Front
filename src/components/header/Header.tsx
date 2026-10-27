@@ -126,7 +126,7 @@ export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData
             <SearchBar countries={data.countries} />
 
             <Link
-              href="/search/advanced"
+              href="/search?type=projects&advanced=1"
               className={`${buttonClasses({ variant: "outlineOrange", font: "button", size: "sm" })} w-[110px] shrink-0 max-md:hidden`}
             >
               {t("advanced")}

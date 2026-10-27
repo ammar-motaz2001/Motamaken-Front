@@ -79,7 +79,14 @@
       "campaigns": "حملات الترويج",
       "admin": "لوحة الإدارة"
     },
-    "allNotifications": "عرض كل الإشعارات"
+    "allNotifications": "عرض كل الإشعارات",
+    "suggest": {
+      "loading": "جارٍ البحث…",
+      "none": "لا توجد نتائج مطابقة: اضغط Enter للبحث في الكل.",
+      "all": "عرض كل النتائج لـ «{q}»",
+      "freelancer": "مستقل",
+      "influencer": "مؤثر"
+    }
   },
   "Footer": {
     "cta": {
@@ -638,7 +645,9 @@
         "budget_low": "الأقل ميزانية",
         "rating": "الأعلى تقييماً",
         "reviews": "الأكثر تقييمات"
-      }
+      },
+      "advanced": "بحث متقدم",
+      "simple": "بحث عادي"
     },
     "rows": {
       "offers": "{count, plural, =0 {لا توجد عروض بعد} one {عرض واحد} two {عرضان} few {# عروض} other {# عرض}}",
@@ -2072,7 +2081,8 @@
     "browse": {
       "project": "تصفح المشاريع",
       "profile": "ابحث عن مستقلين"
-    }
+    },
+    "signUpReason": "سجّل الدخول لحفظه في المفضلة."
   },
   "SitePages": {
     "home": "الرئيسية",

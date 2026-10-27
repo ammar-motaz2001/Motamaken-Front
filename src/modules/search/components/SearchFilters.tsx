@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Select } from "@/components/ui/Select";
 import { useCities } from "@/components/ui/useCities";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { Category, Country, SearchType } from "@/lib/api/types";
 import { toQuery } from "@/lib/params";
@@ -16,10 +16,10 @@ type SearchValues = Partial<Record<"q" | "category" | "budgetMin" | "budgetMax" 
 
 const PLATFORMS = ["instagram", "facebook", "youtube", "tiktok", "snapchat", "x", "pinterest", "telegram", "whatsapp", "linkedin"];
 
-type SearchFiltersProps = { type: SearchType; values: SearchValues; categories: Category[]; countries: Country[]; view: string };
+type SearchFiltersProps = { type: SearchType; values: SearchValues; categories: Category[]; countries: Country[]; view: string; advanced: boolean };
 
 /** Search side filters that change with the type (budget and category for projects; skill, rating, platform for profiles). */
-export function SearchFilters({ type, values, categories, countries, view }: SearchFiltersProps) {
+export function SearchFilters({ type, values, categories, countries, view, advanced }: SearchFiltersProps) {
   const t = useTranslations("Search.filters");
   const p = useTranslations("PublicProfile");
   const router = useRouter();
@@ -39,12 +39,13 @@ export function SearchFilters({ type, values, categories, countries, view }: Sea
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    router.push(`/search${toQuery({ ...form, type: type === "all" ? undefined : type, view: view === "list" ? "list" : undefined })}`);
+    const kept = advanced ? form : { q: form.q, countryId: form.countryId, cityId: form.cityId };
+    router.push(`/search${toQuery({ ...kept, type: type === "all" ? undefined : type, view: view === "list" ? "list" : undefined, advanced: advanced ? "1" : undefined })}`);
   };
 
   const reset = () => {
     setForm({});
-    router.push(`/search${toQuery({ type: type === "all" ? undefined : type })}`);
+    router.push(`/search${toQuery({ type: type === "all" ? undefined : type, advanced: advanced ? "1" : undefined })}`);
   };
 
   const categoryType = type === "influencer_requests" || type === "influencers" ? "influencer" : "project";
@@ -64,8 +65,8 @@ export function SearchFilters({ type, values, categories, countries, view }: Sea
         />
       </label>
 
-      {type !== "all" && (
-        <div className="grid gap-4 sm:grid-cols-2">
+      {advanced && type !== "all" && (
+        <div className="pop-down grid gap-4 sm:grid-cols-2">
           {isProjects && (
             <>
               <Select
@@ -131,6 +132,12 @@ export function SearchFilters({ type, values, categories, countries, view }: Sea
           <SlidersHorizontal className="size-4" />
           {t("search")}
         </Button>
+        <Link
+          href={`/search${toQuery({ q: form.q, type: type === "all" && !advanced ? "projects" : type === "all" ? undefined : type, advanced: advanced ? undefined : "1" })}`}
+          className="text-sm font-medium text-brand hover:underline"
+        >
+          {t(advanced ? "simple" : "advanced")}
+        </Link>
         {Object.values(values).some(Boolean) && (
           <button type="button" onClick={reset} className="text-sm text-muted hover:text-foreground">
             {t("clear")}

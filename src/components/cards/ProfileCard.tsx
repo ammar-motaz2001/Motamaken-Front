@@ -14,14 +14,17 @@ export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn:
   return (
     <article className="relative flex w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col overflow-hidden rounded-xl bg-surface shadow-card dark:border dark:border-border">
       <div className="relative flex aspect-square w-full flex-col justify-end bg-gradient-brand">
-        {profile.avatarUrl ? (
-          <Image src={profile.avatarUrl} alt="" fill unoptimized className="object-cover" />
-        ) : (
-          <span className="absolute inset-0 flex items-center justify-center pb-10 text-7xl font-bold text-white/90 uppercase">
-            {profile.fullName.charAt(0)}
-          </span>
-        )}
-        <div className="relative bg-nav/65 px-4 py-2 text-white backdrop-blur-[4.5px]">
+        {/* The whole picture (photo or initial), name and stars open the profile; the heart sits above this link. */}
+        <Link href={`/users/${profile.userId}`} aria-label={profile.fullName} className="absolute inset-0">
+          {profile.avatarUrl ? (
+            <Image src={profile.avatarUrl} alt="" fill unoptimized className="object-cover transition-transform duration-300 hover:scale-105" />
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center pb-10 text-7xl font-bold text-white/90 uppercase">
+              {profile.fullName.charAt(0)}
+            </span>
+          )}
+        </Link>
+        <div className="pointer-events-none relative bg-nav/65 px-4 py-2 text-white backdrop-blur-[4.5px]">
           <p className="flex items-center gap-1 text-base font-bold tracking-[-0.176px]">
             <span className="truncate">{profile.fullName}</span>
             {profile.verified && <BadgeCheck className="size-4 shrink-0 text-brand-light" aria-label={t("verified")} />}

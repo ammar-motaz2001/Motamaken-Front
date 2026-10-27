@@ -94,7 +94,7 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
       </button>
 
       {menu.mounted && (
-        <div role="menu" className={`${menu.leaving ? "pop-leave" : "pop-down"} absolute end-0 top-full z-40 mt-2 w-[213px] rounded-lg border border-border bg-surface py-1.5 shadow-card`}>
+        <div role="menu" className={`${menu.leaving ? "pop-leave" : "pop-down"} absolute end-0 top-full z-40 mt-2 w-[213px] rounded-lg border border-border glass py-1.5 shadow-card`}>
           <ul>
             {user.isAdmin && (
               <li>

@@ -41,7 +41,7 @@ export function CategoriesMenu({ categories }: { categories: Category[] }) {
 
       {menu.mounted && (
         <div className={`${menu.leaving ? "pop-leave" : "pop-down"} page-container absolute inset-x-0 top-full z-40`}>
-          <div className="rounded-b-xl bg-surface p-6 text-foreground shadow-card">
+          <div className="glass rounded-b-xl border border-t-0 border-border p-6 text-foreground">
             <h2 className="mb-4 text-xl font-bold uppercase">{t("nav.categories")}</h2>
             <div role="tablist" className="mb-5 flex gap-6 border-b border-border">
               {TABS.map((item) => (

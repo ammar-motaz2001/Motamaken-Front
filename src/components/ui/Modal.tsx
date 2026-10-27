@@ -41,7 +41,7 @@ export function Modal({ open, onClose, title, showClose, children }: ModalProps)
         role="dialog"
         aria-modal="true"
         onClick={(event) => event.stopPropagation()}
-        className="flex w-full max-w-[796px] flex-col gap-9 rounded-xl bg-surface px-4 pt-4 pb-6 shadow-card"
+        className="flex w-full max-w-[796px] flex-col gap-9 rounded-xl glass border border-border px-4 pt-4 pb-6 shadow-card"
       >
         {(title || showClose) && (
           <div className="flex items-center justify-between gap-1.5 px-3.5">

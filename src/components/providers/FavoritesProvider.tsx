@@ -40,8 +40,8 @@ function writeGuest(items: Set<string>) {
 }
 
 /**
- * What the user saved with the heart, shared by every card on the page. Guests can save too (on this device); the
- * moment they sign up or log in, those hearts are added to the account.
+ * What the user saved with the heart, shared by every card on the page. Only signed-in users can save; hearts a guest
+ * saved on this device with an older version are added to the account when they log in.
  */
 export function FavoritesProvider({ children }: { signedIn?: boolean; children: ReactNode }) {
   const { signedIn } = useAuthGate();
@@ -79,20 +79,19 @@ export function FavoritesProvider({ children }: { signedIn?: boolean; children: 
           const next = new Set(current);
           if (on) next.add(key(kind, id));
           else next.delete(key(kind, id));
-          if (!signedIn) writeGuest(next);
           return next;
         });
 
-      // Show the change at once and undo it if the server refuses.
+      // Saving needs an account (the heart asks guests to sign in first). Show the change at once and undo it if the
+      // server refuses.
       flip(!wasSaved);
-      if (!signedIn) return;
       try {
         await (wasSaved ? api(`/favorites/${kind}/${id}`, { method: "DELETE" }) : api("/favorites", { method: "POST", body: { type: kind, id } }));
       } catch {
         flip(wasSaved);
       }
     },
-    [saved, signedIn],
+    [saved],
   );
 
   const value = useMemo(() => ({ signedIn, isSaved, toggle }), [signedIn, isSaved, toggle]);
