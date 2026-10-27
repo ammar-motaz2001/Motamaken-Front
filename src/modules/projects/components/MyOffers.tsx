@@ -5,9 +5,10 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { outlinedPanelClasses, panelClasses } from "@/components/ui/styles";
 import { Link } from "@/i18n/navigation";
 import type { Paginated, Proposal } from "@/lib/api/types";
-import { formatAmount, timeAgo } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
 import { PROPOSAL_STATUS_TONE } from "../lib/status";
 import { StatusTabs } from "./StatusTabs";
+import { Money } from "@/components/providers/CurrencyProvider";
 
 const STATUSES = ["", "pending", "accepted", "declined", "withdrawn"] as const;
 
@@ -41,7 +42,7 @@ export function MyOffers({ result, status }: { result: Paginated<Proposal> | nul
                 <p className="truncate font-bold">{proposal.project?.title}</p>
                 <p className="line-clamp-1 text-xs text-muted">{proposal.message}</p>
               </div>
-              <span className="text-sm font-bold text-brand">{formatAmount(proposal.amount, proposal.currency, locale)}</span>
+              <span className="text-sm font-bold text-brand"><Money amount={proposal.amount} currency={proposal.currency} /></span>
               <span className="text-sm text-muted">{t("offer.deliveryIn", { count: proposal.deliveryDays })}</span>
               <span className="text-xs text-muted" suppressHydrationWarning>
                 {timeAgo(proposal.createdAt, locale)}

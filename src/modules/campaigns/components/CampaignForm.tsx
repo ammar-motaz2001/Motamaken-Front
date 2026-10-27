@@ -1,5 +1,6 @@
 "use client";
 
+import { useOfferedCurrencies } from "@/components/providers/CurrencyProvider";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
@@ -14,7 +15,6 @@ import { DateField } from "@/components/ui/DatePicker";
 import type { Campaign, CampaignFilters, Paginated, Project } from "@/lib/api/types";
 
 const PLATFORM_FEE = 20;
-const CURRENCIES = ["USD", "SAR", "AED", "EUR"];
 
 type Form = {
   title: string;
@@ -35,6 +35,7 @@ const DEFAULT_FILTERS: CampaignFilters = { block_bots: true, unique_window_hours
  */
 export function CampaignForm({ campaign, currency, hasProfile }: { campaign?: Campaign; currency: string; hasProfile: boolean }) {
   const t = useTranslations("Campaigns");
+  const CURRENCIES = useOfferedCurrencies();
   const locale = useLocale();
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
@@ -43,7 +44,7 @@ export function CampaignForm({ campaign, currency, hasProfile }: { campaign?: Ca
     description: campaign?.description ?? "",
     targetType: campaign?.target.type ?? "project",
     targetId: campaign ? String(campaign.target.id) : "",
-    currency: campaign?.currency ?? (CURRENCIES.includes(currency) ? currency : "USD"),
+    currency: campaign?.currency ?? (CURRENCIES.includes(currency) ? currency : (CURRENCIES[0] ?? "USD")),
     budget: campaign ? String(campaign.budget) : "",
     costPerVisit: campaign ? String(campaign.costPerVisit) : "",
     endsAt: campaign?.endsAt?.slice(0, 10) ?? "",

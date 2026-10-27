@@ -2,9 +2,10 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Project } from "@/lib/api/types";
-import { formatAmount, timeAgo } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
 import { FavoriteButton } from "./FavoriteButton";
 import { buttonClasses } from "@/components/ui/Button";
+import { BudgetRange } from "@/components/providers/CurrencyProvider";
 
 const EXCERPT_LENGTH = 36;
 
@@ -29,7 +30,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </Link>
         </h3>
         <span className="self-start rounded-lg border border-brand-ink bg-brand-soft px-3 py-1.5 text-sm leading-snug font-medium text-brand-ink">
-          {t("budget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) })}
+          <BudgetRange message="Home.budget" min={min} max={max} currency={currency} />
         </span>
         <div className="flex items-center gap-2">
           <span className="flex min-w-0 flex-1 items-center gap-1 text-sm tracking-[-0.154px] text-brand">

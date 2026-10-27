@@ -36,11 +36,10 @@ function Pill({ icon, label, value }: { icon: string; label: string; value: stri
 }
 
 /** Site header: logo, search, language/currency/theme switches, account menu or sign-in links, and the main navigation. */
-export function Header({ signedIn, data }: { signedIn: boolean; data: HeaderData }) {
+export function Header({ signedIn, data, currency }: { signedIn: boolean; data: HeaderData; currency: string }) {
   const t = useTranslations("Header");
   const locale = useLocale();
   const { summary } = data;
-  const currency = summary?.user.currency ?? "USD";
 
   return (
     <header className="relative z-20 bg-surface drop-shadow-[0_4px_2px_rgba(213,213,213,0.25)] dark:drop-shadow-none">

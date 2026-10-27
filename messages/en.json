@@ -3952,7 +3952,9 @@
       "moveDown": "Move down",
       "remove": "Remove",
       "inUse": "Users hold money in this currency, so it stays on.",
-      "add": "Add a currency"
+      "add": "Add a currency",
+      "rate": "Rate per 1 USD",
+      "rateHint": "How many units of this currency make one US dollar (e.g. SAR 3.75). Prices on the site are converted with it."
     }
   },
   "QuickAuth": {

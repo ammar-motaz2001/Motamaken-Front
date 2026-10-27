@@ -16,6 +16,7 @@ import { useAuthGate } from "@/components/providers/AuthGateProvider";
 import { useDraft } from "@/lib/draft";
 import { formatAmount } from "@/lib/format";
 import { PROPOSAL_STATUS_TONE } from "../lib/status";
+import { Money } from "@/components/providers/CurrencyProvider";
 
 type OfferForm = { amount: string; deliveryDays: string; message: string; teamId: string; jobTitle: string };
 
@@ -134,7 +135,7 @@ export function OfferPanel({ project }: { project: Project }) {
           <h2 className={sectionTitleClasses}>{t("yours")}</h2>
           <StatusPill tone={PROPOSAL_STATUS_TONE[mine.status]}>{t(`status.${mine.status}`)}</StatusPill>
         </div>
-        <p className="text-2xl font-bold text-brand">{formatAmount(mine.amount, mine.currency, locale)}</p>
+        <p className="text-2xl font-bold text-brand"><Money amount={mine.amount} currency={mine.currency} /></p>
         <p className="text-sm text-muted">{t("deliveryIn", { count: mine.deliveryDays })}</p>
         {mine.team && <p className="text-sm">{t("asTeam", { name: mine.team.name })}</p>}
         <p className="text-sm whitespace-pre-line">{mine.message}</p>

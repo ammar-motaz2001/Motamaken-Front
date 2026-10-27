@@ -16,6 +16,8 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { routing } from "@/i18n/routing";
 import { SESSION_COOKIE } from "@/lib/session";
 import { AuthGateProvider } from "@/components/providers/AuthGateProvider";
+import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
+import { CURRENCY_COOKIE, pickDisplayCurrency, rateTable } from "@/lib/currency";
 import { WelcomeToast } from "@/components/providers/WelcomeToast";
 import { getAuthMethods } from "@/modules/auth/lib/settings";
 import { StructuredData } from "@/components/StructuredData";
@@ -82,13 +84,15 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   preload("/images/loader.gif", { as: "image" });
   // The header background is a CSS image (found late) and the largest paint on phones: fetch it first.
   preload("/images/header-bg.png", { as: "image", fetchPriority: "high" });
-  const signedIn = (await cookies()).has(SESSION_COOKIE);
+  const cookieStore = await cookies();
+  const signedIn = cookieStore.has(SESSION_COOKIE);
   const [headerData, authMethods, seoDescription, site] = await Promise.all([
     getHeaderData(signedIn),
     getAuthMethods(),
     getTranslations({ locale, namespace: "Seo" }).then((t) => t("home")),
     getSiteSettings(),
   ]);
+  const displayCurrency = pickDisplayCurrency(headerData.currencies, cookieStore.get(CURRENCY_COOKIE)?.value, headerData.summary?.user.currency);
   // The admin texts are a third of the bundle; only the admin panel sends them to the browser (see admin/layout.tsx).
   const publicMessages = { ...(await getMessages()) };
   delete publicMessages.Admin;
@@ -108,10 +112,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <StructuredData locale={locale} description={seoDescription} />
         <NextIntlClientProvider messages={publicMessages}>
           <ThemeProvider nonce={(await headers()).get("x-nonce") ?? undefined}>
+            <CurrencyProvider currency={displayCurrency} rates={rateTable(headerData.currencies)}>
             <AuthGateProvider signedIn={signedIn} methods={authMethods}>
               <PaymentsProvider moyasarKey={moyasarKey}>
                 <FavoritesProvider signedIn={signedIn}>
-                  <Header signedIn={signedIn} data={headerData} />
+                  <Header signedIn={signedIn} data={headerData} currency={displayCurrency} />
                   <main className="flex-1">
                     <MaintenanceGate maintenance={site?.maintenance ?? null} isStaff={isStaff}>
                       {children}
@@ -122,6 +127,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
               </PaymentsProvider>
               <WelcomeToast />
             </AuthGateProvider>
+            </CurrencyProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

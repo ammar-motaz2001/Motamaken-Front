@@ -1,14 +1,14 @@
 "use client";
 
 import { FileText, Search } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { softSuccessClasses } from "@/components/ui/styles";
 import { api } from "@/lib/api/client";
 import type { Paginated, Project } from "@/lib/api/types";
-import { formatAmount } from "@/lib/format";
+import { BudgetRange } from "@/components/providers/CurrencyProvider";
 import { PayModal } from "@/modules/payments";
 import { PackagesStep } from "./PackagesStep";
 import type { Promotion, PromotionPackage } from "./types";
@@ -18,7 +18,6 @@ const PER_PAGE = 3;
 /** Feature-a-project flow: pick one of the user's open projects (searchable), choose a package, then pay. */
 export function FeatureProjectModal({ open, onClose, currency }: { open: boolean; onClose: () => void; currency: string }) {
   const t = useTranslations("Promotions");
-  const locale = useLocale();
   const [step, setStep] = useState<"select" | "packages" | "pay">("select");
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -159,10 +158,7 @@ export function FeatureProjectModal({ open, onClose, currency }: { open: boolean
                     }`}
                   >
                     <span className="self-start rounded-md border border-brand-ink px-2 py-0.5 text-xs text-brand-ink">
-                      {t("project.budget", {
-                        min: formatAmount(project.budget.min, project.budget.currency, locale),
-                        max: formatAmount(project.budget.max, project.budget.currency, locale),
-                      })}
+                      <BudgetRange message="Promotions.project.budget" min={project.budget.min} max={project.budget.max} currency={project.budget.currency} />
                     </span>
                     <span className="line-clamp-2 text-sm font-bold">{project.title}</span>
                     <span className="line-clamp-3 text-xs text-muted">{project.excerpt}</span>

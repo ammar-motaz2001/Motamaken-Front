@@ -7,7 +7,7 @@ import { panelClasses, sectionTitleClasses } from "@/components/ui/styles";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Link } from "@/i18n/navigation";
 import type { AgreementChange, Escrow, Project, Proposal, Review } from "@/lib/api/types";
-import { formatAmount, timeAgo } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
 import { EscrowPanel } from "@/modules/escrow";
 import { ProjectReviews } from "@/modules/reviews";
 import { PROJECT_STATUS_TONE } from "../lib/status";
@@ -15,6 +15,7 @@ import { AgreementPanel } from "./AgreementPanel";
 import { MessageUserButton } from "./MessageUserButton";
 import { OfferPanel } from "./OfferPanel";
 import { OwnerPanel } from "./OwnerPanel";
+import { BudgetRange } from "@/components/providers/CurrencyProvider";
 
 type ProjectViewProps = {
   project: Project;
@@ -55,7 +56,7 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews, agr
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <span className="rounded-lg border border-brand-ink bg-brand-soft px-3 py-1 font-medium text-brand-ink">
-            {t("detail.budget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) })}
+            <BudgetRange message="Projects.detail.budget" min={min} max={max} currency={currency} />
           </span>
           <span className="flex items-center gap-1.5 text-muted">
             <CategoryIcon icon={project.category.icon} className="size-4 text-brand" />

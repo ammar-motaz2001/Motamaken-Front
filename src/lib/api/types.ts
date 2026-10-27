@@ -99,7 +99,8 @@ export type Summary = {
   unreadNotifications: number;
 };
 
-export type Currency = { code: string; symbol: string; name: string };
+/** `rate`: units of this currency per one US dollar (prices are converted with amount / rate(from) × rate(to)). */
+export type Currency = { code: string; symbol: string; name: string; rate?: number };
 
 export type Country = { id: number; code: string; name: string };
 

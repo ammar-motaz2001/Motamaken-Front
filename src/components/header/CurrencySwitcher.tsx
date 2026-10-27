@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useRouter } from "@/i18n/navigation";
 import type { Currency } from "@/lib/api/types";
+import { CURRENCY_COOKIE } from "@/lib/currency";
 import { savePreference } from "./preferences";
 
 const FALLBACK: Currency[] = [{ code: "USD", symbol: "$", name: "US Dollar" }];
@@ -15,7 +16,7 @@ type CurrencySwitcherProps = {
   signedIn: boolean;
 };
 
-/** Currency menu; saves the choice to the account and re-renders prices when signed in. */
+/** Currency menu: remembers the choice (cookie, and the account when signed in) and re-renders every price in it. */
 export function CurrencySwitcher({ currencies, initial = "USD", signedIn }: CurrencySwitcherProps) {
   const router = useRouter();
   const [currency, setCurrency] = useState(initial);
@@ -23,8 +24,10 @@ export function CurrencySwitcher({ currencies, initial = "USD", signedIn }: Curr
 
   const select = async (value: string) => {
     setCurrency(value);
+    // Everyone (guests too) keeps the choice in a cookie; accounts also save it. Then every price re-renders in it.
+    document.cookie = `${CURRENCY_COOKIE}=${value}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
     await savePreference(signedIn, { currency: value });
-    if (signedIn) router.refresh();
+    router.refresh();
   };
 
   return (

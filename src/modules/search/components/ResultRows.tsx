@@ -4,8 +4,9 @@ import { Stars } from "@/components/ui/Stars";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Link } from "@/i18n/navigation";
 import type { ProfileCard, Project } from "@/lib/api/types";
-import { formatAmount, timeAgo } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
 import { buttonClasses } from "@/components/ui/Button";
+import { BudgetRange } from "@/components/providers/CurrencyProvider";
 
 /** List-view row of a project: title, budget, category, location and date. */
 export function ProjectRow({ project }: { project: Project }) {
@@ -43,7 +44,7 @@ export function ProjectRow({ project }: { project: Project }) {
       </div>
       <div className="flex shrink-0 flex-row items-center gap-3 sm:flex-col sm:items-end">
         <span className="rounded-lg border border-brand-ink bg-brand-soft px-3 py-1 text-xs font-medium text-brand-ink">
-          {t("budget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) })}
+          <BudgetRange message="Search.rows.budget" min={min} max={max} currency={currency} />
         </span>
         <Link href={`/projects/${project.id}`} className={buttonClasses({ size: "xs" })}>
           {t("addOffer")}

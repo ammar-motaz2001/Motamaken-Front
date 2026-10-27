@@ -408,7 +408,8 @@ export type MailSettings = {
 export type IntegrationStatus = { service: string; status: "ok" | "warning" | "error" | "off"; details: Record<string, unknown> };
 
 /** A currency of the marketplace as the admins manage it; `inUse` when users hold money in it. */
-export type AdminCurrency = { code: string; symbol: string; nameEn: string; nameAr: string; active: boolean; inUse: boolean };
+/** `rate`: units per one US dollar, used to show prices in each visitor's currency. */
+export type AdminCurrency = { code: string; symbol: string; nameEn: string; nameAr: string; active: boolean; inUse: boolean; rate: number };
 
 export type SiteConfig = {
   site: Record<string, string | null>;

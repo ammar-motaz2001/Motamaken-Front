@@ -30,7 +30,7 @@ export function CurrenciesEditor({ currencies }: { currencies: AdminCurrency[] }
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     await save("/admin/currencies", "PUT", {
-      currencies: list.map(({ code, symbol, nameEn, nameAr, active }) => ({ code: code.trim().toUpperCase(), symbol, nameEn, nameAr, active })),
+      currencies: list.map(({ code, symbol, nameEn, nameAr, active, rate }) => ({ code: code.trim().toUpperCase(), symbol, nameEn, nameAr, active, rate: Number(rate) || 1 })),
     });
   };
 
@@ -38,7 +38,7 @@ export function CurrenciesEditor({ currencies }: { currencies: AdminCurrency[] }
     <form onSubmit={submit} className="flex flex-col gap-4">
       <ul className="flex flex-col gap-2">
         {list.map((currency, index) => {
-          const rowError = ["code", "symbol", "nameEn", "nameAr"].map((field) => fields[`currencies.${index}.${field}`]).find(Boolean);
+          const rowError = ["code", "symbol", "nameEn", "nameAr", "rate"].map((field) => fields[`currencies.${index}.${field}`]).find(Boolean);
           return (
             <li key={index} className={`flex flex-col gap-1 rounded-lg border p-3 ${currency.active ? "border-border" : "border-dashed border-border opacity-70"}`}>
               <div className="grid items-center gap-2 sm:grid-cols-[auto_90px_80px_1fr_1fr_auto]">
@@ -55,6 +55,19 @@ export function CurrenciesEditor({ currencies }: { currencies: AdminCurrency[] }
                 <input dir="ltr" aria-label={t("code")} placeholder="KWD" maxLength={3} value={currency.code} readOnly={currency.inUse} onChange={(e) => update(index, { code: e.target.value.toUpperCase() })} className={`${inputClasses} font-mono uppercase`} />
                 <input dir="ltr" aria-label={t("symbol")} placeholder={t("symbol")} value={currency.symbol} onChange={(e) => update(index, { symbol: e.target.value })} className={inputClasses} />
                 <input dir="ltr" aria-label={t("nameEn")} placeholder={t("nameEn")} value={currency.nameEn} onChange={(e) => update(index, { nameEn: e.target.value })} className={inputClasses} />
+                <input
+                  dir="ltr"
+                  type="number"
+                  min="0"
+                  step="any"
+                  aria-label={t("rate")}
+                  title={t("rateHint")}
+                  placeholder={t("rate")}
+                  disabled={currency.code === "USD"}
+                  value={currency.code === "USD" ? 1 : currency.rate}
+                  onChange={(e) => update(index, { rate: Number(e.target.value) })}
+                  className={inputClasses}
+                />
                 <input dir="rtl" aria-label={t("nameAr")} placeholder={t("nameAr")} value={currency.nameAr} onChange={(e) => update(index, { nameAr: e.target.value })} className={inputClasses} />
                 <span className="flex gap-1">
                   <button type="button" disabled={index === 0} onClick={() => move(index, index - 1)} aria-label={t("moveUp")} className={iconButton}>
@@ -76,7 +89,7 @@ export function CurrenciesEditor({ currencies }: { currencies: AdminCurrency[] }
       </ul>
       <button
         type="button"
-        onClick={() => setList((current) => [...current, { code: "", symbol: "", nameEn: "", nameAr: "", active: true, inUse: false }])}
+        onClick={() => setList((current) => [...current, { code: "", symbol: "", nameEn: "", nameAr: "", active: true, inUse: false, rate: 1 }])}
         className="inline-flex h-9 items-center gap-1 self-start rounded-md border border-dashed border-border px-3 text-sm font-semibold hover:border-brand"
       >
         <Plus className="size-4" /> {t("add")}

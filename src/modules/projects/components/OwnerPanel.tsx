@@ -11,9 +11,10 @@ import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Project, Proposal } from "@/lib/api/types";
-import { formatAmount, timeAgo } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
 import { PROPOSAL_STATUS_TONE } from "../lib/status";
 import { MessageUserButton } from "./MessageUserButton";
+import { Money } from "@/components/providers/CurrencyProvider";
 
 /** Project owner's tools: edit, close, complete or delete the project, and accept one of the received offers. */
 export function OwnerPanel({ project, proposals }: { project: Project; proposals: Proposal[] }) {
@@ -102,7 +103,7 @@ export function OwnerPanel({ project, proposals }: { project: Project; proposals
                 </div>
               )}
               <div className="text-end">
-                <p className="text-xl font-bold text-brand">{formatAmount(proposal.amount, proposal.currency, locale)}</p>
+                <p className="text-xl font-bold text-brand"><Money amount={proposal.amount} currency={proposal.currency} /></p>
                 <p className="text-xs text-muted">{to("deliveryIn", { count: proposal.deliveryDays })}</p>
               </div>
             </div>
