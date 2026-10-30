@@ -7,6 +7,7 @@ import { useTransition } from "react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { switchLocaleSmoothly } from "@/lib/localeTransition";
 import { savePreference } from "./preferences";
 
 /** Flag shown next to a language: Saudi for Arabic, British for English. */
@@ -18,7 +19,7 @@ function Flag({ locale }: { locale: Locale }) {
   );
 }
 
-/** Language menu: reloads the same page in the chosen language and saves the choice to the account when signed in. */
+/** Language menu: under a soft cover (see switchLocaleSmoothly), reloads the same page in the chosen language and saves the choice to the account when signed in. */
 export function LocaleSwitcher({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations("Header.languages");
   const locale = useLocale() as Locale;
@@ -32,7 +33,8 @@ export function LocaleSwitcher({ signedIn }: { signedIn: boolean }) {
       selected={locale}
       onSelect={(next) => {
         savePreference(signedIn, { locale: next });
-        startTransition(() => router.replace(`${pathname}${window.location.search}`, { locale: next as Locale }));
+        const target = `${pathname}${window.location.search}`;
+        switchLocaleSmoothly(next as Locale, () => startTransition(() => router.replace(target, { locale: next as Locale })));
       }}
       items={routing.locales.map((item) => ({
         value: item,

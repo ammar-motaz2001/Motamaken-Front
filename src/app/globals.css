@@ -339,3 +339,13 @@
     }
   }
 }
+
+/* Language switch cover (src/lib/localeTransition.ts). */
+@keyframes locale-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(0.97); }
+}
+@keyframes locale-slide {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(260%); }
+}
