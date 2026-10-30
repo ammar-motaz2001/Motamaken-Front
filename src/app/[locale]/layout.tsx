@@ -19,6 +19,7 @@ import { AuthGateProvider } from "@/components/providers/AuthGateProvider";
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
 import { ConfirmHost } from "@/components/ui/ConfirmDialog";
 import { FormErrorsHost } from "@/components/ui/FormErrorsHost";
+import { NavigationProgress } from "@/components/ui/NavigationProgress";
 import { CURRENCY_COOKIE, pickDisplayCurrency, rateTable } from "@/lib/currency";
 import { WelcomeToast } from "@/components/providers/WelcomeToast";
 import { getAuthMethods } from "@/modules/auth/lib/settings";
@@ -127,6 +128,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
                   <Footer site={site} />
                   <ConfirmHost />
                   <FormErrorsHost />
+                  <NavigationProgress />
                 </FavoritesProvider>
               </PaymentsProvider>
               <WelcomeToast />
