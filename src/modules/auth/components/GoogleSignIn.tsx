@@ -67,7 +67,7 @@ export function GoogleSignIn({ next }: { next?: string }) {
             }
           },
         });
-        id.renderButton(box.current, { theme: "outline", size: "large", shape: "rectangular", text: "continue_with", locale, width: 280 });
+        id.renderButton(box.current, { theme: document.documentElement.classList.contains("dark") ? "filled_black" : "outline", size: "large", shape: "rectangular", text: "continue_with", locale, width: 280 });
       })
       .catch(() => !cancelled && setError(t("googleFailed")));
     return () => {
@@ -84,7 +84,8 @@ export function GoogleSignIn({ next }: { next?: string }) {
         {t("orContinueWith")}
         <span className="h-px flex-1 bg-border" />
       </div>
-      <div ref={box} className="flex min-h-[44px] justify-center" />
+      {/* Google's frame is light: without this the dark page's color scheme paints a white band around it. */}
+      <div ref={box} className="flex min-h-[44px] justify-center [color-scheme:light]" />
       {error && <p className="text-center text-sm text-danger">{error}</p>}
     </div>
   );
