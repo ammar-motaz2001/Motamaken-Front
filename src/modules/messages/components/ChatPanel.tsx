@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MessagesSquare } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { UserAvatar } from "@/components/ui/UserAvatar";
@@ -164,7 +164,15 @@ export function ChatPanel({ conversation, onBack, onActivity, onRead }: ChatPane
           </button>
         )}
         {messages === null && !error && <p className="m-auto text-sm text-muted">{t("loading")}</p>}
-        {messages?.length === 0 && <p className="m-auto text-sm text-muted">{t("startChat")}</p>}
+        {messages?.length === 0 && (
+          <div className="m-auto flex max-w-xs flex-col items-center gap-3 px-4 text-center">
+            <span className="flex size-16 items-center justify-center rounded-2xl bg-brand-soft text-brand ring-1 ring-brand/15" aria-hidden>
+              <MessagesSquare className="size-7" strokeWidth={1.75} />
+            </span>
+            <p className="text-base font-bold text-heading">{t("startChatTitle", { name })}</p>
+            <p className="text-sm leading-relaxed text-muted">{t("startChat")}</p>
+          </div>
+        )}
         {messages?.map((message, index) => (
           <MessageBubble
             key={message.id}

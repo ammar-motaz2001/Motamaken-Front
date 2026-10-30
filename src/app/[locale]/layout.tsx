@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Mulish, Quicksand, Tajawal } from "next/font/google";
+import { Mulish, Quicksand } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
@@ -26,12 +26,6 @@ import { getAuthMethods } from "@/modules/auth/lib/settings";
 import { StructuredData } from "@/components/StructuredData";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import "../globals.css";
-
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
-  subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "700"],
-});
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -84,6 +78,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   // The loading animation is fetched with the page, so it shows at once the first time it is needed.
+  // The site font (self-hosted, see tajawal.css): the regular weight of both halves is needed on every page.
+  preload("/fonts/tajawal/tajawal-400-latin.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  preload("/fonts/tajawal/tajawal-400-arabic.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
   preload("/images/loader.gif", { as: "image" });
   // The header background is a CSS image (found late) and the largest paint on phones: fetch it first.
   preload("/images/header-bg.png", { as: "image", fetchPriority: "high" });
@@ -108,7 +105,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${tajawal.variable} ${quicksand.variable} ${mulish.variable}`}
+      className={`${quicksand.variable} ${mulish.variable}`}
       suppressHydrationWarning
     >
       <body className="flex flex-col">

@@ -1,8 +1,10 @@
 @import "tailwindcss";
+@import "./tajawal.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --font-tajawal: "Tajawal Site";
   --link: #127a3d;
   --background: #ffffff;
   --surface: #ffffff;

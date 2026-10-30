@@ -540,7 +540,7 @@
     "browseProjects": "Browse Projects",
     "noResults": "No conversations match your search.",
     "pickConversation": "Select a conversation to start chatting.",
-    "startChat": "Say hello 👋",
+    "startChat": "Introduce yourself and describe what you need. Messages stay on Mutamakin, so your agreement is protected.",
     "online": "Online",
     "offline": "Offline",
     "members": "{count} members",
@@ -561,7 +561,8 @@
     "play": "Play",
     "pause": "Pause",
     "removed": "This message was removed by the moderators.",
-    "report": "Report"
+    "report": "Report",
+    "startChatTitle": "Start your conversation with {name}"
   },
   "Common": {
     "pagination": "Pagination",
