@@ -249,7 +249,15 @@
     "passwordMismatch": "Passwords do not match.",
     "termsRequired": "You must agree to the terms & conditions.",
     "generic": "Something went wrong. Please try again.",
-    "nameRequired": "This field is required."
+    "nameRequired": "This field is required.",
+    "fieldRequired": "This field is required.",
+    "mustCheck": "Please tick this box to continue.",
+    "urlInvalid": "Enter a valid link (starting with https://).",
+    "min": "The value must be {min} or more.",
+    "max": "The value must be {max} or less.",
+    "tooShort": "Use at least {min} characters.",
+    "tooLong": "Use at most {max} characters.",
+    "fieldInvalid": "Please check this value."
   },
   "UnderConstruction": {
     "title": "Under Construction",
