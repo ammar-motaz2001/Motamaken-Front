@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { ReportButton } from "@/modules/reports/components/ReportButton";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
@@ -26,7 +27,7 @@ export function OwnerPanel({ project, proposals }: { project: Project; proposals
   const [error, setError] = useState<string | null>(null);
 
   const run = async (key: string, path: string, method = "POST", after?: () => void) => {
-    if (["delete", "close"].includes(key) && !window.confirm(t(`confirm.${key}`))) return;
+    if (["delete", "close"].includes(key) && !(await confirmDialog(t(`confirm.${key}`)))) return;
     setBusy(key);
     setError(null);
     try {

@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { Archive, ArchiveRestore, CornerDownRight, Pencil, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
@@ -48,14 +49,14 @@ export function CategoryEditor({ categories }: { categories: AdminCategory[] }) 
   };
 
   const destroy = async (category: AdminCategory) => {
-    if (!window.confirm(t("confirmDelete", { name: category.nameEn }))) return;
+    if (!(await confirmDialog(t("confirmDelete", { name: category.nameEn })))) return;
     setDeleteError(null);
     const result = await remove.save(`/admin/categories/${category.id}`, "DELETE");
     if (!result) setDeleteError(t("deleteFailed", { name: category.nameEn }));
   };
 
   const toggleArchive = async (category: AdminCategory) => {
-    if (category.isActive && !window.confirm(t("confirmArchive", { name: category.nameEn }))) return;
+    if (category.isActive && !(await confirmDialog(t("confirmArchive", { name: category.nameEn })))) return;
     await archive.save(`/admin/categories/${category.id}`, "PATCH", { isActive: !category.isActive });
   };
 

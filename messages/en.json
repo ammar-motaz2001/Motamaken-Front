@@ -576,7 +576,9 @@
       "today": "Today",
       "clear": "Clear",
       "done": "Done"
-    }
+    },
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "Profile": {
     "home": "Home",

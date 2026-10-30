@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
@@ -12,7 +13,7 @@ export function CloseTicketButton({ ticketId }: { ticketId: number }) {
   const [busy, setBusy] = useState(false);
 
   const close = async () => {
-    if (!window.confirm(t("confirmClose"))) return;
+    if (!(await confirmDialog(t("confirmClose")))) return;
     setBusy(true);
     try {
       await api(`/support/${ticketId}/close`, { method: "POST" });

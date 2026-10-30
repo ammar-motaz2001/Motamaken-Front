@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { ReportButton } from "@/modules/reports/components/ReportButton";
 import { CircleAlert, CircleCheck } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -108,7 +109,7 @@ function MemberRow({ team, member, editable }: { team: Team; member: Member; edi
             <button
               type="button"
               disabled={busy === "remove"}
-              onClick={() => window.confirm(t("confirmRemove")) && run("remove", () => api(base, { method: "DELETE" }))}
+              onClick={async () => (await confirmDialog(t("confirmRemove"))) && run("remove", () => api(base, { method: "DELETE" }))}
               className="text-sm text-danger hover:underline disabled:opacity-50"
             >
               {t("remove")}
@@ -263,7 +264,7 @@ export function TeamDetail({ team }: { team: Team }) {
                 pill
                 className="text-danger"
                 loading={busy === "disband"}
-                onClick={() => window.confirm(t("confirmDisband")) && action("disband", "disband")}
+                onClick={async () => (await confirmDialog(t("confirmDisband"))) && action("disband", "disband")}
               >
                 {t("disband")}
               </Button>
@@ -274,7 +275,7 @@ export function TeamDetail({ team }: { team: Team }) {
                 pill
                 className="text-danger"
                 loading={busy === "leave"}
-                onClick={() => window.confirm(t("confirmLeave")) && action("leave", "leave", () => router.replace("/teams"))}
+                onClick={async () => (await confirmDialog(t("confirmLeave"))) && action("leave", "leave", () => router.replace("/teams"))}
               >
                 {t("leave")}
               </Button>

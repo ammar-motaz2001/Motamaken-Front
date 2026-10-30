@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -20,8 +21,8 @@ export function CampaignActions({ campaign }: { campaign: Campaign }) {
   const money = new Intl.NumberFormat(locale, { style: "currency", currency: campaign.currency }).format(campaign.budget);
 
   const run = async (action: "launch" | "pause" | "resume" | "cancel") => {
-    if (action === "launch" && !window.confirm(t("confirmLaunch", { title: campaign.title, budget: money }))) return;
-    if (action === "cancel" && !window.confirm(t("confirmCancel", { title: campaign.title }))) return;
+    if (action === "launch" && !(await confirmDialog(t("confirmLaunch", { title: campaign.title, budget: money })))) return;
+    if (action === "cancel" && !(await confirmDialog(t("confirmCancel", { title: campaign.title })))) return;
 
     setBusy(action);
     setError(null);

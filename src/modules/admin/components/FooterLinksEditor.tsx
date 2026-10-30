@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { FooterColumn } from "@/lib/api/types";
@@ -46,7 +47,7 @@ export function FooterLinksEditor({ value, onChange, defaults, errors }: Props) 
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs text-muted">{t("hint")}</p>
-        <button type="button" onClick={() => window.confirm(t("confirmRestore")) && onChange(null)} className="text-sm text-danger hover:underline">
+        <button type="button" onClick={async () => (await confirmDialog(t("confirmRestore"))) && onChange(null)} className="text-sm text-danger hover:underline">
           {t("restore")}
         </button>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { ArrowDown, ArrowUp, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState, type FormEvent } from "react";
@@ -33,7 +34,7 @@ export function SiteConfigForm({ config, defaultFooter }: { config: SiteConfig; 
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (maintenance.enabled && !config.maintenance.enabled && !window.confirm(t("confirmMaintenance"))) return;
+    if (maintenance.enabled && !config.maintenance.enabled && !(await confirmDialog(t("confirmMaintenance")))) return;
     const { logoUrl: _logo, ...siteFields } = site;
     void _logo;
     await save("/admin/site-settings", "PUT", {

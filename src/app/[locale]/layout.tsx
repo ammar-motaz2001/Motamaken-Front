@@ -17,6 +17,7 @@ import { routing } from "@/i18n/routing";
 import { SESSION_COOKIE } from "@/lib/session";
 import { AuthGateProvider } from "@/components/providers/AuthGateProvider";
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
+import { ConfirmHost } from "@/components/ui/ConfirmDialog";
 import { CURRENCY_COOKIE, pickDisplayCurrency, rateTable } from "@/lib/currency";
 import { WelcomeToast } from "@/components/providers/WelcomeToast";
 import { getAuthMethods } from "@/modules/auth/lib/settings";
@@ -123,6 +124,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
                     </MaintenanceGate>
                   </main>
                   <Footer site={site} />
+                  <ConfirmHost />
                 </FavoritesProvider>
               </PaymentsProvider>
               <WelcomeToast />

@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { Megaphone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
@@ -40,7 +41,7 @@ export function BroadcastForm() {
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!window.confirm(t("confirmSend"))) return;
+    if (!(await confirmDialog(t("confirmSend")))) return;
     const result = await save("/admin/broadcasts", "POST", body(false));
     if (result) {
       setDraft({ titleEn: "", titleAr: "", bodyEn: "", bodyAr: "", audience: "all", userId: "", email: false });

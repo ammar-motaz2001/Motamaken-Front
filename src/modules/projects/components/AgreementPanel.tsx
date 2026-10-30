@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { FileClock, Handshake } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
@@ -101,7 +102,7 @@ export function AgreementPanel({ projectId, open, offer, changes }: AgreementPan
                   size="sm"
                   pill
                   loading={busy === "accept"}
-                  onClick={() => window.confirm(t(`acceptConfirm.${pending.type}`)) && run("accept", `/agreement-changes/${pending.id}/accept`)}
+                  onClick={async () => (await confirmDialog(t(`acceptConfirm.${pending.type}`))) && run("accept", `/agreement-changes/${pending.id}/accept`)}
                 >
                   {t("accept")}
                 </Button>

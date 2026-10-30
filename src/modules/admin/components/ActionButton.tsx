@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { Modal } from "@/components/ui/Modal";
@@ -90,13 +91,13 @@ export function ActionButton({ label, endpoint, method = "POST", tone = "outline
     }
   };
 
-  const onClick = () => {
+  const onClick = async () => {
     if (fields?.length) {
       setError(null);
       setOpen(true);
       return;
     }
-    if (confirm && !window.confirm(confirm)) return;
+    if (confirm && !(await confirmDialog(confirm))) return;
     void send();
   };
 

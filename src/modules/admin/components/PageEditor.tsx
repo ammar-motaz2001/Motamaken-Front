@@ -1,5 +1,6 @@
 "use client";
 
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { Markdown } from "@/components/ui/Markdown";
@@ -50,7 +51,7 @@ export function PageEditor({ page, placeholders }: { page: AdminPage | null; pla
   };
 
   const destroy = async () => {
-    if (!page || !window.confirm(t("confirmDelete", { title: page.titleEn }))) return;
+    if (!page || !(await confirmDialog(t("confirmDelete", { title: page.titleEn })))) return;
     if (await remove.save(`/admin/pages/${page.slug}`, "DELETE")) router.replace("/admin/pages");
   };
 
