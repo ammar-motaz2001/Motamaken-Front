@@ -21,7 +21,21 @@ export default async function AdminLocations({ params, searchParams }: PageProps
     <>
       <AdminHeader title={t("title")} subtitle={t("subtitle")} />
       <div className="grid items-start gap-5 xl:grid-cols-2">
-        <AdminSection title={t("countries")}>
+        <AdminSection
+          title={t("countries")}
+          actions={
+            <ActionButton
+              label={t("addCountry")}
+              tone="brand"
+              endpoint="/admin/countries"
+              fields={[
+                { name: "code", label: t("countryCode"), required: true, hint: t("countryCodeHint") },
+                { name: "nameEn", label: t("nameEn"), required: true },
+                { name: "nameAr", label: t("nameAr"), required: true },
+              ]}
+            />
+          }
+        >
           <AdminTable head={[t("country"), t("cities"), t("state"), ""]}>
             {countries.data.map((c) => (
               <tr key={c.id} className={country?.id === c.id ? "bg-brand/5" : ""}>

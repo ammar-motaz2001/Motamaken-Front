@@ -121,7 +121,7 @@ export function WalletOverview({ balances, currencies, currency, monthly, pendin
                     type="button"
                     disabled={cancelling === item.id}
                     onClick={() => cancel(item.id)}
-                    className="text-xs font-medium text-danger hover:underline disabled:opacity-50"
+                    className="rounded-md border border-danger px-3 py-1 text-xs font-medium text-danger hover:bg-danger-soft disabled:opacity-50"
                   >
                     {t("pending.cancel")}
                   </button>

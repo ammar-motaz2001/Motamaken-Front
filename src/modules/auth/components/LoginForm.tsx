@@ -10,6 +10,7 @@ import { hasErrors, validateEmail, validatePhone, type ValidationKey } from "../
 import { afterLoginPath } from "@/lib/session";
 import { rememberWelcome } from "@/lib/welcome";
 import { createSession } from "../actions";
+import { GoogleSignIn } from "./GoogleSignIn";
 import { AuthError, authService } from "../services/auth.service";
 import type { AuthMethod, FieldErrors } from "../types";
 import { actionsClasses, fieldsClasses, formClasses, switchClasses } from "./styles";
@@ -133,6 +134,8 @@ export function LoginForm({ method, next, staff = false, initialError }: LoginFo
             {t("submit")}
           </Button>
         </div>
+
+        {!staff && <GoogleSignIn next={next} />}
 
         {!staff && (
           <p className={switchClasses}>

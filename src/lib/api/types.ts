@@ -304,6 +304,8 @@ export type LedgerEntry = {
   currency: string;
   balanceAfter: number;
   reference: { type: string; id: number } | null;
+  /** `completed`, or a withdrawal request's state. */
+  status: "completed" | "pending" | "paid" | "rejected" | "cancelled";
   createdAt: string;
 };
 

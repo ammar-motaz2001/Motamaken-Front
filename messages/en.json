@@ -149,7 +149,9 @@
     "loadingPage": "Loading, please wait...",
     "recaptchaRequired": "Google's security check could not be reached. Check your connection, turn off any ad blocker or VPN for this site, then try again.",
     "recaptchaTick": "Please tick “I'm not a robot” to continue.",
-    "recaptchaNotice": "Protected by reCAPTCHA: Google <privacy>Privacy</privacy> and <terms>Terms</terms> apply."
+    "recaptchaNotice": "Protected by reCAPTCHA: Google <privacy>Privacy</privacy> and <terms>Terms</terms> apply.",
+    "orContinueWith": "or",
+    "googleFailed": "Google sign-in did not work. Please try again or use your email."
   },
   "Signup": {
     "title": "Signup",
@@ -1030,6 +1032,14 @@
         "escrow_release": "Payments received",
         "subscription": "Subscriptions",
         "promotion": "Promotions"
+      },
+      "status": "Status",
+      "statuses": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "paid": "Paid",
+        "rejected": "Rejected",
+        "cancelled": "Cancelled"
       }
     },
     "add": {
@@ -2211,7 +2221,7 @@
       "appeals": "Appeals",
       "deposits": "Top-ups",
       "subscriptions": "Subscriptions",
-      "promotions": "Promotions",
+      "promotions": "Promotion packages",
       "points": "Points",
       "medals": "Medals",
       "faqs": "FAQ",
@@ -2607,7 +2617,11 @@
       "clientPercent": "Client's share (%)",
       "clientPercentHint": "1 to 99. The rest goes to the freelancer, minus the site fee.",
       "resolutionNote": "Explanation",
-      "resolutionNoteHint": "Both sides read this."
+      "resolutionNoteHint": "Both sides read this.",
+      "chat": "Conversation between the parties",
+      "chatHint": "Their direct chat on the platform, oldest first, to see what was agreed.",
+      "chatEmpty": "The two parties have no chat on the platform.",
+      "chatRemoved": "Message removed by moderation"
     },
     "reports": {
       "title": "Reports",
@@ -3192,7 +3206,8 @@
       "opened": "Opened",
       "conversation": "Conversation",
       "replyPlaceholder": "Write your answer…",
-      "replyHint": "The user sees “Mutamakin support” with your name. Answering marks the ticket as answered and assigns it to you if nobody had it."
+      "replyHint": "The user sees “Mutamakin support” with your name. Answering marks the ticket as answered and assigns it to you if nobody had it.",
+      "openTicket": "Open & reply"
     },
     "escrows": {
       "title": "Contracts",
@@ -3430,8 +3445,8 @@
       "no": "No"
     },
     "promotions": {
-      "title": "Promotions",
-      "subtitle": "Paid placements in the homepage sliders, and their prices.",
+      "title": "Promotion packages",
+      "subtitle": "Featured placement packages sold on the site (profiles and projects), their prices and who bought them.",
       "runningNow": "Running now",
       "sold": "Sold in total",
       "all": "All",
@@ -3581,7 +3596,10 @@
       "city": "City",
       "noCities": "No cities yet.",
       "rename": "Rename",
-      "pickCountry": "Pick a country to see its cities."
+      "pickCountry": "Pick a country to see its cities.",
+      "addCountry": "Add a country",
+      "countryCode": "Country code (ISO)",
+      "countryCodeHint": "Two letters, e.g. SA, EG, AE."
     },
     "faqs": {
       "title": "FAQ",

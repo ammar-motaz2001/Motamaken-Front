@@ -1,4 +1,4 @@
-import { CircleDollarSign, Coins, FileWarning, FolderKanban, Gavel, HandCoins, Handshake, IdCard, Inbox, LifeBuoy, Medal, Megaphone, Repeat, Scale, UserPlus, Users, WalletCards } from "lucide-react";
+import { CircleDollarSign, Coins, FileWarning, FolderKanban, Gavel, HandCoins, Handshake, IdCard, Inbox, LifeBuoy, Medal, Megaphone, Scale, UserPlus, Users, WalletCards } from "lucide-react";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { UserAvatar } from "@/components/ui/UserAvatar";
@@ -188,7 +188,6 @@ export default async function AdminOverview({ params, searchParams }: PageProps<
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
         {(
           [
-            { key: "activeSubscriptions", Icon: Repeat, href: "/admin/subscriptions" },
             { key: "activePromotions", Icon: Megaphone, href: "/admin/promotions?state=active" },
             { key: "pointsIssued", Icon: Coins, href: "/admin/points" },
             { key: "pointsSpent", Icon: Coins, href: "/admin/points" },

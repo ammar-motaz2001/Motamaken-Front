@@ -14,7 +14,7 @@ import { notificationHref } from "@/lib/notifications";
 import { usePresence } from "@/components/ui/usePresence";
 
 
-/** Bell menu: loads the latest alerts from GET /notifications when opened, marks one or all read, links to the full list. */
+/** Bell menu: loads the latest alerts from GET /notifications when opened, marks one read when clicked or all with the button, links to the full list. */
 export function NotificationsMenu({ unread }: { unread: number }) {
   const t = useTranslations("Header");
   const locale = useLocale();
@@ -24,9 +24,6 @@ export function NotificationsMenu({ unread }: { unread: number }) {
   const menu = usePresence(open);
   const [items, setItems] = useState<AppNotification[] | null>(null);
   const [failed, setFailed] = useState(false);
-  // The count the user already saw by opening the menu: hidden until new notifications change it.
-  const [seen, setSeen] = useState<number | null>(null);
-  const badge = seen === unread ? 0 : unread;
   const close = useCallback(() => setOpen(false), []);
   useDismiss(open, ref, close);
 
@@ -39,14 +36,8 @@ export function NotificationsMenu({ unread }: { unread: number }) {
       setItems((await api<Paginated<AppNotification>>("/notifications")).data);
     } catch {
       setFailed(true);
-      return;
     }
-    // Opening the menu counts as seeing them: clear the badge here and on the server, but keep this list highlighted.
-    if (unread > 0) {
-      setSeen(unread);
-      await api("/notifications/read-all", { method: "POST" }).catch(() => undefined);
-      router.refresh();
-    }
+    // Opening the menu reads nothing: a notification is read when clicked, or all at once with "Mark all as read".
   };
 
   const openItem = async (notification: AppNotification) => {
@@ -73,7 +64,7 @@ export function NotificationsMenu({ unread }: { unread: number }) {
         className="relative flex items-center rounded-md px-1 py-[7.5px]"
       >
         <Image src="/images/notification-bold.svg" alt="" width={20} height={20} className="dark:invert" />
-        <Badge count={badge} className="-top-1 start-3" />
+        <Badge count={unread} className="-top-1 start-3" />
       </button>
 
       {menu.mounted && (

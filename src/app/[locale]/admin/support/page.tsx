@@ -1,4 +1,5 @@
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
+import { buttonClasses } from "@/components/ui/Button";
 import { Pagination } from "@/components/ui/Pagination";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { Link } from "@/i18n/navigation";
@@ -39,7 +40,7 @@ export default async function AdminSupport({ params, searchParams }: PageProps<"
             { name: "assigned", label: t("anyone"), options: [{ value: "me", label: t("mine") }] },
           ]}
         />
-        <AdminTable head={[t("ticket"), t("user"), t("category"), t("assignee"), t("lastActivity")]} empty={result.data.length ? false : t("empty")}>
+        <AdminTable head={[t("ticket"), t("user"), t("category"), t("assignee"), t("lastActivity"), ""]} empty={result.data.length ? false : t("empty")}>
           {result.data.map((ticket) => (
             <tr key={ticket.id}>
               <Cell>
@@ -60,6 +61,11 @@ export default async function AdminSupport({ params, searchParams }: PageProps<"
                 <div>
                   <StatusPill tone={toneFor(ticket.status)}>{ts(`statuses.${ticket.status}`)}</StatusPill>
                 </div>
+              </Cell>
+              <Cell>
+                <Link href={`/admin/support/${ticket.id}`} className={`${buttonClasses({ variant: "solid", size: "xs" })} whitespace-nowrap`}>
+                  {t("openTicket")}
+                </Link>
               </Cell>
             </tr>
           ))}

@@ -81,6 +81,11 @@ export const authService = {
     return request<{ accessToken: string; user: AuthUser & { fullName: string }; isNew: boolean }>("/auth/quick/verify", payload);
   },
 
+  /** "Continue with Google": the ID token from Google's button; signs in or creates the account. */
+  google(payload: { credential: string; referralCode?: string }) {
+    return request<{ accessToken: string; user: AuthUser & { fullName: string }; isNew: boolean }>("/auth/google", payload);
+  },
+
   verifyOtp(payload: { purpose: OtpPurpose; method: AuthMethod; target: string; code: string }) {
     return request<{ token?: string; accessToken?: string; user?: AuthUser }>("/auth/otp/verify", payload);
   },

@@ -121,9 +121,21 @@ export function ChatPanel({ conversation, onBack, onActivity, onRead }: ChatPane
         <button type="button" onClick={onBack} aria-label={t("back")} className="mt-3 md:hidden">
           <ArrowLeft className="size-5 rtl:-scale-x-100" />
         </button>
-        <UserAvatar name={name} src={conversationAvatar(conversation)} size={55} online={online} />
+        {!isGroup && conversation.participant ? (
+          <Link href={`/users/${conversation.participant.id}`} aria-label={name} className="shrink-0 rounded-full hover:opacity-90">
+            <UserAvatar name={name} src={conversationAvatar(conversation)} size={55} online={online} />
+          </Link>
+        ) : (
+          <UserAvatar name={name} src={conversationAvatar(conversation)} size={55} online={online} />
+        )}
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          <p className="truncate text-base font-medium tracking-[-0.5px]">{name}</p>
+          {!isGroup && conversation.participant ? (
+            <Link href={`/users/${conversation.participant.id}`} className="truncate text-base font-medium tracking-[-0.5px] hover:text-brand">
+              {name}
+            </Link>
+          ) : (
+            <p className="truncate text-base font-medium tracking-[-0.5px]">{name}</p>
+          )}
           <p className="truncate text-base text-muted">
             {conversation.project ? (
               <Link href={`/projects/${conversation.project.id}`} className="hover:text-brand">

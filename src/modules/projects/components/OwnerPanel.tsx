@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { outlinedPanelClasses, sectionTitleClasses } from "@/components/ui/styles";
 import { UserAvatar } from "@/components/ui/UserAvatar";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Project, Proposal } from "@/lib/api/types";
@@ -86,14 +86,18 @@ export function OwnerPanel({ project, proposals }: { project: Project; proposals
             <div className="flex flex-wrap items-start justify-between gap-3">
               {proposal.freelancer && (
                 <div className="flex items-center gap-3">
-                  <UserAvatar
-                    name={proposal.freelancer.fullName}
-                    src={proposal.freelancer.avatarUrl}
-                    size={44}
-                    online={proposal.freelancer.isOnline}
-                  />
+                  <Link href={`/users/${proposal.freelancer.id}`} aria-label={proposal.freelancer.fullName} className="shrink-0 rounded-full hover:opacity-90">
+                    <UserAvatar
+                      name={proposal.freelancer.fullName}
+                      src={proposal.freelancer.avatarUrl}
+                      size={44}
+                      online={proposal.freelancer.isOnline}
+                    />
+                  </Link>
                   <div>
-                    <p className="font-bold">{proposal.freelancer.fullName}</p>
+                    <Link href={`/users/${proposal.freelancer.id}`} className="font-bold hover:text-brand">
+                      {proposal.freelancer.fullName}
+                    </Link>
                     <p className="text-xs text-muted">
                       {[proposal.freelancer.jobTitle, proposal.freelancer.rating ? `★ ${proposal.freelancer.rating}` : null]
                         .filter(Boolean)

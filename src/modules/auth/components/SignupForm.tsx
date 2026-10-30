@@ -26,6 +26,7 @@ import { ErrorModal } from "./ErrorModal";
 import { PasswordStrength } from "./PasswordStrength";
 import { Recaptcha, recaptchaEnabled, recaptchaMissingMessage, recaptchaNeedsTick, recaptchaToken } from "./Recaptcha";
 import { SuccessTitle } from "./SuccessTitle";
+import { GoogleSignIn } from "./GoogleSignIn";
 import { actionsClasses, fieldsClasses, formClasses, modalTextClasses, switchClasses } from "./styles";
 
 type Values = {
@@ -245,6 +246,8 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
             {t("submit")}
           </Button>
         </div>
+
+        <GoogleSignIn />
 
         <p className={switchClasses}>
           {t("haveAccount")} <Link href={{ pathname: "/login", query: { method } }}>{t("login")}</Link>

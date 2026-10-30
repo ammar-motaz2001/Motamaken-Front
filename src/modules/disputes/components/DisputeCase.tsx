@@ -22,7 +22,8 @@ const STEPS = ["open", "under_review", "resolved"] as const;
  * Dispute case: details, timeline and a reply box with an attachment; parties can withdraw or concede,
  * and appeal a ruling.
  */
-export function DisputeCase({ dispute: initial, viewerId }: { dispute: Dispute; viewerId: number }) {
+/** `projectHref` lets the admin panel open its own project page instead of the public one. */
+export function DisputeCase({ dispute: initial, viewerId, projectHref }: { dispute: Dispute; viewerId: number; projectHref?: string }) {
   const t = useTranslations("Disputes");
   const format = useFormatter();
   const router = useRouter();
@@ -123,7 +124,7 @@ export function DisputeCase({ dispute: initial, viewerId }: { dispute: Dispute; 
             <p className="text-xs text-muted">{t("case.milestone")}</p>
             <p className="font-medium">
               {dispute.milestone?.title} ·{" "}
-              <Link href={`/projects/${dispute.project?.id}`} className="text-brand hover:underline">
+              <Link href={projectHref ?? `/projects/${dispute.project?.id}`} className="text-brand hover:underline">
                 {t("case.viewProject")}
               </Link>
             </p>
