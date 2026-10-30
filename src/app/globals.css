@@ -316,3 +316,24 @@
     text-box: trim-both cap alphabetic;
   }
 }
+
+/* Every clickable thing eases between states (hover, focus, active) instead of switching at once. */
+@layer base {
+  a,
+  button,
+  [role="button"],
+  [role="menuitem"],
+  [role="tab"],
+  summary,
+  input,
+  textarea {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow;
+    transition-duration: 160ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    a, button, [role="button"], [role="menuitem"], [role="tab"], summary, input, textarea {
+      transition-duration: 0ms;
+    }
+  }
+}

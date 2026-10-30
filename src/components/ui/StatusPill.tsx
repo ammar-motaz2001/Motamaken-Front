@@ -10,8 +10,8 @@ export type StatusTone = keyof typeof TONES;
 /** Small rounded status label coloured by tone (success, warning, danger...). */
 export function StatusPill({ tone, children }: { tone: StatusTone; children: React.ReactNode }) {
   return (
-    <span className={`inline-flex shrink-0 items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${TONES[tone]}`}>
-      {children}
+    <span className={`inline-flex min-h-6 shrink-0 items-center justify-center rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap ${TONES[tone]}`}>
+      <span className="trim-text">{children}</span>
     </span>
   );
 }

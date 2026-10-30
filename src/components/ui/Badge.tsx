@@ -20,7 +20,7 @@ export function Badge({
         tone === "brand" ? "bg-brand" : "bg-badge"
       } ${className}`}
     >
-      {count > max ? `${max}+` : count}
+      <span className="trim-text">{count > max ? `${max}+` : count}</span>
     </span>
   );
 }

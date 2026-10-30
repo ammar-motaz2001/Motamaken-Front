@@ -110,7 +110,7 @@ export function DisputeCase({ dispute: initial, viewerId, projectHref }: { dispu
             {STEPS.map((name, index) => (
               <li key={name} className="flex flex-1 items-center gap-2">
                 <span className={`flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${index <= step ? "bg-brand text-white" : "bg-surface-muted text-muted"}`}>
-                  {index + 1}
+                  <span className="trim-text">{index + 1}</span>
                 </span>
                 <span className={`text-xs ${index <= step ? "font-bold" : "text-muted"}`}>{t(`steps.${name}`)}</span>
                 {index < STEPS.length - 1 && <span className={`h-0.5 flex-1 ${index < step ? "bg-brand" : "bg-border"}`} aria-hidden />}

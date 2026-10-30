@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
@@ -53,9 +54,9 @@ export function Modal({ open, onClose, title, showClose, children }: ModalProps)
                 type="button"
                 onClick={onClose}
                 aria-label={t("close")}
-                className="flex size-5 items-center justify-center rounded-full border-[1.5px] border-foreground text-base leading-none"
+                className="flex size-8 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-foreground hover:bg-surface-muted"
               >
-                ×
+                <X className="size-4" strokeWidth={2.25} aria-hidden />
               </button>
             )}
           </div>

@@ -10,6 +10,7 @@ type UserAvatarProps = {
 
 /** Round profile photo, or the name's first letter when there is none, with an optional online dot. */
 export function UserAvatar({ name, src, size, online, className = "" }: UserAvatarProps) {
+  const initial = name.trim().charAt(0);
   return (
     <span className={`relative inline-flex shrink-0 ${className}`} style={{ width: size, height: size }}>
       {src ? (
@@ -17,10 +18,12 @@ export function UserAvatar({ name, src, size, online, className = "" }: UserAvat
       ) : (
         <span
           aria-hidden
-          className="flex size-full items-center justify-center rounded-full bg-gradient-brand font-bold text-white uppercase"
-          style={{ fontSize: Math.max(12, size * 0.4) }}
+          className="flex size-full items-center justify-center rounded-full bg-gradient-brand font-semibold text-white uppercase select-none"
+          style={{ fontSize: Math.max(11, Math.round(size * 0.46)) }}
         >
-          {name.trim().charAt(0)}
+          {/* Latin letters and digits are trimmed to their own height to sit on the exact centre; Arabic letters dip
+              below the line, so they keep the font's full height. */}
+          <span className={/^[A-Za-z0-9]/.test(initial) ? "trim-text" : "inline-block -translate-y-[0.2em] leading-none"}>{initial}</span>
         </span>
       )}
       {online && (

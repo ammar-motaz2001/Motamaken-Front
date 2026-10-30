@@ -28,7 +28,7 @@ export function Stepper({ steps, current }: { steps: readonly string[]; current:
               ) : active ? (
                 <span className="size-3 rounded-full bg-brand" />
               ) : (
-                String(index + 1).padStart(2, "0")
+                <span className="trim-text tabular-nums">{String(index + 1).padStart(2, "0")}</span>
               )}
             </span>
             <span className={`text-xs sm:text-sm ${active ? "font-bold text-brand" : "text-muted"}`}>{t(`steps.${step}`)}</span>

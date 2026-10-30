@@ -85,7 +85,8 @@ export function AdminTable({ head, children, empty }: { head: ReactNode[]; child
 
 /** Table cell with the admin tables' padding. */
 export function Cell({ children, className = "" }: { children?: ReactNode; className?: string }) {
-  return <td className={`px-3 py-3 align-top first:ps-4 sm:first:ps-3 ${className}`}>{children}</td>;
+  // Stacked lines in a cell (a status over its date, a name over an id) get a little air between them.
+  return <td className={`px-3 py-3 align-top first:ps-4 sm:first:ps-3 [&>*+*]:mt-1.5 ${className}`}>{children}</td>;
 }
 
 /** Status tabs driven by the URL (`?status=`). */
