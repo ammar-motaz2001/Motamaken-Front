@@ -3,27 +3,11 @@ import { redirect, unstable_rethrow } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { SESSION_COOKIE } from "@/lib/session";
 import { ApiError, toApiError } from "./errors";
+import { PUBLIC_HOST_HEADERS } from "./publicHost";
 import { visitorHeaders } from "./visitor";
 
 const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 
-/**
- * When this server reaches the API by an internal address (`http://api:10000`), tells it the public one so the links it
- * builds (signed KYC, dispute and chat files) open in the browser instead of pointing at the container.
- */
-const PUBLIC_HOST_HEADERS = ((): Record<string, string> => {
-  const internal = process.env.API_URL;
-  const pub = process.env.NEXT_PUBLIC_API_URL;
-  if (!internal || !pub) return {};
-  try {
-    const url = new URL(pub);
-    if (url.host === new URL(internal).host) return {};
-    const https = url.protocol === "https:";
-    return { "X-Forwarded-Host": url.hostname, "X-Forwarded-Proto": https ? "https" : "http", "X-Forwarded-Port": url.port || (https ? "443" : "80") };
-  } catch {
-    return {};
-  }
-})();
 
 /** Server-side GET to the API with the session token and visitor headers; a revoked token signs the user out, errors throw ApiError. */
 export async function apiGet<T>(path: string): Promise<T> {
