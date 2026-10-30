@@ -302,3 +302,14 @@
     box-shadow: 0 0 0 1px var(--color-danger);
   }
 }
+
+/*
+ * Text next to an icon (header figures, switchers): drops the font's extra space above and below the letters so the
+ * text sits exactly on the icon's centre line instead of a little high.
+ */
+@layer utilities {
+  .trim-text {
+    line-height: 1;
+    text-box: trim-both cap alphabetic;
+  }
+}

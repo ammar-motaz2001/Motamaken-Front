@@ -88,7 +88,7 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
         className="relative flex items-center gap-1 py-[7.5px]"
       >
         <UserAvatar name={user.fullName} src={user.avatarUrl} size={24} />
-        <span className="max-w-32 truncate text-base font-medium text-orange capitalize">{user.username}</span>
+        <span className="max-w-32 truncate py-0.5 text-base leading-none font-medium text-orange capitalize">{user.username}</span>
         <Image src="/images/arrow-down-sm.svg" alt="" width={12} height={12} className="dark:invert" />
         <Badge count={unreadMessages} className="-top-1.5 -start-2" />
       </button>

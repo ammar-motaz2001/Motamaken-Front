@@ -38,7 +38,7 @@ export function CurrencySwitcher({ currencies, initial = "USD", signedIn }: Curr
       items={options.map((item) => ({ value: item.code, label: item.code }))}
       trigger={
         <>
-          <span className="text-base font-medium">{currency}</span>
+          <span className="trim-text text-base font-medium">{currency}</span>
           <Image src="/images/arrow-down-sm.svg" alt="" width={12} height={12} className="dark:invert" />
         </>
       }

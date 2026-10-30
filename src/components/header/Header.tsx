@@ -28,10 +28,10 @@ function Pill({ icon, label, value }: { icon: string; label: string; value: stri
   return (
     <span
       title={label}
-      className="flex items-center gap-1 rounded-[7px] border border-brand bg-surface px-1 py-[9px] text-base leading-none font-medium text-muted"
+      className="flex h-9 min-w-[64px] items-center justify-center gap-1.5 rounded-[7px] border border-brand bg-surface px-2.5 text-[15px] font-semibold text-muted"
     >
-      <Image src={icon} alt={label} width={16} height={16} />
-      {value}
+      <Image src={icon} alt={label} width={18} height={18} className="size-[18px] shrink-0" />
+      <span dir="ltr" className="trim-text tabular-nums">{value}</span>
     </span>
   );
 }
@@ -104,7 +104,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
             ) : (
               <AuthLink href="/notifications" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
                 <Image src="/images/notification.svg" alt="" width={20} height={20} className="dark:invert" />
-                <span className="hidden text-base lg:inline">{t("notification")}</span>
+                <span className="trim-text hidden text-base lg:inline">{t("notification")}</span>
               </AuthLink>
             )}
             <MobileMenu signedIn={signedIn} currencies={data.currencies} currency={currency} />

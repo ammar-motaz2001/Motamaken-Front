@@ -46,7 +46,7 @@ export function LocaleSwitcher({ signedIn }: { signedIn: boolean }) {
       trigger={
         <>
           <Flag locale={locale} />
-          <span className="text-base font-medium">{t(locale)}</span>
+          <span className="trim-text text-base font-medium">{t(locale)}</span>
           <Image src="/images/arrow-down-sm.svg" alt="" width={12} height={12} className="dark:invert" />
         </>
       }

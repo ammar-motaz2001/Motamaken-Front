@@ -18,19 +18,19 @@ export function AccountLinks({ signedIn }: { signedIn: boolean }) {
     <div className="flex h-[35px] items-center gap-2">
       {signedIn ? (
         <>
-          <Link href="/settings/profile" className="text-base font-bold text-brand hover:opacity-85">
+          <Link href="/settings/profile" className="trim-text text-base font-bold text-brand hover:opacity-85">
             {t("myAccount")}
           </Link>
-          <span className="text-base font-medium">·</span>
+          <span className="trim-text text-base font-medium">·</span>
           <LogoutButton />
         </>
       ) : (
         <>
-          <Link href="/signup" className="text-base font-bold text-brand uppercase hover:opacity-85">
+          <Link href="/signup" className="trim-text text-base font-bold text-brand uppercase hover:opacity-85">
             {t("joinUs")}
           </Link>
-          <span className="text-base font-medium">{t("or")}</span>
-          <Link href="/login" className="text-base font-bold text-brand uppercase hover:opacity-85">
+          <span className="trim-text text-base font-medium">{t("or")}</span>
+          <Link href="/login" className="trim-text text-base font-bold text-brand uppercase hover:opacity-85">
             {t("login")}
           </Link>
         </>
