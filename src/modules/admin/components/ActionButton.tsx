@@ -2,7 +2,7 @@
 
 import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useTranslations } from "next-intl";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { useRouter } from "@/i18n/navigation";
 import { api } from "@/lib/api/client";
@@ -66,7 +66,12 @@ export function ActionButton({ label, endpoint, method = "POST", tone = "outline
 
   const visible = (field: ActionField) => !field.showWhen || values[field.showWhen.field] === field.showWhen.value;
 
+  // Set at once (state only updates on the next render): a second click while the request runs does nothing.
+  const inFlight = useRef(false);
+
   const send = async () => {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
     setError(null);
     setFieldErrors({});
@@ -87,6 +92,7 @@ export function ActionButton({ label, endpoint, method = "POST", tone = "outline
       setFieldErrors(apiError.fields ?? {});
       setError(apiError.message || t("failed"));
     } finally {
+      inFlight.current = false;
       setBusy(false);
     }
   };
