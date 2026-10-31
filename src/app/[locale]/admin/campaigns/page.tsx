@@ -22,14 +22,25 @@ export default async function AdminCampaigns({ params, searchParams }: PageProps
 
   return (
     <>
-      <AdminHeader title={t("title")} subtitle={t("subtitle")} />
+      <AdminHeader
+        title={t("title")}
+        subtitle={t("subtitle")}
+        actions={
+          <Link href="/settings/campaigns/new" className="inline-flex h-8 items-center rounded-md bg-brand px-3 text-xs font-semibold text-white hover:opacity-90">
+            {t("create")}
+          </Link>
+        }
+      />
+      <p className="rounded-lg bg-surface-muted px-4 py-3 text-sm text-muted">{t("howCreated")}</p>
       <AdminSection>
         <StatusTabs pathname="/admin/campaigns" current={status} tabs={[{ value: undefined, label: t("all") }, ...STATUSES.map((value) => ({ value, label: t(`status.${value}`) }))]} />
         <AdminTable head={[t("campaign"), t("owner"), t("budget"), t("visits"), t("created"), t("state"), ""]} empty={result.data.length ? false : t("empty")}>
           {result.data.map((c) => (
             <tr key={c.id}>
               <Cell className="max-w-xs">
-                <div className="font-medium">{c.title}</div>
+                <Link href={`/admin/campaigns/${c.id}`} className="font-medium hover:text-brand hover:underline">
+                  {c.title}
+                </Link>
                 <Link href={c.target.path} className="text-xs text-link hover:underline">
                   {t(`targets.${c.target.type}`)} #{c.target.id}
                 </Link>

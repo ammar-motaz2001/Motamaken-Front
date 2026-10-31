@@ -97,6 +97,8 @@ export type Summary = {
   points: number;
   unreadMessages: number;
   unreadNotifications: number;
+  /** Counts beside the header and account-menu links. */
+  counts?: { favorites: number; projects: number; offersReceived: number; offers: number };
 };
 
 /** `rate`: units of this currency per one US dollar (prices are converted with amount / rate(from) × rate(to)). */

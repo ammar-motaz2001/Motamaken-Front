@@ -23,13 +23,21 @@ export type SecurityState = {
   sessions: { id: number; device: string; ip: string | null; lastUsedAt: string; createdAt: string; isCurrent: boolean }[];
 };
 
-type TwoFactorModalProps = { open: boolean; onClose: () => void; onEnabled: (state: SecurityState) => void; email: string | null; phone: string | null };
+type TwoFactorModalProps = {
+  open: boolean;
+  onClose: () => void;
+  onEnabled: (state: SecurityState) => void;
+  email: string | null;
+  phone: string | null;
+  /** Codes can be sent by SMS (an SMS provider is connected); otherwise phone shows as "coming soon". */
+  phoneCodes?: boolean;
+};
 
 /** Turns on two-factor sign-in: pick phone or email, confirm the password, then enter the code (POST /me/two-factor and /confirm). */
-export function TwoFactorModal({ open, onClose, onEnabled, email, phone }: TwoFactorModalProps) {
+export function TwoFactorModal({ open, onClose, onEnabled, email, phone, phoneCodes = false }: TwoFactorModalProps) {
   const t = useTranslations("Settings.security.enable");
   const [step, setStep] = useState<Step>("method");
-  const [method, setMethod] = useState<Method>("phone");
+  const [method, setMethod] = useState<Method>(phoneCodes ? "phone" : "email");
   const [password, setPassword] = useState("");
   const [target, setTarget] = useState("");
   const [code, setCode] = useState("");
@@ -181,13 +189,18 @@ export function TwoFactorModal({ open, onClose, onEnabled, email, phone }: TwoFa
               {(["phone", "email"] as const).map((option) => (
                 <label
                   key={option}
-                  className={`flex cursor-pointer items-center justify-between gap-3 rounded-lg border p-3 ${method === option ? "border-orange bg-orange/10" : "border-border"}`}
+                  className={`flex items-center justify-between gap-3 rounded-lg border p-3 ${method === option ? "border-orange bg-orange/10" : "border-border"} ${
+                    option === "phone" && !phoneCodes ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+                  }`}
                 >
                   <span>
-                    <span className="block text-sm font-bold">{t(`methods.${option}.title`)}</span>
+                    <span className="flex items-center gap-2 text-sm font-bold">
+                      {t(`methods.${option}.title`)}
+                      {option === "phone" && !phoneCodes && <span className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-medium text-muted">{t("comingSoon")}</span>}
+                    </span>
                     <span className="block text-xs text-muted">{t(`methods.${option}.text`)}</span>
                   </span>
-                  <input type="radio" name="method" checked={method === option} onChange={() => setMethod(option)} className="size-4 accent-orange" />
+                  <input type="radio" name="method" checked={method === option} disabled={option === "phone" && !phoneCodes} onChange={() => setMethod(option)} className="size-4 accent-orange" />
                 </label>
               ))}
             </div>

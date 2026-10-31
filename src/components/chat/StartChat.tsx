@@ -31,11 +31,17 @@ export function StartChat({ userId, projectId, children }: StartChatProps) {
   const [open, setOpen] = useState(false);
   const [body, setBody, clearDraft] = useDraft(`chat-${userId}-${projectId ?? 0}`, "");
   const [error, setError] = useState<string | null>(null);
+  // Why a signed-in user could not open the conversation (e.g. project owners write first).
+  const [refused, setRefused] = useState<string | null>(null);
 
   const openConversation = () =>
     startTransition(async () => {
-      const result = await api<{ data: Conversation }>("/conversations", { method: "POST", body: { userId, projectId } }).catch(() => null);
-      router.push(result ? `/messages?c=${result.data.id}` : "/messages");
+      try {
+        const result = await api<{ data: Conversation }>("/conversations", { method: "POST", body: { userId, projectId } });
+        router.push(`/messages?c=${result.data.id}`);
+      } catch (caught) {
+        setRefused((caught as ApiError).message || t("failed"));
+      }
     });
 
   const start = () => (signedIn ? openConversation() : setOpen(true));
@@ -64,6 +70,12 @@ export function StartChat({ userId, projectId, children }: StartChatProps) {
   return (
     <>
       {children(start, pending)}
+      <Modal open={Boolean(refused)} onClose={() => setRefused(null)} showClose title={t("title")}>
+        <p className="text-sm">{refused}</p>
+        <Button variant="solid" font="button" onClick={() => setRefused(null)}>
+          {t("ok")}
+        </Button>
+      </Modal>
       <Modal open={open} onClose={() => !pending && setOpen(false)} showClose title={t("title")}>
         <form onSubmit={send} noValidate className="flex w-full flex-col gap-4 text-start">
           <TextArea

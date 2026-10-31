@@ -2,7 +2,8 @@
 
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
+import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import { firstError } from "./saveSection";
 
@@ -11,6 +12,17 @@ export function SkillsSection({ skills, onSave }: { skills: string[]; onSave: (s
   const t = useTranslations("ProfileEditor");
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  // Suggestions while typing: the staff's skills first, then the ones other users listed (GET /search/skills).
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      api<{ data: string[] }>(`/search/skills?q=${encodeURIComponent(value.trim())}`)
+        .then(({ data }) => setSuggestions(data.filter((skill) => !skills.some((item) => item.toLowerCase() === skill.toLowerCase()))))
+        .catch(() => setSuggestions([]));
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [value, skills]);
 
   const save = async (next: string[]) => {
     setError(null);
@@ -57,10 +69,16 @@ export function SkillsSection({ skills, onSave }: { skills: string[]; onSave: (s
             maxLength={40}
             onChange={(event) => setValue(event.target.value)}
             onKeyDown={onKeyDown}
+            list="skill-suggestions"
             placeholder={t("skills.placeholder")}
             aria-label={t("skills.placeholder")}
             className="h-10 min-w-0 flex-1 rounded-md border border-border bg-surface px-3 text-sm outline-none focus:border-brand"
           />
+          <datalist id="skill-suggestions">
+            {suggestions.map((skill) => (
+              <option key={skill} value={skill} />
+            ))}
+          </datalist>
           <button type="button" onClick={add} className="rounded-md border border-brand px-4 text-sm font-medium text-brand hover:bg-brand-soft">
             {t("add")}
           </button>

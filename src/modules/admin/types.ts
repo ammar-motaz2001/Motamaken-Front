@@ -419,7 +419,7 @@ export type SiteConfig = {
   maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
   uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
   seo: { descriptionEn: string | null; descriptionAr: string | null };
-  security: { requireAdmin2fa: boolean };
+  security: { requireAdmin2fa: boolean; ownersWriteFirst?: boolean };
   payments: { depositMethods: string[]; withdrawalMethods: string[] };
   choices: { attachmentTypes: string[]; depositMethods: string[]; withdrawalMethods: string[]; social: string[] };
 };

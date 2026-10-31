@@ -15,7 +15,7 @@ import { SettingsPanel } from "./SettingsPanel";
 import { TwoFactorModal, type SecurityState } from "./TwoFactorModal";
 
 /** Two-factor status with turn on/off, and the list of signed-in devices to log out one by one or all others. */
-export function SecuritySettings({ initial, email, phone }: { initial: SecurityState; email: string | null; phone: string | null }) {
+export function SecuritySettings({ initial, email, phone, phoneCodes = false }: { initial: SecurityState; email: string | null; phone: string | null; phoneCodes?: boolean }) {
   const t = useTranslations("Settings.security");
   const format = useFormatter();
   const router = useRouter();
@@ -137,7 +137,7 @@ export function SecuritySettings({ initial, email, phone }: { initial: SecurityS
         </ul>
       </div>
 
-      <TwoFactorModal open={enabling} onClose={() => setEnabling(false)} onEnabled={setState} email={email} phone={phone} />
+      <TwoFactorModal open={enabling} onClose={() => setEnabling(false)} onEnabled={setState} email={email} phone={phone} phoneCodes={phoneCodes} />
 
       <Modal open={disabling} onClose={() => (setDisabling(false), setError(null))} showClose title={t("turnOffTitle")}>
         <div className="flex w-full flex-col gap-4 text-start">

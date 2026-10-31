@@ -24,7 +24,7 @@ import { Badge } from "@/components/ui/Badge";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { useDismiss } from "@/components/ui/useDismiss";
 import { Link, useRouter } from "@/i18n/navigation";
-import type { User as ApiUser } from "@/lib/api/types";
+import type { User as ApiUser, Summary } from "@/lib/api/types";
 import { deleteSession } from "@/modules/auth/actions";
 import { usePresence } from "@/components/ui/usePresence";
 
@@ -50,7 +50,7 @@ const EXTRA_LINKS = [
 const itemClasses = "flex w-full items-center gap-2 px-3 py-2 text-start text-sm hover:bg-surface-muted";
 
 /** Avatar menu of a signed-in user: account links, unread message count, post a project/request and sign out. */
-export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMessages: number }) {
+export function AccountMenu({ user, unreadMessages, counts }: { user: ApiUser; unreadMessages: number; counts?: Summary["counts"] }) {
   const t = useTranslations("Header");
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -74,6 +74,9 @@ export function AccountMenu({ user, unreadMessages }: { user: ApiUser; unreadMes
         <Icon className="size-4 text-muted" />
         {t(`account.${key}`)}
         {key === "messages" && <Badge inline count={unreadMessages} className="ms-auto" />}
+        {/* New offers waiting on my projects, and my offers still waiting for an answer. */}
+        {key === "myProjects" && <Badge inline count={counts?.offersReceived ?? 0} className="ms-auto" />}
+        {key === "myOffers" && <Badge inline count={counts?.offers ?? 0} tone="brand" className="ms-auto" />}
       </Link>
     </li>
   );

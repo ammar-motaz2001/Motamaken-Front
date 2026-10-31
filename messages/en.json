@@ -980,7 +980,8 @@
         "back": "Back",
         "cancel": "Cancel",
         "next": "Next",
-        "continue": "Continue"
+        "continue": "Continue",
+        "comingSoon": "Coming soon"
       },
       "enabledVia": "Two Factor Authentication is enabled via {method} {target}",
       "via": {
@@ -2790,7 +2791,11 @@
       "perVisit": "{cost} per visit",
       "rejected": "{count} rejected",
       "cancel": "Stop",
-      "confirmCancel": "Stop \"{title}\"? The rest of the budget goes back to the owner."
+      "confirmCancel": "Stop \"{title}\"? The rest of the budget goes back to the owner.",
+      "detailTitle": "Campaign details",
+      "back": "All campaigns",
+      "create": "Create a campaign",
+      "howCreated": "Campaigns are created by the advertiser from their own account (Settings › My campaigns) and paid from their wallet. Here you can open any campaign to follow its performance and visits, and stop it if it breaks the rules. \"Create a campaign\" opens the same form with your account."
     },
     "affiliate": {
       "title": "Affiliate programme",
@@ -3873,7 +3878,10 @@
         "removeLink": "Remove link",
         "addLink": "Add a link",
         "addColumn": "Add a column"
-      }
+      },
+      "ownersWriteFirst": "Stop freelancers and influencers from contacting project owners first",
+      "ownersWriteFirstHint": "When on, a freelancer or influencer cannot open a conversation with a project owner. The owner picks who to contact and writes first; then both can talk. Owners can message anyone at any time.",
+      "chatPolicy": "Messaging policy"
     },
     "blacklist": {
       "title": "Blacklist",
@@ -4034,7 +4042,8 @@
     "send": "Send",
     "empty": "Write a message first.",
     "failed": "The message could not be sent. Please try again.",
-    "signUpReason": "Confirm your email to send your message."
+    "signUpReason": "Confirm your email to send your message.",
+    "ok": "OK"
   },
   "Policy": {
     "title": "Privacy policy",

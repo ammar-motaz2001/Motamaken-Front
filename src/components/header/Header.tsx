@@ -90,13 +90,14 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
                 <NotificationsMenu unread={summary?.unreadNotifications ?? 0} />
                 <span className="hidden items-center gap-2.5 lg:flex">
                   <Divider />
-                  <Link href="/favorites" aria-label={t("favorites")} className="flex items-center px-1 py-[7.5px]">
+                  <Link href="/favorites" aria-label={t("favorites")} className="relative flex items-center px-1 py-[7.5px]">
                     <Image src="/images/heart.svg" alt="" width={20} height={20} className="dark:invert" />
+                    <Badge count={summary?.counts?.favorites ?? 0} tone="brand" className="-top-1 start-3" />
                   </Link>
                   {summary && (
                     <>
                       <Divider />
-                      <AccountMenu user={summary.user} unreadMessages={summary.unreadMessages} />
+                      <AccountMenu user={summary.user} unreadMessages={summary.unreadMessages} counts={summary.counts} />
                     </>
                   )}
                 </span>

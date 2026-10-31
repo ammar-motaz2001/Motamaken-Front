@@ -18,19 +18,21 @@ type Props = {
   daily: Daily[];
   visits: Paginated<CampaignVisit> | null;
   visitFilter: { status?: string; reason?: string };
+  /** Staff view from the admin panel: no owner actions or filter editing, links stay in the panel. */
+  readOnly?: boolean;
 };
 
 /**
  * Campaign detail: status and actions (launch, pause, resume, cancel), spend, the daily chart, rejection reasons and the visit log;
  * filters stay editable while it runs.
  */
-export async function CampaignDetail({ campaign, daily, visits, visitFilter }: Props) {
+export async function CampaignDetail({ campaign, daily, visits, visitFilter, readOnly = false }: Props) {
   const t = await getTranslations("Campaigns");
   const format = await getFormatter();
   const money = (amount: number) => format.number(amount, { style: "currency", currency: campaign.currency });
   const stats = campaign.stats;
-  const base = `/settings/campaigns/${campaign.id}`;
-  const editable = campaign.status === "active" || campaign.status === "paused";
+  const base = readOnly ? `/admin/campaigns/${campaign.id}` : `/settings/campaigns/${campaign.id}`;
+  const editable = !readOnly && (campaign.status === "active" || campaign.status === "paused");
 
   return (
     <div className="flex flex-col gap-6">
@@ -46,7 +48,7 @@ export async function CampaignDetail({ campaign, daily, visits, visitFilter }: P
             </span>
             {campaign.endsAt && <span className="text-muted">{t("detail.ends", { date: format.dateTime(new Date(campaign.endsAt), { dateStyle: "medium" }) })}</span>}
           </div>
-          <CampaignActions campaign={campaign} />
+          {!readOnly && <CampaignActions campaign={campaign} />}
         </div>
 
         <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">

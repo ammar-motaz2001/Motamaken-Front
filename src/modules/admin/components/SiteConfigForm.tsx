@@ -230,10 +230,19 @@ export function SiteConfigForm({ config, defaultFooter }: { config: SiteConfig; 
       <fieldset className={section}>
         <legend className="px-1 font-bold">{t("staffPolicy")}</legend>
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={security.requireAdmin2fa} onChange={(e) => setSecurity({ requireAdmin2fa: e.target.checked })} className="size-4 accent-brand" />
+          <input type="checkbox" checked={security.requireAdmin2fa} onChange={(e) => setSecurity((current) => ({ ...current, requireAdmin2fa: e.target.checked }))} className="size-4 accent-brand" />
           {t("require2fa")}
         </label>
         <p className="text-xs text-muted">{t("require2faHint")}</p>
+      </fieldset>
+
+      <fieldset className={section}>
+        <legend className="px-1 font-bold">{t("chatPolicy")}</legend>
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={Boolean(security.ownersWriteFirst)} onChange={(e) => setSecurity((current) => ({ ...current, ownersWriteFirst: e.target.checked }))} className="size-4 accent-brand" />
+          {t("ownersWriteFirst")}
+        </label>
+        <p className="text-xs text-muted">{t("ownersWriteFirstHint")}</p>
       </fieldset>
 
       <SaveBar busy={busy} error={error} saved={saved} />
