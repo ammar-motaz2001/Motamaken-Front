@@ -63,8 +63,18 @@ export function Money({ amount, currency, className }: { amount: number; currenc
 }
 
 /** A translated budget line ("Budget {min} - {max}") with both ends in the visitor's currency. */
-export function BudgetRange({ message, min, max, currency }: { message: string; min: number; max: number; currency: string }) {
+export function BudgetRange({ message, min, max, currency, original = false }: { message: string; min: number; max: number; currency: string; original?: boolean }) {
   const t = useTranslations();
   const money = useMoney();
-  return <>{(t as (key: string, values: Record<string, string>) => string)(message, { min: money(min, currency), max: money(max, currency) })}</>;
+  const locale = useLocale();
+  const { currency: display } = useContext(CurrencyContext);
+  const say = (from: string, to: string) => (t as (key: string, values: Record<string, string>) => string)(message, { min: from, max: to });
+  if (!original || display === currency) return <>{say(money(min, currency), money(max, currency))}</>;
+  // In the project's own currency, with the visitor's converted range after it ("≈ …").
+  const own = (amount: number) => `\u2066${new Intl.NumberFormat(locale, { style: "currency", currency, currencyDisplay: "narrowSymbol", trailingZeroDisplay: "stripIfInteger" }).format(amount)}\u2069`;
+  return (
+    <>
+      {say(own(min), own(max))} <span className="text-muted">(≈ {money(min, currency)} - {money(max, currency)})</span>
+    </>
+  );
 }

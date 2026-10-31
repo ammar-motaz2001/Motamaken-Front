@@ -65,7 +65,7 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
   // Budget filters are typed in the visitor's display currency; the API compares every project in dollars.
   const currency =
     filters.budgetMin || filters.budgetMax
-      ? pickDisplayCurrency(await getCurrencies(), (await cookies()).get(CURRENCY_COOKIE)?.value, (await getSummary())?.user.currency)
+      ? pickDisplayCurrency(await getCurrencies(), (await cookies()).get(CURRENCY_COOKIE)?.value, (await getSummary())?.user.currency, (await params).locale)
       : undefined;
   const [categories, countries, grouped, paged] = await Promise.all([
     getCategories(),

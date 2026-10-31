@@ -59,7 +59,8 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews, agr
 
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <span className="rounded-lg border border-brand-ink bg-brand-soft px-3 py-1 font-medium text-brand-ink">
-            <BudgetRange message="Projects.detail.budget" min={min} max={max} currency={currency} />
+            {/* The project's own currency (the one offers are made in), with the visitor's in brackets when it differs. */}
+            <BudgetRange message="Projects.detail.budget" min={min} max={max} currency={currency} original />
           </span>
           <span className="flex items-center gap-1.5 text-muted">
             <CategoryIcon icon={project.category.icon} className="size-4 text-brand" />

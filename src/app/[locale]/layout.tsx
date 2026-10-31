@@ -94,7 +94,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
     getTranslations({ locale, namespace: "Seo" }).then((t) => t("home")),
     getSiteSettings(),
   ]);
-  const displayCurrency = pickDisplayCurrency(headerData.currencies, cookieStore.get(CURRENCY_COOKIE)?.value, headerData.summary?.user.currency);
+  const displayCurrency = pickDisplayCurrency(headerData.currencies, cookieStore.get(CURRENCY_COOKIE)?.value, headerData.summary?.user.currency, locale);
   // The admin texts are a third of the bundle; only the admin panel sends them to the browser (see admin/layout.tsx).
   const publicMessages = { ...(await getMessages()) };
   delete publicMessages.Admin;
