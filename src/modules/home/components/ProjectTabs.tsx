@@ -9,7 +9,7 @@ import type { Category, Paginated, Project, ProjectType } from "@/lib/api/types"
 import { ProjectCard } from "@/components/cards/ProjectCard";
 
 const PAGE_SIZE = 5;
-const VISIBLE_TABS = 5;
+const VISIBLE_TABS = 4;
 
 type TabState = { projects: Project[]; page: number; lastPage: number };
 
@@ -74,7 +74,7 @@ export function ProjectTabs({ title, type, categories, initial, showSeeMore }: P
                 role="tab"
                 aria-selected={category.slug === active}
                 onClick={() => select(category.slug)}
-                className={`shrink-0 border-b-2 pb-1 text-lg whitespace-nowrap capitalize transition-colors hover:text-brand lg:text-xl ${
+                className={`shrink-0 border-b-2 pb-1 text-lg whitespace-nowrap capitalize transition-colors hover:text-brand ${
                   category.slug === active ? "border-foreground font-medium" : "border-transparent text-foreground/80"
                 }`}
               >
@@ -83,7 +83,7 @@ export function ProjectTabs({ title, type, categories, initial, showSeeMore }: P
             ))}
           </div>
           {showSeeMore && (
-            <Link href="/categories" className="flex shrink-0 items-center gap-2.5 pb-1 text-lg whitespace-nowrap text-link capitalize lg:text-xl">
+            <Link href="/categories" className="flex shrink-0 items-center gap-2.5 pb-1 text-lg whitespace-nowrap text-link capitalize">
               {t("seeMore")}
               <Image src="/images/see-more-arrow.svg" alt="" width={20} height={20} className="rtl:-scale-x-100" />
             </Link>
