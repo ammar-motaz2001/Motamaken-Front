@@ -93,7 +93,8 @@
       "favorites": "Favorites",
       "account": "Profile",
       "post": "Post your project"
-    }
+    },
+    "mainNav": "Main"
   },
   "Footer": {
     "cta": {
@@ -525,7 +526,9 @@
     "loading": "Loading...",
     "loadFailed": "We could not load this section. Please try again later.",
     "noProjects": "No projects in this category yet.",
-    "verified": "Verified identity"
+    "verified": "Verified identity",
+    "budgetShort": "{min} - {max}",
+    "budgetLabel": "Budget"
   },
   "Messages": {
     "title": "Messages",
@@ -598,7 +601,8 @@
     },
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "filter": "Filter results"
+    "filter": "Filter results",
+    "breadcrumb": "Breadcrumb"
   },
   "Profile": {
     "home": "Home",
@@ -1639,7 +1643,8 @@
       "email": "Email not verified",
       "phone": "Phone not verified"
     },
-    "medals": "Medals"
+    "medals": "Medals",
+    "breadcrumb": "Breadcrumb"
   },
   "ProfileEditor": {
     "add": "Add",

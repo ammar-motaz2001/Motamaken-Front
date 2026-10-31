@@ -64,7 +64,7 @@ export function Dropdown({ trigger, items, selected, onSelect, label }: Dropdown
         aria-expanded={open}
         aria-label={label}
         onClick={toggle}
-        className="flex items-center gap-1 rounded-md px-1 py-[7.5px]"
+        className="flex items-center gap-1 rounded-md px-1.5 py-[7.5px] transition-colors hover:bg-surface-muted"
       >
         {trigger}
       </button>

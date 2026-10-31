@@ -26,7 +26,7 @@ export function FavoriteButton({ kind, id, ownerId, className = "" }: { kind: "p
       aria-label={saved ? t("remove") : t("save")}
       title={saved ? t("remove") : t("save")}
       onClick={press}
-      className={`flex size-8 items-center justify-center rounded-full bg-surface/90 shadow-card transition-transform hover:scale-110 ${className}`}
+      className={`flex size-8 items-center justify-center rounded-full bg-surface/90 shadow-card transition hover:scale-110 hover:bg-brand-soft ${className}`}
     >
       <Heart className={`size-4 ${saved ? "fill-danger text-danger" : "text-muted"}`} />
     </button>

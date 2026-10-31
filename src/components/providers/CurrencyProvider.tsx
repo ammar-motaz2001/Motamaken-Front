@@ -36,7 +36,7 @@ export function useMoney() {
       // Converted prices are estimates: rounded to a tidy figure. Amounts in their own currency keep their cents, but
       // whole amounts show no ".00". Wrapped in a left-to-right isolate so "US$ 400" never turns into "$US 400" in Arabic.
       const shown = code === from ? value : tidy(value);
-      const text = new Intl.NumberFormat(locale, { style: "currency", currency: code, maximumFractionDigits: code === from ? 2 : 0, trailingZeroDisplay: "stripIfInteger" }).format(shown);
+      const text = new Intl.NumberFormat(locale, { style: "currency", currency: code, currencyDisplay: "narrowSymbol", maximumFractionDigits: code === from ? 2 : 0, trailingZeroDisplay: "stripIfInteger" }).format(shown);
       return `\u2066${text}\u2069`;
     },
     [currency, rates, locale],

@@ -26,8 +26,8 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-col gap-3">
         {/* As in the design: the budget first (with the heart in the corner), then the title. */}
         <div className="flex items-start justify-between gap-2">
-          <span className="rounded-lg border border-brand-ink bg-brand-soft px-2.5 py-1 text-[13px] leading-snug font-medium text-brand-ink">
-            <BudgetRange message="Home.budget" min={min} max={max} currency={currency} />
+          <span title={t("budgetLabel")} className="rounded-lg border border-brand-ink bg-brand-soft px-2 py-1 text-xs leading-snug font-medium whitespace-nowrap text-brand-ink">
+            <BudgetRange message="Home.budgetShort" min={min} max={max} currency={currency} />
           </span>
           <FavoriteButton kind="project" id={project.id} ownerId={project.owner?.id} className="size-8! shrink-0 border border-border shadow-none!" />
         </div>
@@ -49,7 +49,7 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <p className="line-clamp-3 text-base tracking-[-0.176px] text-muted [unicode-bidi:plaintext]">
         {shorten(project.description)}{" "}
-        <Link href={href} className="text-brand hover:underline">
+        <Link href={href} className="inline-block py-1 text-brand hover:underline">
           {t("readMore")}
         </Link>
       </p>

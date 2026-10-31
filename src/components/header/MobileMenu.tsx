@@ -79,7 +79,7 @@ export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) 
                 </button>
               </div>
 
-              <nav aria-label="Main">
+              <nav aria-label={t("mainNav")}>
                 <ul className="flex flex-col">
                   {NAV_ITEMS.map((item) => (
                     <li key={item.key} className="border-b border-border last:border-b-0">

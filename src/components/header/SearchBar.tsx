@@ -112,7 +112,7 @@ export function SearchBar({ countries }: { countries: Country[] }) {
   return (
     <form role="search" onSubmit={submit} className="flex min-w-0 flex-1 gap-1 lg:flex-none">
       <div ref={boxRef} className="relative flex h-[45px] min-w-0 flex-1 items-center gap-[15px] rounded-[5px] border border-border bg-surface px-2.5 lg:w-[320px] lg:flex-none xl:w-[480px]">
-        <div ref={typeRef} className="relative shrink-0">
+        <div ref={typeRef} className="relative shrink-0 max-sm:hidden">
           <button
             type="button"
             aria-haspopup="listbox"
@@ -144,7 +144,7 @@ export function SearchBar({ countries }: { countries: Country[] }) {
             </ul>
           )}
         </div>
-        <span className="h-[19px] w-px bg-border" aria-hidden />
+        <span className="h-[19px] w-px bg-border max-sm:hidden" aria-hidden />
         <input
           name="q"
           type="search"
@@ -165,7 +165,7 @@ export function SearchBar({ countries }: { countries: Country[] }) {
           placeholder={t("search")}
           className="min-w-0 flex-1 bg-transparent text-base outline-none"
         />
-        <button type="submit" aria-label={t("search")} className="shrink-0">
+        <button type="submit" aria-label={t("search")} className="-me-1.5 flex size-10 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-surface-muted">
           <Image src="/images/search.svg" alt="" width={20} height={20} />
         </button>
         {showSuggestions && (

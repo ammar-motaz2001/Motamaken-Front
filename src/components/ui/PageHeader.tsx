@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 
@@ -10,9 +11,10 @@ export function PageHeader({ crumbs, title, subtitle, actions }: {
   subtitle?: string;
   actions?: ReactNode;
 }) {
+  const tc = useTranslations("Common");
   return (
     <div className="flex flex-col gap-3">
-      <nav aria-label="Breadcrumb" className="text-xs text-muted">
+      <nav aria-label={tc("breadcrumb")} className="text-xs text-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           {crumbs.map((crumb, index) => (
             <li key={crumb.label} className="flex items-center gap-1.5">

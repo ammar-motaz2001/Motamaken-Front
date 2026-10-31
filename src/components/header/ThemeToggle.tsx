@@ -26,7 +26,7 @@ export function ThemeToggle({ signedIn }: { signedIn: boolean }) {
         setTheme(theme);
         savePreference(signedIn, { theme });
       }}
-      className="flex size-5 items-center justify-center"
+      className="flex size-8 items-center justify-center rounded-md transition-colors hover:bg-surface-muted"
     >
       {isDark ? (
         <FiSun className="size-5 text-orange-light" />

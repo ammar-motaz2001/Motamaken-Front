@@ -49,7 +49,7 @@ export async function PublicProfileView({ data, tab, reviews, signedIn }: Public
 
   return (
     <div className="flex flex-col gap-5">
-      <nav aria-label="Breadcrumb" className="text-xs text-muted">
+      <nav aria-label={t("breadcrumb")} className="text-xs text-muted">
         <Link href="/" className="hover:text-brand">
           {t("home")}
         </Link>{" "}

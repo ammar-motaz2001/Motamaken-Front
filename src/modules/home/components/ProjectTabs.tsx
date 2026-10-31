@@ -74,7 +74,7 @@ export function ProjectTabs({ title, type, categories, initial, showSeeMore }: P
                 role="tab"
                 aria-selected={category.slug === active}
                 onClick={() => select(category.slug)}
-                className={`shrink-0 border-b-2 pb-1 text-lg whitespace-nowrap capitalize lg:text-xl ${
+                className={`shrink-0 border-b-2 pb-1 text-lg whitespace-nowrap capitalize transition-colors hover:text-brand lg:text-xl ${
                   category.slug === active ? "border-foreground font-medium" : "border-transparent text-foreground/80"
                 }`}
               >

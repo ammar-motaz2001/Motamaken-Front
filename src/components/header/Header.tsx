@@ -80,9 +80,17 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
               <ThemeToggle signedIn={signedIn} />
               <Divider />
             </div>
+            {/* Phones (mobile design): dark mode and favorites sit in the top row too. */}
+            <span className="flex items-center lg:hidden">
+              <ThemeToggle signedIn={signedIn} />
+            </span>
+            <Link href="/favorites" aria-label={t("favorites")} className="relative flex items-center rounded-md px-1.5 py-[7.5px] transition-colors hover:bg-surface-muted lg:hidden">
+              <Image src="/images/heart.svg" alt="" width={20} height={20} className="dark:invert" />
+              <Badge count={summary?.counts?.favorites ?? 0} tone="brand" className="-top-1 start-3" />
+            </Link>
             {signedIn ? (
               <>
-                <Link href="/messages" aria-label={t("account.messages")} className="relative flex items-center px-1 py-[7.5px]">
+                <Link href="/messages" aria-label={t("account.messages")} className="relative flex items-center rounded-md px-1.5 py-[7.5px] transition-colors hover:bg-surface-muted">
                   <Image src="/images/messages.svg" alt="" width={20} height={20} className="dark:invert" />
                   <Badge count={summary?.unreadMessages ?? 0} className="-top-1 start-3" />
                 </Link>
@@ -90,7 +98,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
                 <NotificationsMenu unread={summary?.unreadNotifications ?? 0} />
                 <span className="hidden items-center gap-2.5 lg:flex">
                   <Divider />
-                  <Link href="/favorites" aria-label={t("favorites")} className="relative flex items-center px-1 py-[7.5px]">
+                  <Link href="/favorites" aria-label={t("favorites")} className="relative flex items-center rounded-md px-1.5 py-[7.5px] transition-colors hover:bg-surface-muted">
                     <Image src="/images/heart.svg" alt="" width={20} height={20} className="dark:invert" />
                     <Badge count={summary?.counts?.favorites ?? 0} tone="brand" className="-top-1 start-3" />
                   </Link>
@@ -103,7 +111,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
                 </span>
               </>
             ) : (
-              <AuthLink href="/notifications" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1 py-[7.5px]">
+              <AuthLink href="/notifications" aria-label={t("notification")} className="flex items-center gap-1 rounded-md px-1.5 py-[7.5px] transition-colors hover:bg-surface-muted">
                 <Image src="/images/notification.svg" alt="" width={20} height={20} className="dark:invert" />
                 <span className="trim-text hidden text-base lg:inline">{t("notification")}</span>
               </AuthLink>
@@ -115,7 +123,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
 
       <HideOnAuthPages>
       <div className="pt-2 pb-6">
-        <div className="page-container flex flex-wrap items-stretch justify-between gap-3 lg:flex-nowrap">
+        <div className="page-container flex items-stretch justify-between gap-2 lg:gap-3">
           <div className="flex min-w-0 flex-1 items-stretch gap-3 lg:flex-none">
             <Link
               href="/services"
@@ -137,14 +145,14 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
 
           <Link
             href="/projects/new"
-            className={`${buttonClasses({ font: "button" })} w-full lg:w-[235px]`}
+            className={`${buttonClasses({ font: "button" })} shrink-0 px-3 max-lg:text-sm lg:w-[235px]`}
           >
             {t("postProject")}
           </Link>
         </div>
       </div>
 
-      <nav aria-label="Main" className="relative hidden h-[66px] items-center justify-center bg-nav lg:flex">
+      <nav aria-label={t("mainNav")} className="relative hidden h-[66px] items-center justify-center bg-nav lg:flex">
         <ul className="flex items-center gap-3 px-4">
           {NAV_ITEMS.map((item) =>
             "hasMenu" in item ? (
