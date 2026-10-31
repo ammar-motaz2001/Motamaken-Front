@@ -66,6 +66,22 @@ export function OwnerPanel({ project, proposals }: { project: Project; proposals
             )}
           </>
         )}
+        {project.status === "draft" && (
+          <>
+            <Button variant="solid" pill href={`/projects/${project.id}/edit`}>
+              {t("editDraft")}
+            </Button>
+            <Button
+              variant="ghost"
+              pill
+              className="text-danger"
+              loading={busy === "delete"}
+              onClick={() => run("delete", `/projects/${project.id}`, "DELETE", () => router.replace("/my-projects"))}
+            >
+              {t("delete")}
+            </Button>
+          </>
+        )}
         {project.status === "in_progress" && (
           <Button variant="solid" pill loading={busy === "complete"} onClick={() => run("complete", `/projects/${project.id}/complete`)}>
             {t("complete")}

@@ -10,7 +10,7 @@ import { GiftsPage } from "@/modules/rewards";
 export async function generateMetadata({ params }: PageProps<"/[locale]/gifts">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Rewards.draw" }), getTranslations({ locale, namespace: "Seo" })]);
-  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("gifts"), path: "/gifts", locale });
+  return pageMetadata({ title: t("title"), description: seo("gifts"), path: "/gifts", locale });
 }
 
 /** Gifts: the current prize draw from GET /draws/current and the last five winners from GET /draws/history. */

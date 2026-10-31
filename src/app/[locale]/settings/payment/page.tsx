@@ -7,7 +7,7 @@ import { PaymentSettings } from "@/modules/settings";
 /** Browser title of the payment methods screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/payment">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.payment" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Payment: saved cards and payout accounts from GET /me/payment-methods, with the currency list. */

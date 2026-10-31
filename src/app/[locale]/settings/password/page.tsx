@@ -4,7 +4,7 @@ import { PasswordSettings } from "@/modules/settings";
 /** Browser title of the change-password screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/password">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.password" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Password: change the account password (the form posts to the API itself). */

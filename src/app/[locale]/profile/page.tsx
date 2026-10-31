@@ -9,7 +9,7 @@ import { ProfileForm, ProfileSections } from "@/modules/profile";
 /** Browser title of the edit-profile screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/profile">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Profile" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Edit profile: the public profile form and its sections (skills, portfolio...) from GET /me/profile, with a link to the public view. */

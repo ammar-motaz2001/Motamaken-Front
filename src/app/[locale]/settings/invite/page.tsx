@@ -7,7 +7,7 @@ import { InvitePage } from "@/modules/rewards";
 /** Browser title of the invite-friends screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/invite">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Rewards.invite" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Invite: referral link, referred users and affiliate earnings from GET /me/affiliate and its sub-lists. */

@@ -111,7 +111,7 @@ export function MessagesPage({ initial, initialSelected }: MessagesPageProps) {
 
               {failed && <p className="py-6 text-center text-sm text-danger">{t("loadFailed")}</p>}
               {conversations?.length === 0 && <p className="py-6 text-center text-sm text-muted">{t("noResults")}</p>}
-              <ul className="max-h-[640px] overflow-y-auto">
+              <ul className="max-h-[min(640px,calc(100dvh-360px))] min-h-[220px] overflow-y-auto">
                 {conversations?.map((conversation) => (
                   <ConversationItem
                     key={conversation.id}

@@ -14,7 +14,7 @@ type Saved<T> = { data: { type: string; savedAt: string; item: T }[]; meta: { cu
 /** Browser title of the favourites screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/favorites">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Favorites" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Favourites: saved projects or saved profiles (tabs) from GET /me/favorites, 24 per page. */

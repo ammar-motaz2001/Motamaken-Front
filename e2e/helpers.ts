@@ -68,7 +68,15 @@ export async function logIn(page: Page, email: string, password: string) {
   await page.getByPlaceholder("Enter your password").fill(password);
   await page.getByRole("button", { name: "Login", exact: true }).click();
   await page.waitForURL((url) => !url.pathname.includes("/login"));
+  // Let the post-sign-in navigation finish, so it cannot land after the test's next page.goto().
+  await page.waitForLoadState("networkidle");
 }
 
 /** The last button in the open dialog (its confirm/submit button). */
 export const dialogSubmit = (page: Page) => page.getByRole("dialog").getByRole("button").last();
+
+/** Presses "Confirm" in the site's confirm dialog when one opens (it replaced the browser's native confirm box). */
+export async function confirmIfAsked(page: Page) {
+  const confirm = page.getByRole("dialog").getByRole("button", { name: "Confirm", exact: true });
+  if (await confirm.waitFor({ timeout: 3000 }).then(() => true, () => false)) await confirm.click();
+}

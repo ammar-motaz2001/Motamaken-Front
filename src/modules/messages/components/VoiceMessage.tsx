@@ -12,11 +12,13 @@ export function VoiceMessage({ url, duration }: { url: string; duration: number 
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  // This browser cannot play the recording's format: offer the file instead of a silent button.
+  const [unplayable, setUnplayable] = useState(false);
 
   const toggle = () => {
     const element = audio.current;
     if (!element) return;
-    if (element.paused) element.play().catch(() => setPlaying(false));
+    if (element.paused) element.play().catch(() => (setPlaying(false), setUnplayable(true)));
     else element.pause();
   };
 
@@ -36,11 +38,17 @@ export function VoiceMessage({ url, duration }: { url: string; duration: number 
       </button>
       <Image src="/images/waveform.svg" alt="" width={76} height={44} className={playing ? "animate-pulse" : ""} />
       <span className="text-sm font-medium tabular-nums">{formatDuration(playing ? elapsed : duration)}</span>
+      {unplayable && (
+        <a href={url} download className="text-xs font-semibold text-link underline">
+          {t("downloadVoice")}
+        </a>
+      )}
       <audio
         ref={audio}
         src={url}
         preload="none"
         onPlay={() => setPlaying(true)}
+        onError={() => setUnplayable(true)}
         onPause={() => setPlaying(false)}
         onEnded={() => {
           setPlaying(false);

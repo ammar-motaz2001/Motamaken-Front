@@ -6,7 +6,7 @@ import { MyReports } from "@/modules/reports";
 /** Browser title of the my-reports screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/reports">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Reports" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Reports: content the user has reported and the outcome, from GET /me/reports. */

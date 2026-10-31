@@ -4,7 +4,7 @@ import { PaymentReturn } from "@/modules/wallet";
 /** Browser title of the payment result screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/payments/return">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Wallet.return" });
-  return { title: `${t("title")} | Mutamakin`, robots: { index: false } };
+  return { title: t("title"), robots: { index: false } };
 }
 
 /** Where Moyasar sends the customer after 3-D Secure: a payment (`?deposit=&id=&status=`) or a card check (`?card=1&status=`). */

@@ -7,7 +7,7 @@ import type { SecurityState } from "@/modules/settings/components/TwoFactorModal
 /** Browser title of the security screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/security">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.security" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Security: two-factor sign-in and sessions, from GET /me/security plus the account's email and phone. */

@@ -8,7 +8,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { Footer } from "@/components/footer/Footer";
 import { getHeaderData } from "@/components/header/data";
 import { MaintenanceGate } from "@/components/MaintenanceGate";
-import { getSiteSettings, getSummary } from "@/lib/api/reference";
+import { getSiteSettings, getSummary, getPublishedPageSlugs } from "@/lib/api/reference";
 import { Header } from "@/components/header/Header";
 import { FavoritesProvider } from "@/components/providers/FavoritesProvider";
 import { PaymentsProvider } from "@/components/providers/PaymentsProvider";
@@ -53,7 +53,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   // Defaults for every page; public pages add their own canonical link, language links and social card (lib/seo.ts).
   return {
     metadataBase: new URL(SITE_URL),
-    title: t("title"),
+    // Every page title ends with the brand in the page's language ("الرسائل | متمكن", "Messages | Mutamakin").
+    title: { default: t("title"), template: `%s | ${locale === "ar" ? "متمكن" : "Mutamakin"}` },
     description,
     applicationName: SITE_NAME,
     formatDetection: { telephone: false },
@@ -115,14 +116,15 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             <CurrencyProvider currency={displayCurrency} rates={rateTable(headerData.currencies)}>
             <AuthGateProvider signedIn={signedIn} methods={authMethods}>
               <PaymentsProvider moyasarKey={moyasarKey}>
-                <FavoritesProvider signedIn={signedIn}>
+                <FavoritesProvider signedIn={signedIn} viewerId={headerData.summary?.user.id}>
                   <Header signedIn={signedIn} data={headerData} currency={displayCurrency} />
-                  <main className="flex-1">
+                  {/* Above the footer's call-to-action strip (z-10) so open dropdowns are never covered by it; below the header. */}
+                  <main className="relative z-[11] flex-1">
                     <MaintenanceGate maintenance={site?.maintenance ?? null} isStaff={isStaff}>
                       {children}
                     </MaintenanceGate>
                   </main>
-                  <Footer site={site} />
+                  <Footer site={site} publishedPages={await getPublishedPageSlugs()} />
                   <ConfirmHost />
                   <FormErrorsHost />
                   <NavigationProgress />

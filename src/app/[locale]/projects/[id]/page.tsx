@@ -22,7 +22,7 @@ const loadProject = cache(async (id: string) => {
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/[id]">) {
   const { locale, id } = await params;
   const project = await loadProject(id);
-  return pageMetadata({ title: `${project.title} | Mutamakin`, description: describe(project.description), path: `/projects/${project.id}`, locale, type: "article" });
+  return pageMetadata({ title: project.title, description: describe(project.description), path: `/projects/${project.id}`, locale, type: "article" });
 }
 
 /**
@@ -39,7 +39,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
       ? ((await apiGetOrNull<Paginated<Proposal>>(`/projects/${id}/proposals?perPage=50`))?.data ?? [])
       : null;
   const hired = project.status === "in_progress" || project.status === "completed";
-  const reviews = project.status === "completed" ? await apiGetOrNull<{ data: Review[]; canReview: boolean }>(`/projects/${id}/reviews`) : null;
+  const reviews = project.status === "completed" ? await apiGetOrNull<{ data: Review[]; canReview: boolean; canReply?: boolean }>(`/projects/${id}/reviews`) : null;
   const escrow = viewerId && hired ? ((await apiGetOrNull<{ data: Escrow }>(`/projects/${id}/escrow`))?.data ?? null) : null;
   // Change / cancel requests: only the two parties get them (others get a 403, read as none).
   const agreementChanges = viewerId && hired ? ((await apiGetOrNull<{ data: AgreementChange[] }>(`/projects/${id}/agreement-changes`))?.data ?? null) : null;

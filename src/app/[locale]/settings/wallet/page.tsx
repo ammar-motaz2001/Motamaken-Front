@@ -10,7 +10,7 @@ type Monthly = { currency: string; data: { month: string; income: number; spendi
 /** Browser title of the wallet screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/wallet">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Wallet" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Wallet: balances, six-month chart, transactions and pending withdrawals from the /wallet endpoints, per currency. */

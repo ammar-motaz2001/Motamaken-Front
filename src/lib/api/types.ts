@@ -200,6 +200,9 @@ export type Review = {
   id: number;
   rating: number;
   comment: string | null;
+  /** The reviewed freelancer's answer (no stars). */
+  reply?: string | null;
+  repliedAt?: string | null;
   reviewer?: UserBrief;
   revieweeId: number;
   project?: { id: number; title: string };
@@ -362,7 +365,7 @@ export type Escrow = {
   id: number;
   projectId: number;
   currency: string;
-  status: "awaiting_funding" | "active" | "completed";
+  status: "awaiting_funding" | "active" | "completed" | "cancelled";
   client?: UserBrief;
   project?: { id: number; title: string };
   totals: { total: number; held: number; released: number; refunded: number };

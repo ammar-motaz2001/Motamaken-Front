@@ -7,7 +7,7 @@ import { InvitationCard } from "@/modules/teams";
 /** Browser title of a team invitation. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/invitations/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Teams" });
-  return { title: `${t("invitation.title")} | Mutamakin` };
+  return { title: t("invitation.title") };
 }
 
 /** One team invitation to accept or decline, looked up in GET /me/team-invitations; 404 when it is not the user's. */

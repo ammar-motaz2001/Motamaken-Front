@@ -7,7 +7,7 @@ import { DisputeList } from "@/modules/disputes";
 /** Browser title of the disputes list. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/disputes">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Disputes" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** My disputes: cases the user opened or is party to, from GET /disputes. */

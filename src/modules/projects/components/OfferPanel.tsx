@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Select } from "@/components/ui/Select";
@@ -85,12 +85,20 @@ export function OfferPanel({ project }: { project: Project }) {
     setErrors((current) => ({ ...current, [key]: "" }));
   };
 
-  const run = async (action: () => Promise<unknown>) => {
+  // What just succeeded, shown at the top of the panel, which is scrolled into view (the form may be far down).
+  const [notice, setNotice] = useState<"sent" | "updated" | "withdrawn" | null>(null);
+  const panel = useRef<HTMLDivElement>(null);
+
+  const run = async (action: () => Promise<unknown>, done?: "sent" | "updated" | "withdrawn") => {
     setSaving(true);
     setError(null);
     try {
       await action();
       setEditing(false);
+      if (done) {
+        setNotice(done);
+        panel.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       router.refresh();
     } catch (caught) {
       const apiError = caught as ApiError;
@@ -108,6 +116,10 @@ export function OfferPanel({ project }: { project: Project }) {
     if (!(Number(form.deliveryDays) >= 1)) found.deliveryDays = t("required");
     if (form.message.trim().length < 10) found.message = t("messageTooShort");
     if (askJobTitle && form.jobTitle.trim().length < 2) found.jobTitle = t("jobTitleRequired");
+    const { min, max } = project.budget;
+    if (Number(form.amount) > 0 && ((min && Number(form.amount) < min) || (max && Number(form.amount) > max))) {
+      found.amount = t("outsideBudget", { min: formatAmount(min, currency, locale), max: formatAmount(max, currency, locale) });
+    }
     setErrors(found);
     if (Object.keys(found).length) return;
     // The deciding moment: a guest confirms an email or phone here, then the offer is sent as written.
@@ -125,12 +137,17 @@ export function OfferPanel({ project }: { project: Project }) {
       if (!profile) await api("/me/profile", { method: "PUT", body: { type: profileType, jobTitle: form.jobTitle.trim() } });
       await api(`/projects/${project.id}/proposals`, { method: "POST", body });
       clearDraft();
-    });
+    }, mine ? "updated" : "sent");
   };
 
   if (mine && !editing) {
     return (
-      <div className={`${outlinedPanelClasses} flex flex-col gap-3`}>
+      <div ref={panel} className={`${outlinedPanelClasses} flex flex-col gap-3`}>
+        {notice && (
+          <p role="status" className="rounded-lg bg-brand-soft px-3 py-2 text-sm font-medium text-brand-ink">
+            {t(`notice.${notice}`)}
+          </p>
+        )}
         <div className="flex items-center justify-between gap-3">
           <h2 className={sectionTitleClasses}>{t("yours")}</h2>
           <StatusPill tone={PROPOSAL_STATUS_TONE[mine.status]}>{t(`status.${mine.status}`)}</StatusPill>
@@ -150,7 +167,7 @@ export function OfferPanel({ project }: { project: Project }) {
               pill
               className="text-danger"
               loading={saving}
-              onClick={() => run(() => api(`/proposals/${mine.id}/withdraw`, { method: "POST" }))}
+              onClick={() => run(() => api(`/proposals/${mine.id}/withdraw`, { method: "POST" }), "withdrawn")}
             >
               {t("withdraw")}
             </Button>

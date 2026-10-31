@@ -22,7 +22,7 @@ type ProjectViewProps = {
   viewerId: number | null;
   proposals: Proposal[] | null;
   escrow: Escrow | null;
-  reviews?: { data: Review[]; canReview: boolean } | null;
+  reviews?: { data: Review[]; canReview: boolean; canReply?: boolean } | null;
   /** Change / cancel requests; null unless the viewer is the client or the hired freelancer. */
   agreementChanges?: AgreementChange[] | null;
 };
@@ -39,7 +39,8 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews, agr
   const location = [project.city, project.country].filter(Boolean).join(", ");
   const accepted = proposals?.find((proposal) => proposal.id === project.acceptedProposalId);
   const hired = project.status === "in_progress" || project.status === "completed";
-  const showEscrow = Boolean(viewerId) && hired && (isOwner || Boolean(escrow) || project.myProposal?.status === "accepted");
+  // A finished or cancelled project without a contract has nothing left to fund: no payment-protection setup then.
+  const showEscrow = Boolean(viewerId) && hired && (Boolean(escrow) || ((isOwner || project.myProposal?.status === "accepted") && project.status === "in_progress"));
 
   return (
     <div className="flex flex-col gap-6">
@@ -79,7 +80,8 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews, agr
 
         <div>
           <h2 className={`${sectionTitleClasses} mb-2`}>{t("detail.description")}</h2>
-          <p className="leading-relaxed whitespace-pre-line">{project.description}</p>
+          {/* Each line takes the direction of its own text, so English words and punctuation stay in order inside Arabic. */}
+          <p className="leading-relaxed whitespace-pre-line [unicode-bidi:plaintext]">{project.description}</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">

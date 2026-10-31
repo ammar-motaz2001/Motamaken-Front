@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { ADMIN, dialogSubmit, logIn, newAccount, signUp } from "./helpers";
+import { ADMIN, confirmIfAsked, dialogSubmit, logIn, newAccount, signUp } from "./helpers";
 
 /**
  * The platform's main journeys, end to end in the browser, in order (each step builds on the last):
@@ -87,8 +87,8 @@ test("the freelancer asks for more time and the client accepts the change", asyn
 
   await logIn(page, client.email, client.password);
   await page.goto(projectPath);
-  page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Accept", exact: true }).click();
+  await confirmIfAsked(page);
   await expect(page.getByText(/Agreed: .* 14 days/)).toBeVisible();
 });
 
@@ -138,7 +138,10 @@ test("admin tops up the client, who pays through escrow; the work is delivered, 
   }
   await expect(page.getByText("Completed").first()).toBeVisible();
   const complete = page.getByRole("button", { name: "Mark as completed" });
-  if (await complete.count()) await complete.click();
+  if (await complete.count()) {
+    await complete.click();
+    await confirmIfAsked(page);
+  }
   await page.getByRole("radio", { name: "5 stars" }).or(page.getByRole("button", { name: "5 stars" })).first().click();
   await page.getByPlaceholder("Share your experience (optional)").fill("Great work, delivered on time.");
   await page.getByRole("button", { name: "Submit Review" }).click();

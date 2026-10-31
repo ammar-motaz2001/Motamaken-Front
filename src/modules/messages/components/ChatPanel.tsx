@@ -152,7 +152,8 @@ export function ChatPanel({ conversation, onBack, onActivity, onRead }: ChatPane
         </div>
       </div>
 
-      <div ref={scroller} className="flex min-h-[320px] flex-1 flex-col gap-3 overflow-y-auto pe-1 md:max-h-[560px]">
+      {/* Sized to the screen so the message box stays visible on short laptop screens (768px high). */}
+      <div ref={scroller} className="flex min-h-[220px] flex-1 flex-col gap-3 overflow-y-auto pe-1 md:max-h-[min(560px,calc(100dvh-440px))]">
         {hasMore && (
           <button
             type="button"

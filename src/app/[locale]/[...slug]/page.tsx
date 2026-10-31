@@ -1,5 +1,5 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { UnderConstruction } from "@/components/under-construction/UnderConstruction";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { SitePage } from "@/lib/api/types";
 import { describe, pageMetadata } from "@/lib/seo";
@@ -20,26 +20,25 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/[...slug
   const page = await loadPage(slug);
   if (page) {
     return pageMetadata({
-      title: page.seo?.title || `${page.title} | Mutamakin`,
+      title: page.seo?.title || page.title,
       description: page.seo?.description || describe(page.body),
       path: `/${page.slug}`,
       locale,
       noindex: page.seo?.noindex,
     });
   }
-  const t = await getTranslations({ locale, namespace: "Metadata" });
-  // Unknown addresses show the "under construction" screen; keep them out of search results.
-  return { title: t("underConstruction"), robots: { index: false, follow: true } };
+  // Unknown or unpublished addresses are a real 404.
+  notFound();
 }
 
 /**
- * The footer's information pages (terms, guide, fees...), written by admins and served by the API. Any other address
- * still shows the "under construction" screen.
+ * The footer's information pages (terms, guide, fees...), written by admins and served by the API. Any other address,
+ * and a page the admins unpublished, is a 404.
  */
 export default async function CatchAllPage({ params }: PageProps<"/[locale]/[...slug]">) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const page = await loadPage(slug);
 
-  return page ? <SitePageView page={page} /> : <UnderConstruction />;
+  return page ? <SitePageView page={page} /> : notFound();
 }

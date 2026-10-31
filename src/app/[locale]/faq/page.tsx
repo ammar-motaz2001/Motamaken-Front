@@ -13,7 +13,7 @@ const AUDIENCES = ["client", "freelancer", "influencer"] as const;
 export async function generateMetadata({ params }: PageProps<"/[locale]/faq">) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Faq" });
-  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: t("subtitle"), path: "/faq", locale });
+  return pageMetadata({ title: t("title"), description: t("subtitle"), path: "/faq", locale });
 }
 
 /** FAQ: questions grouped by category from GET /faqs, with a search box and audience tabs (client, freelancer, influencer). */

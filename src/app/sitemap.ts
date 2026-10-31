@@ -5,6 +5,9 @@ import { SITE_URL, localizedPath } from "@/lib/seo";
 
 const API_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
 
+/** Info-page slugs the app itself serves (support needs signing in), so they are not listed as pages. */
+const APP_ROUTES = new Set(["support", "settings", "messages", "notifications", "my-projects", "offers", "favorites", "teams", "disputes", "payments", "admin"]);
+
 // Rebuilt at most once an hour.
 export const revalidate = 3600;
 
@@ -58,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/faq", { priority: 0.6, changeFrequency: "monthly" }),
     entry("/sitemap", { priority: 0.3, changeFrequency: "weekly" }),
     ...(categories?.data ?? []).map((category) => entry(`/categories/${category.slug}`, { priority: 0.7, changeFrequency: "daily" })),
-    ...(pages?.data ?? []).map((page) => entry(`/${page.slug}`, { lastModified: page.updatedAt, priority: page.section === "legal" ? 0.3 : 0.5, changeFrequency: "monthly" })),
+    ...(pages?.data ?? []).filter((page) => !APP_ROUTES.has(page.slug)).map((page) => entry(`/${page.slug}`, { lastModified: page.updatedAt, priority: page.section === "legal" ? 0.3 : 0.5, changeFrequency: "monthly" })),
     ...projects.map((project) => entry(`/projects/${project.id}`, { lastModified: project.createdAt, priority: 0.7, changeFrequency: "daily" })),
   ];
 }

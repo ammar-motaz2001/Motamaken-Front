@@ -8,7 +8,7 @@ import { AdminNav, type Overview } from "@/modules/admin";
 /** Admin panel browser title; the whole panel is kept out of search engines. */
 export async function generateMetadata({ params }: LayoutProps<"/[locale]/admin">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Admin" });
-  return { title: `${t("title")} | Mutamakin`, robots: { index: false } };
+  return { title: t("title"), robots: { index: false } };
 }
 
 /** Admin panel shell: 404 for non-staff, then the menu filtered by role with queue counts from GET /admin/overview. */

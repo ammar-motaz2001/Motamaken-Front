@@ -1,4 +1,5 @@
 import { Clock, LifeBuoy, Mail, ShieldCheck } from "lucide-react";
+import { EmailLink } from "@/components/ui/EmailLink";
 import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { apiGetOrNull } from "@/lib/api/server";
@@ -11,7 +12,7 @@ import { ContactForm, SitePageView } from "@/modules/pages";
 export async function generateMetadata({ params }: PageProps<"/[locale]/contact">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "SitePages.contact" }), getTranslations({ locale, namespace: "Seo" })]);
-  return pageMetadata({ title: `${t("pageTitle")} | Mutamakin`, description: seo("contact"), path: "/contact", locale });
+  return pageMetadata({ title: t("pageTitle"), description: seo("contact"), path: "/contact", locale });
 }
 
 /** Contact us: the admin-written intro from GET /pages/contact (a default when missing), the contact form and support facts. */
@@ -23,7 +24,7 @@ export default async function Contact({ params }: PageProps<"/[locale]/contact">
 
   const facts = [
     { Icon: Clock, title: t("facts.replyTitle"), text: t("facts.reply") },
-    { Icon: Mail, title: t("facts.emailTitle"), text: "support@mutamakin.com" },
+    { Icon: Mail, title: t("facts.emailTitle"), text: <EmailLink email="support@mutamakin.com" className="hover:text-brand" /> },
     { Icon: ShieldCheck, title: t("facts.disputeTitle"), text: t("facts.dispute") },
     { Icon: LifeBuoy, title: t("facts.helpTitle"), text: t("facts.help") },
   ];

@@ -80,6 +80,8 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
   const [submitting, setSubmitting] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [failed, setFailed] = useState(false);
+  // The API's own reason when it gives one (e.g. this email already has an account), else the generic text.
+  const [failedMessage, setFailedMessage] = useState<string | null>(null);
   const [captcha, setCaptcha] = useState<string | null>(null);
   const [captchaReset, setCaptchaReset] = useState(0);
   const [captchaError, setCaptchaError] = useState<string | undefined>(undefined);
@@ -131,7 +133,10 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
       setCaptchaReset((count) => count + 1);
       const captchaMessage = caught instanceof AuthError ? caught.fields.recaptchaToken : undefined;
       if (captchaMessage) setCaptchaError(captchaMessage);
-      else setFailed(true);
+      else {
+        setFailedMessage(caught instanceof AuthError && caught.message ? caught.message : null);
+        setFailed(true);
+      }
       setSubmitting(false);
     }
   };
@@ -271,7 +276,7 @@ export function SignupForm({ method, referralCode }: { method: AuthMethod; refer
         </div>
       </Modal>
 
-      <ErrorModal open={failed} onClose={() => setFailed(false)} title={t("errorTitle")} message={t("errorMessage")} />
+      <ErrorModal open={failed} onClose={() => setFailed(false)} title={t("errorTitle")} message={failedMessage ?? t("errorMessage")} />
     </>
   );
 }

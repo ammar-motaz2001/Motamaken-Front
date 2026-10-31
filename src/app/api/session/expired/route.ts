@@ -1,9 +1,11 @@
 import { cookies } from "next/headers";
-import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/lib/session";
 
-/** GET /api/session/expired: drops the session cookie and sends the user to sign in. */
-export async function GET(request: NextRequest) {
+/**
+ * GET /api/session/expired: drops the session cookie and sends the user to sign in. The redirect is relative: behind
+ * the reverse proxy this handler sees its own internal address (localhost:3000), not the public one.
+ */
+export async function GET() {
   (await cookies()).delete(SESSION_COOKIE);
-  return NextResponse.redirect(new URL("/login", request.url));
+  return new Response(null, { status: 307, headers: { Location: "/login" } });
 }

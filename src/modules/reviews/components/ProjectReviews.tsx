@@ -13,9 +13,12 @@ import { api } from "@/lib/api/client";
 import type { ApiError } from "@/lib/api/errors";
 import type { Review } from "@/lib/api/types";
 
-type ProjectReviewsProps = { projectId: number; initial: { data: Review[]; canReview: boolean }; otherName: string | null };
+type ProjectReviewsProps = { projectId: number; initial: { data: Review[]; canReview: boolean; canReply?: boolean }; otherName: string | null };
 
-/** Reviews of a completed project; each side can rate the other once with stars and a comment (POST /projects/{id}/reviews). */
+/**
+ * Reviews of a completed project: the client rates the freelancer once with stars and a comment
+ * (POST /projects/{id}/reviews), and the freelancer answers it with a text reply (POST /reviews/{id}/reply).
+ */
 export function ProjectReviews({ projectId, initial, otherName }: ProjectReviewsProps) {
   const t = useTranslations("Reviews");
   const format = useFormatter();
@@ -25,6 +28,7 @@ export function ProjectReviews({ projectId, initial, otherName }: ProjectReviews
   const [comment, setComment] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reply, setReply] = useState("");
 
   if (!state.canReview && !state.data.length) return null;
 
@@ -34,7 +38,21 @@ export function ProjectReviews({ projectId, initial, otherName }: ProjectReviews
     setError(null);
     try {
       const { data } = await api<{ data: Review }>(`/projects/${projectId}/reviews`, { method: "POST", body: { rating, comment: comment.trim() || null } });
-      setState({ data: [...state.data, data], canReview: false });
+      setState({ ...state, data: [...state.data, data], canReview: false });
+    } catch (caught) {
+      setError((caught as ApiError).message || t("failed"));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const sendReply = async (reviewId: number) => {
+    if (reply.trim().length < 2) return setError(t("replyRequired"));
+    setBusy(true);
+    setError(null);
+    try {
+      const { data } = await api<{ data: Review }>(`/reviews/${reviewId}/reply`, { method: "POST", body: { reply: reply.trim() } });
+      setState({ ...state, data: state.data.map((review) => (review.id === data.id ? data : review)), canReply: false });
     } catch (caught) {
       setError((caught as ApiError).message || t("failed"));
     } finally {
@@ -86,11 +104,32 @@ export function ProjectReviews({ projectId, initial, otherName }: ProjectReviews
                   <span className="text-xs text-muted">{format.dateTime(new Date(review.createdAt), { dateStyle: "medium" })}</span>
                 </span>
                 {review.comment && <p className="whitespace-pre-line">{review.comment}</p>}
+                {review.reply && <ReviewReply text={review.reply} />}
+                {state.canReply && !review.reply && (
+                  <div className="mt-2 flex flex-col gap-2">
+                    <TextArea label={t("reply")} placeholder={t("replyPlaceholder")} rows={2} maxLength={2000} value={reply} onChange={(event) => setReply(event.target.value)} />
+                    {error && <p className="text-sm text-danger">{error}</p>}
+                    <Button variant="solid" font="button" loading={busy} onClick={() => sendReply(review.id)} className="self-end">
+                      {t("sendReply")}
+                    </Button>
+                  </div>
+                )}
               </div>
             </li>
           ))}
         </ul>
       )}
     </section>
+  );
+}
+
+/** The freelancer's answer under a review. */
+export function ReviewReply({ text }: { text: string }) {
+  const t = useTranslations("Reviews");
+  return (
+    <div className="mt-1 rounded-lg border-s-2 border-brand bg-surface-muted px-3 py-2">
+      <p className="text-xs font-semibold text-muted">{t("replyLabel")}</p>
+      <p className="whitespace-pre-line">{text}</p>
+    </div>
   );
 }

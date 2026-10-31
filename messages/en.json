@@ -2,16 +2,15 @@
   "Metadata": {
     "title": "Mutamakin",
     "description": "Post your project for free and get offers from skilled freelancers and influencers in Saudi Arabia and the Arab world. Pay safely with escrow.",
-    "signup": "Signup | Mutamakin",
-    "verify": "Verify | Mutamakin",
-    "login": "Login | Mutamakin",
-    "forgotPassword": "Forgot Password | Mutamakin",
-    "resetPassword": "Reset Password | Mutamakin",
-    "resetSuccess": "Password Reset | Mutamakin",
-    "resetError": "Password Reset Failed | Mutamakin",
-    "underConstruction": "Under Construction | Mutamakin",
-    "loginVerify": "Verify Login | Mutamakin",
-    "messages": "Messages | Mutamakin",
+    "signup": "Signup",
+    "verify": "Verify",
+    "login": "Login",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "resetSuccess": "Password Reset",
+    "resetError": "Password Reset Failed",
+    "loginVerify": "Verify Login",
+    "messages": "Messages",
     "adminLogin": "Admin sign-in"
   },
   "Header": {
@@ -259,11 +258,6 @@
     "tooLong": "Use at most {max} characters.",
     "fieldInvalid": "Please check this value."
   },
-  "UnderConstruction": {
-    "title": "Under Construction",
-    "message": "We're working hard on this page. Please check back soon.",
-    "backHome": "Back to Home"
-  },
   "Projects": {
     "breadcrumb": {
       "home": "Home",
@@ -410,7 +404,13 @@
       "jobTitleRequired": "Write your job title (at least 2 characters).",
       "jobTitleHint": "Creates your profile with this offer; you can complete it later.",
       "jobTitleGuestHint": "Used for your new profile. If you already have one, it is kept as it is.",
-      "signUpReason": "Confirm your email to send your offer."
+      "signUpReason": "Confirm your email to send your offer.",
+      "outsideBudget": "Your price must be between {min} and {max}, the project's budget.",
+      "notice": {
+        "sent": "Your offer was sent. You'll be notified when the owner answers.",
+        "updated": "Your offer was updated.",
+        "withdrawn": "Your offer was withdrawn."
+      }
     },
     "owner": {
       "manage": "Manage your project",
@@ -426,7 +426,8 @@
       "offers": "{count, plural, =0 {Offers} one {# offer} other {# offers}}",
       "noOffers": "No offers yet. You'll be notified when providers send them.",
       "decline": "Decline",
-      "accept": "Accept offer"
+      "accept": "Accept offer",
+      "editDraft": "Edit and publish the draft"
     },
     "filters": {
       "search": "Search",
@@ -482,12 +483,12 @@
       "influencer": "Influencer platforms"
     },
     "metadata": {
-      "new": "Post a project | Mutamakin",
-      "newRequest": "Post an influencer request | Mutamakin",
-      "browse": "Projects | Mutamakin",
-      "mine": "My projects | Mutamakin",
-      "offers": "My offers | Mutamakin",
-      "categories": "Categories | Mutamakin"
+      "new": "Post a project",
+      "newRequest": "Post an influencer request",
+      "browse": "Projects",
+      "mine": "My projects",
+      "offers": "My offers",
+      "categories": "Categories"
     }
   },
   "Home": {
@@ -562,7 +563,8 @@
     "pause": "Pause",
     "removed": "This message was removed by the moderators.",
     "report": "Report",
-    "startChatTitle": "Start your conversation with {name}"
+    "startChatTitle": "Start your conversation with {name}",
+    "downloadVoice": "Download recording"
   },
   "Common": {
     "pagination": "Pagination",
@@ -669,7 +671,8 @@
       "addOffer": "Add Your Offer",
       "rating": "Rated {rating} out of 5",
       "viewProfile": "View Profile"
-    }
+    },
+    "budgetReversed": "The minimum budget is above the maximum. Fix them and search again."
   },
   "Teams": {
     "home": "Home",
@@ -1254,7 +1257,8 @@
     "statuses": {
       "awaiting_funding": "Awaiting funding",
       "active": "Active",
-      "completed": "Completed"
+      "completed": "Completed",
+      "cancelled": "Cancelled"
     },
     "waitingForClient": "The client has not set up payment protection yet. You will be notified when the first milestone is funded.",
     "cancelEscrow": "Cancel payment protection",
@@ -1720,7 +1724,10 @@
       "user": "Profile",
       "project": "Project",
       "portfolio": "Portfolio item",
-      "review": "Review"
+      "review": "Review",
+      "message": "Message",
+      "proposal": "Offer",
+      "team": "Team"
     },
     "modal": {
       "trigger": "Report",
@@ -1757,7 +1764,12 @@
     "commentPlaceholder": "Share your experience (optional)",
     "submit": "Submit Review",
     "ratingRequired": "Choose a rating.",
-    "failed": "Could not send your review."
+    "failed": "Could not send your review.",
+    "reply": "Your reply",
+    "replyPlaceholder": "Answer the client's review",
+    "sendReply": "Send reply",
+    "replyRequired": "Write your reply first.",
+    "replyLabel": "Freelancer's reply"
   },
   "Notifications": {
     "home": "Home",
@@ -2138,7 +2150,10 @@
         "dispute": "Open a dispute on the milestone so the money stays frozen.",
         "helpTitle": "Help pages",
         "help": "Guides, fees and policies in the footer."
-      }
+      },
+      "required": "This field is required.",
+      "tooShort": "Write at least {min} characters.",
+      "emailInvalid": "Enter a valid email address."
     },
     "sitemap": {
       "title": "Sitemap",

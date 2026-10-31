@@ -11,7 +11,7 @@ type Row = Parameters<typeof PremiumPage>[0]["promotions"][number];
 export async function generateMetadata({ params }: PageProps<"/[locale]/premium">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Promotions.premium" }), getTranslations({ locale, namespace: "Seo" })]);
-  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("premium"), path: "/premium", locale });
+  return pageMetadata({ title: t("title"), description: seo("premium"), path: "/premium", locale });
 }
 
 /** Premium: promotion packages to buy; signed-in users also see their current promotions from GET /me/promotions. */

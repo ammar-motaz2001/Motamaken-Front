@@ -26,7 +26,7 @@ type EscrowPanelProps = {
   proofRequired?: boolean;
 };
 
-const STATUS_TONE = { awaiting_funding: "warning", active: "success", completed: "muted" } as const;
+const STATUS_TONE = { awaiting_funding: "warning", active: "success", completed: "muted", cancelled: "danger" } as const;
 
 /**
  * Escrow box on a hired project: setup for the client, summary, team split approval, milestones and tip;

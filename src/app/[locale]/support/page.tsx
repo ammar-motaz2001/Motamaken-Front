@@ -10,7 +10,7 @@ import type { SupportTicket } from "@/modules/support";
 /** Browser title of the support tickets list. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/support">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Support" });
-  return { title: `${t("title")} | Mutamakin`, robots: { index: false } };
+  return { title: t("title"), robots: { index: false } };
 }
 
 const TONES = { open: "warning", answered: "success", closed: "muted" } as const;

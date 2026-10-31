@@ -6,7 +6,7 @@ import { TeamsPage } from "@/modules/teams";
 /** Browser title of the teams screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/teams">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Teams" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Teams: the user's teams from GET /teams and pending invitations from GET /me/team-invitations. */

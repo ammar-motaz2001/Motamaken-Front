@@ -10,7 +10,7 @@ type Daily = { currency: string; data: { date: string; valid: number; rejected: 
 /** Browser title of a campaign's detail screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/campaigns/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Campaigns" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Campaign: stats, 14-day chart and visit log from GET /campaigns/{id} and its /daily and /visits lists. */

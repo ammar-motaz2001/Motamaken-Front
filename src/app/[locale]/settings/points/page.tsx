@@ -7,7 +7,7 @@ import { PointsPage } from "@/modules/rewards";
 /** Browser title of the points screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/points">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Rewards.points" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Points: balance and history from GET /me/points, with the current prize draw from GET /draws/current. */

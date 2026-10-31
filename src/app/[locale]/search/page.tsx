@@ -8,10 +8,11 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { sectionTitleClasses } from "@/components/ui/styles";
 import { Link } from "@/i18n/navigation";
-import { getCategories, getCountries } from "@/lib/api/reference";
+import { getCategories, getCountries, getCurrencies, getSummary } from "@/lib/api/reference";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { Paginated, ProfileCard as Profile, Project, SearchAll, SearchType } from "@/lib/api/types";
 import { pageParam, pickParams, toQuery } from "@/lib/params";
+import { CURRENCY_COOKIE, pickDisplayCurrency } from "@/lib/currency";
 import { SESSION_COOKIE } from "@/lib/session";
 import { pageMetadata } from "@/lib/seo";
 import { NoResults, ProfileRow, ProjectRow, SearchFilters } from "@/modules/search";
@@ -34,7 +35,7 @@ function Grid({ children }: { children: ReactNode }) {
 export async function generateMetadata({ params }: PageProps<"/[locale]/search">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "Search" }), getTranslations({ locale, namespace: "Seo" })]);
-  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("search"), path: "/search", locale });
+  return pageMetadata({ title: t("title"), description: seo("search"), path: "/search", locale });
 }
 
 /**
@@ -56,14 +57,21 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
   const filters = Object.fromEntries(FILTERS.filter((key) => allowed.includes(key)).map((key) => [key, picked[key]]).filter(([, value]) => value)) as Record<string, string>;
   const mode = advanced ? "1" : undefined;
   const isProjects = type === "projects" || type === "influencer_requests";
+  // A minimum above the maximum is the visitor's mistake: say so instead of searching.
+  const reversed = Boolean(filters.budgetMin && filters.budgetMax && Number(filters.budgetMin) > Number(filters.budgetMax));
 
+  // Budget filters are typed in the visitor's display currency; the API compares every project in dollars.
+  const currency =
+    filters.budgetMin || filters.budgetMax
+      ? pickDisplayCurrency(await getCurrencies(), (await cookies()).get(CURRENCY_COOKIE)?.value, (await getSummary())?.user.currency)
+      : undefined;
   const [categories, countries, grouped, paged] = await Promise.all([
     getCategories(),
     getCountries(),
     type === "all" ? apiGetOrNull<SearchAll>(`/search${toQuery({ q: filters.q, countryId: filters.countryId, cityId: filters.cityId })}`) : null,
-    type === "all" ? null : apiGetOrNull<Paginated<Project | Profile>>(`/search${toQuery({ ...filters, type, page: pageParam(query), perPage: "20" })}`),
+    type === "all" || reversed ? null : apiGetOrNull<Paginated<Project | Profile>>(`/search${toQuery({ ...filters, currency, type, page: pageParam(query), perPage: "20" })}`),
   ]);
-  const failed = type === "all" ? !grouped : !paged;
+  const failed = !reversed && (type === "all" ? !grouped : !paged);
   const empty = grouped ? GROUPS.every((group) => !grouped[group.key].length) : paged?.data.length === 0;
   const viewHref = (next: string) => `/search${toQuery({ ...filters, type, view: next === "list" ? "list" : undefined, advanced: mode })}`;
 
@@ -114,6 +122,7 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
               </div>
             )}
 
+            {reversed && <p className="rounded-lg bg-danger-soft p-4 text-center text-sm text-danger">{t("budgetReversed")}</p>}
             {failed && <p className="py-10 text-center text-muted">{t("failed")}</p>}
             {!failed && empty && <NoResults />}
 

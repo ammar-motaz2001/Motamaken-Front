@@ -10,7 +10,7 @@ import type { SitePageSummary } from "@/lib/api/types";
 export async function generateMetadata({ params }: PageProps<"/[locale]/sitemap">) {
   const { locale } = await params;
   const [t, seo] = await Promise.all([getTranslations({ locale, namespace: "SitePages.sitemap" }), getTranslations({ locale, namespace: "Seo" })]);
-  return pageMetadata({ title: `${t("title")} | Mutamakin`, description: seo("sitemap"), path: "/sitemap", locale });
+  return pageMetadata({ title: t("title"), description: seo("sitemap"), path: "/sitemap", locale });
 }
 
 /**

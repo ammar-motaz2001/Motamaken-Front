@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { FaApple, FaGooglePlay, FaInstagram, FaLinkedin, FaSnapchat, FaSquareFacebook, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { Mail, Phone } from "lucide-react";
 import { AuthLink } from "@/components/AuthLink";
+import { EmailLink } from "@/components/ui/EmailLink";
 import { Link } from "@/i18n/navigation";
 import { PROTECTED_PATHS } from "@/lib/session";
 import type { PublicSiteSettings } from "@/lib/api/types";
@@ -122,7 +123,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
  * Site footer: call-to-action strip, link columns (the admins' own from Site settings, else the built-in ones), social
  * links and app badges set by the admins.
  */
-export function Footer({ site }: { site: PublicSiteSettings | null }) {
+export function Footer({ site, publishedPages }: { site: PublicSiteSettings | null; publishedPages?: string[] | null }) {
   const t = useTranslations("Footer");
   const ar = useLocale() === "ar";
   const socials = SOCIALS.filter(({ key }) => site?.social[key]);
@@ -178,9 +179,9 @@ export function Footer({ site }: { site: PublicSiteSettings | null }) {
                 <ul className="flex flex-col items-center gap-1.5 text-sm">
                   {site.email && (
                     <li>
-                      <a href={`mailto:${site.email}`} className="flex items-center gap-1.5 hover:text-brand">
-                        <Mail className="size-4" aria-hidden /> {site.email}
-                      </a>
+                      <EmailLink email={site.email} className="flex items-center gap-1.5 hover:text-brand">
+                        <Mail className="size-4" aria-hidden />
+                      </EmailLink>
                     </li>
                   )}
                   {site.phone && (
@@ -239,7 +240,8 @@ export function Footer({ site }: { site: PublicSiteSettings | null }) {
           <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 text-sm md:flex-row md:items-center md:justify-between">
             <p>{t("rights", { year: new Date().getFullYear() })}</p>
             <ul className="flex flex-wrap items-center">
-              {LEGAL.map((link) => (
+              {/* An info page the admins unpublished is left out (all are kept when the list could not be loaded). */}
+              {LEGAL.filter((link) => !publishedPages || publishedPages.includes(link.href.slice(1))).map((link) => (
                 <li key={link.key} className="border-s border-foreground px-2 leading-none">
                   <Link href={link.href} className="transition-colors hover:text-brand">
                     {t(link.key)}

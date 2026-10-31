@@ -5,7 +5,7 @@ import { ProfileSettings } from "@/modules/settings";
 /** Browser title of the account details screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/profile">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.profile" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Profile: the account's name, contact details and avatar, from the account summary. */

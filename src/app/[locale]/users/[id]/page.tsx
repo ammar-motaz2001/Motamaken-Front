@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/users/[i
   const data = await loadProfile(id);
   const role = data.profile?.jobTitle ? ` — ${data.profile.jobTitle}` : "";
   return pageMetadata({
-    title: `${data.user.fullName}${role} | Mutamakin`,
+    title: `${data.user.fullName}${role}`,
     description: describe(data.profile?.bio) ?? describe(`${data.user.fullName}${role}`),
     path: `/users/${data.user.id}`,
     locale,

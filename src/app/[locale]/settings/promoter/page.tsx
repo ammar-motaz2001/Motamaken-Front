@@ -6,7 +6,7 @@ import { PromoterPage } from "@/modules/campaigns";
 /** Browser title of the promoter screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/promoter">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Campaigns.promoter" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Promoter: the user's links and earnings from GET /me/promoter and campaigns open to join from /campaigns/available. */

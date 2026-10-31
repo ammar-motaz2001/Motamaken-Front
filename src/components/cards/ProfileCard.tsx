@@ -25,7 +25,7 @@ export function ProfileCard({ profile, signedIn }: { profile: Profile; signedIn:
             </span>
           )}
         </Link>
-        <FavoriteButton kind="profile" id={profile.id} className="absolute start-3 top-3" />
+        <FavoriteButton kind="profile" id={profile.id} ownerId={profile.userId} className="absolute start-3 top-3" />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-3">
         <div className="min-w-0">

@@ -24,7 +24,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <article className="flex min-h-[293px] w-[212px] shrink-0 in-[.card-grid]:w-auto snap-start flex-col gap-2.5 rounded-xl bg-surface px-2.5 pt-4 pb-[21px] shadow-card dark:border dark:border-border">
       <div className="flex flex-col gap-3">
-        <h3 className="line-clamp-2 text-start text-xl leading-tight font-bold tracking-[-0.22px]">
+        <h3 className="line-clamp-2 text-start text-xl leading-tight font-bold tracking-[-0.22px] [unicode-bidi:plaintext]">
           <Link href={href} className="hover:text-brand">
             {project.title}
           </Link>
@@ -43,7 +43,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </span>
         </div>
       </div>
-      <p className="line-clamp-3 text-base tracking-[-0.176px] text-muted">
+      <p className="line-clamp-3 text-base tracking-[-0.176px] text-muted [unicode-bidi:plaintext]">
         {shorten(project.description)}{" "}
         <Link href={href} className="text-brand hover:underline">
           {t("readMore")}
@@ -56,7 +56,7 @@ export function ProjectCard({ project }: { project: Project }) {
         >
           {t("addOffer")}
         </Link>
-        <FavoriteButton kind="project" id={project.id} className="size-[42px]! shrink-0 border border-border shadow-none!" />
+        <FavoriteButton kind="project" id={project.id} ownerId={project.owner?.id} className="size-[42px]! shrink-0 border border-border shadow-none!" />
       </div>
     </article>
   );

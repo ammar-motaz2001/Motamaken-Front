@@ -1,4 +1,5 @@
 import { Briefcase, GraduationCap, Award } from "lucide-react";
+import { ReviewReply } from "@/modules/reviews";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { Pagination } from "@/components/ui/Pagination";
@@ -235,6 +236,7 @@ async function ReviewList({ reviews, signedIn, canReport }: { reviews: Review[];
               </Link>
             )}
             {review.comment && <p className="whitespace-pre-line">{review.comment}</p>}
+            {review.reply && <ReviewReply text={review.reply} />}
             {canReport && <ReportButton targetType="review" targetId={review.id} signedIn={signedIn} className="self-end" />}
           </div>
         </li>

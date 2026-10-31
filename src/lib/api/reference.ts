@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { apiGetOrNull, apiGetPublic } from "./server";
-import type { Category, Country, Currency, PublicSiteSettings, Summary } from "./types";
+import type { Category, Country, Currency, PublicSiteSettings, SitePageSummary, Summary } from "./types";
 
 /** All categories from GET /categories, cached for a minute; empty when the API fails. */
 export const getCategories = cache(async () => (await apiGetPublic<{ data: Category[] }>("/categories"))?.data ?? []);
@@ -16,3 +16,9 @@ export const getSummary = cache(async () => apiGetOrNull<Summary>("/me/summary")
 
 /** What the admins set under Site settings (contact details, links, maintenance, upload limits, payment methods); changes show within a minute. */
 export const getSiteSettings = cache(async () => (await apiGetPublic<{ data: PublicSiteSettings }>("/site-settings"))?.data ?? null);
+
+/** Slugs of the published info pages (GET /pages), so links to an unpublished page can be left out; null when the API fails. */
+export const getPublishedPageSlugs = cache(async () => {
+  const pages = await apiGetPublic<{ data: SitePageSummary[] }>("/pages");
+  return pages ? pages.data.map((page) => page.slug) : null;
+});

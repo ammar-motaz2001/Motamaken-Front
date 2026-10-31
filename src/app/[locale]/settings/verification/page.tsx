@@ -7,7 +7,7 @@ import { VerificationPage } from "@/modules/verification";
 /** Browser title of the verification screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/verification">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Verification" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Verification: identity (KYC) status from GET /me/kyc, and whether a payment method is on file. */

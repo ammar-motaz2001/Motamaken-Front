@@ -20,9 +20,9 @@ export function formatTime(date: string, locale: string) {
   return new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit" }).format(new Date(date));
 }
 
-/** Money amount with its currency sign and no decimals, in the given language. */
+/** Money amount with its currency sign and no decimals, in the given language, kept left-to-right inside Arabic text. */
 export function formatAmount(amount: number, currency: string, locale: string) {
-  return new Intl.NumberFormat(locale, { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
+  return `\u2066${new Intl.NumberFormat(locale, { style: "currency", currency, maximumFractionDigits: 0 }).format(amount)}\u2069`;
 }
 
 /** Seconds as "mm:ss", e.g. a voice message length. */

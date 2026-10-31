@@ -1,1 +1,1 @@
-export { ProjectReviews } from "./components/ProjectReviews";
+export { ProjectReviews, ReviewReply } from "./components/ProjectReviews";

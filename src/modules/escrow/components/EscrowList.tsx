@@ -5,7 +5,7 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { Link } from "@/i18n/navigation";
 import type { Escrow, Paginated } from "@/lib/api/types";
 
-const TONE = { awaiting_funding: "warning", active: "success", completed: "muted" } as const;
+const TONE = { awaiting_funding: "warning", active: "success", completed: "muted", cancelled: "danger" } as const;
 
 /** The user's escrows (as client or payee) with project, amounts and status, and paging. */
 export async function EscrowList({ result, viewerId }: { result: Paginated<Escrow> | null; viewerId: number | null }) {

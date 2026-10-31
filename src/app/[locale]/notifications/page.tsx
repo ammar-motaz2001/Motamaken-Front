@@ -4,7 +4,7 @@ import { NotificationsPage } from "@/modules/notifications";
 /** Browser title of the notifications screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/notifications">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Notifications" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Notifications: the user's alerts, loaded and marked read in the browser from GET /notifications. */

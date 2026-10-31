@@ -8,7 +8,7 @@ import { EscrowList } from "@/modules/escrow";
 /** Browser title of the escrow screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/escrow">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Escrow.overview" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Escrow: the user's held payments, as payer or payee, from GET /me/escrows. */

@@ -18,6 +18,12 @@ export function useOfferedCurrencies(): string[] {
   return Object.keys(useContext(CurrencyContext).rates);
 }
 
+/** A converted price rounded to a figure people would write: to 1 under 100, to 5 under 1,000, to 10 above. */
+function tidy(value: number) {
+  const step = value < 100 ? 1 : value < 1000 ? 5 : 10;
+  return Math.max(step, Math.round(value / step) * step);
+}
+
 /** Formats an amount in the visitor's currency, converted from the currency it is stated in. */
 export function useMoney() {
   const { currency, rates } = useContext(CurrencyContext);
@@ -27,8 +33,11 @@ export function useMoney() {
     (amount: number, from: string) => {
       const converted = convert(amount, from, currency, rates);
       const [value, code] = converted === null ? [amount, from] : [converted, currency];
-      // Converted prices are estimates: round them; amounts in their own currency keep their cents.
-      return new Intl.NumberFormat(locale, { style: "currency", currency: code, maximumFractionDigits: code === from ? 2 : 0 }).format(value);
+      // Converted prices are estimates: rounded to a tidy figure. Amounts in their own currency keep their cents, but
+      // whole amounts show no ".00". Wrapped in a left-to-right isolate so "US$ 400" never turns into "$US 400" in Arabic.
+      const shown = code === from ? value : tidy(value);
+      const text = new Intl.NumberFormat(locale, { style: "currency", currency: code, maximumFractionDigits: code === from ? 2 : 0, trailingZeroDisplay: "stripIfInteger" }).format(shown);
+      return `\u2066${text}\u2069`;
     },
     [currency, rates, locale],
   );

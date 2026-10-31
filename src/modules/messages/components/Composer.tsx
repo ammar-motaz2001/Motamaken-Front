@@ -35,7 +35,9 @@ function useRecorder(onDone: (blob: Blob, seconds: number) => void) {
   const start = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const chunks: Blob[] = [];
-    const media = new MediaRecorder(stream);
+    // AAC in MP4 plays in every browser (Safari cannot play WebM); fall back to the browser's default.
+    const mimeType = ["audio/mp4;codecs=mp4a.40.2", "audio/mp4", "audio/webm;codecs=opus"].find((type) => MediaRecorder.isTypeSupported(type));
+    const media = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
     media.ondataavailable = (event) => chunks.push(event.data);
     media.onstop = () => {
       stream.getTracks().forEach((track) => track.stop());

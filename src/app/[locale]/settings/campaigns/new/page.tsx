@@ -7,7 +7,7 @@ import { SettingsPanel } from "@/modules/settings";
 /** Browser title of the new campaign screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/campaigns/new">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Campaigns.form" });
-  return { title: `${t("createTitle")} | Mutamakin` };
+  return { title: t("createTitle") };
 }
 
 /** Settings › New campaign: the campaign form in the wallet's currency; warns when the user has no profile to promote. */

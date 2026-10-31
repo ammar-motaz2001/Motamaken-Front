@@ -59,6 +59,8 @@ export function ProjectWizard({ type, categories, currencies, countries, project
   const [published, setPublished] = useState<Project | null>(null);
   const cities = useCities(form.countryId);
   const editing = Boolean(project);
+  // A saved draft is edited here too: it can be saved again as a draft or published.
+  const editingDraft = project?.status === "draft";
   const kind = type === "project" ? "project" : "request";
 
   const cityId = form.cityId || (initialCityName ? String(cities.find((city) => city.name === initialCityName)?.id ?? "") : "");
@@ -85,9 +87,10 @@ export function ProjectWizard({ type, categories, currencies, countries, project
     setFormError(null);
     const payload = toPayload({ ...form, cityId });
     try {
-      const { data } = project
+      let { data } = project
         ? await api<{ data: Project }>(`/projects/${project.id}`, { method: "PATCH", body: payload })
         : await api<{ data: Project }>("/projects", { method: "POST", body: { ...payload, type, draft: asDraft } });
+      if (editingDraft && !asDraft) data = (await api<{ data: Project }>(`/projects/${data.id}/publish`, { method: "POST" })).data;
       if (project) {
         router.push(`/projects/${data.id}`);
         router.refresh();
@@ -95,6 +98,8 @@ export function ProjectWizard({ type, categories, currencies, countries, project
         clearDraft();
         clearStep();
         setPublished(data);
+        // The confirmation replaces the form at the top of the page: bring it into view.
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (caught) {
       const error = caught as ApiError;
@@ -137,7 +142,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
 
   const nextLabel =
     step === "publish"
-      ? t(editing ? "actions.save" : "actions.publish")
+      ? t(editing && !editingDraft ? "actions.save" : "actions.publish")
       : STEPS[stepIndex + 1] === "publish"
         ? t("actions.review")
         : t("actions.next");
@@ -304,7 +309,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
           </Button>
         )}
         <div className="flex flex-wrap gap-2">
-          {step === "publish" && !editing && (
+          {step === "publish" && (!editing || editingDraft) && (
             <Button variant="outline" pill onClick={() => submit(true)} disabled={saving}>
               {t("actions.saveDraft")}
             </Button>

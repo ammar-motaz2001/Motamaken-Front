@@ -6,7 +6,7 @@ import { NotificationSettings } from "@/modules/settings";
 /** Browser title of the notification settings screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/notifications">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Settings.notifications" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Notifications: which alerts reach the user, from GET /me/notification-settings (required ones are locked). */

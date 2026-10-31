@@ -21,7 +21,7 @@ async function findCategory(slug: string) {
 export async function generateMetadata({ params }: PageProps<"/[locale]/categories/[slug]">) {
   const { locale, slug } = await params;
   const [category, t] = await Promise.all([findCategory(slug), getTranslations({ locale, namespace: "Seo" })]);
-  return pageMetadata({ title: `${category.name} | Mutamakin`, description: t("category", { name: category.name }), path: `/categories/${category.slug}`, locale });
+  return pageMetadata({ title: category.name, description: t("category", { name: category.name }), path: `/categories/${category.slug}`, locale });
 }
 
 /** One category: its open projects or influencer requests from GET /projects with the usual filters; 404 for unknown slugs. */

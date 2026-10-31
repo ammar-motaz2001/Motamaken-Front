@@ -8,7 +8,7 @@ import { CampaignList } from "@/modules/campaigns";
 /** Browser title of the campaigns list. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/settings/campaigns">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Campaigns" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** Settings › Campaigns: the user's paid-visit campaigns from GET /me/campaigns, filterable by status. */

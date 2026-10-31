@@ -9,7 +9,7 @@ import { DisputeCase } from "@/modules/disputes";
 /** Browser title of a dispute case. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/disputes/[id]">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Disputes.case" });
-  return { title: `${t("title")} | Mutamakin` };
+  return { title: t("title") };
 }
 
 /** One dispute case with its messages and evidence, from GET /disputes/{id}; 403/404 from the API become those screens. */

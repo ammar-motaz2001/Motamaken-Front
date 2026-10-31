@@ -5,7 +5,7 @@ import { NewTicketForm } from "@/modules/support";
 /** Browser title of the new support ticket screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/support/new">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Support" });
-  return { title: `${t("new")} | Mutamakin`, robots: { index: false } };
+  return { title: t("new"), robots: { index: false } };
 }
 
 /** New support ticket: the ticket form (it posts to the API itself). */
