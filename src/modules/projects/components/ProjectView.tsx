@@ -15,6 +15,7 @@ import { AgreementPanel } from "./AgreementPanel";
 import { MessageUserButton } from "./MessageUserButton";
 import { OfferPanel } from "./OfferPanel";
 import { OwnerPanel } from "./OwnerPanel";
+import { BidiText } from "@/components/ui/BidiText";
 import { BudgetRange } from "@/components/providers/CurrencyProvider";
 
 type ProjectViewProps = {
@@ -84,7 +85,7 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews, agr
         <div>
           <h2 className={`${sectionTitleClasses} mb-2`}>{t("detail.description")}</h2>
           {/* Each line takes the direction of its own text, so English words and punctuation stay in order inside Arabic. */}
-          <p className="leading-relaxed whitespace-pre-line [unicode-bidi:plaintext]">{project.description}</p>
+          <p className="leading-relaxed whitespace-pre-line [unicode-bidi:plaintext]"><BidiText text={project.description} /></p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 border-t border-border pt-4">

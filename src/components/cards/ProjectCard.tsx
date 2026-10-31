@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Project } from "@/lib/api/types";
 import { timeAgo } from "@/lib/format";
+import { BidiText } from "@/components/ui/BidiText";
 import { FavoriteButton } from "./FavoriteButton";
 import { buttonClasses } from "@/components/ui/Button";
 import { BudgetRange } from "@/components/providers/CurrencyProvider";
@@ -48,7 +49,7 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
       </div>
       <p className="line-clamp-3 text-base tracking-[-0.176px] text-muted [unicode-bidi:plaintext]">
-        {shorten(project.description)}{" "}
+        <BidiText text={shorten(project.description)} />{" "}
         <Link href={href} className="inline-block py-1 text-brand hover:underline">
           {t("readMore")}
         </Link>
