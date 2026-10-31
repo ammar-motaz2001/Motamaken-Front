@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
+import { EmailLink } from "./EmailLink";
 
 /**
  * Renders the small Markdown subset admins write pages in: headings, paragraphs, lists, quotes, tables, bold, links and
@@ -127,8 +128,16 @@ function inline(text: string): ReactNode {
           </Link>
         );
       }
-      // Only plain web and mail links; anything else (javascript:, data:...) is shown as text.
-      return /^(https?:|mailto:)/i.test(href) ? (
+      // Mail links go through EmailLink, so Cloudflare finds no address in the HTML to rewrite.
+      if (/^mailto:[^\s@]+@[^\s@]+$/i.test(href)) {
+        return (
+          <EmailLink key={index} email={href.slice(7)} className="font-medium text-brand hover:underline">
+            {label.includes("@") ? undefined : <>{label} </>}
+          </EmailLink>
+        );
+      }
+      // Only plain web links; anything else (javascript:, data:...) is shown as text.
+      return /^https?:/i.test(href) ? (
         <a key={index} href={href} target="_blank" rel="noopener noreferrer nofollow" className="font-medium text-brand hover:underline">
           {label}
         </a>
@@ -137,6 +146,13 @@ function inline(text: string): ReactNode {
       );
     }
 
-    return <Fragment key={index}>{part}</Fragment>;
+    // A bare address in the text is shown the same way, for the same reason.
+    return (
+      <Fragment key={index}>
+        {part.split(/([^\s@()<>]+@[^\s@()<>]+\.[a-z]{2,})/i).map((piece, at) =>
+          at % 2 ? <EmailLink key={at} email={piece} className="font-medium text-brand hover:underline" /> : piece,
+        )}
+      </Fragment>
+    );
   });
 }
