@@ -49,6 +49,9 @@ export default function proxy(request: NextRequest) {
   headers.set("Content-Security-Policy", csp);
   const response = intl(new NextRequest(request, { headers }));
   response.headers.set("Content-Security-Policy", csp);
+  // Nothing in the browser reads the language cookie: mark it HttpOnly so scripts cannot either.
+  const locale = response.cookies.get("NEXT_LOCALE");
+  if (locale) response.cookies.set({ ...locale, httpOnly: true });
   return response;
 }
 

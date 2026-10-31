@@ -30,9 +30,10 @@ export function AuthLink({ href, reason, onClick, children, ...rest }: AuthLinkP
     if (await requireAuth(reason)) router.push(href);
   };
 
+  // The real link keeps the language prefix (/ar/...), as the app's own links do.
   return (
-    <a href={href} onClick={open} {...rest}>
+    <Link href={href} onClick={open} {...rest}>
       {children}
-    </a>
+    </Link>
   );
 }
