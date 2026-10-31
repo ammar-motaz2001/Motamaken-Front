@@ -93,7 +93,7 @@ export function AccountMenu({ user, unreadMessages, counts }: { user: ApiUser; u
         <UserAvatar name={user.fullName} src={user.avatarUrl} size={24} />
         <span className="max-w-32 truncate py-0.5 text-base leading-none font-medium text-orange capitalize">{user.username}</span>
         <Image src="/images/arrow-down-sm.svg" alt="" width={12} height={12} className="dark:invert" />
-        <Badge count={unreadMessages} className="-top-1.5 -start-2" />
+        <Badge count={unreadMessages + (counts?.offersReceived ?? 0)} className="-top-1.5 -start-2" />
       </button>
 
       {menu.mounted && (

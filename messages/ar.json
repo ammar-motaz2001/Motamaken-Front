@@ -34,7 +34,10 @@
       "services": "خدماتنا",
       "categories": "التصنيفات",
       "contact": "تواصل معنا",
-      "guide": "الدليل"
+      "guide": "الدليل",
+      "favorites": "المفضلة",
+      "myProjects": "مشاريعي",
+      "myOffers": "عروضي"
     },
     "languages": {
       "en": "ENG",

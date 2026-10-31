@@ -34,7 +34,10 @@
       "services": "Our Services",
       "categories": "Categories",
       "contact": "Contact Us",
-      "guide": "Guide"
+      "guide": "Guide",
+      "favorites": "Favorites",
+      "myProjects": "My projects",
+      "myOffers": "My offers"
     },
     "languages": {
       "en": "ENG",

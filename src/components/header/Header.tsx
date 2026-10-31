@@ -168,6 +168,20 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
               </li>
             ),
           )}
+          {/* Signed in: my lists with their counts, as the admin panel's menu shows its queues. */}
+          {summary &&
+            ([
+              { key: "favorites", href: "/favorites", count: summary.counts?.favorites ?? 0 },
+              { key: "myProjects", href: "/my-projects", count: summary.counts?.offersReceived ?? 0 },
+              { key: "myOffers", href: "/offers", count: summary.counts?.offers ?? 0 },
+            ] as const).map((item) => (
+              <li key={item.key}>
+                <Link href={item.href} className="flex h-[35px] items-center gap-2 px-4 py-2.5 text-base font-bold whitespace-nowrap text-white hover:opacity-85">
+                  {t(`nav.${item.key}`)}
+                  <Badge inline count={item.count} />
+                </Link>
+              </li>
+            ))}
         </ul>
       </nav>
       </HideOnAuthPages>
