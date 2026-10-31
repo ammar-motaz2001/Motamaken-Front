@@ -144,7 +144,8 @@ export function NotificationsPage() {
                   item.readAt ? "border-border bg-surface hover:bg-surface-muted" : "border-brand/40 bg-brand-soft hover:bg-brand-soft/70"
                 } ${href ? "cursor-pointer" : "cursor-default"}`}
               >
-                <UserAvatar name={item.user?.fullName ?? "Mutamakin"} src={item.user?.avatarUrl ?? null} size={40} />
+                {/* Notifications from the platform itself (points, medals, payments) carry the Mutamakin mark, not an "M". */}
+                <UserAvatar name={item.user?.fullName ?? "Mutamakin"} src={item.user ? (item.user.avatarUrl ?? null) : "/icon.png"} size={40} />
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-sm">{item.title && <strong className="block">{item.title}</strong>}
 {item.message}</span>

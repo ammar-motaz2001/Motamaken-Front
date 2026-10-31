@@ -182,7 +182,7 @@
     "lastNamePlaceholder": "Enter you last name",
     "username": "Username",
     "usernamePlaceholder": "Enter a username",
-    "usernameRule": "Only letters and the dot (.) character, followed by a space, are allowed.",
+    "usernameRule": "Letters, numbers, dots (.) and underscores (_) only.",
     "emailPlaceholder": "Enter email address",
     "phone": "Phone Number",
     "password": "Password",
@@ -359,7 +359,11 @@
         "request": "Confirm your email to publish your request."
       },
       "draftTitle": "Draft saved",
-      "draftText": "Only you can see it. Publish it from My Projects when it is ready."
+      "draftText": "Only you can see it. Publish it from My Projects when it is ready.",
+      "hintFor": {
+        "project": "Check everything before publishing. You can edit the project until an offer is accepted.",
+        "request": "Check everything before publishing. You can edit the request until an offer is accepted."
+      }
     },
     "actions": {
       "next": "Next",
@@ -431,7 +435,8 @@
         "sent": "Your offer was sent. You'll be notified when the owner answers.",
         "updated": "Your offer was updated.",
         "withdrawn": "Your offer was withdrawn."
-      }
+      },
+      "minOneDay": "Enter at least one day."
     },
     "owner": {
       "manage": "Manage your project",
@@ -540,7 +545,8 @@
     "noProjects": "No projects in this category yet.",
     "verified": "Verified identity",
     "budgetShort": "{min} - {max}",
-    "budgetLabel": "Budget"
+    "budgetLabel": "Budget",
+    "offersCount": "{count, plural, =0 {No offers yet} one {# offer} other {# offers}}"
   },
   "Messages": {
     "title": "Messages",

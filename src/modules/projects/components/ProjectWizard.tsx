@@ -148,7 +148,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
         : t("actions.next");
 
   const reviewRows = [
-    { label: t("fields.category"), value: category?.name ?? "" },
+    { label: t(`fields.categoryLabel.${kind}`), value: category?.name ?? "" },
     { label: t("fields.title"), value: form.title },
     {
       label: t("fields.budget"),
@@ -277,7 +277,7 @@ export function ProjectWizard({ type, categories, currencies, countries, project
           <>
             <div>
               <h2 className={sectionTitleClasses}>{t("publish.heading")}</h2>
-              <p className={hintClasses}>{t("publish.hint")}</p>
+              <p className={hintClasses}>{t(`publish.hintFor.${kind}`)}</p>
             </div>
             <dl className={`${outlinedPanelClasses} grid gap-x-8 gap-y-3 sm:grid-cols-[180px_1fr]`}>
               {reviewRows.map((row) => (

@@ -113,7 +113,8 @@ export function OfferPanel({ project }: { project: Project }) {
     event.preventDefault();
     const found: FieldErrors = {};
     if (!(Number(form.amount) > 0)) found.amount = t("required");
-    if (!(Number(form.deliveryDays) >= 1)) found.deliveryDays = t("required");
+    if (!form.deliveryDays) found.deliveryDays = t("required");
+    else if (!(Number(form.deliveryDays) >= 1)) found.deliveryDays = t("minOneDay");
     if (form.message.trim().length < 10) found.message = t("messageTooShort");
     if (askJobTitle && form.jobTitle.trim().length < 2) found.jobTitle = t("jobTitleRequired");
     const { min, max } = project.budget;

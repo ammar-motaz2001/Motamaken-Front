@@ -120,7 +120,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
               </AuthLink>
             )}
             {/* Phones (mobile design): the orange grid opens Our Services, the three lines open the side menu. */}
-            <Link href="/services" aria-label={t("openMenu")} className="flex size-9 items-center justify-center rounded-md bg-gradient-orange lg:hidden">
+            <Link href="/services" aria-label={t("allServices")} className="flex size-9 items-center justify-center rounded-md bg-gradient-orange lg:hidden">
               <Image src="/images/menu.svg" alt="" width={18} height={18} className="brightness-0 invert" />
             </Link>
             <MobileMenu signedIn={signedIn} currencies={data.currencies} currency={currency} />
@@ -134,7 +134,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
           <div className="flex min-w-0 flex-1 items-stretch gap-3 lg:flex-none">
             <Link
               href="/services"
-              aria-label={t("openMenu")}
+              aria-label={t("allServices")}
               className="hidden shrink-0 items-center justify-center rounded-md bg-border p-3 lg:flex"
             >
               <Image src="/images/menu.svg" alt="" width={20} height={20} className="dark:invert" />

@@ -54,7 +54,12 @@ export function ProjectCard({ project }: { project: Project }) {
           {t("readMore")}
         </Link>
       </p>
-      <Link href={href} className={`${buttonClasses({ size: "sm", pill: true })} mt-auto w-full`}>
+      {/* The project number and how many offers it has, as on the design's project cards. */}
+      <p className="mt-auto flex items-center justify-between text-xs text-muted">
+        <span dir="ltr">#{project.id}</span>
+        {project.proposalsCount !== undefined && <span>{t("offersCount", { count: project.proposalsCount })}</span>}
+      </p>
+      <Link href={href} className={`${buttonClasses({ size: "sm", pill: true })} w-full`}>
         {t("addOffer")}
       </Link>
     </article>
