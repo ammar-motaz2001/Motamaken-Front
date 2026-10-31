@@ -54,7 +54,19 @@ function useRecorder(onDone: (blob: Blob, seconds: number) => void) {
 
   const stop = (cancel = false) => {
     discard.current = cancel;
-    recorder.current?.stop();
+    const media = recorder.current;
+    if (cancel) {
+      // Deleting must work at once on every phone: drop the recording and free the mic now, without waiting for
+      // the browser's stop event (mobile Safari may fire it late, or not at all when nothing was recorded yet).
+      recorder.current = null;
+      setSeconds(null);
+      media?.stream.getTracks().forEach((track) => track.stop());
+    }
+    try {
+      if (media && media.state !== "inactive") media.stop();
+    } catch {
+      // Already stopped: nothing to do.
+    }
   };
 
   return { seconds, start, stop };
@@ -111,7 +123,7 @@ export function Composer({ sending, onSendText, onSendFile, onError }: ComposerP
     <form onSubmit={submit} className="flex items-center gap-3 rounded-full bg-composer px-3 py-[11px]">
       {recording ? (
         <>
-          <button type="button" onClick={() => recorder.stop(true)} aria-label={t("cancelRecording")} className="text-danger">
+          <button type="button" onClick={() => recorder.stop(true)} aria-label={t("cancelRecording")} className="-m-2 flex size-10 shrink-0 items-center justify-center rounded-full text-danger hover:bg-danger-soft">
             <Trash2 className="size-5" />
           </button>
           <span className="flex flex-1 items-center gap-2 text-base">
