@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { FaApple, FaGooglePlay, FaInstagram, FaLinkedin, FaSnapchat, FaSquareFacebook, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { Mail, Phone } from "lucide-react";
+import { ChevronDown, Mail, Phone } from "lucide-react";
 import { AuthLink } from "@/components/AuthLink";
 import { EmailLink } from "@/components/ui/EmailLink";
 import { Link } from "@/i18n/navigation";
@@ -155,8 +155,26 @@ export function Footer({ site, publishedPages }: { site: PublicSiteSettings | nu
       <div className="-mt-16 bg-surface-muted pt-28 pb-8">
         <div className="page-container">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-[repeat(4,minmax(0,1fr))_235px]">
+            {/* Phones: each column folds away (as in the mobile design); tablets and up: open columns. */}
+            <div className="col-span-2 flex flex-col divide-y divide-border rounded-xl border border-border bg-surface md:hidden">
+              {columns.map((column, index) => (
+                <details key={index} className="group">
+                  <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold [&::-webkit-details-marker]:hidden">
+                    {column.title}
+                    <ChevronDown className="size-4 transition-transform group-open:rotate-180" aria-hidden />
+                  </summary>
+                  <ul className="flex flex-col gap-3 px-4 pb-4">
+                    {column.links.map((link, position) => (
+                      <li key={position}>
+                        <FooterLink href={link.href}>{link.label}</FooterLink>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ))}
+            </div>
             {columns.map((column, index) => (
-              <div key={index}>
+              <div key={index} className="hidden md:block">
                 <h3 className={`mb-6 font-bold ${index === 0 ? "text-xl" : "text-lg"}`}>{column.title}</h3>
                 <ul className="flex flex-col gap-4">
                   {column.links.map((link, position) => (

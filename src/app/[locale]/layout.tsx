@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { preload } from "react-dom";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { BottomNav } from "@/components/header/BottomNav";
 import { Footer } from "@/components/footer/Footer";
 import { getHeaderData } from "@/components/header/data";
 import { MaintenanceGate } from "@/components/MaintenanceGate";
@@ -125,6 +126,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
                     </MaintenanceGate>
                   </main>
                   <Footer site={site} publishedPages={await getPublishedPageSlugs()} />
+                  <BottomNav signedIn={signedIn} />
                   <ConfirmHost />
                   <FormErrorsHost />
                   <NavigationProgress />

@@ -85,6 +85,14 @@
       "all": "عرض كل النتائج لـ «{q}»",
       "freelancer": "مستقل",
       "influencer": "مؤثر"
+    },
+    "tabs": {
+      "label": "التنقل السريع",
+      "home": "الرئيسية",
+      "categories": "التصنيفات",
+      "favorites": "المفضلة",
+      "account": "حسابي",
+      "post": "أضف مشروعك"
     }
   },
   "Footer": {
@@ -589,7 +597,8 @@
       "done": "تم"
     },
     "cancel": "إلغاء",
-    "confirm": "تأكيد"
+    "confirm": "تأكيد",
+    "filter": "تصفية النتائج"
   },
   "Profile": {
     "home": "الرئيسية",

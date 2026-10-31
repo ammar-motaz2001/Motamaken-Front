@@ -137,9 +137,10 @@
 }
 
 /* Pages use the whole screen, with side spacing that grows with it (capped for very wide monitors). */
+/* Content column as in the Figma frames: 1152px of content, centred, with side padding on smaller screens. */
 @utility page-container {
   width: 100%;
-  max-width: 1920px;
+  max-width: calc(1152px + 80px);
   margin-inline: auto;
   padding-inline: 16px;
 
@@ -149,14 +150,17 @@
   @media (width >= 1024px) {
     padding-inline: 40px;
   }
-  @media (width >= 1536px) {
-    padding-inline: 64px;
-  }
 }
 
 @layer base {
   body {
     @apply min-h-screen bg-background font-sans text-foreground antialiased transition-colors;
+  }
+  /* Room for the phone tab bar (BottomNav) so it never covers the end of the page. */
+  @media (width < 768px) {
+    body:has(nav[data-bottom-nav]) {
+      padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    }
   }
 
   button {

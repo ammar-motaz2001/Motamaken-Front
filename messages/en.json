@@ -85,6 +85,14 @@
       "all": "See all results for “{q}”",
       "freelancer": "Freelancer",
       "influencer": "Influencer"
+    },
+    "tabs": {
+      "label": "Quick navigation",
+      "home": "Home",
+      "categories": "Categories",
+      "favorites": "Favorites",
+      "account": "Profile",
+      "post": "Post your project"
     }
   },
   "Footer": {
@@ -589,7 +597,8 @@
       "done": "Done"
     },
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "filter": "Filter results"
   },
   "Profile": {
     "home": "Home",

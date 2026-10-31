@@ -1,4 +1,5 @@
 import { LayoutGrid, List } from "lucide-react";
+import { MobileCollapse } from "@/components/ui/MobileCollapse";
 import { cookies } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
@@ -44,6 +45,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/search">
  */
 export default async function SearchPage({ params, searchParams }: PageProps<"/[locale]/search">) {
   setRequestLocale((await params).locale);
+  const tc = await getTranslations("Common");
   const t = await getTranslations("Search");
   const th = await getTranslations("Header.searchTypes");
   const signedIn = (await cookies()).has(SESSION_COOKIE);
@@ -95,7 +97,9 @@ export default async function SearchPage({ params, searchParams }: PageProps<"/[
         </nav>
 
         <div className="flex min-w-0 flex-col gap-5">
+          <MobileCollapse label={tc("filter")}>
           <SearchFilters key={`${type}-${advanced}-${JSON.stringify(filters)}`} type={type} values={filters} categories={categories} countries={countries} view={view} advanced={advanced} />
+        </MobileCollapse>
 
           <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4 sm:p-5">
             {paged && (

@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { MobileCollapse } from "@/components/ui/MobileCollapse";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { panelClasses } from "@/components/ui/styles";
 import { getCategories, getCountries } from "@/lib/api/reference";
@@ -19,6 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projects
 export default async function ProjectsPage({ params, searchParams }: PageProps<"/[locale]/projects">) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const tc = await getTranslations("Common");
   const t = await getTranslations("Projects");
   const query = await searchParams;
   const filters = pickParams(query, FILTER_KEYS);
@@ -38,7 +40,9 @@ export default async function ProjectsPage({ params, searchParams }: PageProps<"
           title={t("list.title")}
           subtitle={t("list.subtitle")}
         />
-        <ProjectFilters key={toQuery(filters)} filters={filters} categories={categories} countries={countries} />
+        <MobileCollapse label={tc("filter")}>
+          <ProjectFilters key={toQuery(filters)} filters={filters} categories={categories} countries={countries} />
+        </MobileCollapse>
         <ProjectGrid result={result} pathname="/projects" query={filters} />
       </section>
     </div>
