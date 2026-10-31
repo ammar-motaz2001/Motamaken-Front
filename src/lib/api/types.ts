@@ -444,6 +444,8 @@ export type PublicSiteSettings = {
   apps: Partial<Record<"android" | "ios", string>>;
   /** Replaces the footer's built-in link columns; null keeps them. */
   footer?: FooterColumn[] | null;
+  /** Project owners write first (Site settings › Messaging policy). */
+  chatOwnersFirst?: boolean;
   maintenance: { enabled: boolean; messageEn: string; messageAr: string; endsAt: string | null };
   uploads: { avatarMb: number; portfolioMb: number; documentMb: number; chatMb: number; attachmentTypes: string[] };
   /** Default search-engine description per language; null means the built-in text. */

@@ -18,6 +18,8 @@ import { OwnerPanel } from "./OwnerPanel";
 import { BudgetRange } from "@/components/providers/CurrencyProvider";
 
 type ProjectViewProps = {
+  /** Site settings › Messaging policy: only the owner starts conversations. */
+  ownersWriteFirst?: boolean;
   project: Project;
   viewerId: number | null;
   proposals: Proposal[] | null;
@@ -31,7 +33,7 @@ type ProjectViewProps = {
  * Full project page: details, budget, owner and tags, then the owner's panel or the offer form; hired parties
  * also see the escrow and, when completed, the reviews.
  */
-export function ProjectView({ project, viewerId, proposals, escrow, reviews, agreementChanges }: ProjectViewProps) {
+export function ProjectView({ project, viewerId, proposals, escrow, reviews, agreementChanges, ownersWriteFirst = false }: ProjectViewProps) {
   const t = useTranslations("Projects");
   const locale = useLocale();
   const isOwner = viewerId === project.owner.id;
@@ -92,7 +94,8 @@ export function ProjectView({ project, viewerId, proposals, escrow, reviews, agr
               {project.owner.fullName}
             </Link>
           </div>
-          {!isOwner && <MessageUserButton userId={project.owner.id} projectId={project.id} />}
+          {/* With "owners write first" on, only the owner starts a conversation (they write to the people who sent offers). */}
+          {!isOwner && !ownersWriteFirst && <MessageUserButton userId={project.owner.id} projectId={project.id} />}
         </div>
       </section>
 

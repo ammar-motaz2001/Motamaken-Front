@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cache } from "react";
 import type { ApiError } from "@/lib/api/errors";
-import { getSummary } from "@/lib/api/reference";
+import { getSummary, getSiteSettings } from "@/lib/api/reference";
 import { apiGet, apiGetOrNull } from "@/lib/api/server";
 import type { AgreementChange, Escrow, Paginated, Project, Proposal, Review } from "@/lib/api/types";
 import { describe, pageMetadata } from "@/lib/seo";
@@ -51,7 +51,7 @@ export default async function ProjectPage({ params }: PageProps<"/[locale]/proje
     <div className="page-container flex flex-col gap-4 py-10">
       {isOwner && project.isHidden && <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-danger">{t("hidden", { reason: project.hiddenReason ?? "" })}</p>}
       {isOwner && project.status === "draft" && <p className="rounded-lg bg-orange/10 px-4 py-3 text-sm text-orange">{t("draftNote")}</p>}
-      <ProjectView project={project} viewerId={viewerId} proposals={proposals} escrow={escrow} reviews={reviews} agreementChanges={agreementChanges} />
+      <ProjectView project={project} viewerId={viewerId} proposals={proposals} escrow={escrow} reviews={reviews} agreementChanges={agreementChanges} ownersWriteFirst={Boolean((await getSiteSettings())?.chatOwnersFirst)} />
     </div>
   );
 }
