@@ -11,6 +11,7 @@ import type { HeaderData } from "./data";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileMenu } from "./MobileMenu";
 import { LiveCounts } from "./LiveCounts";
+import { NavLink } from "./NavLink";
 import { NAV_ITEMS } from "./nav";
 import { NotificationsMenu } from "./NotificationsMenu";
 import { HideOnAuthPages } from "./HideOnAuthPages";
@@ -161,12 +162,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
               <CategoriesMenu key={item.key} categories={data.categories} />
             ) : (
               <li key={item.key}>
-                <Link
-                  href={item.href}
-                  className="flex h-[35px] items-center gap-2 px-4 py-2.5 text-base font-bold whitespace-nowrap text-white hover:opacity-85"
-                >
-                  {t(`nav.${item.key}`)}
-                </Link>
+                <NavLink href={item.href}>{t(`nav.${item.key}`)}</NavLink>
               </li>
             ),
           )}
@@ -178,10 +174,10 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
               { key: "myOffers", href: "/offers", count: summary.counts?.offers ?? 0 },
             ] as const).map((item) => (
               <li key={item.key}>
-                <Link href={item.href} className="flex h-[35px] items-center gap-2 px-4 py-2.5 text-base font-bold whitespace-nowrap text-white hover:opacity-85">
+                <NavLink href={item.href}>
                   {t(`nav.${item.key}`)}
                   <Badge inline count={item.count} />
-                </Link>
+                </NavLink>
               </li>
             ))}
         </ul>
