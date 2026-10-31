@@ -22,7 +22,7 @@ import { buttonClasses } from "@/components/ui/Button";
 
 /** Thin vertical line between items of the header's top bar. */
 function Divider() {
-  return <span className="h-4 w-[0.5px] bg-foreground" aria-hidden />;
+  return <span className="h-4 w-[0.5px] bg-foreground max-lg:hidden" aria-hidden />;
 }
 
 /** Small rounded figure in the header (e.g. the points balance) with its icon and a tooltip. */
@@ -47,12 +47,12 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
   return (
     <header className="relative z-20 bg-surface drop-shadow-[0_4px_2px_rgba(213,213,213,0.25)] dark:drop-shadow-none">
       {signedIn && <LiveCounts />}
-      <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-4 dark:bg-none">
-        <div className="page-container flex items-center justify-between gap-4">
+      <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-3 sm:py-4 dark:bg-none">
+        <div className="page-container flex items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-4">
             <Link href="/" aria-label="Mutamakin" className="flex shrink-0 flex-col gap-1">
-              <Image src="/images/logo.png" alt="Mutamakin" width={158} height={42} priority className="h-[42px] w-auto" />
-              <span dir="rtl" className="text-end text-sm leading-none font-medium tracking-[-0.154px]">
+              <Image src="/images/logo.png" alt="Mutamakin" width={158} height={42} priority className="h-8 w-auto sm:h-[42px]" />
+              <span dir="rtl" className="text-end text-xs leading-none sm:text-sm font-medium tracking-[-0.154px]">
                 مـــتـــــمــــكــن.
               </span>
             </Link>
@@ -68,7 +68,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
             )}
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-0.5 sm:gap-1.5 lg:gap-2.5">
             {!signedIn && (
               <div className="hidden items-center gap-2.5 lg:flex">
                 <AccountLinks signedIn={false} />
@@ -120,7 +120,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
               </AuthLink>
             )}
             {/* Phones (mobile design): the orange grid opens Our Services, the three lines open the side menu. */}
-            <Link href="/services" aria-label={t("allServices")} className="flex size-9 items-center justify-center rounded-md bg-gradient-orange lg:hidden">
+            <Link href="/services" aria-label={t("allServices")} className="flex size-8 shrink-0 items-center justify-center rounded-md bg-gradient-orange sm:size-9 lg:hidden">
               <Image src="/images/menu.svg" alt="" width={18} height={18} className="brightness-0 invert" />
             </Link>
             <MobileMenu signedIn={signedIn} currencies={data.currencies} currency={currency} />

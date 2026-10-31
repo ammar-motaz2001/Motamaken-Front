@@ -71,13 +71,20 @@ export function Composer({ sending, onSendText, onSendFile, onError }: ComposerP
   const closeEmoji = useCallback(() => setEmojiOpen(false), []);
   useDismiss(emojiOpen, emojiRef, closeEmoji);
 
-  const recorder = useRecorder((blob, seconds) => {
+  // A voice note is being sent: no new recording until it is done (the mic stays off meanwhile).
+  const [uploading, setUploading] = useState(false);
+  const recorder = useRecorder(async (blob, seconds) => {
     const extension = blob.type.includes("mp4") ? "m4a" : "webm";
     const form = new FormData();
     form.append("type", "voice");
     form.append("duration", String(seconds));
     form.append("file", new File([blob], `voice.${extension}`, { type: blob.type }));
-    onSendFile(form);
+    setUploading(true);
+    try {
+      await onSendFile(form);
+    } finally {
+      setUploading(false);
+    }
   });
   const recording = recorder.seconds !== null;
 
@@ -158,18 +165,18 @@ export function Composer({ sending, onSendText, onSendFile, onError }: ComposerP
               </div>
             )}
           </div>
-          <button type="button" onClick={record} aria-label={t("record")} className="shrink-0">
+          <button type="button" onClick={record} disabled={sending || uploading} aria-label={t("record")} className="shrink-0 disabled:opacity-40">
             <Image src="/images/mic.svg" alt="" width={24} height={24} className="dark:invert" />
           </button>
         </>
       )}
       <button
         type="submit"
-        disabled={sending || (!recording && !text.trim())}
+        disabled={sending || uploading || (!recording && !text.trim())}
         aria-label={t("send")}
         className="flex size-12 shrink-0 items-center justify-center rounded-full bg-orange disabled:opacity-60"
       >
-        {sending ? (
+        {sending || uploading ? (
           <span className="size-5 animate-spin rounded-full border-2 border-white/50 border-t-white" role="status" />
         ) : (
           <Image src="/images/send-arrow.svg" alt="" width={20} height={20} className="rtl:-scale-x-100" />

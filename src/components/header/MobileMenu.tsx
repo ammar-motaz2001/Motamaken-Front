@@ -48,7 +48,7 @@ export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) 
         aria-label={t("openMenu")}
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex size-9 items-center justify-center rounded-md transition-colors hover:bg-surface-muted lg:hidden"
+        className="flex size-8 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-surface-muted sm:size-9 lg:hidden"
       >
         {/* The design's side-menu button (three lines); the orange grid next to it opens Our Services. */}
         <MenuIcon className="size-6" aria-hidden />
