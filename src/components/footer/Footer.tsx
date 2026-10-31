@@ -186,7 +186,8 @@ export function Footer({ site, publishedPages }: { site: PublicSiteSettings | nu
               </div>
             ))}
 
-            <div className="col-span-2 flex flex-col items-center gap-5 md:col-span-4 lg:col-span-1">
+            {/* Phones: logo, contacts, social and buttons come first, then the folding link sections (mobile design). */}
+            <div className="col-span-2 flex flex-col items-center gap-5 max-md:order-first md:col-span-4 lg:col-span-1">
               {site?.logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element -- uploaded from the admin panel
                 <img src={site.logoUrl} alt="Mutamakin" className="h-12 max-w-[181px] self-center object-contain" />
@@ -260,7 +261,7 @@ export function Footer({ site, publishedPages }: { site: PublicSiteSettings | nu
             <ul className="flex flex-wrap items-center">
               {/* An info page the admins unpublished is left out (all are kept when the list could not be loaded). */}
               {LEGAL.filter((link) => !publishedPages || publishedPages.includes(link.href.slice(1))).map((link) => (
-                <li key={link.key} className="border-s border-foreground px-2 leading-none">
+                <li key={link.key} className="border-s border-foreground px-2 leading-none first:border-s-0 first:ps-0">
                   <Link href={link.href} className="transition-colors hover:text-brand">
                     {t(link.key)}
                   </Link>

@@ -119,6 +119,10 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
                 <span className="trim-text hidden text-base lg:inline">{t("notification")}</span>
               </AuthLink>
             )}
+            {/* Phones (mobile design): the orange grid opens Our Services, the three lines open the side menu. */}
+            <Link href="/services" aria-label={t("openMenu")} className="flex size-9 items-center justify-center rounded-md bg-gradient-orange lg:hidden">
+              <Image src="/images/menu.svg" alt="" width={18} height={18} className="brightness-0 invert" />
+            </Link>
             <MobileMenu signedIn={signedIn} currencies={data.currencies} currency={currency} />
           </div>
         </div>

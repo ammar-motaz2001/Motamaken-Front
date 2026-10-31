@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { X } from "lucide-react";
+import { Menu as MenuIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
@@ -49,9 +48,10 @@ export function MobileMenu({ signedIn, currencies, currency }: MobileMenuProps) 
         aria-label={t("openMenu")}
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex size-10 items-center justify-center rounded-md bg-border lg:hidden"
+        className="flex size-9 items-center justify-center rounded-md transition-colors hover:bg-surface-muted lg:hidden"
       >
-        <Image src="/images/menu.svg" alt="" width={20} height={20} className="dark:invert" />
+        {/* The design's side-menu button (three lines); the orange grid next to it opens Our Services. */}
+        <MenuIcon className="size-6" aria-hidden />
       </button>
 
       {open &&
