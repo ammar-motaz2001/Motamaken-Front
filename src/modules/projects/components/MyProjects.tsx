@@ -6,7 +6,8 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { outlinedPanelClasses, panelClasses } from "@/components/ui/styles";
 import { Link } from "@/i18n/navigation";
 import type { Paginated, Project } from "@/lib/api/types";
-import { formatAmount, timeAgo } from "@/lib/format";
+import { timeAgo } from "@/lib/format";
+import { BudgetRange } from "@/components/providers/CurrencyProvider";
 import { PROJECT_STATUS_TONE } from "../lib/status";
 import { PublishDraftButton } from "./PublishDraftButton";
 import { StatusTabs } from "./StatusTabs";
@@ -68,7 +69,7 @@ export function MyProjects({ result, status }: { result: Paginated<Project> | nu
               </div>
               <span className="text-sm font-medium text-brand-ink">
                 {/* The owner's own budget, in the currency they chose for it (not converted). */}
-                {formatAmount(project.budget.min, project.budget.currency, locale)} - {formatAmount(project.budget.max, project.budget.currency, locale)}
+                <BudgetRange message="Home.budgetShort" min={project.budget.min} max={project.budget.max} currency={project.budget.currency} original />
               </span>
               <span className="text-sm text-muted">{t("mine.offers", { count: project.proposalsCount ?? 0 })}</span>
               <StatusPill tone={PROJECT_STATUS_TONE[project.status]}>{t(`status.${project.status}`)}</StatusPill>
