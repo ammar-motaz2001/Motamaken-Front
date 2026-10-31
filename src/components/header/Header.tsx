@@ -10,6 +10,7 @@ import { CurrencySwitcher } from "./CurrencySwitcher";
 import type { HeaderData } from "./data";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileMenu } from "./MobileMenu";
+import { LiveCounts } from "./LiveCounts";
 import { NAV_ITEMS } from "./nav";
 import { NotificationsMenu } from "./NotificationsMenu";
 import { HideOnAuthPages } from "./HideOnAuthPages";
@@ -44,6 +45,7 @@ export function Header({ signedIn, data, currency }: { signedIn: boolean; data: 
 
   return (
     <header className="relative z-20 bg-surface drop-shadow-[0_4px_2px_rgba(213,213,213,0.25)] dark:drop-shadow-none">
+      {signedIn && <LiveCounts />}
       <div className="border-b-[0.75px] border-border bg-[url(/images/header-bg.png)] bg-cover bg-center py-4 dark:bg-none">
         <div className="page-container flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">

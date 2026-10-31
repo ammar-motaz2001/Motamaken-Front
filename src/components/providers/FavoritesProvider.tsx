@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "@/i18n/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useAuthGate } from "@/components/providers/AuthGateProvider";
 import { api } from "@/lib/api/client";
@@ -47,6 +48,7 @@ function writeGuest(items: Set<string>) {
  */
 export function FavoritesProvider({ children, viewerId }: { signedIn?: boolean; viewerId?: number; children: ReactNode }) {
   const { signedIn } = useAuthGate();
+  const router = useRouter();
   const [saved, setSaved] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -89,11 +91,13 @@ export function FavoritesProvider({ children, viewerId }: { signedIn?: boolean; 
       flip(!wasSaved);
       try {
         await (wasSaved ? api(`/favorites/${kind}/${id}`, { method: "DELETE" }) : api("/favorites", { method: "POST", body: { type: kind, id } }));
+        // The header counts favorites: show the new number at once.
+        router.refresh();
       } catch {
         flip(wasSaved);
       }
     },
-    [saved],
+    [saved, router],
   );
 
   const value = useMemo(() => ({ signedIn, viewerId, isSaved, toggle }), [signedIn, viewerId, isSaved, toggle]);
