@@ -69,19 +69,32 @@ export function SkillsSection({ skills, onSave }: { skills: string[]; onSave: (s
             maxLength={40}
             onChange={(event) => setValue(event.target.value)}
             onKeyDown={onKeyDown}
-            list="skill-suggestions"
             placeholder={t("skills.placeholder")}
             aria-label={t("skills.placeholder")}
             className="h-10 min-w-0 flex-1 rounded-md border border-border bg-surface px-3 text-sm outline-none focus:border-brand"
           />
-          <datalist id="skill-suggestions">
-            {suggestions.map((skill) => (
-              <option key={skill} value={skill} />
-            ))}
-          </datalist>
           <button type="button" onClick={add} className="rounded-md border border-brand px-4 text-sm font-medium text-brand hover:bg-brand-soft">
             {t("add")}
           </button>
+        </div>
+      )}
+      {/* Suggestions as chips: the staff's skills first, then the ones other users listed; a click adds one. */}
+      {skills.length < 20 && suggestions.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          <p className="text-xs text-muted">{t("skills.suggested")}</p>
+          <ul className="flex flex-wrap gap-1.5">
+            {suggestions.slice(0, 12).map((skill) => (
+              <li key={skill}>
+                <button
+                  type="button"
+                  onClick={() => (setValue(""), void save([...skills, skill]))}
+                  className="rounded-full border border-border px-2.5 py-1 text-xs transition-colors hover:border-brand hover:bg-brand-soft hover:text-brand-ink"
+                >
+                  + {skill}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {error && <p className="text-sm text-danger">{error}</p>}

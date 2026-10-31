@@ -1661,7 +1661,8 @@
     "skills": {
       "title": "Skills",
       "placeholder": "Type a skill and press Enter",
-      "remove": "Remove {skill}"
+      "remove": "Remove {skill}",
+      "suggested": "Suggested skills (click to add)"
     },
     "languages": {
       "title": "Languages",

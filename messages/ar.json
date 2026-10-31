@@ -1661,7 +1661,8 @@
     "skills": {
       "title": "المهارات",
       "placeholder": "اكتب مهارة واضغط Enter",
-      "remove": "حذف {skill}"
+      "remove": "حذف {skill}",
+      "suggested": "مهارات مقترحة (اضغط للإضافة)"
     },
     "languages": {
       "title": "اللغات",
