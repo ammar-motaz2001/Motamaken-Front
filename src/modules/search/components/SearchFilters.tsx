@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useDisplayCurrency } from "@/components/providers/CurrencyProvider";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
@@ -20,6 +21,8 @@ type SearchFiltersProps = { type: SearchType; values: SearchValues; categories: 
 
 /** Search side filters that change with the type (budget and category for projects; skill, rating, platform for profiles). */
 export function SearchFilters({ type, values, categories, countries, view, advanced }: SearchFiltersProps) {
+  // Budgets are typed in the visitor's currency (the API compares every project in it).
+  const currency = useDisplayCurrency();
   const t = useTranslations("Search.filters");
   const p = useTranslations("PublicProfile");
   const router = useRouter();
@@ -76,8 +79,8 @@ export function SearchFilters({ type, values, categories, countries, view, advan
                 onChange={(event) => set("category", event.target.value)}
               />
               <div className="grid grid-cols-2 gap-2">
-                <Field label={t("budgetMin")} type="number" min={0} dir="ltr" value={form.budgetMin ?? ""} onChange={(event) => set("budgetMin", event.target.value)} />
-                <Field label={t("budgetMax")} type="number" min={0} dir="ltr" value={form.budgetMax ?? ""} onChange={(event) => set("budgetMax", event.target.value)} />
+                <Field label={`${t("budgetMin")} (${currency})`} type="number" min={0} dir="ltr" value={form.budgetMin ?? ""} onChange={(event) => set("budgetMin", event.target.value)} />
+                <Field label={`${t("budgetMax")} (${currency})`} type="number" min={0} dir="ltr" value={form.budgetMax ?? ""} onChange={(event) => set("budgetMax", event.target.value)} />
               </div>
             </>
           )}

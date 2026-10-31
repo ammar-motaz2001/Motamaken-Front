@@ -13,6 +13,11 @@ export function CurrencyProvider({ currency, rates, children }: CurrencyState & 
   return <CurrencyContext.Provider value={{ currency, rates }}>{children}</CurrencyContext.Provider>;
 }
 
+/** The visitor's display currency (the header's currency menu). */
+export function useDisplayCurrency(): string {
+  return useContext(CurrencyContext).currency;
+}
+
 /** The currencies the marketplace offers (as set in the admin panel), in their order. */
 export function useOfferedCurrencies(): string[] {
   return Object.keys(useContext(CurrencyContext).rates);
