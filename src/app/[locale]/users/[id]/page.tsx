@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { cache } from "react";
 import { apiGetOrNull } from "@/lib/api/server";
 import type { Paginated, PublicProfile, Review } from "@/lib/api/types";
@@ -19,9 +19,10 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/users/[i
   const { locale, id } = await params;
   const data = await loadProfile(id);
   const role = data.profile?.jobTitle ? ` — ${data.profile.jobTitle}` : "";
+  const t = await getTranslations({ locale, namespace: "Metadata" });
   return pageMetadata({
     title: `${data.user.fullName}${role}`,
-    description: describe(data.profile?.bio) ?? describe(`${data.user.fullName}${role}`),
+    description: describe(data.profile?.bio) ?? t("profileDescription", { name: data.user.fullName, role: data.profile?.jobTitle ?? t("member") }),
     path: `/users/${data.user.id}`,
     locale,
     image: data.user.avatarUrl,

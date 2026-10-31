@@ -5,7 +5,8 @@ import { AuthCard, AuthShell, getAuthMethods, LoginForm, parseMethod } from "@/m
 /** Browser title of the sign-in screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/login">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Metadata" });
-  return { title: t("login") };
+  const d = await getTranslations({ locale: (await params).locale, namespace: "Metadata.descriptions" });
+  return { title: t("login"), description: d("login") };
 }
 
 /** Sign in by email or phone (tabs); a safe `?next=` path is where the user lands afterwards. */

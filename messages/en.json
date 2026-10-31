@@ -11,7 +11,16 @@
     "resetError": "Password Reset Failed",
     "loginVerify": "Verify Login",
     "messages": "Messages",
-    "adminLogin": "Admin sign-in"
+    "adminLogin": "Admin sign-in",
+    "profileDescription": "{name} — {role} on Mutamakin. Browse their work and reviews and contact them for your project.",
+    "member": "Member",
+    "projectDescription": "Project \"{title}\" in {category} on Mutamakin. See the details and budget and send your offer.",
+    "descriptions": {
+      "signup": "Create your free Mutamakin account and start posting projects or sending offers as a freelancer or influencer.",
+      "login": "Sign in to Mutamakin to follow your projects, offers, messages and wallet.",
+      "new": "Post your project for free on Mutamakin, set the budget and timeline, and get offers from skilled freelancers.",
+      "newRequest": "Post your influencer request for free on Mutamakin, choose the platform and budget, and get offers from the right influencers."
+    }
   },
   "Header": {
     "home": "Home",

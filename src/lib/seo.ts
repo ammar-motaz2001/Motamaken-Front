@@ -29,7 +29,10 @@ export function describe(text: string | null | undefined, max = 160) {
     .replace(/https?:\/\/\S+/g, "")
     .replace(/\s+/g, " ")
     .trim();
-  return plain.length > max ? `${plain.slice(0, max - 1).trimEnd()}…` : plain || undefined;
+  // Text too short to describe anything, or with no real words ("........", "dddddddd"): let the caller's fallback speak.
+  const words = plain.match(/[\p{L}]{2,}/gu) ?? [];
+  if (plain.length < 40 || words.length < 5 || new Set(words.map((word) => word.toLowerCase())).size < 3) return undefined;
+  return plain.length > max ? `${plain.slice(0, max - 1).trimEnd()}…` : plain;
 }
 
 type PageMetadataOptions = {

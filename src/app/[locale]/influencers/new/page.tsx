@@ -5,7 +5,8 @@ import { ProjectWizard } from "@/modules/projects";
 /** Browser title of the post-an-influencer-request screen. */
 export async function generateMetadata({ params }: PageProps<"/[locale]/influencers/new">) {
   const t = await getTranslations({ locale: (await params).locale, namespace: "Projects.metadata" });
-  return { title: t("newRequest") };
+  const d = await getTranslations({ locale: (await params).locale, namespace: "Metadata.descriptions" });
+  return { title: t("newRequest"), description: d("newRequest") };
 }
 
 /** Post an influencer request: the project wizard in influencer mode, with categories, currencies and countries. */

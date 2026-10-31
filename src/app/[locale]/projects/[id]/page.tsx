@@ -22,7 +22,9 @@ const loadProject = cache(async (id: string) => {
 export async function generateMetadata({ params }: PageProps<"/[locale]/projects/[id]">) {
   const { locale, id } = await params;
   const project = await loadProject(id);
-  return pageMetadata({ title: project.title, description: describe(project.description), path: `/projects/${project.id}`, locale, type: "article" });
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const fallback = t("projectDescription", { title: project.title, category: project.category?.name ?? "" });
+  return pageMetadata({ title: project.title, description: describe(project.description) ?? fallback, path: `/projects/${project.id}`, locale, type: "article" });
 }
 
 /**
